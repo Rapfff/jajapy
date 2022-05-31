@@ -1,7 +1,7 @@
 # pyjaja
 
 ## Introduction
-`pyjaja` is a python librairy implementing the **Baum-Welch** algorithm on various kinds of Markov models.
+`pyjaja` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
 **Warning** `pyjaja` is still a WIP. 
 
 ## Main features
