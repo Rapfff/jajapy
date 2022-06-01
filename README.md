@@ -19,7 +19,7 @@ Additionally, it provides other learning algorithms:
 - IOAlergia, for Markov Decision Processes [reference](https://link.springer.com/content/pdf/10.1007/s10994-016-5565-9.pdf)
 
 ## Installation
-Coming soon
+``pip install jajapy``
 
 ## Requirements
 - numpy
