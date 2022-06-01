@@ -1,5 +1,6 @@
 # jajapy
 
+<img src="https://img.shields.io/github/license/Rapfff/jajapy" /> <img src="https://img.shields.io/pypi/v/jajapy" />
 ## Introduction
 `jajapy` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
 **Warning** `jajapy` is still a WIP. 
