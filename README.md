@@ -32,6 +32,5 @@ Coming soon. For now check [demo.py](demo.py).
 ## TO DO
 - unit tests
 - generate the documentation. Add examples.
-- upload it to Pypi
-- link with sotrmpy, prism
+- link with stormpy, prism
 - error management
