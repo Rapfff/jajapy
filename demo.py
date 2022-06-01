@@ -64,6 +64,26 @@ def test_GOHMM():
 	print(m3.logLikelihood(test_set))
 	print(model.logLikelihood(test_set))
 
+def test_MGOHMM():
+	def modelMGOHMM1():
+		s0 = ja.MGOHMM_state([[0.9,0.1],[0,1]],[[3.0,5.0],[2.0,4.0]],0)
+		s1 = ja.MGOHMM_state([[0.05,0.9,0.04,0.01],[0,1,2,4]],[[0.5,1.5],[2.5,1.5]],1)
+		s2 = ja.MGOHMM_state([[0.05,0.8,0.14,0.01],[1,2,3,4]],[[0.2,0.7],[1.0,1.0]],2)
+		s3 = ja.MGOHMM_state([[0.05,0.95],[2,3]],[[0.0,0.3],[1.5,5.0]],3)
+		s4 = ja.MGOHMM_state([[0.1,0.9],[1,4]],[[2.0,4.0],[0.5,0.5]],4)
+		return ja.MGOHMM([s0,s1,s2,s3,s4],[0.1,0.7,0.0,0.0,0.2],"MGOHMM1")
+	print("\nMGOHMM")
+	model = modelMGOHMM1() 
+	model.save("test_save.txt")
+	model = ja.loadMGOHMM("test_save.txt")
+	print(model)
+	training_set = model.generateSet(1000,1/2,"geo",6)
+	test_set = model.generateSet(1000,1/2,"geo",6)
+	m3 = ja.BW_MGOHMM().fit(training_set,nb_states=5,nb_distributions=2,random_initial_state=True)
+	print(m3)
+	print(m3.logLikelihood(test_set))
+	print(model.logLikelihood(test_set))	
+
 def test_MDP():
 	def modelMDP_bigstreet(p=0.75):
 		m_s_rr = ja.MDP_state({'m': [[p,1-p],[1,2],['L','R']], 's': [[p,1-p],[2,0],['L','R']]},0)
@@ -125,5 +145,5 @@ def test_CTMC_Composition():
 	m3,_ = ja.MM_CTMC_Composition().fit(su,nb_states_1=4,initial_model_2=modelCTMC3(),to_update=1)
 	print(m3)
 
-test_CTMC_Composition()
+test_MGOHMM()
 remove("test_save.txt")

@@ -187,7 +187,7 @@ class GOHMM(Model):
 		"""
 		return self.states[s1].a(s2)
 
-	def b(self,s: int, l: str) -> float:
+	def b(self,s: int, l: float) -> float:
 		"""
 		Returns the likelihood of generating `l` in state `s`.
 
@@ -195,13 +195,13 @@ class GOHMM(Model):
 		----------
 		s : int
 			ID of the source state.		
-		o : str
+		l : float
 			observation.
 		
 		Returns
 		-------
 		output : float
-			Likelihood of generating `o` in state `s`.
+			Likelihood of generating `l` in state `s`.
 		"""
 		return self.states[s].b(l)
 	
