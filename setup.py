@@ -8,9 +8,9 @@ HERE = pathlib.Path(__file__).parent
 README = (HERE / "README.md").read_text()
 
 setup(
-    name='pyjaja',
+    name='jajapy',
     long_description=README,
-    packages=['pyjaja'],
+    packages=['jajapy'],
     install_requires=['numpy', 'scipy'],
     long_description_content_type="text/markdown",
     version='0.0.1',

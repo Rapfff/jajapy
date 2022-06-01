@@ -1,11 +1,11 @@
-# pyjaja
+# jajapy
 
 ## Introduction
-`pyjaja` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
-**Warning** `pyjaja` is still a WIP. 
+`jajapy` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
+**Warning** `jajapy` is still a WIP. 
 
 ## Main features
-`pyjaja` provides:
+`jajapy` provides:
 - BW algorithm for Hidden Markov Models [reference](https://web.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/tutorial%20on%20hmm%20and%20applications.pdf)
 - BW algorithm for Markov Chains
 - BW algorithm for Gaussian Observation Hidden Markov Models [reference](http://www.inass.org/2020/2020022920.pdf)
@@ -32,3 +32,5 @@ Coming soon. For now check [demo.py](demo.py).
 - unit tests
 - generate the documentation. Add examples.
 - upload it to Pypi
+- link with sotrmpy, prism
+- error management
