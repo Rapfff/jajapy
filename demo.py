@@ -1,9 +1,9 @@
-import pyjaja as ja
+import jajapy as ja
 from random import seed
 from datetime import datetime
 from os import remove
 
-from pyjaja.ctmc.CTMC import asynchronousComposition
+from jajapy.ctmc.CTMC import asynchronousComposition
 
 def test_HMM():
 	def modelHMM4():
