@@ -26,8 +26,8 @@ Additionally, it provides other learning algorithms:
 - numpy
 - scipy
 
-## Get Started
-Coming soon. For now check [demo.py](demo.py).
+## Documentation
+Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
 
 ## TO DO
 - unit tests
