@@ -22,8 +22,20 @@ To use **jajapy**, first install it using pip:
    pip install jajapy
 
 
-Getting Started
----------------
+Content
+-------
 
 .. toctree::
-   usage
+   :maxdepth: 3
+
+   help
+   References
+
+
+Source Code
+-----------
+The source code is available on `github <https://github.com/Rapfff/jajapy>`_.
+
+Contact
+-------
+``raphal20 at ru dot is``

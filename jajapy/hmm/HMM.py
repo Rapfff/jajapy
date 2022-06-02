@@ -33,7 +33,7 @@ class HMM_state(Model_state):
 
 		Returns
 		-------
-		output : float
+		float
 			The probability of moving, from this state, to state `s`.
 		"""
 		if s in self.transition_matrix[1]:
@@ -52,7 +52,7 @@ class HMM_state(Model_state):
 
 		Returns
 		-------
-		output : float
+		float
 			The probability of generating, from this state, observation `l`.
 		"""
 		if l in self.output_matrix[1]:
@@ -66,7 +66,7 @@ class HMM_state(Model_state):
 		
 		Returns
 		-------
-		output : str
+		str
 			An observation.
 		"""
 		return self.output_matrix[1][resolveRandom(self.output_matrix[0])]
@@ -77,7 +77,7 @@ class HMM_state(Model_state):
 		
 		Returns
 		-------
-		output : int
+		int
 			A state ID.
 		"""
 		return self.transition_matrix[1][resolveRandom(self.transition_matrix[0])]
@@ -88,7 +88,7 @@ class HMM_state(Model_state):
 
 		Returns
 		-------
-		output : [int, str]
+		[int, str]
 			A state-observation pair.
 		"""
 		return [self.next_state(),self.next_obs()]
@@ -106,7 +106,7 @@ class HMM_state(Model_state):
 
 		Returns
 		-------
-		output : float
+		float
 			The probability of generating, from this state, observation `obs` and moving to state `s`.
 		"""
 		return self.a(s)*self.b(obs)
@@ -117,7 +117,7 @@ class HMM_state(Model_state):
 
 		Returns
 		-------
-		output : list of str
+		list of str
 			A list of observations.
 		"""
 		return list(set(self.output_matrix[1]))
@@ -186,7 +186,7 @@ class HMM(Model):
 		
 		Returns
 		-------
-		output : float
+		float
 			Probability of moving from state `s1` to state `s2`
 		"""
 		return self.states[s1].a(s2)
@@ -204,7 +204,7 @@ class HMM(Model):
 		
 		Returns
 		-------
-		output : float
+		float
 			probability of generating `o` in state `s`.
 		"""
 		return self.states[s].b(l)
@@ -224,7 +224,7 @@ class HMM(Model):
 
 		Returns
 		-------
-		output : float
+		float
 			The probability of generating from state `s1` observation `obs` and moving to state `s`.
 		"""
 		return self.states[s1].tau(s2,obs)
@@ -241,7 +241,7 @@ def loadHMM(file_path: str) -> HMM:
 	
 	Returns
 	-------
-	output : HMM
+	HMM
 		The HMM saved in `file_path`.
 	"""
 	f = open(file_path,'r')

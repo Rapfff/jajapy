@@ -22,7 +22,7 @@ copyright = '2022, Raphaël Reynouard'
 author = 'Raphaël Reynouard'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.1.1'
+release = 'v0.2'
 
 
 # -- General configuration ---------------------------------------------------
@@ -34,7 +34,7 @@ extensions = [
     'sphinx.ext.autodoc',
 	'sphinx.ext.autosummary'
 ]
-
+autoclass_content = 'both'
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
@@ -55,3 +55,5 @@ html_theme = 'sphinx_rtd_theme'
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+pygments_style = 'sphinx'

@@ -38,7 +38,7 @@ class MDP_state(Model_state):
 
 		Returns
 		-------
-		output : [int, str]
+		[int, str]
 			A state-observation pair.
 		"""
 		if not action in self.transition_matrix:
@@ -63,7 +63,7 @@ class MDP_state(Model_state):
 
 		Returns
 		-------
-		output : float
+		float
 			A probability.
 		"""
 		if action not in self.actions():
@@ -79,7 +79,7 @@ class MDP_state(Model_state):
 
 		Returns
 		-------
-		output : list of str
+		list of str
 			A list of observations.
 		"""
 		obs = []
@@ -93,7 +93,7 @@ class MDP_state(Model_state):
 
 		Returns
 		-------
-		output : list of str
+		list of str
 			A list of actions.
 		"""
 		return [i for i in self.transition_matrix]
@@ -169,7 +169,7 @@ class MDP(Model):
 
 		Returns
 		-------
-		output : list of str
+		list of str
 			A list of actions.
 		"""
 		return self.states[s].actions()
@@ -368,7 +368,15 @@ class MDP(Model):
 
 	#-------------------------------------------
 
-	def saveToPrism(self,output_file):
+	def saveToPrism(self,output_file:str) -> None:
+		"""
+		Save the MDP into a file with the Prism format.
+
+		Parameters
+		----------
+		output_file : str 
+			Where to save the output Prism MDP.
+		"""
 		f = open(output_file,'w',encoding="utf-8")
 		f.write("mdp\n")
 		f.write("\tmodule "+self.name+"\n")
@@ -389,7 +397,23 @@ class MDP(Model):
 		f.close()
 
 
-def KLDivergence(m1,m2,test_set):
+def KLDivergence(m1: MDP,m2: MDP,test_set: list) -> float:
+	"""
+	Compute the Kullback-Leibler divergence between `m1` and `m2` under
+	the given test set.
+
+	Parameters
+	----------
+	m1: MDP
+		The first MDP.
+	m2: MDP
+		The second MDP.
+	
+	Returns
+	-------
+	float
+		A Kullback-Leibler divergence.
+	"""
 	pm1 = m1.probasSequences(test_set)
 	tot_m1 = sum(pm1)
 	pm2 = m2.probasSequences(test_set)
@@ -413,7 +437,7 @@ def loadMDP(file_path: str) -> MDP:
 	
 	Returns
 	-------
-	output : MDP
+	MDP
 		The MDP saved in `file_path`.
 	"""
 	f = open(file_path,'r')
@@ -455,7 +479,8 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 	
 	Returns
 	-------
-	A pseudo-randomly generated MDP.
+	MDP
+		A pseudo-randomly generated MDP.
 	"""
 	s = []
 	for i in range(nb_states):
@@ -473,11 +498,34 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 		init = 0
 	return MDP(states,init,"MDP_random_"+str(nb_states)+"_states")
 
-def MDPFileToPrism(file_path,output_file):
+def MDPFileToPrism(file_path:str,output_file:str) -> None:
+	"""
+	Translate a MDP save file into a MDP Prism save file.
+	
+	Parameters
+	----------
+	file_path : str
+		The MDP save file.
+	output_file : str 
+		Where to save the output Prism MDP.
+	"""
 	m = loadMDP(file_path)
 	m.saveToPrism(output_file)
 
-def loadPrismMDP(file_path):
+def loadPrismMDP(file_path:str) -> MDP:
+	"""
+	Load an MDP saved into a text file with the Prism format.
+
+	Parameters
+	----------
+	file_path : str
+		Location of the Prism file.
+	
+	Returns
+	-------
+	MDP
+		The MDP saved in `file_path`.
+	"""
 	f = open(file_path)
 	f.readline()
 	f.readline()
