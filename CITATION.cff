@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+- family-names: "Reynouard"
+  given-names: "Raphaël"
+title: "jajapy"
+version: 0.2
+date-released: 2022-06-02
+url: "https://github.com/Rapfff/jajapy"
+license: MIT
