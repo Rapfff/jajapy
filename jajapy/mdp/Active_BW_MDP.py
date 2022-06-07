@@ -1,8 +1,9 @@
-from .Scheduler import UniformScheduler, Scheduler, MemorylessScheduler
+from .Scheduler import UniformScheduler, MemorylessScheduler
 from .BW_MDP import BW_MDP
 from ..base.BW import NB_PROCESS
+from ..base.Set import Set, mergeSets
 from .MDP import MDP
-from ..base.tools import resolveRandom, mergeSets
+from ..base.tools import resolveRandom
 from multiprocessing import Pool
 from random import random
 from numpy import zeros, dot, array, argmin
@@ -81,7 +82,7 @@ class Active_BW_MDP(BW_MDP):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self,traces: list, lr, nb_iterations: int, nb_sequences: int,
+	def fit(self,traces: Set, lr, nb_iterations: int, nb_sequences: int,
 			sequence_length: int = None, epsilon_greedy: float = 0.9,
 			initial_model: MDP=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
@@ -91,7 +92,7 @@ class Active_BW_MDP(BW_MDP):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			Training set.
 		lr : float, or ``0``, or ``"dynamic"``
 			Learning rate. If ``lr=0`` the current hypothesis will be updated
@@ -149,7 +150,7 @@ class Active_BW_MDP(BW_MDP):
 		total_traces = traces
 		
 		if sequence_length == None:
-			sequence_length = int(len(traces[0][0])/2)
+			sequence_length = int(len(traces.sequences[0])/2)
 
 		c = 1
 		while c <= nb_iterations :
@@ -162,13 +163,13 @@ class Active_BW_MDP(BW_MDP):
 							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp)
 			else:
 				if lr == "dynamic":
-					lr_it = sum(traces[1])/(sum(total_traces[1])-sum(traces[1]))
+					lr_it = sum(traces.times)/(sum(total_traces.times)-sum(traces.times))
 				else:
 					lr_it = lr
 				old_h = self.h
 				super().fit(traces, initial_model=self.h,
 							output_file=output_file, epsilon=epsilon,
-							pp="Active iteration"+str(c)+"/"+str(nb_iterations)+": "+pp)
+							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp)
 				self._mergeModels(old_h,lr_it)
 
 			c += 1
@@ -199,7 +200,7 @@ class Active_BW_MDP(BW_MDP):
 				self.h.states[s].transition_matrix[a] = old_h.states[s].transition_matrix[a]
 
 	def _addTraces(self,sequence_length: int,nb_sequence: int,
-				  traces: list,epsilon_greedy: float) -> list:
+				  traces: Set,epsilon_greedy: float) -> list:
 		"""
 		Generates an active learning sample.
 
@@ -209,7 +210,7 @@ class Active_BW_MDP(BW_MDP):
 			Length of each sequence in the sample.
 		nb_sequence : int
 			Number of sequences in the sample.
-		traces : list
+		traces : Set
 			Training set until now. Used to compute the active learning
 			sampling strategy.
 		epsilon_greedy : It will use the active learning scheduler with probability
@@ -225,28 +226,28 @@ class Active_BW_MDP(BW_MDP):
 		scheduler_exploit = ActiveLearningScheduler(memoryless_scheduler,self.h)
 		scheduler_explore = UniformScheduler(self.h.actions())
 
-		traces = [[],[]]
+		traces = Set([],t=1)
 		for n in range(nb_sequence):			
 			if random() > epsilon_greedy:
 				seq = self.h.run(sequence_length,scheduler_explore)
 			else:
 				seq = self.h.run(sequence_length,scheduler_exploit)
 
-			if not seq in traces[0]:
-				traces[0].append(seq)
-				traces[1].append(0)
-			traces[1][traces[0].index(seq)] += 1
+			if not seq in traces.sequences:
+				traces.sequences.append(seq)
+				traces.times.append(0)
+			traces.times[traces.sequences.index(seq)] += 1
 		return traces
 
-	def _strategy(self,traces:list) -> MemorylessScheduler:
+	def _strategy(self,traces:Set) -> MemorylessScheduler:
 		if platform != "win32":
 			p = Pool(processes = NB_PROCESS)
 			tasks = []
-			for seq,times in zip(traces[0],traces[1]):
+			for seq,times in zip(traces.sequences,traces.times):
 				tasks.append(p.apply_async(self._computeProbas, [seq, times,]))
 			temp = array([res.get() for res in tasks])
 		else:
-			temp = array([self._computeProbas(seq, times) for seq,times in zip(traces[0],traces[1])])
+			temp = array([self._computeProbas(seq, times) for seq,times in zip(traces.sequences,traces.times)])
 		temp = temp.sum(axis=0)
 		scheduler = [self.h.actions()[argmin(temp[s])] for s in range(self.nb_states)]
 		return MemorylessScheduler(scheduler)

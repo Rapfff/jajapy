@@ -1,6 +1,7 @@
 from ..base.tools import resolveRandom, randomProbabilities
 from math import log
 from ..base.Model import Model, Model_state
+from ..base.Set import Set
 from .Scheduler import Scheduler
 from numpy.random import geometric
 from numpy import array, append, dot, zeros, vsplit
@@ -46,7 +47,7 @@ class MDP_state(Model_state):
 			return False
 		c = resolveRandom(self.transition_matrix[action][0])
 		return [self.transition_matrix[action][1][c],self.transition_matrix[action][2][c]]
-	
+
 	def tau(self,action: str,state: int,obs: str) -> float:
 		"""
 		Returns the probability of generating, from this state and using
@@ -279,15 +280,15 @@ class MDP(Model):
 
 			val[seq.index(trace)] += 1
 
-		return [seq,val]
+		return Set(seq,val,from_MDP=True)
 
-	def logLikelihood(self,sequences: list) -> float:
+	def logLikelihood(self,sequences: Set) -> float:
 		"""
 		Compute the average loglikelihood of a set of sequences.
 
 		Parameters
 		----------
-		sequences: list containing one list of str and one list of int
+		sequences: Set
 			set of sequences of actions-observations.
 		
 		Returns
@@ -295,7 +296,7 @@ class MDP(Model):
 		output: float
 			loglikelihood of ``sequences`` under this model.
 		"""
-		sequences_sorted = sequences[0][:]
+		sequences_sorted = sequences.sequences[:]
 		sequences_sorted.sort()
 		loglikelihood = 0.0
 		alpha_matrix = self._initAlphaMatrix(len(sequences_sorted[0])//2)
@@ -303,7 +304,7 @@ class MDP(Model):
 			sequence_actions = [sequences_sorted[seq][i] for i in range(0,len(sequences_sorted[seq]),2)]
 			sequence_obs = [sequences_sorted[seq][i+1] for i in range(0,len(sequences_sorted[seq]),2)]
 			sequence = sequences_sorted[seq]
-			times = sequences[1][sequences[0].index(sequence)]
+			times = sequences.times[sequences.sequences.index(sequence)]
 			common = 0
 			if seq > 0:
 				while common < min(len(sequences_sorted[seq-1]),len(sequence)):
@@ -315,7 +316,7 @@ class MDP(Model):
 			if alpha_matrix[-1].sum() > 0:
 				loglikelihood += log(alpha_matrix[-1].sum()) * times
 
-		return loglikelihood/sum(sequences[1])
+		return loglikelihood/sum(sequences.times)
 	
 	def _updateAlphaMatrix(self, sequence_obs: list,
 						   sequence_actions:list,

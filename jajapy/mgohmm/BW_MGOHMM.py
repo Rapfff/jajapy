@@ -1,6 +1,5 @@
 from .MGOHMM import *
 from ..gohmm.BW_GOHMM import *
-from ..base.tools import getAlphabetFromSequences
 from numpy import log, sqrt
 
 
@@ -11,7 +10,7 @@ class BW_MGOHMM(BW_GOHMM):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self, traces: list, initial_model: MGOHMM=None, nb_states: int=None,
+	def fit(self, traces: Set, initial_model: MGOHMM=None, nb_states: int=None,
 			nb_distributions: int=None, random_initial_state: bool=False,
 			output_file: str=None, epsilon: float=0.01, pp: str=''):
 		"""
@@ -19,7 +18,7 @@ class BW_MGOHMM(BW_GOHMM):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			training set.
 		initial_model : MGOHMM, optional.
 			first hypothesis. If not set it will create a random MGOHMM with
@@ -61,7 +60,6 @@ class BW_MGOHMM(BW_GOHMM):
 				print("Either nb_distributions or initial_model should be set")
 				return
 			initial_model = MGOHMM_random(nb_states,nb_distributions,
-										  getAlphabetFromSequences(traces),
 										  random_initial_state)
 		self.nb_distr = len(initial_model.states[0].output_parameters)
 		return super().fit(traces, initial_model, output_file, epsilon, pp)

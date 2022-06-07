@@ -1,6 +1,5 @@
 from .MDP import *
 from math import sqrt, log
-from ..base.tools import getActionsObservationsFromSequences
 
 class IOFPTA_state:
 	"""
@@ -435,8 +434,8 @@ class IOAlergia:
 
 		self.actions.sort()
 		self.observations.sort()
-		self.N = sum(sample[1])
-		self.n = len(sample[0][0])
+		self.N = sum(sample.times)
+		self.n = len(sample.sequences[0])
 		self.t = self._buildIOFPTA()
 		self.a = self.t
 		
@@ -445,12 +444,12 @@ class IOAlergia:
 		states = [IOFPTA_state("",self.N,[])]
 		#init states_lbl and states_counter
 		for i in range(0,self.n,2):
-			for seq in range(len(self.sample[0])):
-				if not self.sample[0][seq][:i+2] in states_lbl:
-					states_lbl.append(self.sample[0][seq][:i+2])
-					states.append( IOFPTA_state(self.sample[0][seq][i+1], self.sample[1][seq], self.sample[0][seq][:i+2]))
+			for seq in range(len(self.sample.sequences)):
+				if not self.sample.sequences[seq][:i+2] in states_lbl:
+					states_lbl.append(self.sample.sequences[seq][:i+2])
+					states.append( IOFPTA_state(self.sample.sequences[seq][i+1], self.sample.times[seq], self.sample.sequences[seq][:i+2]))
 				else:
-					states[states_lbl.index(self.sample[0][seq][:i+2])].counterAdd(self.sample[1][seq])
+					states[states_lbl.index(self.sample.sequences[seq][:i+2])].counterAdd(self.sample.times[seq])
 		#sorting states
 		states_lbl.sort()
 		for s in states:
@@ -476,13 +475,13 @@ class IOAlergia:
 
 		return IOFPTA(states_sorted,self.observations,self.actions)
 
-	def fit(self,sample:list,epsilon:float) -> MDP:
+	def fit(self,sample:Set,epsilon:float) -> MDP:
 		"""
 		Fits the model according to ``traces``.
 
 		Parameters
 		----------
-		sample : list
+		sample : Set
 			A trainig set.
 		epsilon : float
 			Espilon parameter for the compatibility test.
@@ -493,7 +492,7 @@ class IOAlergia:
 		MDP
 			Fitted MDP.
 		"""
-		self.actions, self.observations = getActionsObservationsFromSequences(sample)
+		self.actions, self.observations = sample.getActionsObservations()
 		self._initialize(sample,epsilon,self.actions,self.observations)
 		red = [0]
 		blue = self.a.states[0].successors()

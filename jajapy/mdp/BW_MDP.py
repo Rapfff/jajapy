@@ -1,6 +1,7 @@
 from .MDP import *
 from ..base.BW import *
-from ..base.tools import correct_proba, getActionsObservationsFromSequences
+from ..base.Set import Set
+from ..base.tools import normalize
 from numpy import array, dot, append, zeros, ones, log
 
 NB_PROCESS = 11
@@ -15,7 +16,7 @@ class BW_MDP(BW):
 	def __init__(self):
 		super().__init__()
 	
-	def fit(self, traces: list, initial_model: MDP=None, nb_states: int=None,
+	def fit(self, traces: Set, initial_model: MDP=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01, pp: str=''):
 		"""
@@ -23,7 +24,7 @@ class BW_MDP(BW):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			training set.
 		initial_model : MDP, optional.
 			first hypothesis. If not set it will create a random MDP with
@@ -57,7 +58,7 @@ class BW_MDP(BW):
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")
 				return
-			actions, observations = getActionsObservationsFromSequences(traces)
+			actions, observations = traces.getActionsObservations()
 			initial_model = MDP_random(nb_states,observations,actions,random_initial_state)
 		else:
 			observations = initial_model.observations()
@@ -194,7 +195,7 @@ class BW_MDP(BW):
 					# this can happen specially with active learning
 					dic[a] = self.h.states[s].transition_matrix[a] 
 			new_states.append(MDP_state(dic,s))
-		initial_state = correct_proba([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
+		initial_state = normalize([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
 		
 		return [MDP(new_states,initial_state), currentloglikelihood]
 		

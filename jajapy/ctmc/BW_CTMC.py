@@ -1,6 +1,6 @@
 from .CTMC import *
 from ..base.BW import BW
-from ..base.tools import getAlphabetFromSequences
+from ..base.Set import Set
 from numpy import array, zeros, dot, append, ones, log
 
 
@@ -145,7 +145,7 @@ class BW_CTMC(BW):
 		return super().computeBetas(sequence)
 
 
-	def fit(self, traces: list, initial_model: CTMC=None, nb_states: int=None,
+	def fit(self, traces: Set, initial_model: CTMC=None, nb_states: int=None,
 			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
 			max_exit_rate_time: int=10.0, self_loop: bool = True,
 			output_file: str=None, epsilon: float=0.01, pp: str=''):
@@ -154,7 +154,7 @@ class BW_CTMC(BW):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			training set.
 		initial_model : CTMC, optional.
 			first hypothesis. If not set it will create a random CTMC with
@@ -198,7 +198,7 @@ class BW_CTMC(BW):
 				print("Either nb_states or initial_model should be set")
 				return
 			initial_model = CTMC_random(nb_states,
-										getAlphabetFromSequences(traces),
+										traces.getAlphabet(),
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
 		self.alphabet = initial_model.observations()

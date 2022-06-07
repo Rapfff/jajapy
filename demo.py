@@ -145,5 +145,5 @@ def test_CTMC_Composition():
 	m3,_ = ja.MM_CTMC_Composition().fit(su,nb_states_1=4,initial_model_2=modelCTMC3(),to_update=1)
 	print(m3)
 
-test_MGOHMM()
+test_CTMC_Composition()
 remove("test_save.txt")

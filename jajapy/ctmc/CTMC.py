@@ -1,6 +1,6 @@
 from numpy.random import exponential
 from ast import literal_eval
-from ..base.tools import resolveRandom, correct_proba, randomProbabilities
+from ..base.tools import resolveRandom, normalize, randomProbabilities
 from ..mc.MC import MC, MC_state
 from ..base.Model import Model
 from math import exp, log
@@ -329,7 +329,7 @@ class CTMC(Model):
 			s = self.states[i]
 			den = sum(s.lambda_matrix[0]) 
 			p = [s.lambda_matrix[0][j]/den for j in range(len(s.lambda_matrix[0]))]
-			p = correct_proba(p)
+			p = normalize(p)
 			ss = s.lambda_matrix[1]
 			o = s.lambda_matrix[2]
 

@@ -6,7 +6,7 @@ class MM_CTMC_Composition(BW_CTMC):
 	def __init__(self) -> None:
 		super().__init__()
 
-	def fit(self, traces: list, initial_model_1: CTMC=None, nb_states_1: int=None,
+	def fit(self, traces: Set, initial_model_1: CTMC=None, nb_states_1: int=None,
 			random_initial_state_1: bool=False, min_exit_rate_time_1 : int=1.0,
 			max_exit_rate_time_1: int=10.0, initial_model_2: CTMC=None,
 			nb_states_2: int=None, random_initial_state_2: bool=False,
@@ -18,7 +18,7 @@ class MM_CTMC_Composition(BW_CTMC):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			training set.
 		initial_model_1 : CTMC, optional.
 			First hypothesis. If not set it will create a random CTMC with
@@ -82,7 +82,7 @@ class MM_CTMC_Composition(BW_CTMC):
 				print("Either nb_states_1 or initial_model_1 should be set")
 				return
 			initial_model_1 = CTMC_random(nb_states_1,
-										getAlphabetFromSequences(traces),
+										traces.getAlphabet(),
 										min_exit_rate_time_1, max_exit_rate_time_1,
 										False, random_initial_state_1)
 		if not initial_model_2:
@@ -90,7 +90,7 @@ class MM_CTMC_Composition(BW_CTMC):
 				print("Either nb_states_2 or initial_model_2 should be set")
 				return
 			initial_model_2 = CTMC_random(nb_states_2,
-										getAlphabetFromSequences(traces),
+										traces.getAlphabet(),
 										min_exit_rate_time_2, max_exit_rate_time_2,
 										False, random_initial_state_2)
 

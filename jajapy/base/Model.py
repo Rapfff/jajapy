@@ -1,5 +1,6 @@
 from math import  log
 from .tools import resolveRandom
+from .Set import Set
 from numpy import array, append, dot, zeros, vsplit
 from numpy.random import geometric
 from multiprocessing import cpu_count, Pool
@@ -186,7 +187,7 @@ class Model:
 
 		return output
 	
-	def generateSet(self, set_size: int, param, distribution=None, min_size=None, timed: bool=False) -> list:
+	def generateSet(self, set_size: int, param, distribution=None, min_size=None, timed: bool=False) -> Set:
 		"""
 		Generates a set (training set / test set) containing ``set_size`` traces.
 
@@ -212,7 +213,7 @@ class Model:
 		
 		Returns
 		-------
-		output: list
+		output: Set
 			a set (training set / test set).
 		"""
 		seq = []
@@ -237,7 +238,7 @@ class Model:
 
 			val[seq.index(trace)] += 1
 
-		return [seq,val]
+		return Set(seq,val)
 
 
 	def __str__(self) -> str:
@@ -255,15 +256,14 @@ class Model:
 		res += '\n'
 		return res
 
-	def logLikelihood(self,sequences: list) -> float:
+	def logLikelihood(self,sequences: Set) -> float:
 		"""
-		Compute the average loglikelihood of a set of sequences if
-		multiprocessing is disable.
+		Compute the average loglikelihood of a set.
 
 		Parameters
 		----------
-		sequences: list containing one list of str and one list of int
-			set of sequences of observations.
+		sequences: Set
+			A set.
 		
 		Returns
 		-------
@@ -343,28 +343,28 @@ class Model:
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,nb_states)
 		return alpha_matrix
 
-	def _logLikelihood_oneproc(self,sequences: list) -> float:
+	def _logLikelihood_oneproc(self,sequences: Set) -> float:
 		"""
 		Compute the average loglikelihood of a set of sequences if
 		multiprocessing is disable.
 
 		Parameters
 		----------
-		sequences: list containing one list of str and one list of int
-			set of sequences of observations.
+		sequences: Set
+			A set.
 		
 		Returns
 		-------
 		output: float
 			loglikelihood of ``sequences`` under this model.
 		"""
-		sequences_sorted = sequences[0][:]
+		sequences_sorted = sequences.sequences[:]
 		sequences_sorted.sort()
 		loglikelihood = 0.0
 		alpha_matrix = self._initAlphaMatrix(len(sequences_sorted[0]))
 		for seq in range(len(sequences_sorted)):
 			sequence = sequences_sorted[seq]
-			times = sequences[1][sequences[0].index(sequence)]
+			times = sequences.times[sequences.sequences.index(sequence)]
 			common = 0
 			if seq > 0:
 				while common < min(len(sequences_sorted[seq-1]),len(sequence)):
@@ -377,15 +377,15 @@ class Model:
 			if alpha_matrix[-1].sum() > 0:
 				loglikelihood += log(alpha_matrix[-1].sum()) * times
 
-		return loglikelihood / sum(sequences[1])
+		return loglikelihood / sum(sequences.times)
 
-	def _logLikelihood_multiproc(self, sequences: list) -> float:
+	def _logLikelihood_multiproc(self, sequences: Set) -> float:
 		p = Pool(processes = cpu_count()-1)
 		tasks = []
-		for seq,times in zip(sequences[0],sequences[1]):
+		for seq,times in zip(sequences.sequences,sequences.times):
 			tasks.append(p.apply_async(self._computeAlphas, [seq, times,]))
 		temp = [res.get() for res in tasks if res.get() != False]
-		return sum(temp)/sum(sequences[1])
+		return sum(temp)/sum(sequences.times)
 
 	def _computeAlphas(self,sequence: list, times: int) -> float:
 		"""

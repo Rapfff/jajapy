@@ -2,6 +2,7 @@ from sys import platform
 from multiprocessing import cpu_count, Pool
 from numpy import array, dot, append, zeros, ones
 from datetime import datetime
+from .Set import Set
 
 NB_PROCESS = cpu_count()-1
 
@@ -91,31 +92,31 @@ class BW:
 		#overrided
 		pass
 
-	def _runProcesses(self,traces):
+	def _runProcesses(self,training_set):
 		if platform != "win32":
 			p = Pool(processes = NB_PROCESS)
 			tasks = []
-			for seq,times in zip(traces[0],traces[1]):
+			for seq,times in zip(training_set.sequences,training_set.times):
 				tasks.append(p.apply_async(self._processWork, [seq, times,]))
 			return [res.get() for res in tasks if res.get() != False]
 		else:
-			return [self._processWork(seq, times) for seq,times in zip(traces[0],traces[1])]
+			return [self._processWork(seq, times) for seq,times in zip(training_set.sequences,training_set.times)]
 
-	def fit(self,traces: list,initial_model,output_file: str,epsilon: float, pp: str):
+	def fit(self,training_set: Set,initial_model,output_file: str,epsilon: float, pp: str):
 		"""
 		Fits the model according to ``traces``.
 
 		Parameters
 		----------
-		traces : list
-			training set.
+		traces : Set
+			The training set.
 		initial_model : Model
-			first hypothesis.
+			The first hypothesis.
 		output_file : str
-			if set path file of the output model. Otherwise the output model
+			If set path file of the output model. Otherwise the output model
 			will not be saved into a text file.
 		epsilon : float
-			the learning process stops when the difference between the
+			The learning process stops when the difference between the
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time.
@@ -132,10 +133,10 @@ class BW:
 
 		counter = 0
 		prevloglikelihood = 10
-		nb_traces = sum(traces[1])
+		nb_traces = sum(training_set.times)
 		while True:
 			print(pp, datetime.now(),counter, prevloglikelihood/nb_traces,end='\r')
-			temp = self._runProcesses(traces)
+			temp = self._runProcesses(training_set)
 			self.hhat, currentloglikelihood = self._generateHhat(temp)
 			
 			counter += 1

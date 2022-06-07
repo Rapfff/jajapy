@@ -1,6 +1,6 @@
 from .GOHMM import *
 from ..base.BW import *
-from ..base.tools import getAlphabetFromSequences
+from ..base.Set import Set
 from numpy import log
 
 
@@ -13,7 +13,7 @@ class BW_GOHMM(BW):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self, traces: list, initial_model: GOHMM=None, nb_states: int=None,
+	def fit(self, traces: Set, initial_model: GOHMM=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01,
 			pp: str=''):
@@ -56,7 +56,7 @@ class BW_GOHMM(BW):
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")
 				return
-			initial_model = GOHMM_random(nb_states,getAlphabetFromSequences(traces),random_initial_state)
+			initial_model = GOHMM_random(nb_states,random_initial_state)
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
 
 	def _processWork(self,sequence,times):

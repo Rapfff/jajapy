@@ -1,6 +1,7 @@
 from .MC import *
 from math import sqrt, log
-from ..base.tools import correct_proba, getAlphabetFromSequences
+from ..base.Set import Set
+from ..base.tools import normalize
 class Alergia:
 	"""
 	class for general ALERGIA algorithm on MC.
@@ -11,14 +12,14 @@ class Alergia:
 	def __init__(self):
 		None
 
-	def _initialize(self,traces:list,alpha:float,alphabet:list=None) -> None:
+	def _initialize(self,traces:Set,alpha:float,alphabet:list=None) -> None:
 		"""
 		Create the PTA from the training set ``traces ``, initialize
 		the alpha value and the alphabet.
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			Training set.
 		alpha : float
 			alpha value used in the Hoeffding boung
@@ -27,22 +28,22 @@ class Alergia:
 		"""
 		self.alpha = alpha
 		if alphabet == None:
-			self.alphabet = getAlphabetFromSequences(traces[0])
+			self.alphabet = traces.getAlphabet()
 		else:
 			self.alphabet = alphabet
 		self.createPTA(traces)
 	
-	def createPTA(self,traces: list) -> MC:
+	def createPTA(self,traces: Set) -> MC:
 		"""
 		Create a PTA from ``traces``.
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			traces used to generate the PTA.
 		"""
-		N = sum(traces[1])
-		n = len(traces[0][0])
+		N = sum(traces.times)
+		n = len(traces.sequences[0])
 
 		self.states_lbl = [""]
 		self.states_counter= [N]
@@ -57,12 +58,12 @@ class Alergia:
 
 		#init self.states_lbl and self.states_counter
 		for i in range(n):
-			for seq in range(len(traces[0])):
-				if not traces[0][seq][:i+1] in self.states_lbl:
-					self.states_lbl.append(traces[0][seq][:1+i])
-					self.states_counter.append(traces[1][seq])
+			for seq in range(len(traces.sequences)):
+				if not traces.sequences[seq][:i+1] in self.states_lbl:
+					self.states_lbl.append(traces.sequences[seq][:1+i])
+					self.states_counter.append(traces.times[seq])
 				else:
-					self.states_counter[self.states_lbl.index(traces[0][seq][:i+1])] += traces[1][seq]
+					self.states_counter[self.states_lbl.index(traces.sequences[seq][:i+1])] += traces.times[seq]
 
 		#init self.states_transitions
 		for s1 in range(len(self.states_lbl)):
@@ -84,19 +85,20 @@ class Alergia:
 					self.states_transitions[-1][2].append(self.states_lbl[s2][-1])
 					s2 += 1
 
-	def fit(self,traces: list,alpha: float=0.1,alphabet: list=None) -> MC:
+	def fit(self,traces: Set,alpha: float=0.1,alphabet: list=None) -> MC:
 		"""
 		Fits a MC according to ``traces``.
 
 		Parameters
 		----------
-		traces : list
-			_description_
+		traces : Set
+			The training set.
 		alpha : float, optional
 			_description_, by default 0.1
 		alphabet : list, optional
-			_description_, by default None
-
+			The alphabet of the model we are learning.
+			Can be omitted.
+			
 		Returns
 		-------
 		MC
@@ -218,7 +220,7 @@ class Alergia:
 			if self.states_lbl[i] != None:
 				c+=1
 				self.states_transitions[i][0] = [j/self.states_counter[i] for j in self.states_transitions[i][0]]
-				self.states_transitions[i][0] = correct_proba(self.states_transitions[i][0])
+				self.states_transitions[i][0] = normalize(self.states_transitions[i][0])
 				self.states_transitions[i][1] = [j-self.states_lbl[:j].count(None) for j in self.states_transitions[i][1]]
 				states.append(MC_state(self.states_transitions[i],c))
 		return MC(states,0)

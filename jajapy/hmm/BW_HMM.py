@@ -1,7 +1,7 @@
 from .HMM import HMM, HMM_state, HMM_random
 from ..base.BW import *
-from ..base.tools import getAlphabetFromSequences
 from numpy import log
+from ..base.Set import Set
 
 class BW_HMM(BW):
 	"""
@@ -12,7 +12,7 @@ class BW_HMM(BW):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self, traces: list, initial_model: HMM=None, nb_states: int=None,
+	def fit(self, traces: Set, initial_model: HMM=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01,
 			pp: str=''):
@@ -21,7 +21,7 @@ class BW_HMM(BW):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set
 			training set.
 		initial_model : HMM, optional.
 			first hypothesis. If not set it will create a random HMM with
@@ -55,7 +55,7 @@ class BW_HMM(BW):
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")
 				return
-			initial_model = HMM_random(nb_states,getAlphabetFromSequences(traces),random_initial_state)
+			initial_model = HMM_random(nb_states,traces.getAlphabet(),random_initial_state)
 		self.alphabet = initial_model.observations()
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
 
