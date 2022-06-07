@@ -37,3 +37,9 @@ Alergia (state-merging) methods:
 .. toctree::
    Alergia
    IOAlergia
+
+Others
+------
+.. toctree::
+	Set
+	Tools
