@@ -14,7 +14,7 @@ class ToolsTestclass(unittest.TestCase):
 	
 	def test_randomProbabilities(var):
 		var.assertRaises(ValueError, randomProbabilities, 0)
-		var.assertRaises(ValueError, randomProbabilities, 0.2)
+		var.assertRaises(TypeError, randomProbabilities, 0.2)
 		for length in range(1, 6):
 			p = randomProbabilities(length)
 			var.assertEqual(len(p),length)

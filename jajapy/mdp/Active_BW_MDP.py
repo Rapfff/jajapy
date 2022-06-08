@@ -1,7 +1,7 @@
 from .Scheduler import UniformScheduler, MemorylessScheduler
 from .BW_MDP import BW_MDP
 from ..base.BW import NB_PROCESS
-from ..base.Set import Set, mergeSets
+from ..base.Set import Set
 from .MDP import MDP
 from ..base.tools import resolveRandom
 from multiprocessing import Pool
@@ -155,7 +155,7 @@ class Active_BW_MDP(BW_MDP):
 		c = 1
 		while c <= nb_iterations :
 			traces = self._addTraces(sequence_length,nb_sequences,total_traces,epsilon_greedy)
-			total_traces = mergeSets(total_traces,traces)
+			total_traces.addSet(traces)
 			
 			if lr == 0:
 				super().fit(total_traces, initial_model=self.h,

@@ -373,7 +373,6 @@ class Model:
 					common += 1
 					
 			alpha_matrix = self._updateAlphaMatrix(sequence,common,alpha_matrix)
-
 			if alpha_matrix[-1].sum() > 0:
 				loglikelihood += log(alpha_matrix[-1].sum()) * times
 
