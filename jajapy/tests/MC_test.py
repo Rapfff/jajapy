@@ -69,6 +69,11 @@ class MCTestclass(unittest.TestCase):
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
+	
+	def test_Alergia(var):
+		training_set    = loadSet("jajapy/tests/materials/mc/training_set_MC.txt")
+		Alergia().fit(training_set,0.000005)
+
 
 if __name__ == "__main__":
 	unittest.main()

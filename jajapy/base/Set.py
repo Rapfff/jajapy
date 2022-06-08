@@ -1,4 +1,5 @@
 from ast import literal_eval
+from numpy import float64
 class Set:
 	"""
 	Class representing a set (training set / test set).
@@ -38,8 +39,8 @@ class Set:
 		if t != None:
 			self.type = t
 		else:
-			if type(sequences[0][0])  == float:
-				if type(sequences[0][1]) == float:
+			if type(sequences[0][0])  == float64 or type(sequences[0][0])  == float:
+				if type(sequences[0][1]) == float64 or type(sequences[0][0])  == float:
 					self.type = 2 # GOHMM
 				else:
 					self.type = 4 # CTMC
