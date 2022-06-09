@@ -1,6 +1,7 @@
 from numpy.random import exponential
 from ast import literal_eval
 from ..base.tools import resolveRandom, normalize, randomProbabilities
+from ..base.Set import Set
 from ..mc.MC import MC, MC_state
 from ..base.Model import Model
 from math import exp, log
@@ -8,6 +9,7 @@ from random import randint
 from numpy import array, zeros, dot
 from sys import platform
 from multiprocessing import cpu_count, Pool
+
 class CTMC_state:
 	"""
 	Class for a CTMC state
@@ -289,19 +291,19 @@ class CTMC(Model):
 			prev_arr = new_arr
 		return log(prev_arr.sum())*times
 
-	def logLikelihood(self,traces) -> float:
-		if type(traces[0][0][0]) == str: # non-timed traces
+	def logLikelihood(self,traces: Set) -> float:
+		if type(traces.sequences[0][0]) == str: # non-timed traces
 			return super().logLikelihood(traces)
 		else: # timed traces
 			if platform != "win32":
 				p = Pool(processes = cpu_count()-1)
 				tasks = []
-				for seq,times in zip(traces[0],traces[1]):
+				for seq,times in zip(traces.sequences,traces.times):
 					tasks.append(p.apply_async(self._computeAlphas_timed, [seq, times,]))
 				temp = [res.get() for res in tasks if res.get() != False]
 			else:
-				temp = [self._computeAlphas_timed(traces[0][i],traces[1][i]) for i in range(len(traces[0]))]
-			return sum(temp)/sum(traces[1])
+				temp = [self._computeAlphas_timed(traces.sequences[i],traces.times[i]) for i in range(len(traces.sequences))]
+			return sum(temp)/sum(traces.times)
 
 	def __str__(self) -> str:
 		res = self.name+'\n'

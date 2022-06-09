@@ -6,6 +6,7 @@ from .Scheduler import Scheduler
 from numpy.random import geometric
 from numpy import array, append, dot, zeros, vsplit
 from ast import literal_eval
+from multiprocessing import cpu_count, Pool
 
 class MDP_state(Model_state):
 	"""
@@ -282,7 +283,7 @@ class MDP(Model):
 
 		return Set(seq,val,from_MDP=True)
 
-	def logLikelihood(self,sequences: Set) -> float:
+	def _logLikelihood_oneproc(self,sequences: Set) -> float:
 		"""
 		Compute the average loglikelihood of a set of sequences.
 
@@ -366,6 +367,43 @@ class MDP(Model):
 				p = array([self.tau(ss,sequence_actions[k],s,sequence_obs[k]) for ss in range(len(self.states))])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		return alpha_matrix
+	
+	def _logLikelihood_multiproc(self, sequences: Set) -> float:
+		p = Pool(processes = cpu_count()-1)
+		tasks = []
+		for seq,times in zip(sequences.sequences,sequences.times):
+			tasks.append(p.apply_async(self._computeAlphas, [seq, times,]))
+		temp = [res.get() for res in tasks if res.get() != False]
+		return sum(temp)/sum(sequences.times)
+	
+	def _computeAlphas(self,sequence: list, times: int) -> float:
+		"""
+		Compute the alpha values for ``sequence``.
+
+		Parameters
+		----------
+		sequence: list of str
+			Sequence of alternating actions-observations.
+		times: int
+			Number of times this sequence appears in the sample.
+
+		Returns
+		-------
+		float
+			loglikelihood of ``sequence`` multiplied by ``times``.
+		"""
+		nb_states = len(self.states)
+		len_seq = len(sequence)
+		prev_arr = array(self.initial_state)
+		for k in range(0,len_seq,2):
+			new_arr = zeros(nb_states)
+			for s in range(nb_states):
+				p = array([self.tau(ss,sequence[k],s,sequence[k+1]) for ss in range(nb_states)])
+				new_arr[s] = dot(prev_arr,p)
+			prev_arr = new_arr
+		if prev_arr.sum() == 0.0:
+			return 0.0
+		return log(prev_arr.sum())*times
 
 	#-------------------------------------------
 

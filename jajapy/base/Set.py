@@ -40,7 +40,7 @@ class Set:
 			self.type = t
 		else:
 			if type(sequences[0][0])  == float64 or type(sequences[0][0])  == float:
-				if type(sequences[0][1]) == float64 or type(sequences[0][0])  == float:
+				if type(sequences[0][1]) == float64 or type(sequences[0][1])  == float:
 					self.type = 2 # GOHMM
 				else:
 					self.type = 4 # CTMC
