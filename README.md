@@ -5,7 +5,8 @@
 
 ## Introduction
 `jajapy` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
-**Warning** `jajapy` is still a WIP. 
+
+Please cite this repository if you use this library.
 
 ## Main features
 `jajapy` provides:
@@ -32,7 +33,6 @@ Additionally, it provides other learning algorithms:
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
 
 ## TO DO
-- unit tests
-- generate the documentation. Add examples.
+- Add examples in the documentation
 - link with stormpy, prism
-- error management
+- errors management
