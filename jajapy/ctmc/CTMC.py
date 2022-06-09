@@ -394,12 +394,12 @@ def asynchronousComposition(m1: CTMC, m2: CTMC, name: str='unknown_composition',
 		A CTMC equivalent to the asynchronous composition of `m1` and `m2`.
 
 	"""
-	def computeFinalStateIndex(i1: int, i2: int, max1: int) -> int:
-		return max1 * i1 + i2
+	def computeFinalStateIndex(i1: int, i2: int, max2: int) -> int:
+		return max2 * i1 + i2
 
 	new_states = []
 	initial_state = []
-	max1 = len(m1.states)
+	max2 = len(m2.states)
 
 	for i1 in range(len(m1.states)):
 		s1 = m1.states[i1]
@@ -407,8 +407,8 @@ def asynchronousComposition(m1: CTMC, m2: CTMC, name: str='unknown_composition',
 		for i2 in range(len(m2.states)):
 			s2 = m2.states[i2]
 			p = s1.lambda_matrix[0] + s2.lambda_matrix[0]
-			s = [computeFinalStateIndex(s1.lambda_matrix[1][i],i2,max1) for i in range(len(s1.lambda_matrix[1]))]
-			s+= [computeFinalStateIndex(i1,s2.lambda_matrix[1][i],max1) for i in range(len(s2.lambda_matrix[1]))]
+			s = [computeFinalStateIndex(s1.lambda_matrix[1][i],i2,max2) for i in range(len(s1.lambda_matrix[1]))]
+			s+= [computeFinalStateIndex(i1,s2.lambda_matrix[1][i],max2) for i in range(len(s2.lambda_matrix[1]))]
 			if not disjoint:
 				o = s1.lambda_matrix[2] + s2.lambda_matrix[2]
 			else:
