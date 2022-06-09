@@ -176,6 +176,7 @@ class HMM(Model):
 	def a(self,s1: int,s2: int) -> float:
 		"""
 		Returns the probability of moving from state `s1` to state `s2`.
+		If `s1` or `s2` is not a valid state ID it returns 0.
 
 		Parameters
 		----------
@@ -187,13 +188,23 @@ class HMM(Model):
 		Returns
 		-------
 		float
-			Probability of moving from state `s1` to state `s2`
+			Probability of moving from state `s1` to state `s2`.
+		
+		Examples
+		--------
+		>>> model.a(0,1)
+		0.5
+		>>> model.a(0,0)
+		0.0
 		"""
+		if s1 < 0 or s1 >=len(self.states) or s2 < 0 or s2 >= len(self.states):
+			return 0.0 
 		return self.states[s1].a(s2)
 
 	def b(self,s: int, l: str) -> float:
 		"""
 		Returns the probability of generating `l` in state `s`.
+		If `s` is not a valid state ID it returns 0.
 
 		Parameters
 		----------
@@ -206,12 +217,22 @@ class HMM(Model):
 		-------
 		float
 			probability of generating `o` in state `s`.
+
+		Examples
+		--------
+		>>> model.b(0,'x')
+		0.4
+		>>> model.b(0,'foo')
+		0.0
 		"""
+		if s < 0 or s >=len(self.states):
+			return 0.0 
 		return self.states[s].b(l)
 	
 	def tau(self, s1: int, s2: int, obs: str) -> float:
 		"""
 		Return the probability of generating from state `s1` observation `obs` and moving to state `s2`.
+		If `s1` or `s2` is not a valid state ID it returns 0.
 
 		Parameters
 		----------
@@ -226,7 +247,14 @@ class HMM(Model):
 		-------
 		float
 			The probability of generating from state `s1` observation `obs` and moving to state `s`.
+		
+		Examples
+		--------
+		>>> model.tau(0,1,'x')
+		0.2
 		"""
+		if s1 < 0 or s1 >=len(self.states) or s2 < 0 or s2 >= len(self.states):
+			return 0.0 
 		return self.states[s1].tau(s2,obs)
 	
 
@@ -243,6 +271,12 @@ def loadHMM(file_path: str) -> HMM:
 	-------
 	HMM
 		The HMM saved in `file_path`.
+	
+	Examples
+	--------
+	>>> model.save("test_save.txt")
+	>>> mprime = ja.loadHMM("test_save.txt")
+	>>> assert str(m) == str(mprime)
 	"""
 	f = open(file_path,'r')
 	name = f.readline()[:-1]
@@ -284,6 +318,10 @@ def HMM_random(number_states: int, alphabet: list, random_initial_state: bool = 
 	-------
 	HMM
 		A pseudo-randomly generated HMM.
+	
+	Examples
+	--------
+	>>> m = ja.HMM_random(4,['a','b','x','y'])
 	"""
 	states = []
 	for s in range(number_states):

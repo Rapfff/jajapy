@@ -41,7 +41,7 @@ We can create the model depicted above like this:
 .. code-block:: python
 
 	original_model.save("my_model.txt")
-	original_model.load("my_model.txt")
+	original_model = ja.loadHMM("my_model.txt")
 
 
 Generating a training set
@@ -51,6 +51,13 @@ Now we can generate a training set. This training set contains 1000 traces, whic
 .. code-block:: python
 
 	training_set = original_model.generateSet(set_size=1000, param=10)
+
+*(optional)* This Set can be saved into a text file and then loaded as follow:
+
+.. code-block:: python
+
+	training_set.save("my_training_set.txt")
+	training_set = ja.loadSet("my_training_set.txt")
 
 
 Learning a HMM using BW
