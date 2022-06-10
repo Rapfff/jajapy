@@ -13,7 +13,7 @@ setup(
     packages=['jajapy'],
     install_requires=['numpy', 'scipy'],
     long_description_content_type="text/markdown",
-    version='0.2',
+    version='0.3',
     url="",
     description='Baum-Welch for all kind of Markov model',
     author='Raphaël Reynouard',
