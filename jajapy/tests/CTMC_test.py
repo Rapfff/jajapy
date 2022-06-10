@@ -99,10 +99,10 @@ class CTMCTestclass(unittest.TestCase):
 																	 initial_model_1=initial_model1,
 																	 initial_model_2=initial_model2)
 		
-		test_set = m2.generateSet(10000,10,timed=True)
+		test_set = m2.generateSet(100,10,timed=True)
 		var.assertAlmostEqual(output_expected_2.logLikelihood(test_set),
 							  output_gotten_2.logLikelihood(test_set))
-		test_set = m1.generateSet(10000,10,timed=True)
+		test_set = m1.generateSet(100,10,timed=True)
 		var.assertAlmostEqual(output_expected_1.logLikelihood(test_set),
 							  output_gotten_1.logLikelihood(test_set))
 		

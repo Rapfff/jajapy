@@ -44,7 +44,7 @@ class MDPTestclass(unittest.TestCase):
 		set1 = m.generateSet(50,10,scheduler)
 		set2 = m.generateSet(50,1/4,scheduler,"geo",6)
 		set1.addSet(set2)
-		var.assertEqual(set1.type,0)
+		var.assertEqual(set1.type,1)
 		set1.save("test_save.txt")
 		set2 = loadSet("test_save.txt")
 		var.assertTrue(set1.isEqual(set2))
