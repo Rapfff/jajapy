@@ -236,7 +236,7 @@ class CTMC(Model):
 		s : int
 			A state ID.
 		t : float
-			A Waiting time.
+			A waiting time.
 
 		Returns
 		-------

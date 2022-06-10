@@ -102,6 +102,10 @@ class Model:
 		----------
 		file_path : str
 			path of the output file.
+		
+		Examples
+		--------
+		>>> model.save("my_model.txt")
 		"""
 		f = open(file_path,'w')
 		f.write(self.name)
@@ -215,6 +219,15 @@ class Model:
 		-------
 		output: Set
 			a set (training set / test set).
+		
+		Examples
+		--------
+		>>> set1 = model.generateSet(100,10)
+		>>> # set1 contains 100 traces of length 10
+		>>> set2 = model.generate(100, 1/4, "geo", min_size=6)
+		>>> # set2 contains 100 traces. The length of the traces is distributed following
+		>>> # a geometric distribution with parameter 1/4. All the traces contains at
+		>>> # least 6 observations, hence the average length of a trace is 6+(1/4)**(-1) = 10.
 		"""
 		seq = []
 		val = []
@@ -269,6 +282,10 @@ class Model:
 		-------
 		output: float
 			loglikelihood of ``sequences`` under this model.
+		
+		Examples
+		--------
+		>>> model.logLikelihood(set1)
 		"""
 		if platform != "win32":
 			return self._logLikelihood_multiproc(sequences)
