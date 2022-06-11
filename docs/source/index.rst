@@ -6,6 +6,12 @@
 Welcome to Jajapy's documentation!
 ==================================
 
+
+.. image:: pictures/logo.png
+   :width: 75 %
+   :align: center
+
+
 **jajapy** is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
 
 .. note::
