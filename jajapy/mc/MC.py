@@ -8,20 +8,24 @@ class MC_state(Model_state):
 
 	Parameters
 	----------
-	next_matrix : [ list of float, list of int, list of str]
-		`[[proba_state1,proba_state2,...],[state1,state2,...], [observation1,observation2,...]]`.
-		`next_matrix[0][x]` is the probability to move to state
-		`next_matrix[1][x]` generating observation `next_matrix[2][x]`.
+	next_matrix : [ list of tuples (int, str, float)]
+		Each tuple represents a transition as follow: 
+		(destination state ID, observation, probability).
 	idd : int
 		State ID.
 	"""
 
-	def __init__(self,next_matrix: list, idd: int):
+	def __init__(self,transitions: list, idd: int):
+		probabilities = [i[2] for i in transitions]
+		states = [i[0] for i in transitions]
+		observations = [i[1] for i in transitions]
+		next_matrix = [probabilities, states, observations]
 		super().__init__(next_matrix,idd)
 
 	def next(self) -> list:
 		"""
-		Return a state-observation pair according to the distributions described by next_matrix
+		Return a state-observation pair according to the distributions 
+		described by next_matrix
 
 		Returns
 		-------
@@ -126,14 +130,15 @@ def HMMtoMC(h) -> MC:
 		A MC equilavent to `h`.
 	"""
 	states_g = []
-	for sh in h.states:
+	for i,sh in enumerate(h.states):
 		transitions = [[],[],[]]
 		for sy in range(len(sh.output_matrix[0])):
 			for ne in range(len(sh.next_matrix[0])):
 				transitions[0].append(sh.output_matrix[0][sy]*sh.next_matrix[0][ne])
 				transitions[1].append(sh.next_matrix[1][ne])
 				transitions[2].append(sh.output_matrix[1][sy])
-		states_g.append(MC_state(transitions))
+		states_g.append(MC_state([],i))
+		states_g[-1].transition_matrix = transitions
 	return MC(states_g,h.initial_state)
 
 
@@ -159,13 +164,14 @@ def loadMC(file_path: str) -> MC:
 	l = f.readline()
 	while l and l != '\n':
 		if l == '-\n':
-			states.append(MC_state([[],[],[]],c))
+			states.append(MC_state([],c))
 		else:
 			p = [ float(i) for i in l[:-2].split(' ')]
-			l = f.readline()[:-2].split(' ')
-			s = [ int(i) for i in l ]
-			o = f.readline()[:-2].split(' ')
-			states.append(MC_state([p,s,o],c))
+			l = f.readline()
+			s = [ int(i) for i in l[:-2].split(' ') ]
+			l = f.readline()
+			o = l[:-2].split(' ')
+			states.append(MC_state([(s[i],o[i],p[i]) for i in range(len(p))],c))
 		c += 1
 		l = f.readline()
 
@@ -196,7 +202,8 @@ def MC_random(nb_states: int,alphabet: list,random_initial_state: bool=False) ->
 	
 	states = []
 	for i in range(nb_states):
-		states.append(MC_state([randomProbabilities(len(obs)),s,obs],i))
+		states.append(MC_state([],i))
+		states[-1].transition_matrix = [randomProbabilities(len(obs)),s,obs]
 	
 	if random_initial_state:
 		init = randomProbabilities(nb_states)

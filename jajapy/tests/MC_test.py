@@ -5,13 +5,13 @@ from ..base.Set import *
 from math import log
 
 def modelMC_REBER():
-	s0 = MC_state([[1.0],[1],['B']],0)
-	s1 = MC_state([[0.5,0.5],[2,3],['T','P']],1)
-	s2 = MC_state([[0.6,0.4],[2,4],['S','X']],2)
-	s3 = MC_state([[0.7,0.3],[3,5],['T','V']],3)
-	s4 = MC_state([[0.5,0.5],[3,6],['X','S']],4)
-	s5 = MC_state([[0.5,0.5],[4,6],['P','V']],5)
-	s6 = MC_state([[1.0],[6],['E']],6)
+	s0 = MC_state([(1,'B',1.0)],0)
+	s1 = MC_state([(2,'T',0.5),(3,'P',0.5)],1)
+	s2 = MC_state([(2,'S',0.6),(4,'X',0.4)],2)
+	s3 = MC_state([(3,'T',0.7),(5,'V',0.3)],3)
+	s4 = MC_state([(3,'X',0.5),(6,'S',0.5)],4)
+	s5 = MC_state([(4,'P',0.5),(6,'V',0.5)],5)
+	s6 = MC_state([(6,'E',1.0)],6)
 	return MC([s0,s1,s2,s3,s4,s5,s6],0,"MC_REBER")
 
 m = modelMC_REBER()

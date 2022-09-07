@@ -99,7 +99,8 @@ class BW_MC(BW):
 				l = [ num[s]/den[s] , list_sta, list_obs ]
 			else:
 				l = self.h.states[s].transition_matrix
-			new_states.append(MC_state(l,s))
+			new_states.append(MC_state([],s))
+			new_states[-1].transition_matrix = l
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
 		return [MC(new_states,initial_state),currentloglikelihood]
 		

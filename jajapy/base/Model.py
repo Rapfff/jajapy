@@ -23,7 +23,7 @@ class Model_state:
 			return False
 		for n in to_check:
 			if round(sum(n),2) != 1.0 and sum(n) != 0:
-				print("Sum of the probabilies of the next_matrix should be 1 or 0 here it's ",sum(n))
+				print("Sum of the probabilies of the transitions should be 1 or 0 here it's ",sum(n))
 				return False
 		self.transition_matrix = next_matrix
 		self.id = idd

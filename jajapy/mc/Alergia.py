@@ -222,5 +222,6 @@ class Alergia:
 				self.states_transitions[i][0] = [j/self.states_counter[i] for j in self.states_transitions[i][0]]
 				self.states_transitions[i][0] = normalize(self.states_transitions[i][0])
 				self.states_transitions[i][1] = [j-self.states_lbl[:j].count(None) for j in self.states_transitions[i][1]]
-				states.append(MC_state(self.states_transitions[i],c))
+				states.append(MC_state([],c))
+				states[-1].transition_matrix = self.states_transitions[i]
 		return MC(states,0)
