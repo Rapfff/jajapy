@@ -5,11 +5,11 @@ from ..base.Set import *
 from math import log
 
 def modelMDP_bigstreet(p=0.75):
-	m_s_rr = MDP_state({'m': [[p,1-p],[1,2],['L','R']], 's': [[p,1-p],[2,0],['L','R']]},0)
-	m_s_ll = MDP_state({'m': [[p,1-p],[0,2],['R','L']], 's': [[p,1-p],[2,1],['R','L']]},1)
-	m_s_di = MDP_state({'m': [[1.0],[3],['HIT']],       's': [[1.0],[4],['OK']]},2)
-	m_s_de = MDP_state({'m': [[1.0],[3],['HIT']],       's': [[1.0],[3],['HIT']]},3)
-	m_s_vi = MDP_state({'m': [[1.0],[4],['OK']],        's': [[1.0],[4],['OK']]},4)
+	m_s_rr = MDP_state({'m': list(zip([1,2],['L','R'],[p,1-p])), 's': list(zip([2,0],['L','R'],[p,1-p]))},0)
+	m_s_ll = MDP_state({'m': list(zip([0,2],['R','L'],[p,1-p])), 's': list(zip([2,1],['R','L'],[p,1-p]))},1)
+	m_s_di = MDP_state({'m': [(3,'HIT',1.0)],       's': [(4,'OK',1.0)]},2)
+	m_s_de = MDP_state({'m': [(3,'HIT',1.0)],       's': [(3,'HIT',1.0)]},3)
+	m_s_vi = MDP_state({'m': [(4,'OK' ,1.0)],       's': [(4,'OK',1.0)]},4)
 	return MDP([m_s_rr,m_s_ll,m_s_di,m_s_de,m_s_vi],0,"bigstreet")
 
 m = modelMDP_bigstreet()

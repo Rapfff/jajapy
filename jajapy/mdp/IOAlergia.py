@@ -410,7 +410,8 @@ class IOFPTA:
 					dic[a][0][j] /= tot
 					dic[a][2].append(self.states[dic[a][1][j]].observation)
 					dic[a][1][j] = self.states[dic[a][1][j]].id
-			states.append(MDP_state(dic, len(states)))
+			states.append(MDP_state({}, len(states)))
+			states[-1].transition_matrix = dic
 		return MDP(states,0)
 
 

@@ -20,12 +20,17 @@ class MDP_state(Model_state):
 		Parameters
 		----------
 		transition_matrix : dict
-			transition_matrix = {action1 : [[proba_transition1,proba_transition2,...],[transition1_state,transition2_state,...],[transition1_obs,transition2_obs,...]],
-			action2 : [[proba_transition1,proba_transition2,...],[transition1_state,transition2_state,...],[transition1_obs,transition2_obs,...]]
+			transition_matrix = {action1 : [(destination_state_1,observation_1,proba_1),(destination_state_1,observation_1,proba_1)...],
+			action2 : [(destination_state_1,observation_1,proba_1),(destination_state_1,observation_1,proba_1)...],
 			...}
 		idd : int
 			State ID
 		"""
+		for a in transition_matrix:
+			p = [transition_matrix[a][i][2] for i in range(len(transition_matrix[a]))]
+			o = [transition_matrix[a][i][1] for i in range(len(transition_matrix[a]))]
+			s = [transition_matrix[a][i][0] for i in range(len(transition_matrix[a]))]
+			transition_matrix[a] = [p,s,o]
 		super().__init__(transition_matrix, idd)
 
 	def next(self,action: str) -> list:
@@ -493,7 +498,7 @@ def loadMDP(file_path: str) -> MDP:
 			p = [float(i) for i in  f.readline()[:-2].split(' ')]
 			s = [int(i) for i in  f.readline()[:-2].split(' ')]
 			t = f.readline()[:-2].split(' ')
-			d[a] = [p,s,t]
+			d[a] = list(zip(s,t,p))
 			l = f.readline()
 		states.append(MDP_state(d,c))
 		c += 1
@@ -529,7 +534,7 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 	for i in range(nb_states):
 		dic = {}
 		for act in actions:
-			dic[act] = [randomProbabilities(len(obs)),s,obs]
+			dic[act] = list(zip(s,obs,randomProbabilities(len(obs))))
 		states.append(MDP_state(dic,i))
 	if random_initial_state:
 		init = randomProbabilities(nb_states)
@@ -603,7 +608,10 @@ def loadPrismMDP(file_path:str) -> MDP:
 
 	for state in range(len(states)):
 		for a in states[state]:
-			states[state][a].append( [ map_s_o[states[state][a][1][i]] for i in range(len(states[state][a][1])) ] )
+			o = [ map_s_o[states[state][a][1][i]] for i in range(len(states[state][a][1])) ]
+			p = states[a][0]
+			s = states[a][1]
+			states[state][a] = list(zip(s,o,p))
 
 
 	states = [MDP_state(j,i) for i,j in enumerate(states)]

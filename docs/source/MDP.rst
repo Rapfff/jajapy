@@ -17,9 +17,9 @@ Creation
 .. code-block:: python
 
    import jajapy as ja
-   s0 = ja.MDP_state({'red': [[0.5,0.5],[1,2],['a','a']], 'blue': [[1.0],[2],['a']]}, 0)
-   s1 = ja.MDP_state({'red': [[1.0],[2],['b']], 'blue': [[1.0],[1],['c']]}, 0)
-   s2 = ja.MDP_state({'blue': [[1.0],[2],['d']]}, 0)
+   s0 = ja.MDP_state({'red': [(1,'a',0.5),(2,'a',0.5)], 'blue': [(2,'a',1.0)]}, 0)
+   s1 = ja.MDP_state({'red': [(2,'b',1.0),(2,'a',0.5)], 'blue': [(1,'c',1.0)]}, 0)
+   s2 = ja.MDP_state({'blue': [(2,'d',1.0)]}, 2)
    lst_states = [s0, s1, s2]
    model = ja.MDP(states=lst_states,initial_state=0,name="My MDP")
 

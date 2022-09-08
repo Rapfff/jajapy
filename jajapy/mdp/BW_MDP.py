@@ -189,11 +189,13 @@ class BW_MDP(BW):
 			dic = {}
 			for j,a in enumerate(self.actions):
 				if den[s][j] != 0.0:
-					dic[a] = [ [num[s][j][i]/den[s][j] for i in range(len(list_sta))] , list_sta, list_obs ]
+					dic[a] = list(zip(list_sta, list_obs, [num[s][j][i]/den[s][j] for i in range(len(list_sta))]))
 				else:
 					# if we have no info about action a in state s -> don't change anything
 					# this can happen specially with active learning
-					dic[a] = self.h.states[s].transition_matrix[a] 
+					dic[a] = list(zip(self.h.states[s].transition_matrix[a][1],
+									self.h.states[s].transition_matrix[a][2],
+									self.h.states[s].transition_matrix[a][0]))
 			new_states.append(MDP_state(dic,s))
 		initial_state = normalize([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
 		
