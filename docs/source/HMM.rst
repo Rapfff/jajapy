@@ -17,11 +17,11 @@ Creation
 .. code-block:: python
 
    import jajapy as ja
-   s0 = ja.HMM_state([[0.4,0.6],['x','y']], [[0.5,0.5],[1,2]], 0)
-   s1 = ja.HMM_state([[0.8,0.2],['a','b']], [[1.0],[3]], 1)
-   s2 = ja.HMM_state([[0.1,0.9],['a','b']], [[1.0],[4]], 2)
-   s3 = ja.HMM_state([[0.5,0.5],['x','y']], [[0.8,0.1,0.1],[0,1,2]], 3)
-   s4 = ja.HMM_state([[1.0],['y']], [[1.0],[3]], 4)
+   s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],0)
+   s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],1)
+   s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],2)
+   s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],3)
+   s4 = HMM_state([("y",1.0)],[(3,1.0)],4)
    lst_states = [s0, s1, s2, s3, s4]
    model = ja.HMM(states=lst_states,initial_state=0,name="My HMM")
    # print(model)

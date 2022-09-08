@@ -20,16 +20,19 @@ class CTMC_state:
 
 		Parameters
 		----------
-		lambda_matrix : [ list of float, list of int]
-			`[[lambda1,lambda2,...],[state1,state2,...],[observation1,observation2,...]]`.
-			`lambda_matrix[0][x]` is the rate to move to state
-			`lambda_matrix[1][x]` seeing observation `lambda_matrix[2][x]`.
+		lambda_matrix : [ list of tuples (int, str, float)]
+			Each tuple represents a transition as follow: 
+			(destination state ID, observation, exit rate).
 		idd : int
 			State ID.
 		"""
-		if min(lambda_matrix[0]) < 0.0:
-			print("Error: all rates should be strictly positive.")
-		self.lambda_matrix = lambda_matrix
+		states = [lambda_matrix[i][0] for i in range(len(lambda_matrix))]
+		observations = [lambda_matrix[i][1] for i in range(len(lambda_matrix))]
+		lambdaa = [lambda_matrix[i][2] for i in range(len(lambda_matrix))]
+		if len(lambdaa) != 0:
+			if min(lambdaa) < 0.0:
+				print("Error: all rates should be strictly positive.")
+		self.lambda_matrix = [lambdaa, states, observations]
 		self.id = idd
 
 	def tau(self, s: int, obs: str) -> float:
@@ -365,7 +368,7 @@ def loadCTMC(file_path: str) -> CTMC:
 			l = f.readline()[:-2].split(' ')
 			s = [ int(i) for i in l ]
 			o = f.readline()[:-2].split(' ')
-			states.append(CTMC_state([p,s,o],len(states)))
+			states.append(CTMC_state(list(zip(s,o,p)),len(states)))
 
 		l = f.readline()
 
@@ -415,7 +418,7 @@ def asynchronousComposition(m1: CTMC, m2: CTMC, name: str='unknown_composition',
 				o = [i+'1' for i in s1.lambda_matrix[2]] + [i+'2' for i in s2.lambda_matrix[2]]
 				
 			initial_state.append(m1.initial_state[i1]*m2.initial_state[i2])
-			new_states.append(CTMC_state([p,s,o],i1*len(m2.states)+i2))
+			new_states.append(CTMC_state(list(zip(s,o,p)),i1*len(m2.states)+i2))
 
 	return CTMC(new_states,initial_state,name)
 
@@ -462,8 +465,10 @@ def CTMC_random(number_states: int, alphabet: list, min_exit_rate_time : int,
 
 	states = []
 	for i in range(number_states):
+		random_probs = randomProbabilities(len(obs))
 		av_waiting_time = randint(min_exit_rate_time,max_exit_rate_time)
-		states.append(CTMC_state([[p/av_waiting_time for p in randomProbabilities(len(obs))],s[i],obs],i))
+		p = [x/av_waiting_time for x in random_probs]
+		states.append(CTMC_state(list(zip(s[i],obs,p)),i))
 	if random_initial_state:
 		init = randomProbabilities(number_states)
 	else:

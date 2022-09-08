@@ -26,12 +26,11 @@ We can create the model depicted above like this:
 	# in the next state we generate 'x' with probaility 0.4, and 'y' with probability 0.6
 	# once an observation generated, we move to state 1 or 2 with probability 0.5
 	# the id of this state is 0.
-	s0 = ja.HMM_state([[0.4,0.6],['x','y']], [[0.5,0.5],[1,2]], 0)
-	# same logic for the other states.
-	s1 = ja.HMM_state([[0.8,0.2],['a','b']], [[1.0],[3]], 1)
-	s2 = ja.HMM_state([[0.1,0.9],['a','b']], [[1.0],[4]], 2)
-	s3 = ja.HMM_state([[0.5,0.5],['x','y']], [[0.8,0.1,0.1],[0,1,2]], 3)
-	s4 = ja.HMM_state([[1.0],['y']], [[1.0],[3]], 4)
+	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],0)
+	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],1)
+	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],2)
+	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],3)
+	s4 = HMM_state([("y",1.0)],[(3,1.0)],4)
 	lst_states = [s0, s1, s2, s3, s4]
 	original_model = ja.HMM(states=lst_states,initial_state=0,name="My HMM")
 	print(original_model)
@@ -114,13 +113,13 @@ This step is similar to what we did before.
 
 	>>> import jajapy as ja
 	>>> def modelMC_REBER():
-	...		s0 = ja.MC_state([[1.0],[1],['B']],0)
-	...		s1 = ja.MC_state([[0.5,0.5],[2,3],['T','P']],1)
-	...		s2 = ja.MC_state([[0.6,0.4],[2,4],['S','X']],2)
-	...		s3 = ja.MC_state([[0.7,0.3],[3,5],['T','V']],3)
-	...		s4 = ja.MC_state([[0.5,0.5],[3,6],['X','S']],4)
-	...		s5 = ja.MC_state([[0.5,0.5],[4,6],['P','V']],5)
-	...		s6 = ja.MC_state([[1.0],[6],['E']],6)
+	...		s0 = ja.MC_state([(1,'B',1.0)],0)
+	...		s1 = ja.MC_state([(2,'T',0.5),(3,'P',0.5)],1)
+	...		s2 = ja.MC_state([(2,'S',0.6),(4,'X',0.4)],2)
+	...		s3 = ja.MC_state([(3,'T',0.7),(5,'V',0.3)],3)
+	...		s4 = ja.MC_state([(3,'X',0.5),(6,'S',0.5)],4)
+	...		s5 = ja.MC_state([(4,'P',0.5),(6,'V',0.5)],5)
+	...		s6 = ja.MC_state([(6,'E',1.0)],6)
 	...		return ja.MC([s0,s1,s2,s3,s4,s5,s6],0,"MC_REBER")
 
 	>>> original_model = modelMC_REBER()
@@ -144,7 +143,7 @@ At each iteration, the library will generate a new model with 7 states.
 	>>> for n in range(1,nb_trials+1):
 	...		current_model = ja.BW_MC().fit(training_set,nb_states=7,pp=n)
 	...		current_quality = current_model.logLikelihood(test_set)
-	...		if quality_best < current_quality:
+	...		if quality_best < current_quality: #we keep the best model only
 	...			quality_best = current_quality
 	...			best_model = current_model
 

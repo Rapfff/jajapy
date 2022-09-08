@@ -5,15 +5,15 @@ from ..base.Set import *
 from math import exp
 
 def modelCTMC1(suffix=''):
-	s0 = CTMC_state([[0.3/5,0.5/5,0.2/5],[1,2,3], ['r'+suffix,'g'+suffix,'r'+suffix]],0)
-	s1 = CTMC_state([[0.08,0.25,0.6,0.07],[0,2,2,3], ['r'+suffix,'r'+suffix,'g'+suffix,'b'+suffix]],1)
-	s2 = CTMC_state([[0.5/4,0.2/4,0.3/4],[1,3,3], ['b'+suffix,'g'+suffix,'r'+suffix]],2)
-	s3 = CTMC_state([[0.95/2,0.04/2,0.01/2],[0,0,2], ['r'+suffix,'g'+suffix,'r'+suffix]],3)
+	s0 = CTMC_state(list(zip([1,2,3], ['r'+suffix,'g'+suffix,'r'+suffix],[0.3/5,0.5/5,0.2/5])),0)
+	s1 = CTMC_state(list(zip([0,2,2,3], ['r'+suffix,'r'+suffix,'g'+suffix,'b'+suffix],[0.08,0.25,0.6,0.07])),1)
+	s2 = CTMC_state(list(zip([1,3,3], ['b'+suffix,'g'+suffix,'r'+suffix],[0.5/4,0.2/4,0.3/4])),2)
+	s3 = CTMC_state(list(zip([0,0,2], ['r'+suffix,'g'+suffix,'r'+suffix],[0.95/2,0.04/2,0.01/2])),3)
 	return CTMC([s0,s1,s2,s3],0,"CTMC1")
 
 def modelCTMC2(suffix=''):
-	s0 = CTMC_state([[0.6/3,0.4/3],[1,1], ['r'+suffix,'g'+suffix]],0)
-	s1 = CTMC_state([[0.2/4,0.7/4,0.1/4],[0,0,0], ['r'+suffix,'g'+suffix,'b'+suffix]],1)
+	s0 = CTMC_state(list(zip([1,1], ['r'+suffix,'g'+suffix],[0.6/3,0.4/3])),0)
+	s1 = CTMC_state(list(zip([0,0,0], ['r'+suffix,'g'+suffix,'b'+suffix],[0.2/4,0.7/4,0.1/4])),1)
 	return CTMC([s0,s1],0,"CTMC2")
 
 def modelAsynchronous(disjoint):
@@ -21,14 +21,14 @@ def modelAsynchronous(disjoint):
 		r1, g1, b1, r2, g2, b2 = 'r1', 'g1', 'b1', 'r2', 'g2', 'b2'
 	else:
 		r1, g1, b1, r2, g2, b2 = 'r', 'g', 'b', 'r', 'g', 'b'
-	s00 = CTMC_state([[0.3/5,0.5/5,0.2/5,0.6/3,0.4/3],[2,4,6,1,1],[r1,g1,r1,r2,g2]],0)
-	s01 = CTMC_state([[0.3/5,0.5/5,0.2/5,0.2/4,0.7/4,0.1/4],[3,5,7,0,0,0],[r1,g1,r1,r2,g2,b2]],1)
-	s10 = CTMC_state([[0.08,0.25,0.6,0.07,0.6/3,0.4/3],[0,4,4,6,3,3],[r1,r1,g1,b1,r2,g2]],2)
-	s11 = CTMC_state([[0.08,0.25,0.6,0.07,0.2/4,0.7/4,0.1/4],[1,5,5,7,2,2,2],[r1,r1,g1,b1,r2,g2,b2]],3)
-	s20 = CTMC_state([[0.5/4,0.2/4,0.3/4,0.6/3,0.4/3],[2,6,6,5,5],[b1,g1,r1,r2,g2]],4)
-	s21 = CTMC_state([[0.5/4,0.2/4,0.3/4,0.2/4,0.7/4,0.1/4],[3,7,7,4,4,4],[b1,g1,r1,r2,g2,b2]],5)
-	s30 = CTMC_state([[0.95/2,0.04/2,0.01/2,0.6/3,0.4/3],[0,0,4,7,7],[r1,g1,r1,r2,g2]],6)
-	s31 = CTMC_state([[0.95/2,0.04/2,0.01/2,0.2/4,0.7/4,0.1/4],[1,1,5,6,6,6],[r1,g1,r1,r2,g2,b2]],7)
+	s00 = CTMC_state(list(zip([2,4,6,1,1],[r1,g1,r1,r2,g2],[0.3/5,0.5/5,0.2/5,0.6/3,0.4/3])),0)
+	s01 = CTMC_state(list(zip([3,5,7,0,0,0],[r1,g1,r1,r2,g2,b2],[0.3/5,0.5/5,0.2/5,0.2/4,0.7/4,0.1/4])),1)
+	s10 = CTMC_state(list(zip([0,4,4,6,3,3],[r1,r1,g1,b1,r2,g2],[0.08,0.25,0.6,0.07,0.6/3,0.4/3])),2)
+	s11 = CTMC_state(list(zip([1,5,5,7,2,2,2],[r1,r1,g1,b1,r2,g2,b2],[0.08,0.25,0.6,0.07,0.2/4,0.7/4,0.1/4])),3)
+	s20 = CTMC_state(list(zip([2,6,6,5,5],[b1,g1,r1,r2,g2],[0.5/4,0.2/4,0.3/4,0.6/3,0.4/3])),4)
+	s21 = CTMC_state(list(zip([3,7,7,4,4,4],[b1,g1,r1,r2,g2,b2],[0.5/4,0.2/4,0.3/4,0.2/4,0.7/4,0.1/4])),5)
+	s30 = CTMC_state(list(zip([0,0,4,7,7],[r1,g1,r1,r2,g2],[0.95/2,0.04/2,0.01/2,0.6/3,0.4/3])),6)
+	s31 = CTMC_state(list(zip([1,1,5,6,6,6],[r1,g1,r1,r2,g2,b2],[0.95/2,0.04/2,0.01/2,0.2/4,0.7/4,0.1/4])),7)
 	return CTMC([s00,s01,s10,s11,s20,s21,s30,s31],0,"compo")
 
 m1 = modelCTMC1()

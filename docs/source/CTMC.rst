@@ -21,10 +21,10 @@ Creation
 .. code-block:: python
 
    import jajapy as ja
-   s0 = CTMC_state([[0.3/5,0.5/5,0.2/5],[1,2,3], ['r','g','r']],0)
-   s1 = CTMC_state([[0.08,0.25,0.6,0.07],[0,2,2,3], ['r','r','g','b']],1)
-   s2 = CTMC_state([[0.5/4,0.2/4,0.3/4],[1,3,3], ['b','g','r']],2)
-   s3 = CTMC_state([[0.95/2,0.04/2,0.01/2],[0,0,2], ['r','g','r']],3)
+   s0 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],0)
+   s1 = CTMC_state([(0,'r',0.08),(2,'r',0.25),(2,'g',0.6),(3,'b',0.07)],1)
+   s2 = CTMC_state([(1,'b',0.5/4),(3,'g',0.2/4),(3,'r',0.3/4)],2)
+   s3 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],3)
    model = CTMC([s0,s1,s2,s3],0,name="My_CTMC")
 
 We can also generate a random CTMC

@@ -283,9 +283,11 @@ class BW_CTMC(BW):
 
 		for s in range(self.nb_states):
 			if den[s] != 0.0:
-				l = [ num[s]/den[s] , list_sta, list_obs ]
+				l = list(zip(list_sta, list_obs, num[s]/den[s]))
 			else:
-				l = self.h.states[s].lambda_matrix
+				l = list(zip(self.h.states[s].lambda_matrix[1],
+							self.h.states[s].lambda_matrix[2],
+							self.h.states[s].lambda_matrix[0]))
 			new_states.append(CTMC_state(l,s))
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
 		return [CTMC(new_states,initial_state),currentloglikelihood]

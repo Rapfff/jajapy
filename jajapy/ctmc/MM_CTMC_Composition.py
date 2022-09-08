@@ -217,10 +217,13 @@ class MM_CTMC_Composition(BW_CTMC):
 		new_states = []
 		for s in range(nb_states):
 			if den[s] != 0.0:
-				l = [ (num[s]/den[s]).tolist() , list_sta, list_obs ]
+
+				l = list(zip(list_sta, list_obs, (num[s]/den[s]).tolist()))
 				l = _removeZeros(l)		
 			else:
-				l = self.hs[to_update].states[s].lambda_matrix		 
+				l = list(zip(self.hs[to_update].states[s].lambda_matrix[1],
+							self.hs[to_update].states[s].lambda_matrix[2],
+							self.hs[to_update].states[s].lambda_matrix[0]))
 			new_states.append(CTMC_state(l,s))
 
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(nb_states)]
@@ -263,16 +266,7 @@ class MM_CTMC_Composition(BW_CTMC):
 		return ((res0,res1,res2),(t1,t2))
 
 def _removeZeros(l):
-	i = 0
-	while i < len(l[0]):
-		if l[0][i] == 0.0:
-			l[0] = l[0][:i]+l[0][i+1:]
-			l[1] = l[1][:i]+l[1][i+1:]
-			l[2] = l[2][:i]+l[2][i+1:]
-			i -= 1
-		i += 1
-	if l[0][-1] == 0.0:
-		l[0] = l[0][:-1]
-		l[1] = l[1][:-1]
-		l[2] = l[2][:-1]
+	for i in l:
+		if i[2] == 0.0:
+			l.remove(i)
 	return l
