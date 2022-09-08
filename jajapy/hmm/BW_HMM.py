@@ -105,10 +105,10 @@ class BW_HMM(BW):
 
 		new_states = []
 		for s in range(self.nb_states):
-			la = [ a[s]/den[s], list(range(self.nb_states)) ]
-			lb = [ b[s]/den[s] , self.alphabet ]
-
-			new_states.append(HMM_state(lb,la,s))
+			la = a[s]/den[s]
+			lb = b[s]/den[s]
+			new_states.append(HMM_state([(self.alphabet[i],lb[i]) for i in range(len(self.alphabet))],
+										[(i,la[i]) for i in range(self.nb_states)],s))
 
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
 		

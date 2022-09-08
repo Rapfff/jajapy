@@ -8,18 +8,24 @@ class HMM_state(Model_state):
 
 	Parameters
 	----------
-	output_matrix : [ list of float, list of str]
-		`[[proba_symbol1,proba_symbol2,...],[symbol1,symbol2,...]]`. `output_matrix[0][x]` is the probability to generate the observation `output_matrix[1][x]`.
-	next_matrix : [ list of float, list of int]
-		`[[proba_state1,proba_state2,...],[state1,state2,...]]`. `next_matrix[0][x]` is the probability to move to state `next_matrix[1][x]`.
+	next_matrix : [ list of tuples (int, float)]
+		Each tuple represents a transition as follow: 
+		(destination state ID, probability).
+	output_matrix : [ list of tuples (str, float)]
+		Each tuple represents an observation generation as follow: 
+		(observation, probability).
 	idd : int
 		State ID.
 	"""
 	def __init__(self,output_matrix: list, next_matrix: list, idd: int):
+		probabilities = [i[1] for i in output_matrix]
+		observations = [i[0] for i in output_matrix]
+		output_matrix = [probabilities, observations]
+		states = [i[0] for i in next_matrix]
+		probabilities = [i[1] for i in next_matrix]
+		next_matrix = [probabilities, states]
 		super().__init__(next_matrix, idd)
-		if round(sum(output_matrix[0]),2) != 1.0 and sum(output_matrix[0]) != 0:
-			print("Sum of the probabilies of the output_matrix should be 1 or 0 here it's ",sum(output_matrix[0]))
-			return False
+		self._checkTransitionMatrix(output_matrix)
 		self.output_matrix = output_matrix
 
 	def a(self, s: int) -> float:
@@ -294,7 +300,8 @@ def loadHMM(file_path: str) -> HMM:
 			l  = f.readline()[:-2].split(' ')
 			po = [ float(i) for i in l]
 			o  = f.readline()[:-2].split(' ')
-			states.append(HMM_state([po,o],[ps,s],c))
+			states.append(HMM_state([(o[i],po[i]) for i in range(len(o))],
+									[(s[i],ps[i]) for i in range(len(s))],c))
 		c += 1
 		l = f.readline()
 
@@ -324,9 +331,12 @@ def HMM_random(number_states: int, alphabet: list, random_initial_state: bool = 
 	>>> m = ja.HMM_random(4,['a','b','x','y'])
 	"""
 	states = []
-	for s in range(number_states):
-		states.append(HMM_state([randomProbabilities(len(alphabet)),alphabet],[randomProbabilities(number_states),list(range(number_states))],s))
-
+	for c in range(number_states):
+		ps = randomProbabilities(number_states)
+		po = randomProbabilities(len(alphabet))
+		o = alphabet
+		states.append(HMM_state([(po[i],o[i]) for i in range(len(o))],
+									[(ps[i],i) for i in range(number_states)],c))
 	if random_initial_state:
 		init = randomProbabilities(number_states)
 	else:

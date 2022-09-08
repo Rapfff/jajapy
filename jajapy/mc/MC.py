@@ -138,7 +138,7 @@ def HMMtoMC(h) -> MC:
 				transitions[1].append(sh.next_matrix[1][ne])
 				transitions[2].append(sh.output_matrix[1][sy])
 		states_g.append(MC_state([],i))
-		states_g[-1].transition_matrix = transitions
+		states_g[-1]._setTransitionMatrix(transitions)
 	return MC(states_g,h.initial_state)
 
 
@@ -203,7 +203,7 @@ def MC_random(nb_states: int,alphabet: list,random_initial_state: bool=False) ->
 	states = []
 	for i in range(nb_states):
 		states.append(MC_state([],i))
-		states[-1].transition_matrix = [randomProbabilities(len(obs)),s,obs]
+		states[-1]._setTransitionMatrix([randomProbabilities(len(obs)),s,obs])
 	
 	if random_initial_state:
 		init = randomProbabilities(nb_states)

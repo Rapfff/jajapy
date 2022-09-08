@@ -14,6 +14,12 @@ class Model_state:
 	Should not be instantiated itself!
 	"""
 	def __init__(self,next_matrix, idd: int) -> None:
+		if not self._checkTransitionMatrix(next_matrix):
+			return False
+		self.transition_matrix = next_matrix
+		self.id = idd
+	
+	def _checkTransitionMatrix(self,next_matrix) -> bool:
 		if type(next_matrix) == dict:
 			to_check = [next_matrix[a][0] for a in next_matrix]
 		elif type(next_matrix) == list:
@@ -25,9 +31,12 @@ class Model_state:
 			if round(sum(n),2) != 1.0 and sum(n) != 0:
 				print("Sum of the probabilies of the transitions should be 1 or 0 here it's ",sum(n))
 				return False
-		self.transition_matrix = next_matrix
-		self.id = idd
-		
+		return True
+
+	def _setTransitionMatrix(self, next_matrix):
+		if self._checkTransitionMatrix(next_matrix):
+			self.transition_matrix = next_matrix
+
 	def next(self):
 		"""
 		overrided
