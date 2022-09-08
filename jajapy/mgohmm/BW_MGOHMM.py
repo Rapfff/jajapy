@@ -103,7 +103,7 @@ class BW_MGOHMM(BW_GOHMM):
 
 		new_states = []
 		for s in range(self.nb_states):
-			la = [ a[s].tolist(), list(range(self.nb_states)) ]
+			la = list(zip(list(range(self.nb_states)),a[s].tolist()))
 			new_states.append(MGOHMM_state(la,array([mu[s],va[s]]).T.tolist(),s))
 
 		initial_state = [init[s]/init.sum() for s in range(self.nb_states)]

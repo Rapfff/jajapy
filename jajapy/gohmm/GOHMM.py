@@ -16,11 +16,15 @@ class GOHMM_state(Model_state):
 		----------
 		output_parameters : list of two floats.
 			Parameters of the gaussian distribution in this states: [mu,sigma].
-		next_matrix : [ list of float, list of int]
-			`[[proba_state1,proba_state2,...],[state1,state2,...]]`. `next_matrix[0][x]` is the probability to move to state `next_matrix[1][x]`.
+		next_matrix : [ list of tuples (int, float)]
+			Each tuple represents a transition as follow: 
+			(destination state ID, probability).
 		idd : int
 			State ID.
 		"""
+		states = [i[0] for i in next_matrix]
+		probabilities = [i[1] for i in next_matrix]
+		next_matrix = [probabilities, states]
 		super().__init__(next_matrix,idd)
 		self.output_parameters = output_parameters
 
@@ -264,13 +268,13 @@ def loadGOHMM(file_path: str) -> GOHMM:
 	l = f.readline()
 	while l and l != '\n':
 		if l == '-\n':
-			states.append(GOHMM_state([[],[],[]],c))
+			states.append(GOHMM_state([],[],c))
 		else:
 			ps = [ float(i) for i in l[:-2].split(' ')]
 			l  = f.readline()[:-2].split(' ')
 			s  = [ int(i) for i in l ]
 			o  = literal_eval(f.readline()[:-1])
-			states.append(GOHMM_state([ps,s],o,c))
+			states.append(GOHMM_state(list(zip(s,ps)),o,c))
 		c += 1
 		l = f.readline()
 
@@ -303,11 +307,11 @@ def GOHMM_random(nb_states:int,random_initial_state:bool=False,min_mu: float=0.0
 	GOHMM
 		A pseudo-randomly generated GOHMM.
 	"""
-	s = [i for i in range(nb_states)]
+	s = list(range(nb_states))
 	states = []
 	for i in range(nb_states):
 		d = [round(uniform(min_mu,max_mu),3),round(uniform(min_sigma,max_sigma),3)]
-		states.append(GOHMM_state([randomProbabilities(nb_states),s],d,i))
+		states.append(GOHMM_state(list(zip(s,randomProbabilities(nb_states))),d,i))
 	if random_initial_state:
 		init = randomProbabilities(nb_states)
 	else:

@@ -5,11 +5,11 @@ from ..base.Set import *
 from math import log, exp, sqrt, pi
 
 def modelGOHMM():
-	s0 = GOHMM_state([[0.9,0.1],[0,1]],[3.0,5.0],0)
-	s1 = GOHMM_state([[0.05,0.9,0.04,0.01],[0,1,2,4]],[0.5,1.5],1)
-	s2 = GOHMM_state([[0.05,0.8,0.14,0.01],[1,2,3,4]],[0.2,0.7],2)
-	s3 = GOHMM_state([[0.05,0.95],[2,3]],[0.0,0.3],3)
-	s4 = GOHMM_state([[0.1,0.9],[1,4]],[2.0,4.0],4)
+	s0 = GOHMM_state(list(zip([0,1],[0.9,0.1])),[3.0,5.0],0)
+	s1 = GOHMM_state(list(zip([0,1,2,4],[0.05,0.9,0.04,0.01])),[0.5,1.5],1)
+	s2 = GOHMM_state(list(zip([1,2,3,4],[0.05,0.8,0.14,0.01])),[0.2,0.7],2)
+	s3 = GOHMM_state(list(zip([2,3],[0.05,0.95])),[0.0,0.3],3)
+	s4 = GOHMM_state(list(zip([1,4],[0.1,0.9])),[2.0,4.0],4)
 	return GOHMM([s0,s1,s2,s3,s4],[0.1,0.7,0.0,0.0,0.2],"GOHMM")
 
 m = modelGOHMM()

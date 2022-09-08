@@ -16,8 +16,9 @@ class MGOHMM_state(GOHMM_state):
 		----------
 		output_parameters : list of lists of two floats.
 			Parameters of the gaussian distribution in this states: [[mu_1,sigma_1],[mu_2,sigma_2],...].
-		next_matrix : [ list of float, list of int]
-			`[[proba_state1,proba_state2,...],[state1,state2,...]]`. `next_matrix[0][x]` is the probability to move to state `next_matrix[1][x]`.
+		next_matrix : [ list of tuples (int, float)]
+			Each tuple represents a transition as follow: 
+			(destination state ID, probability).
 		idd : int
 			State ID.
 		"""
@@ -303,13 +304,13 @@ def loadMGOHMM(file_path: str) -> MGOHMM:
 	l = f.readline()
 	while l and l != '\n':
 		if l == '-\n':
-			states.append(MGOHMM_state([[],[],[]],c))
+			states.append(MGOHMM_state([],[],c))
 		else:
 			ps = [ float(i) for i in l[:-2].split(' ')]
 			l  = f.readline()[:-2].split(' ')
 			s  = [ int(i) for i in l ]
 			o  = literal_eval(f.readline()[:-1])
-			states.append(MGOHMM_state([ps,s],o,c))
+			states.append(MGOHMM_state(list(zip(s,ps)),o,c))
 		c += 1
 		l = f.readline()
 
@@ -351,9 +352,9 @@ def MGOHMM_random(nb_states:int,nb_distributions:int,
 	states = []
 	for i in range(nb_states):
 		d = []
-		for n in range(nb_distributions):
+		for _ in range(nb_distributions):
 			d.append([round(uniform(min_mu,max_mu),3),round(uniform(min_sigma,max_sigma),3)])
-		states.append(MGOHMM_state([randomProbabilities(nb_states),s],d,i))
+		states.append(MGOHMM_state(list(zip(s,randomProbabilities(nb_states))),d,i))
 	if random_initial_state:
 		init = randomProbabilities(nb_states)
 	else:

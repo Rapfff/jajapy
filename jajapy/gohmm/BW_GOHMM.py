@@ -99,7 +99,7 @@ class BW_GOHMM(BW):
 		for s in range(self.nb_states):
 			for x in range(self.nb_states):
 				a[s,x] = lst_num_a[x*self.nb_states+s].sum()
-			la = [ a[s]/den[s], list(range(self.nb_states)) ]
+			la = list(zip(list(range(self.nb_states)) ,a[s]/den[s]))
 			new_states.append(GOHMM_state(la,[mu[s]/den[s],sqrt(va[s]/den[s])],s))
 
 
