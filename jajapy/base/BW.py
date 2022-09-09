@@ -141,7 +141,6 @@ class BW:
 			
 			counter += 1
 			self.h = self.hhat
-			print(self.h)
 			if abs(prevloglikelihood - currentloglikelihood) < epsilon:
 				break
 			else:
