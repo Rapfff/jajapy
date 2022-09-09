@@ -1,109 +1,25 @@
 from ..base.tools import resolveRandom, randomProbabilities
-from ..base.Model import Model, Model_state
+from ..base.Model import Model
 from ast import literal_eval
-
-class MC_state(Model_state):
-	"""
-	Create a MC_state
-
-	Parameters
-	----------
-	next_matrix : [ list of tuples (int, str, float)]
-		Each tuple represents a transition as follow: 
-		(destination state ID, observation, probability).
-	idd : int
-		State ID.
-	"""
-
-	def __init__(self,transitions: list, idd: int):
-		probabilities = [i[2] for i in transitions]
-		states = [i[0] for i in transitions]
-		observations = [i[1] for i in transitions]
-		next_matrix = [probabilities, states, observations]
-		super().__init__(next_matrix,idd)
-
-	def next(self) -> list:
-		"""
-		Return a state-observation pair according to the distributions 
-		described by next_matrix
-
-		Returns
-		-------
-		output : [int, str]
-			A state-observation pair.
-		"""
-		c = resolveRandom(self.transition_matrix[0])
-		return [self.transition_matrix[1][c],self.transition_matrix[2][c]]
-
-	def tau(self,state: int, obs: str) -> float:
-		"""
-		Return the probability of generating, from this state, observation
-		`obs` while moving to state `state`.
-
-		Parameters
-		----------
-		state : int
-			A state ID.
-		obs : str
-			An observation.
-
-		Returns
-		-------
-		output : float
-			A probability.
-		"""
-		for i in range(len(self.transition_matrix[0])):
-			if self.transition_matrix[1][i] == state and self.transition_matrix[2][i] == obs:
-				return self.transition_matrix[0][i]
-		return 0.0
-
-	def observations(self) -> list:
-		"""
-		Return the list of all the observations that can be generated from this state.
-
-		Returns
-		-------
-		output : list of str
-			A list of observations.
-		"""
-		return list(set(self.transition_matrix[2]))
-
-	def __str__(self) -> str:
-		res = "----STATE s"+str(self.id)+"----\n"
-		for j in range(len(self.transition_matrix[0])):
-			if self.transition_matrix[0][j] > 0.0001:
-				res += "s"+str(self.id)+" - ("+str(self.transition_matrix[2][j])+") -> s"+str(self.transition_matrix[1][j])+" : "+str(self.transition_matrix[0][j])+'\n'
-		return res
-
-	def save(self) -> str:
-		if len(self.transition_matrix[0]) == 0: #end state
-			return "-\n"
-		else:
-			res = ""
-			for proba in self.transition_matrix[0]:
-				res += str(proba)+' '
-			res += '\n'
-			for state in self.transition_matrix[1]:
-				res += str(state)+' '
-			res += '\n'
-			for obs in self.transition_matrix[2]:
-				res += str(obs)+' '
-			res += '\n'
-			return res
-
+from numpy import ndarray, array, where, reshape, zeros, fromstring
 
 class MC(Model):
 	"""
 	Class representing a MC.
 	"""	
-	def __init__(self,states: list, initial_state: int ,name: str ="unknown_MC") -> None:
+	def __init__(self,matrix: ndarray, alphabet_ID: list, initial_state, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
 
 		Parameters
 		----------
-		states : list of MC_states
-			List of states in this MC.
+		matrix : ndarray
+			Represents the transition matrix.
+			`matrix[s1][s2][obs_ID]` is the probability of moving from `s1` to 
+			`s2` seeing the observation of ID `obs_ID`.
+		alphabet_ID: list
+			The list of all possible alphabet, such that:
+			`alphabet_ID.index("obs")` is the ID of `obs`.
 		initial_state : int or list of float
 			Determine which state is the initial one (then it's the id of the
 			state), or what are the probability to start in each state (then it's
@@ -112,35 +28,73 @@ class MC(Model):
 			Name of the model.
 			Default is "unknow_MC"
 		"""
-		super().__init__(states,initial_state,name)
+		super().__init__(matrix,initial_state,name)
+		self.alphabet = alphabet_ID
+	
+	def getAlphabet(self,state: int = -1):
+		if state == -1:
+			return self.alphabet
+		else:
+			return [self.alphabet[i] for i in where(self.matrix[state].sum(axis=0) > 0.0)[0]]
 
+	def tau(self,s1: int,s2: int,obs) -> float:
+		"""
+		Returns the probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
+		Parameters
+		----------
+		s1: int
+			source state ID.
+		s2: int
+			destination state ID.
+		obs: str
+			generated observation.
+		
+		Returns
+		-------
+		float
+			probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
+		"""
+		if not obs in self.alphabet:
+			return 0.0
+		return self.matrix[s1][s2][self.alphabet.index(obs)]
 
-def HMMtoMC(h) -> MC:
-	"""
-	Translate a given HMM `h` to a MC
+	def next(self,state: int) -> tuple:
+		"""
+		Return a state-observation pair according to the distributions 
+		described by matrix
+		Returns
+		-------
+		output : (int, str)
+			A state-observation pair.
+		"""
+		c = resolveRandom(self.matrix[state].flatten())
+		return (c//self.nb_states, self.alphabet[c%self.nb_states])
 
-	Parameters
-	----------
-	h : HMM
-		The HMM to translate.
+	def save(self,file_path:str):
+		"""Save the model into a text file.
 
-	Returns
-	-------
-	MC
-		A MC equilavent to `h`.
-	"""
-	states_g = []
-	for i,sh in enumerate(h.states):
-		transitions = [[],[],[]]
-		for sy in range(len(sh.output_matrix[0])):
-			for ne in range(len(sh.next_matrix[0])):
-				transitions[0].append(sh.output_matrix[0][sy]*sh.next_matrix[0][ne])
-				transitions[1].append(sh.next_matrix[1][ne])
-				transitions[2].append(sh.output_matrix[1][sy])
-		states_g.append(MC_state([],i))
-		states_g[-1]._setTransitionMatrix(transitions)
-	return MC(states_g,h.initial_state)
+		Parameters
+		----------
+		file_path : str
+			path of the output file.
+		
+		Examples
+		--------
+		>>> model.save("my_model.txt")
+		"""
+		f = open(file_path, 'w')
+		f.write("MC\n")
+		f.write(str(self.alphabet))
+		f.write('\n')
+		super()._save(f)
 
+	def _stateToString(self,state:int):
+		res = "----STATE s"+str(state)+"----\n"
+		for j in range(len(self.matrix[state])):
+			for k in range(len(self.matrix[state][j])):
+				if self.matrix[state][j][k] > 0.0001:
+					res += "s"+str(state)+" - ("+str(self.alphabet[k])+") -> s"+str(j)+" : "+str(self.matrix[state][j][k])+'\n'
+		return res
 
 def loadMC(file_path: str) -> MC:
 	"""
@@ -157,27 +111,18 @@ def loadMC(file_path: str) -> MC:
 		The MC saved in `file_path`.
 	"""
 	f = open(file_path,'r')
+	l = f.readline()[:-1] 
+	if l != "MC":
+		print("ERROR: this file doesn't describe an MC: it describes a "+l)
+	alphabet = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
-	initial_state = literal_eval(f.readline()[:-1])
-	states = []
-	c = 0
-	l = f.readline()
-	while l and l != '\n':
-		if l == '-\n':
-			states.append(MC_state([],c))
-		else:
-			p = [ float(i) for i in l[:-2].split(' ')]
-			l = f.readline()
-			s = [ int(i) for i in l[:-2].split(' ') ]
-			l = f.readline()
-			o = l[:-2].split(' ')
-			states.append(MC_state([(s[i],o[i],p[i]) for i in range(len(p))],c))
-		c += 1
-		l = f.readline()
+	initial_state = array(literal_eval(f.readline()[:-1]))
+	matrix = literal_eval(f.readline()[:-1])
+	matrix = array(matrix)
+	f.close()
+	return MC(matrix, alphabet, initial_state, name)
 
-	return MC(states,initial_state,name)
-
-def MC_random(nb_states: int,alphabet: list,random_initial_state: bool=False) -> MC:
+def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) -> MC:
 	"""
 	Generate a random MC.
 
@@ -186,7 +131,7 @@ def MC_random(nb_states: int,alphabet: list,random_initial_state: bool=False) ->
 	number_states : int
 		Number of states.
 	alphabet : list of str
-		List of observations.
+		List of alphabet.
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
 		Default is False.
@@ -195,18 +140,42 @@ def MC_random(nb_states: int,alphabet: list,random_initial_state: bool=False) ->
 	-------
 	A pseudo-randomly generated MC.
 	"""
-	s = []
-	for i in range(nb_states):
-		s += [i] * len(alphabet)
-	obs = alphabet*nb_states
-	
-	states = []
-	for i in range(nb_states):
-		states.append(MC_state([],i))
-		states[-1]._setTransitionMatrix([randomProbabilities(len(obs)),s,obs])
-	
+	matrix = []
+	for s in range(nb_states):
+		p = array(randomProbabilities(nb_states*len(alphabet)))
+		p = reshape(p, (nb_states,len(alphabet)))
+		matrix.append(p)
+	matrix = array(matrix)
+
 	if random_initial_state:
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
-	return MC(states,init,"MCGT_random_"+str(nb_states)+"_states")
+	return MC(matrix, alphabet, init,"MC_random_"+str(nb_states)+"_states")
+
+def MC_state(transitions:list, alphabet:list, nb_states:int) -> ndarray:
+	"""
+	Given the list of all transition leaving a state `s`, it generates
+	the ndarray describing this state `s` in the MC.matrix.
+	This method is useful while creating a model manually.
+
+	Parameters
+	----------
+	transitions : [ list of tuples (int, str, float)]
+		Each tuple represents a transition as follow: 
+		(destination state ID, observation, probability).
+	alphabet : list
+		alphabet of the model in which this state is.
+	nb_states: int
+		number of states in which this state is
+
+	Returns
+	-------
+	ndarray
+		ndarray describing this state `s` in the MC.matrix.
+	"""
+
+	res = zeros((nb_states,len(alphabet)))
+	for t in transitions:
+		res[t[0]][alphabet.index(t[1])] = t[2]
+	return res

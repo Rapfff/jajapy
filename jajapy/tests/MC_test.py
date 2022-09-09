@@ -3,39 +3,43 @@ from ..mc import *
 from os import remove
 from ..base.Set import *
 from math import log
+from numpy import array
 
 def modelMC_REBER():
-	s0 = MC_state([(1,'B',1.0)],0)
-	s1 = MC_state([(2,'T',0.5),(3,'P',0.5)],1)
-	s2 = MC_state([(2,'S',0.6),(4,'X',0.4)],2)
-	s3 = MC_state([(3,'T',0.7),(5,'V',0.3)],3)
-	s4 = MC_state([(3,'X',0.5),(6,'S',0.5)],4)
-	s5 = MC_state([(4,'P',0.5),(6,'V',0.5)],5)
-	s6 = MC_state([(6,'E',1.0)],6)
-	return MC([s0,s1,s2,s3,s4,s5,s6],0,"MC_REBER")
+	alphabet = list("BTPSXVE")
+	initial_state = 0
+	nb_states = 7
+	s0 = MC_state([(1,'B',1.0)],alphabet,nb_states)
+	s1 = MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
+	s2 = MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
+	s3 = MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
+	s4 = MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
+	s5 = MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
+	s6 = MC_state([(6,'E',1.0)],alphabet,nb_states)
+	matrix = array([s0,s1,s2,s3,s4,s5,s6])
+	return MC(matrix,alphabet,initial_state,"MC_REBER")
 
 m = modelMC_REBER()
 
 class MCTestclass(unittest.TestCase):
 
 	def test_MC_state(var):
-		s1 = m.states[1]
-		s2 = m.states[2]
-		var.assertEqual(s1.tau(0,'B'),0.0)
-		var.assertEqual(s1.tau(2,'T'),0.5)
-		var.assertEqual(s2.tau(4,'X'),0.4)
-		var.assertEqual(s2.tau(4,'something else'),0.0)
-		var.assertEqual(set(s1.observations()),
+		var.assertEqual(m.tau(1,0,'B'),0.0)
+		var.assertEqual(m.tau(1,2,'T'),0.5)
+		var.assertEqual(m.tau(2,4,'X'),0.4)
+		var.assertEqual(m.tau(2,4,'something else'),0.0)
+		var.assertEqual(set(m.getAlphabet(1)),
 						set(['T','P']))
 	
 	def test_MC_save_load_str(var):
 		m.save("test_save.txt")
 		mprime = loadMC("test_save.txt")
+		mprime.name
 		var.assertEqual(str(m),str(mprime))
 		remove("test_save.txt")
 	
-	def test_MC_observations(var):
-		var.assertEqual(set(m.observations()),
+	def test_MC_getAlphabet(var):
+		var.assertEqual(set(m.getAlphabet()),
 						set(list("BTPXSVE")))
 	
 	def test_MC_Set(var):

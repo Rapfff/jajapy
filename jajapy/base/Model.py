@@ -1,73 +1,11 @@
 from math import  log
 from .tools import resolveRandom
 from .Set import Set
-from numpy import array, append, dot, zeros, vsplit
+from numpy import array, array2string, where, append, dot, zeros, vsplit
 from numpy.random import geometric
 from multiprocessing import cpu_count, Pool
 from sys import platform
 from math import log
-
-class Model_state:
-	"""
-	Abstract class that represents a state.
-	Is inherited by all the classes representing any model state.
-	Should not be instantiated itself!
-	"""
-	def __init__(self,next_matrix, idd: int) -> None:
-		if not self._checkTransitionMatrix(next_matrix):
-			return False
-		self.transition_matrix = next_matrix
-		self.id = idd
-	
-	def _checkTransitionMatrix(self,next_matrix) -> bool:
-		if type(next_matrix) == dict:
-			to_check = [next_matrix[a][0] for a in next_matrix]
-		elif type(next_matrix) == list:
-			to_check = [next_matrix[0]]
-		else:
-			print("Error: next matrix should be a list or a dict")
-			return False
-		for n in to_check:
-			if round(sum(n),2) != 1.0 and sum(n) != 0:
-				print("Sum of the probabilies of the transitions should be 1 or 0 here it's ",sum(n))
-				return False
-		return True
-
-	def _setTransitionMatrix(self, next_matrix):
-		if self._checkTransitionMatrix(next_matrix):
-			self.transition_matrix = next_matrix
-
-	def next(self):
-		"""
-		overrided
-		"""
-		pass
-
-	def tau(self,state,obs):
-		"""
-		overrided
-		"""
-		pass
-
-	def observations(self):
-		"""
-		overrided
-		"""
-		pass
-
-	def save(self):
-		"""
-		overrided
-		"""
-		pass
-
-	def __str__(self):
-		"""
-		overrided
-		"""
-		pass
-
-
 
 class Model:
 	"""
@@ -75,14 +13,14 @@ class Model:
 	Is inherited by all the classes representing any model.
 	Should not be instantiated itself!
 	"""
-	def __init__(self,states: list,initial_state,name: str) -> None:
+	def __init__(self,matrix,initial_state,name: str) -> None:
 		"""
 		Creates a an abstract model.
 
 		Parameters
 		----------
-		states: list of Model_state
-			list of this model states.
+		matrix: ndarray or dict
+			The transition matrix.
 
 		initial_state: int or list of float
 			determine which state is the initial one (then it's the id of the
@@ -92,72 +30,64 @@ class Model:
 		name: str
 			name of the model.
 		"""
+		if type(matrix) == dict:
+			self.nb_states = len(matrix[self.actions[0]])
+		else:
+			self.nb_states = len(matrix)
+			for i in range(self.nb_states):
+				if round(matrix[i].sum()) != 1.0 and round(matrix[i].sum()) != 0.0:
+					print("Error: the sum of the probabilities of the transitions leaving state",i,"should be 1.0 or 0.0, here it's",matrix[i].sum())
+					return False
 		# initial_state can be a list of probability or an int
 		if type(initial_state) == int:
-			self.initial_state = [0.0 for i in range(len(states))]
+			self.initial_state = array([0.0 for i in range(self.nb_states)])
 			self.initial_state[initial_state] = 1.0
 		else:
-			# if sum(initial_state) != 1.0:
-			# 	print("Error: the sum of initial_state should be 1.0, here it's",sum(initial_state))
-			# 	return False
-			self.initial_state = initial_state
-		self.states = states
+			if round(sum(initial_state)) != 1.0:
+				print("Error: the sum of initial_state should be 1.0, here it's",sum(initial_state))
+				return False
+			self.initial_state = array(initial_state)
+		self.matrix = matrix
+		self.name = name
+	
+	def rename(self,name: str) -> None:
+		"""
+		Change the name of the model.
+
+		Parameters
+		----------
+		name : str
+			new name.
+		"""
 		self.name = name
 
-	def save(self,file_path: str) -> None:
-		"""Save the model into a text file.
-
-		Parameters
-		----------
-		file_path : str
-			path of the output file.
-		
-		Examples
-		--------
-		>>> model.save("my_model.txt")
+	def next(self,state: int):
 		"""
-		f = open(file_path,'w')
+		overrided
+		"""
+		pass
+
+	def _stateToString(self,state:int):
+		"""
+		overrided
+		"""
+		pass
+
+
+	def _save(self,f) -> None:
 		f.write(self.name)
 		f.write('\n')
-		f.write(str(self.initial_state))
+		f.write(str(self.initial_state.tolist()))
 		f.write('\n')
-		for s in self.states:
-			f.write(s.save())
+		f.write(str(self.matrix.tolist()))
+		f.write('\n')
 		f.close()
 
-	def tau(self,s1: int,s2: int,obs: str) -> float:
+	def tau(self,s1: int,s2: int,obs) -> float:
 		"""
-		Returns the probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
-
-		Parameters
-		----------
-		s1: int
-			source state ID.
-		s2: int
-			destination state ID.
-		obs: str
-			generated observation.
-		
-		Returns
-		-------
-		float
-			probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
+		overrided
 		"""
-		return self.states[s1].tau(s2,obs)
-
-	def observations(self) -> list:
-		"""
-		Returns the alphabet of the model.
-
-		Returns
-		-------
-		output: list of string
-			the alphabet of the model.
-		"""
-		res = []
-		for s in self.states:
-			res += s.observations()
-		return list(set(res))
+		pass
 
 	def pi(self,s: int) -> float:
 		"""
@@ -194,10 +124,9 @@ class Model:
 		current = resolveRandom(self.initial_state)
 
 		while len(output) < number_steps:
-			[next_state, symbol] = self.states[current].next()
+			[next_state, symbol] = self.next(current)
 			output.append(symbol)
 			current = next_state
-
 		return output
 	
 	def generateSet(self, set_size: int, param, distribution=None, min_size=None, timed: bool=False) -> Set:
@@ -266,15 +195,15 @@ class Model:
 	def __str__(self) -> str:
 		res = "Name: "+self.name+'\n'
 		if 1.0 in self.initial_state:
-			res += "Initial state: s"+str(self.initial_state.index(1.0))+'\n'
+			res += "Initial state: s"+str(where(self.initial_state==1.0)[0][0])+'\n'
 		else:
 			res += "Initial state: "
-			for i in range(len(self.states)):
+			for i in range(len(self.matrix)):
 				if self.initial_state[i] >= 0.001:
 					res += 's'+str(i)+': '+str(round(self.initial_state[i],3))+', '
 			res = res[:-2]+'\n'
-		for i in range(len(self.states)):
-			res += str(self.states[i])+'\n'
+		for i in range(len(self.matrix)):
+			res += self._stateToString(i)+'\n'
 		res += '\n'
 		return res
 
@@ -335,16 +264,15 @@ class Model:
 			being in state ``s`` after seing the ``t-1`` first observation of
 			``sequence``.
 		"""
-		nb_states = len(self.states)
 		diff_size = len(alpha_matrix)-1 - len(sequence)
 		if diff_size < 0: # alpha_matrix too small
-			n = zeros(-diff_size * nb_states).reshape(-diff_size,nb_states)
+			n = zeros(-diff_size * self.nb_states).reshape(-diff_size,self.nb_states)
 			alpha_matrix = append(alpha_matrix,n,axis=0)
 		elif diff_size > 0: #alpha_matrix too big
-			alpha_matrix = vsplit(alpha_matrix,[len(alpha_matrix)-diff_size,nb_states])[0]
+			alpha_matrix = vsplit(alpha_matrix,[len(alpha_matrix)-diff_size,self.nb_states])[0]
 		for k in range(common,len(sequence)):
-			for s in range(nb_states):
-				p = array([self.states[ss].tau(s,sequence[k]) for ss in range(len(self.states))])
+			for s in range(self.nb_states):
+				p = array([self.tau(ss,s,sequence[k]) for ss in range(len(self.matrix))])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		return alpha_matrix
 
@@ -363,10 +291,8 @@ class Model:
 		output: a matrix with the correct size to be updated by the updateAlphaMatrix method
 		:rtype: 2-D narray of float
 		"""
-		nb_states = len(self.states)
-		init_arr = array(self.initial_state)
-		zero_arr = zeros(shape=(len_seq*nb_states,))
-		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,nb_states)
+		zero_arr = zeros(shape=(len_seq*self.nb_states,))
+		alpha_matrix = append(self.initial_state,zero_arr).reshape(len_seq+1,self.nb_states)
 		return alpha_matrix
 
 	def _logLikelihood_oneproc(self,sequences: Set) -> float:
@@ -428,13 +354,12 @@ class Model:
 		float
 			loglikelihood of ``sequence`` multiplied by ``times``.
 		"""
-		nb_states = len(self.states)
 		len_seq = len(sequence)
-		prev_arr = array(self.initial_state)
+		prev_arr = self.initial_state
 		for k in range(len_seq):
-			new_arr = zeros(nb_states)
-			for s in range(nb_states):
-				p = array([self.tau(ss,s,sequence[k]) for ss in range(nb_states)])
+			new_arr = zeros(self.nb_states)
+			for s in range(self.nb_states):
+				p = array([self.tau(ss,s,sequence[k]) for ss in range(self.nb_states)])
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
 		if prev_arr.sum() == 0.0:

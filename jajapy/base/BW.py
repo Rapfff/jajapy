@@ -50,7 +50,7 @@ class BW:
 			array containing the alpha values.
 		"""
 		len_seq = len(sequence)
-		init_arr = array(self.h.initial_state)
+		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states)
 		for k in range(len_seq):
@@ -129,7 +129,7 @@ class BW:
 			fitted model.
 		"""
 		self.h = initial_model
-		self.nb_states = len(self.h.states)
+		self.nb_states = self.h.nb_states
 
 		counter = 0
 		prevloglikelihood = 10
@@ -141,7 +141,6 @@ class BW:
 			
 			counter += 1
 			self.h = self.hhat
-			print(self.h)
 			if abs(prevloglikelihood - currentloglikelihood) < epsilon:
 				break
 			else:

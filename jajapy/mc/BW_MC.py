@@ -53,7 +53,7 @@ class BW_MC(BW):
 				print("Either nb_states or initial_model should be set")
 				return
 			initial_model = MC_random(nb_states,traces.getAlphabet(),random_initial_state)
-		self.alphabet = initial_model.observations()
+		self.alphabet = initial_model.getAlphabet()
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
 
 	def _processWork(self,sequence,times):
@@ -94,13 +94,15 @@ class BW_MC(BW):
 		list_obs = self.alphabet*self.nb_states
 		new_states = []
 
+		new_states = []
 		for s in range(self.nb_states):
 			if den[s] != 0.0:
-				l = [ num[s]/den[s] , list_sta, list_obs ]
+				l = list(zip(list_sta, list_obs, num[s]/den[s]))
+				l = MC_state(l, self.alphabet, self.nb_states)
 			else:
-				l = self.h.states[s].transition_matrix
-			new_states.append(MC_state([],s))
-			new_states[-1]._setTransitionMatrix(l)
+				l = self.h.matrix[s]
+			new_states.append(l)
+		matrix = array(new_states)
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [MC(new_states,initial_state),currentloglikelihood]
+		return [MC(matrix,self.alphabet,initial_state),currentloglikelihood]
 		
