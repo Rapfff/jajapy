@@ -1,7 +1,7 @@
 from ..base.tools import resolveRandom, randomProbabilities
 from ..base.Model import Model
 from ast import literal_eval
-from numpy import ndarray, array, where, reshape, zeros, fromstring
+from numpy import ndarray, array, where, reshape, zeros
 
 class MC(Model):
 	"""
@@ -28,10 +28,24 @@ class MC(Model):
 			Name of the model.
 			Default is "unknow_MC"
 		"""
-		super().__init__(matrix,initial_state,name)
 		self.alphabet = alphabet
+		super().__init__(matrix,initial_state,name)
 	
-	def getAlphabet(self,state: int = -1):
+	def getAlphabet(self,state: int = -1) -> list:
+		"""
+		If state is set, returns the list of all the observations we could
+		see in `state`. Otherwise it returns the alphabet of the model. 
+
+		Parameters
+		----------
+		state : int, optional
+			a state ID
+
+		Returns
+		-------
+		list of str
+			list of observations
+		"""
 		if state == -1:
 			return self.alphabet
 		else:
@@ -88,7 +102,7 @@ class MC(Model):
 		f.write('\n')
 		super()._save(f)
 
-	def _stateToString(self,state:int):
+	def _stateToString(self,state:int) -> str:
 		res = "----STATE s"+str(state)+"----\n"
 		for j in range(len(self.matrix[state])):
 			for k in range(len(self.matrix[state][j])):

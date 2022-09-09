@@ -56,7 +56,7 @@ class BW_HMM(BW):
 				print("Either nb_states or initial_model should be set")
 				return
 			initial_model = HMM_random(nb_states,traces.getAlphabet(),random_initial_state)
-		self.alphabet = initial_model.observations()
+		self.alphabet = initial_model.getAlphabet()
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
 
 	def _processWork(self,sequence,times):
@@ -103,13 +103,19 @@ class BW_HMM(BW):
 			for x in range(len(self.alphabet)):
 				b[s,x] = lst_num_b[x*self.nb_states+s].sum()
 
-		new_states = []
+		new_states_t = []
+		new_states_o = []
 		for s in range(self.nb_states):
 			la = a[s]/den[s]
 			lb = b[s]/den[s]
-			new_states.append(HMM_state([(self.alphabet[i],lb[i]) for i in range(len(self.alphabet))],
-										[(i,la[i]) for i in range(self.nb_states)],s))
+			la = list(zip(range(self.nb_states),la))
+			lb = list(zip(self.alphabet,lb))
+			l = HMM_state(lb, la, self.alphabet, self.nb_states)
+			new_states_t.append(l[0])
+			new_states_o.append(l[1])
+		output = array(new_states_o)
+		matrix = array(new_states_t)
 
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
 		
-		return [HMM(new_states,initial_state),currentloglikelihood]
+		return [HMM(matrix, output, self.alphabet,initial_state),currentloglikelihood]

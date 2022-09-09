@@ -5,25 +5,28 @@ from ..base.Set import *
 from math import log
 
 def modelHMM4():
-	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],0)
-	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],1)
-	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],2)
-	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],3)
-	s4 = HMM_state([("y",1.0)],[(3,1.0)],4)
-	return HMM([s0,s1,s2,s3,s4],0,"HMM4")
+	alphabet = list("abxy")
+	nb_states = 5
+	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
+	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
+	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
+	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
+	s4 = HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
+	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
+	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
+	return HMM(transitions,output,alphabet,0,"HMM4")
 
 m = modelHMM4()
 
 class HMMTestclass(unittest.TestCase):
 
 	def test_HMM_state(var):
-		s0 = m.states[0]
-		var.assertEqual(s0.a(0),0.0)
-		var.assertEqual(s0.a(1),0.5)
-		var.assertEqual(s0.b('x'),0.4)
-		var.assertEqual(s0.b('something else'),0.0)
-		var.assertEqual(s0.tau(1,'x'),0.2)
-		var.assertEqual(set(s0.observations()),set(['x','y']))
+		var.assertEqual(m.a(0,0),0.0)
+		var.assertEqual(m.a(0,1),0.5)
+		var.assertEqual(m.b(0,'x'),0.4)
+		var.assertEqual(m.b(0,'something else'),0.0)
+		var.assertEqual(m.tau(0,1,'x'),0.2)
+		var.assertEqual(set(m.getAlphabet(0)),set(['x','y']))
 	
 	def test_HMM_save_load_str(var):
 		m.save("test_save.txt")
@@ -32,7 +35,7 @@ class HMMTestclass(unittest.TestCase):
 		remove("test_save.txt")
 	
 	def test_HMM_observations(var):
-		var.assertEqual(set(m.observations()),set(['x','y','a','b']))
+		var.assertEqual(set(m.getAlphabet()),set(['x','y','a','b']))
 	
 	def test_HMM_Set(var):
 		set1 = m.generateSet(50,10)

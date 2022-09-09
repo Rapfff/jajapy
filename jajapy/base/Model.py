@@ -36,7 +36,7 @@ class Model:
 			self.nb_states = len(matrix)
 			for i in range(self.nb_states):
 				if round(matrix[i].sum()) != 1.0 and round(matrix[i].sum()) != 0.0:
-					print("Error: the sum of the probabilities of the transitions leaving state",i,"should be 1.0 or 0.0, here it's",matrix[i].sum())
+					print("Error: the probability to leave state",i,"should be 1.0 or 0.0, here it's",matrix[i].sum())
 					return False
 		# initial_state can be a list of probability or an int
 		if type(initial_state) == int:

@@ -1,4 +1,4 @@
-#from .hmm import *
+from .hmm import *
 from .base import *
 from .mc import *
 #from .gohmm import *
