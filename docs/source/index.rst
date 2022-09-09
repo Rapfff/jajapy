@@ -12,7 +12,7 @@ Welcome to Jajapy's documentation!
    :align: center
 
 
-**jajapy** is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
+**jajapy** is a python library implementing the **Baum-Welch** algorithm on various kinds of **Markov models**.
 
 .. note::
    This project is under active development.

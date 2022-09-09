@@ -23,7 +23,7 @@ We can create the model depicted above like this:
 .. code-block:: python
 
 	import jajapy as ja
-	# in the next state we generate 'x' with probaility 0.4, and 'y' with probability 0.6
+	# in the next state we generate 'x' with probability 0.4, and 'y' with probability 0.6
 	# once an observation generated, we move to state 1 or 2 with probability 0.5
 	# the id of this state is 0.
 	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],0)
