@@ -7,7 +7,7 @@ class MC(Model):
 	"""
 	Class representing a MC.
 	"""	
-	def __init__(self,matrix: ndarray, alphabet_ID: list, initial_state, name: str ="unknown_MC") -> None:
+	def __init__(self,matrix: ndarray, alphabet: list, initial_state, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
 
@@ -17,9 +17,9 @@ class MC(Model):
 			Represents the transition matrix.
 			`matrix[s1][s2][obs_ID]` is the probability of moving from `s1` to 
 			`s2` seeing the observation of ID `obs_ID`.
-		alphabet_ID: list
+		alphabet: list
 			The list of all possible alphabet, such that:
-			`alphabet_ID.index("obs")` is the ID of `obs`.
+			`alphabet.index("obs")` is the ID of `obs`.
 		initial_state : int or list of float
 			Determine which state is the initial one (then it's the id of the
 			state), or what are the probability to start in each state (then it's
@@ -29,7 +29,7 @@ class MC(Model):
 			Default is "unknow_MC"
 		"""
 		super().__init__(matrix,initial_state,name)
-		self.alphabet = alphabet_ID
+		self.alphabet = alphabet
 	
 	def getAlphabet(self,state: int = -1):
 		if state == -1:

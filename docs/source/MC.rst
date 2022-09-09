@@ -17,12 +17,13 @@ Creation
 .. code-block:: python
 
    import jajapy as ja
-   s0 = ja.MC_state([[0.3,0.3,0.2,0.2],[1,1,2,2],['a','b','a','b']], 0)
-   s0 = ja.MC_state([(1,'a',0.3),(2,'b',0.3),(1,'a',0.2),(2,'b',0.2)], 0)
-   s1 = ja.MC_state([(1,'c',1.0)], 1)
-   s2 = ja.MC_state([(2,'d',1.0)], 2)
-   lst_states = [s0, s1, s2]
-   model = ja.MC(states=lst_states,initial_state=0,name="My MC")
+   alphabet=['a','b','c','d']
+   nb_states = 3
+   s0 = ja.MC_state([(1,'a',0.3),(2,'b',0.3),(1,'a',0.2),(2,'b',0.2)], alphabet, nb_states)
+   s1 = ja.MC_state([(1,'c',1.0)], alphabet, nb_states)
+   s2 = ja.MC_state([(2,'d',1.0)], alphabet, nb_states)
+   lst_states = array([s0, s1, s2])
+   model = ja.MC(states=lst_states,alphabet=['a','b','c','d'],initial_state=0,name="My MC")
    # print(model)
 
 
@@ -41,11 +42,9 @@ Exploration
 
 	>>> model.tau(0,1,'b') 		 
 	0.3
-	>>> model.states[0].tau(1,'b')	 
-	0.3
-	>>> model.observations()	 
+	>>> model.getAlphabet()	 
 	['a','b','c','d']
-	>>> model.states[0].observations() 
+	>>> model.getAlphabet(0) 
 	['a','b']
 
 Running

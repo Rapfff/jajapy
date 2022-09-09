@@ -214,6 +214,7 @@ class Alergia:
 		self.states_counter[j] = None
 
 	def _toMC(self):
+		self.nb_states = len(self.states_lbl) - self.states_lbl.count(None)
 		states = []
 		c = -1 
 		for i in range(len(self.states_transitions)):
@@ -222,6 +223,8 @@ class Alergia:
 				self.states_transitions[i][0] = [j/self.states_counter[i] for j in self.states_transitions[i][0]]
 				self.states_transitions[i][0] = normalize(self.states_transitions[i][0])
 				self.states_transitions[i][1] = [j-self.states_lbl[:j].count(None) for j in self.states_transitions[i][1]]
-				states.append(MC_state([],c))
-				states[-1]._setTransitionMatrix(self.states_transitions[i])
-		return MC(states,0)
+				l = list(zip(self.states_transitions[i][1], self.states_transitions[i][2], self.states_transitions[i][0]))
+				l = MC_state(l, self.alphabet, self.nb_states)
+				states.append(l)
+		states = array(states)
+		return MC(states, self.alphabet,0)
