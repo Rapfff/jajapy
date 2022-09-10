@@ -1,10 +1,15 @@
-<h1 align="center">
+<div align="center">
+<h1>
 <img src="logo.png" width="300">
 </h1><br>
 
-[![License](https://img.shields.io/github/license/Rapfff/jajapy)](https://en.wikipedia.org/wiki/MIT_License)
 [![Pypi](https://img.shields.io/pypi/v/jajapy)](https://pypi.org/project/jajapy/)
+[![Python 3.6](https://img.shields.io/badge/python-3.6%2B-blue)](https://www.python.org/downloads/release/python-360/)
+![PyPI - Wheel](https://img.shields.io/pypi/wheel/aalpy)
 [![Documentation Status](https://readthedocs.org/projects/jajapy/badge/?version=latest)](https://jajapy.readthedocs.io/en/latest/?badge=latest)
+[![License](https://img.shields.io/github/license/Rapfff/jajapy)](https://en.wikipedia.org/wiki/MIT_License)
+</div>
+
 
 ## Introduction
 `jajapy` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
