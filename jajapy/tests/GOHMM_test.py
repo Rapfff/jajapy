@@ -2,31 +2,33 @@ import unittest
 from ..gohmm import *
 from os import remove
 from ..base.Set import *
-from math import log, exp, sqrt, pi
+from math import exp, sqrt, pi
 
 def modelGOHMM():
-	s0 = GOHMM_state(list(zip([0,1],[0.9,0.1])),[3.0,5.0],0)
-	s1 = GOHMM_state(list(zip([0,1,2,4],[0.05,0.9,0.04,0.01])),[0.5,1.5],1)
-	s2 = GOHMM_state(list(zip([1,2,3,4],[0.05,0.8,0.14,0.01])),[0.2,0.7],2)
-	s3 = GOHMM_state(list(zip([2,3],[0.05,0.95])),[0.0,0.3],3)
-	s4 = GOHMM_state(list(zip([1,4],[0.1,0.9])),[2.0,4.0],4)
-	return GOHMM([s0,s1,s2,s3,s4],[0.1,0.7,0.0,0.0,0.2],"GOHMM")
+	nb_states = 5
+	s0 = GOHMM_state(list(zip([0,1],[0.9,0.1])),[3.0,5.0],nb_states)
+	s1 = GOHMM_state(list(zip([0,1,2,4],[0.05,0.9,0.04,0.01])),[0.5,1.5],nb_states)
+	s2 = GOHMM_state(list(zip([1,2,3,4],[0.05,0.8,0.14,0.01])),[0.2,0.7],nb_states)
+	s3 = GOHMM_state(list(zip([2,3],[0.05,0.95])),[0.0,0.3],nb_states)
+	s4 = GOHMM_state(list(zip([1,4],[0.1,0.9])),[2.0,4.0],nb_states)
+	matrix = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
+	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
+	return GOHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],"GOHMM")
 
 m = modelGOHMM()
 
 class GOHMMTestclass(unittest.TestCase):
 
 	def test_GOHMM_state(var):
-		s0 = m.states[0]
-		mu = s0.mu()
+		mu = m.mu(0)
 		b = exp(-0.02)/(5.0*sqrt(2*pi))
-		sigma = s0.output_parameters[1]
-		var.assertEqual(s0.a(0),0.9)
-		var.assertEqual(s0.a(2),0.0)
+		sigma = m.output[0][1]
+		var.assertEqual(m.a(0,0),0.9)
+		var.assertEqual(m.a(0,2),0.0)
 		var.assertEqual(mu,3.0)
 		var.assertEqual(sigma,5.0)
-		var.assertEqual(s0.b(4.0),b)
-		var.assertEqual(s0.tau(0,4.0),0.9*b)
+		var.assertEqual(m.b(0,4.0),b)
+		var.assertEqual(m.tau(0,0,4.0),0.9*b)
 	
 	def test_GOHMM_save_load_str(var):
 		m.save("test_save.txt")

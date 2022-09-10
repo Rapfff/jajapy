@@ -91,18 +91,18 @@ class BW_GOHMM(BW):
 		lst_times=array([i[5] for i in temp])
 		init =array([i[6] for i in temp]).sum(axis=0)
 
-
 		currentloglikelihood = dot(log(lst_proba),lst_times)
-		
 
-		new_states = []
+		matrix = []
+		output = []
 		for s in range(self.nb_states):
 			for x in range(self.nb_states):
 				a[s,x] = lst_num_a[x*self.nb_states+s].sum()
 			la = list(zip(list(range(self.nb_states)) ,a[s]/den[s]))
-			new_states.append(GOHMM_state(la,[mu[s]/den[s],sqrt(va[s]/den[s])],s))
-
+			l = GOHMM_state(la,(mu[s]/den[s],sqrt(va[s]/den[s])),self.nb_states)
+			matrix.append(l[0])
+			output.append(l[1])
 
 		initial_state = [init[s]/init.sum() for s in range(self.nb_states)]
 		
-		return [GOHMM(new_states,initial_state),currentloglikelihood]
+		return [GOHMM(array(matrix),array(output),initial_state),currentloglikelihood]

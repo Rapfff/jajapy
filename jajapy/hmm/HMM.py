@@ -272,7 +272,7 @@ def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = Fals
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
-	return HMM(matrix, output, alphabet, init,"MC_random_"+str(nb_states)+"_states")
+	return HMM(matrix, output, alphabet, init,"HMM_random_"+str(nb_states)+"_states")
 
 def HMM_state(output:list, transitions:list, alphabet:list, nb_states:int) -> ndarray:
 	"""
@@ -296,7 +296,7 @@ def HMM_state(output:list, transitions:list, alphabet:list, nb_states:int) -> nd
 	Returns
 	-------
 	ndarray
-		ndarray describing this state `s` in the MC.matrix.
+		ndarray describing this state `s` in the HMM.matrix.
 	"""
 
 	res1 = zeros(nb_states)
