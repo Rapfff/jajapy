@@ -73,7 +73,7 @@ class BW_CTMC(BW):
 			array containing the beta values.
 		"""
 		len_seq = len(obs_seq)
-		init_arr = array(self.h.initial_state)
+		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states)
 		for k in range(len_seq):
@@ -201,7 +201,7 @@ class BW_CTMC(BW):
 										traces.getAlphabet(),
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
-		self.alphabet = initial_model.observations()
+		self.alphabet = initial_model.getAlphabet()
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
 
 
@@ -284,10 +284,8 @@ class BW_CTMC(BW):
 		for s in range(self.nb_states):
 			if den[s] != 0.0:
 				l = list(zip(list_sta, list_obs, num[s]/den[s]))
+				new_states.append(CTMC_state(l,self.alphabet,self.nb_states))
 			else:
-				l = list(zip(self.h.states[s].lambda_matrix[1],
-							self.h.states[s].lambda_matrix[2],
-							self.h.states[s].lambda_matrix[0]))
-			new_states.append(CTMC_state(l,s))
+				new_states.append(self.h.matrix[s])
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [CTMC(new_states,initial_state),currentloglikelihood]
+		return [CTMC(array(new_states),self.alphabet,initial_state),currentloglikelihood]

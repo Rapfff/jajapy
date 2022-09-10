@@ -18,7 +18,7 @@ class MC(Model):
 			`matrix[s1][s2][obs_ID]` is the probability of moving from `s1` to 
 			`s2` seeing the observation of ID `obs_ID`.
 		alphabet: list
-			The list of all possible alphabet, such that:
+			The list of all possible observations, such that:
 			`alphabet.index("obs")` is the ID of `obs`.
 		initial_state : int or list of float
 			Determine which state is the initial one (then it's the id of the
@@ -82,7 +82,7 @@ class MC(Model):
 			A state-observation pair.
 		"""
 		c = resolveRandom(self.matrix[state].flatten())
-		return (c//self.nb_states, self.alphabet[c%self.nb_states])
+		return (c//len(self.alphabet), self.alphabet[c%len(self.alphabet)])
 
 	def save(self,file_path:str):
 		"""Save the model into a text file.

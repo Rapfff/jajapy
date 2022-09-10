@@ -20,12 +20,16 @@ Creation
 
 .. code-block:: python
 
-   import jajapy as ja
-   s0 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],0)
-   s1 = CTMC_state([(0,'r',0.08),(2,'r',0.25),(2,'g',0.6),(3,'b',0.07)],1)
-   s2 = CTMC_state([(1,'b',0.5/4),(3,'g',0.2/4),(3,'r',0.3/4)],2)
-   s3 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],3)
-   model = CTMC([s0,s1,s2,s3],0,name="My_CTMC")
+	>>> import jajapy as ja
+	>>> from numpy import array
+	>>> alphabet = ['r', 'g', 'b']
+	>>> nb_states = 4
+	>>> s0 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],alphabet,nb_states)
+	>>> s1 = CTMC_state([(0,'r',0.08),(2,'r',0.25),(2,'g',0.6),(3,'b',0.07)],alphabet,nb_states)
+	>>> s2 = CTMC_state([(1,'b',0.5/4),(3,'g',0.2/4),(3,'r',0.3/4)],alphabet,nb_states)
+	>>> s3 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],alphabet,nb_states)
+	>>> states = array([s0,s1,s2,s3])
+	>>> model = CTMC(states,alphabet,0,"My_CTMC")
 
 We can also generate a random CTMC
 
@@ -49,9 +53,9 @@ Exploration
 	0.2
 	>>> model.tau(0,1,'r')
 	0.3
-	>>> model.observations()
+	>>> model.getAlphabet()
 	['r','g','b']
-	>>> model.states[0].observations() 
+	>>> model.getAlphabet(0) 
 	['r','g']
 
 Running
@@ -101,10 +105,11 @@ Asynchronous Composition
 We can also compose asynchronously two CTMCs as follow
 
 .. code-block:: python
-
-	>>> s0 = CTMC_state([[0.6/3,0.4/3],[1,1], ['r','g']],0)
-	>>> s1 = CTMC_state([[0.2/4,0.7/4,0.1/4],[0,0,0], ['r','g','b']],1)
-	>>> model2 = CTMC([s0,s1],0,"CTMC2")
+	>>> alphabet = ['r','g','b']
+	>>> nb_states = 2
+	>>> s0 = CTMC_state([[0.6/3,0.4/3],[1,1], ['r','g']],alphabet,nb_states)
+	>>> s1 = CTMC_state([[0.2/4,0.7/4,0.1/4],[0,0,0], ['r','g','b']],alphabet,nb_states)
+	>>> model2 = CTMC([s0,s1],alphabet,0,"CTMC2")
 	>>>
 	>>> composition = ja.asynchronousComposition(model,model2, name="my_composition")
 	>>> composition.run(5)

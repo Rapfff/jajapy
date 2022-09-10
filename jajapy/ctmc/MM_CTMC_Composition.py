@@ -96,8 +96,8 @@ class MM_CTMC_Composition(BW_CTMC):
 
 		initial_model = asynchronousComposition(initial_model_1,initial_model_2)
 		self.hs = [None,initial_model_1,initial_model_2]
-		self.nb_states_hs = [None,len(initial_model_1.states),len(initial_model_2.states)]
-		self.alphabets = [None,self.hs[1].observations(),self.hs[2].observations()]
+		self.nb_states_hs = [None,initial_model_1.nb_states,initial_model_2.nb_states]
+		self.alphabets = [None,self.hs[1].getAlphabet(),self.hs[2].getAlphabet()]
 		self.disjoints_alphabet = len(set(self.alphabets[1]).intersection(set(self.alphabets[2]))) == 0
 		self.to_update = to_update
 		super().fit(traces, initial_model, output_file, epsilon, pp)
@@ -217,17 +217,16 @@ class MM_CTMC_Composition(BW_CTMC):
 		new_states = []
 		for s in range(nb_states):
 			if den[s] != 0.0:
-
 				l = list(zip(list_sta, list_obs, (num[s]/den[s]).tolist()))
 				l = _removeZeros(l)		
+				new_states.append(CTMC_state(l,
+											self.hs[to_update].alphabet,
+											self.hs[to_update].nb_states))
 			else:
-				l = list(zip(self.hs[to_update].states[s].lambda_matrix[1],
-							self.hs[to_update].states[s].lambda_matrix[2],
-							self.hs[to_update].states[s].lambda_matrix[0]))
-			new_states.append(CTMC_state(l,s))
+				new_states.append(self.hs[to_update].matrix[s])
 
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(nb_states)]
-		return CTMC(new_states,initial_state)
+		return CTMC(array(new_states),self.hs[to_update].alphabet,initial_state)
 
 	def _generateHhat(self,temp) -> list:
 		if self.to_update == 1:

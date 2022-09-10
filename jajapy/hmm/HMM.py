@@ -277,7 +277,7 @@ def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = Fals
 def HMM_state(output:list, transitions:list, alphabet:list, nb_states:int) -> ndarray:
 	"""
 	Given the list of all transition leaving a state `s`, it generates
-	the ndarray describing this state `s` in the MC.matrix.
+	the ndarray describing this state `s` in the HMM.matrix.
 	This method is useful while creating a model manually.
 
 	Parameters
