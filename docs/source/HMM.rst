@@ -16,14 +16,18 @@ Creation
 
 .. code-block:: python
 
-   import jajapy as ja
-   s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],0)
-   s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],1)
-   s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],2)
-   s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],3)
-   s4 = HMM_state([("y",1.0)],[(3,1.0)],4)
-   lst_states = [s0, s1, s2, s3, s4]
-   model = ja.HMM(states=lst_states,initial_state=0,name="My HMM")
+	import jajapy as ja
+	from numpy import array
+	alphabet = list("abxy")
+	nb_states = 5
+	s0 = ja.HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
+	s1 = ja.HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
+	s2 = ja.HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
+	s3 = ja.HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
+	s4 = ja.HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
+	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
+	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
+	model = ja.HMM(transitions,output,initial_state=0,name="My HMM")
    # print(model)
 
 We can also generate a random HMM
@@ -40,17 +44,15 @@ Exploration
 
 	>>> model.a(0,1)
 	0.5
-	>>> model.states[0].a(1)
-	0.5
 	>>> model.a(1,3)
 	1.0
 	>>> model.b(0,'x')
 	0.4
 	>>> model.tau(0,1,'x')
 	0.2
-	>>> model.observations()
+	>>> model.getAlphabet()
 	['x','y','a','b']
-	>>> model.states[0].observations()
+	>>> model.getAlphabet(0)
 	['x','y']
 
 Running

@@ -23,18 +23,21 @@ We can create the model depicted above like this:
 .. code-block:: python
 
 	import jajapy as ja
+	from numpy import array
 	# in the next state we generate 'x' with probability 0.4, and 'y' with probability 0.6
 	# once an observation generated, we move to state 1 or 2 with probability 0.5
 	# the id of this state is 0.
 	
 	alphabet = ['a','b','c','d']
-	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],0)
-	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],1)
-	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],2)
-	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],3)
-	s4 = HMM_state([("y",1.0)],[(3,1.0)],4)
-	lst_states = [s0, s1, s2, s3, s4]
-	original_model = ja.HMM(states=lst_states,initial_state=0,name="My HMM")
+	nb_states = 5
+	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
+	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
+	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
+	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
+	s4 = HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
+	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
+	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
+	original_model = ja.HMM(transitions,output,alphabet,initial_state=0,name="My HMM")
 	print(original_model)
 
 *(optional)* This model can be saved into a text file and then loaded as follow:
@@ -114,6 +117,7 @@ This step is similar to what we did before.
 .. code-block:: python
 
 	>>> import jajapy as ja
+	>>> from numpy import array
 	>>> def modelMC_REBER():
 	...		alphabet = list("BTPSXVE")
 	...		initial_state = 0
