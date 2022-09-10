@@ -30,7 +30,7 @@ class GOHMM(Model):
 	def __init__(self,matrix,output,initial_state,name="unknown_GOHMM"):
 		self.output = array(output)
 		if min(self.output.T[1]) < 0.0:
-			print("ERROR: the sigma parameter must be positive")
+			print("ERROR: the sigma parameters must be positive")
 			return False
 		super().__init__(matrix,initial_state,name)
 
@@ -56,7 +56,7 @@ class GOHMM(Model):
 	
 	def mu(self,s: int) -> float:
 		"""
-		Returns the mu parameter for this state.
+		Returns the mu parameter for `s`.
 
 		Parameters
 		----------
@@ -225,14 +225,12 @@ def GOHMM_random(nb_states:int,random_initial_state:bool=False,
 				 min_mu: float=0.0,max_mu: float=2.0,
 				 min_sigma: float=0.5,max_sigma: float=2.0) -> GOHMM:
 	"""
-	Generates a random HMM.
+	Generates a random GOHMM.
 
 	Parameters
 	----------
-	number_states : int
+	nb_states : int
 		Number of states.
-	alphabet : list of str
-		List of observations.
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random 
 		probability, otherwise we will always start in state 0.

@@ -61,7 +61,7 @@ class BW_MGOHMM(BW_GOHMM):
 				return
 			initial_model = MGOHMM_random(nb_states,nb_distributions,
 										  random_initial_state)
-		self.nb_distr = len(initial_model.states[0].output_parameters)
+		self.nb_distr = initial_model.nb_distributions
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
 
 	def _processWork(self,sequence,times):
@@ -101,11 +101,14 @@ class BW_MGOHMM(BW_GOHMM):
 		va = sqrt((va.T/den).T)
 		a  = (a.T /den).T
 
-		new_states = []
+		matrix = []
+		output = []
 		for s in range(self.nb_states):
 			la = list(zip(list(range(self.nb_states)),a[s].tolist()))
-			new_states.append(MGOHMM_state(la,array([mu[s],va[s]]).T.tolist(),s))
+			l = MGOHMM_state(la,array([mu[s],va[s]]).T.tolist(),self.nb_states)
+			matrix.append(l[0])
+			output.append(l[1])
 
 		initial_state = [init[s]/init.sum() for s in range(self.nb_states)]
 		
-		return [MGOHMM(new_states,initial_state),currentloglikelihood]
+		return [MGOHMM(array(matrix),array(output),initial_state),currentloglikelihood]
