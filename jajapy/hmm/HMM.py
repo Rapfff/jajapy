@@ -335,8 +335,8 @@ def HMM_random(number_states: int, alphabet: list, random_initial_state: bool = 
 		ps = randomProbabilities(number_states)
 		po = randomProbabilities(len(alphabet))
 		o = alphabet
-		states.append(HMM_state([(po[i],o[i]) for i in range(len(o))],
-									[(ps[i],i) for i in range(number_states)],c))
+		states.append(HMM_state([(o[i],po[i]) for i in range(len(o))],
+									[(i,ps[i]) for i in range(number_states)],c))
 	if random_initial_state:
 		init = randomProbabilities(number_states)
 	else:
