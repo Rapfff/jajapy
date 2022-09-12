@@ -61,8 +61,8 @@ class BW_MDP(BW):
 			actions, observations = traces.getActionsObservations()
 			initial_model = MDP_random(nb_states,observations,actions,random_initial_state)
 		else:
-			observations = initial_model.observations()
-			actions = initial_model.actions()
+			observations = initial_model.getAlphabet()
+			actions = initial_model.getActions()
 		self.alphabet = observations
 		self.actions = actions
 		return super().fit(traces, initial_model, output_file, epsilon, pp)
@@ -108,7 +108,7 @@ class BW_MDP(BW):
 			array containing the alpha values.
 		"""
 		len_seq = len(sequence)
-		init_arr = array(self.h.initial_state)
+		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states)
 		for k in range(len_seq):
@@ -186,18 +186,20 @@ class BW_MDP(BW):
 		new_states = []
 
 		for s in range(self.nb_states):
-			dic = {}
+			array_s = []
 			for j,a in enumerate(self.actions):
 				if den[s][j] != 0.0:
-					dic[a] = list(zip(list_sta, list_obs, [num[s][j][i]/den[s][j] for i in range(len(list_sta))]))
+					temp = list(zip(list_sta, list_obs, [num[s][j][i]/den[s][j] for i in range(len(list_sta))]))
+					temp = MDP_state({a:temp},self.h.alphabet,self.h.nb_states,[a])
+					array_s.append(temp[0])
 				else:
 					# if we have no info about action a in state s -> don't change anything
 					# this can happen specially with active learning
-					dic[a] = list(zip(self.h.states[s].transition_matrix[a][1],
-									self.h.states[s].transition_matrix[a][2],
-									self.h.states[s].transition_matrix[a][0]))
-			new_states.append(MDP_state(dic,s))
-		initial_state = normalize([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
+					array_s.append(self.h.matrix[s][j])
 		
-		return [MDP(new_states,initial_state), currentloglikelihood]
+			new_states.append(array_s)
+
+		initial_state = normalize([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
+		matrix = array(new_states)
+		return [MDP(matrix,self.h.alphabet,self.h.actions,initial_state), currentloglikelihood]
 		

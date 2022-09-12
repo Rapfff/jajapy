@@ -1,7 +1,7 @@
 from numpy.random import normal
 from numpy import array, zeros, ndarray
 from ast import literal_eval
-from ..base.tools import resolveRandom, randomProbabilities
+from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from math import sqrt, exp, pi
 from random import uniform
@@ -35,12 +35,15 @@ class MGOHMM(Model):
 			if len(output[i]) != self.nb_distributions:
 				print("ERROR: all state must have as much distributions")
 				return False
-		
 		self.output = array(output)
 		if min(self.output.T[1].flatten()) < 0.0:
 			print("ERROR: the sigma parameters must be positive")
 			return False
 		super().__init__(matrix,initial_state,name)
+		for i in range(self.nb_states):
+			if not checkProbabilities(matrix[i]):
+				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
+				return False
 
 		if len(self.output.flatten()) != self.nb_distributions*self.nb_states*2:
 			print("ERROR: all distribution must have two parameters")

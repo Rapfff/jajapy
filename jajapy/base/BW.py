@@ -138,7 +138,6 @@ class BW:
 			print(pp, datetime.now(),counter, prevloglikelihood/nb_traces,end='\r')
 			temp = self._runProcesses(training_set)
 			self.hhat, currentloglikelihood = self._generateHhat(temp)
-			
 			counter += 1
 			self.h = self.hhat
 			if abs(prevloglikelihood - currentloglikelihood) < epsilon:

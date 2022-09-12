@@ -402,17 +402,18 @@ class IOFPTA:
 			self.states[red[i]].setId(i)
 
 		for i in red:
+			new_dic = {}
 			dic = self.states[i].transitions
 			for a in dic:
 				dic[a].append([])
+				new_dic[a] = []
 				tot = sum(self.states[i].transitions[a][0])
 				for j in range(len(dic[a][0])):
-					dic[a][0][j] /= tot
-					dic[a][2].append(self.states[dic[a][1][j]].observation)
-					dic[a][1][j] = self.states[dic[a][1][j]].id
-			states.append(MDP_state({}, len(states)))
-			states[-1].transition_matrix = dic
-		return MDP(states,0)
+					new_dic[a].append((self.states[dic[a][1][j]].id,self.states[dic[a][1][j]].observation,dic[a][0][j]/tot))
+			states.append(MDP_state(new_dic, self.observations,len(red),self.actions))
+		matrix = array(states)
+
+		return MDP(matrix,self.observations,self.actions,0)
 
 
 

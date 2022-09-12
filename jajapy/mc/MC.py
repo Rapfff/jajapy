@@ -1,4 +1,4 @@
-from ..base.tools import resolveRandom, randomProbabilities
+from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from ast import literal_eval
 from numpy import ndarray, array, where, reshape, zeros
@@ -30,6 +30,10 @@ class MC(Model):
 		"""
 		self.alphabet = alphabet
 		super().__init__(matrix,initial_state,name)
+		for i in range(self.nb_states):
+			if not checkProbabilities(matrix[i]):
+				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
+				return False
 	
 	def getAlphabet(self,state: int = -1) -> list:
 		"""

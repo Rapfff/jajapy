@@ -1,7 +1,7 @@
 from numpy.random import normal
 from numpy import array, zeros, ndarray
 from ast import literal_eval
-from ..base.tools import resolveRandom, randomProbabilities
+from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from math import sqrt, exp, pi
 from random import uniform
@@ -27,12 +27,17 @@ class GOHMM(Model):
 		Name of the model.
 		Default is "unknown_GOHMM"
 	"""
-	def __init__(self,matrix,output,initial_state,name="unknown_GOHMM"):
+	def __init__(self,matrix: ndarray,output: ndarray,initial_state,name="unknown_GOHMM"):
 		self.output = array(output)
 		if min(self.output.T[1]) < 0.0:
 			print("ERROR: the sigma parameters must be positive")
 			return False
 		super().__init__(matrix,initial_state,name)
+		for i in range(self.nb_states):
+			if not checkProbabilities(matrix[i]):
+				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
+				return False
+		
 
 	def a(self,s1: int,s2: int) -> float:
 		"""

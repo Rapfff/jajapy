@@ -5,27 +5,30 @@ from ..base.Set import *
 from math import log
 
 def modelMDP_bigstreet(p=0.75):
-	m_s_rr = MDP_state({'m': list(zip([1,2],['L','R'],[p,1-p])), 's': list(zip([2,0],['L','R'],[p,1-p]))},0)
-	m_s_ll = MDP_state({'m': list(zip([0,2],['R','L'],[p,1-p])), 's': list(zip([2,1],['R','L'],[p,1-p]))},1)
-	m_s_di = MDP_state({'m': [(3,'HIT',1.0)],       's': [(4,'OK',1.0)]},2)
-	m_s_de = MDP_state({'m': [(3,'HIT',1.0)],       's': [(3,'HIT',1.0)]},3)
-	m_s_vi = MDP_state({'m': [(4,'OK' ,1.0)],       's': [(4,'OK',1.0)]},4)
-	return MDP([m_s_rr,m_s_ll,m_s_di,m_s_de,m_s_vi],0,"bigstreet")
+	alphabet = ['L','R','OK','HIT']
+	actions  = ['m','s']
+	nb_states = 5
+	m_s_rr = MDP_state({'m': list(zip([1,2],['L','R'],[p,1-p])), 's': list(zip([2,0],['L','R'],[p,1-p]))},alphabet,nb_states,actions)
+	m_s_ll = MDP_state({'m': list(zip([0,2],['R','L'],[p,1-p])), 's': list(zip([2,1],['R','L'],[p,1-p]))},alphabet,nb_states,actions)
+	m_s_di = MDP_state({'m': [(3,'HIT',1.0)],       's': [(4,'OK',1.0)]},alphabet,nb_states,actions)
+	m_s_de = MDP_state({'m': [(3,'HIT',1.0)],       's': [(3,'HIT',1.0)]},alphabet,nb_states,actions)
+	m_s_vi = MDP_state({'m': [(4,'OK' ,1.0)],       's': [(4,'OK',1.0)]},alphabet,nb_states,actions)
+	matrix = array([m_s_rr,m_s_ll,m_s_di,m_s_de,m_s_vi])
+	return MDP(matrix,alphabet,actions,0,"bigstreet")
 
 m = modelMDP_bigstreet()
-scheduler = UniformScheduler(m.actions())
+scheduler = UniformScheduler(m.getActions())
 
 class MDPTestclass(unittest.TestCase):
 
 	def test_MDP_state(var):
-		s0 = m.states[0]
-		var.assertEqual(s0.tau('m',1,'B'),0.0)
-		var.assertEqual(s0.tau('m',1,'L'),0.75)
-		var.assertEqual(s0.tau('something else',1,'L'),0.0)
-		var.assertEqual(s0.tau('m',1,'something else'),0.0)
-		var.assertEqual(set(s0.observations()),
+		var.assertEqual(m.tau(0,'m',1,'B'),0.0)
+		var.assertEqual(m.tau(0,'m',1,'L'),0.75)
+		var.assertEqual(m.tau(0,'something else',1,'L'),0.0)
+		var.assertEqual(m.tau(0,'m',1,'something else'),0.0)
+		var.assertEqual(set(m.getAlphabet(0)),
 						set(['L','R']))
-		var.assertEqual(set(s0.actions()),
+		var.assertEqual(set(m.getActions(0)),
 						set(['m','s']))
 	
 	def test_MDP_save_load_str(var):
@@ -35,9 +38,9 @@ class MDPTestclass(unittest.TestCase):
 		remove("test_save.txt")
 	
 	def test_MDP_observations_actions(var):
-		var.assertEqual(set(m.observations()),
+		var.assertEqual(set(m.getAlphabet()),
 						set(['L','R','HIT','OK']))
-		var.assertEqual(set(m.actions()),
+		var.assertEqual(set(m.getActions()),
 						set(['m','s']))
 	
 	def test_MDP_Set(var):
@@ -78,7 +81,7 @@ class MDPTestclass(unittest.TestCase):
 
 	def test_UniformScheduler(var):
 		nb_trials = 100000
-		actions = m.actions()
+		actions = m.getActions()
 		results = [0.0 for i in actions]
 		for i in range(nb_trials):
 			results[actions.index(scheduler.getAction())] += 1/nb_trials

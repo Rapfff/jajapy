@@ -24,7 +24,7 @@ class ActiveLearningScheduler:
 			The current hypothesis.
 		"""
 		self.m = m
-		self.nb_states = len(self.m.states)
+		self.nb_states = self.m.nb_states
 		self.memoryless_scheduler = memoryless_scheduler
 		self.reset()
 		
@@ -180,6 +180,8 @@ class Active_BW_MDP(BW_MDP):
 		"""
 		Merges the model ``self.h`` with model ``old_h`` using the learning
 		rate ``lr``.
+		WARNING: we assume that self.h.alphabet == old_h.alphabet and
+		self.h.actions == old_h.actions.
 
 		Parameters
 		----------
@@ -188,16 +190,7 @@ class Active_BW_MDP(BW_MDP):
 		lr : float
 			Learning rate. It is the weight of ``self.h`` in the output model.
 		"""
-		new_h = self.h
-		for s in range(self.nb_states):
-			for a in new_h.states[s].actions():
-				for p in range(len(new_h.states[s].transition_matrix[a][0])):
-					o = new_h.states[s].transition_matrix[a][2][p]
-					sprime = new_h.states[s].transition_matrix[a][1][p]
-					self.h.states[s].transition_matrix[a][0][p] = (1-lr)*old_h.tau(s,a,sprime,o)+lr*new_h.tau(s,a,sprime,o)
-
-			for a in [i for i in old_h.states[s].actions() if not i in new_h.states[s].actions()]:
-				self.h.states[s].transition_matrix[a] = old_h.states[s].transition_matrix[a]
+		self.h.matrix = lr*self.h.matrix + (1-lr)*old_h
 
 	def _addTraces(self,sequence_length: int,nb_sequence: int,
 				  traces: Set,epsilon_greedy: float) -> list:
@@ -224,7 +217,7 @@ class Active_BW_MDP(BW_MDP):
 		"""
 		memoryless_scheduler = self._strategy(traces)
 		scheduler_exploit = ActiveLearningScheduler(memoryless_scheduler,self.h)
-		scheduler_explore = UniformScheduler(self.h.actions())
+		scheduler_explore = UniformScheduler(self.h.getActions())
 
 		traces = Set([],t=1)
 		for n in range(nb_sequence):			
@@ -249,7 +242,7 @@ class Active_BW_MDP(BW_MDP):
 		else:
 			temp = array([self._computeProbas(seq, times) for seq,times in zip(traces.sequences,traces.times)])
 		temp = temp.sum(axis=0)
-		scheduler = [self.h.actions()[argmin(temp[s])] for s in range(self.nb_states)]
+		scheduler = [self.h.getActions()[argmin(temp[s])] for s in range(self.nb_states)]
 		return MemorylessScheduler(scheduler)
 
 	def _computeProbas(self,seq:list,time:int) -> array:

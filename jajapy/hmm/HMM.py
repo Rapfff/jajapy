@@ -1,4 +1,4 @@
-from ..base.tools import resolveRandom, randomProbabilities
+from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from ast import literal_eval
 from numpy import ndarray, array, where, zeros
@@ -30,12 +30,15 @@ class HMM(Model):
 			Default is "unknow_MC"
 		"""
 		self.alphabet = alphabet
+		self.output = output
 		super().__init__(matrix,initial_state,name)
 		for i in range(self.nb_states):
-			if round(output[i].sum()) != 1.0 and round(output[i].sum()) != 0.0:
-				print("Error: the probability to generate an observation in state",i,"should be 1.0 or 0.0, here it's",output[i].sum())
+			if not checkProbabilities(output[i]):
+				print("Error: the probability to generate an observation in state",i,"should be 1.0, here it's",output[i].sum())
 				return False
-		self.output = output
+			if not checkProbabilities(matrix[i]):
+				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
+				return False
 
 	def a(self,s1: int,s2: int) -> float:
 		"""

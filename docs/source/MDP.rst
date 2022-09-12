@@ -16,12 +16,16 @@ Creation
 ^^^^^^^^
 .. code-block:: python
 
-   import jajapy as ja
-   s0 = ja.MDP_state({'red': [(1,'a',0.5),(2,'a',0.5)], 'blue': [(2,'a',1.0)]}, 0)
-   s1 = ja.MDP_state({'red': [(2,'b',1.0),(2,'a',0.5)], 'blue': [(1,'c',1.0)]}, 0)
-   s2 = ja.MDP_state({'blue': [(2,'d',1.0)]}, 2)
-   lst_states = [s0, s1, s2]
-   model = ja.MDP(states=lst_states,initial_state=0,name="My MDP")
+	>>> import jajapy as ja
+	>>> from numpy import array
+	>>> alphabet = ['a','b','c','d']
+	>>> actions  = ['red', 'blue']
+	>>> nb_states = 3
+	>>> s0 = ja.MDP_state({'red': [(1,'a',0.5),(2,'a',0.5)], 'blue': [(2,'a',1.0)]}, alphabet, nb_states, actions)
+	>>> s1 = ja.MDP_state({'red': [(2,'b',1.0),(2,'a',0.5)], 'blue': [(1,'c',1.0)]}, alphabet, nb_states, actions)
+	>>> s2 = ja.MDP_state({'blue': [(2,'d',1.0)]}, alphabet, nb_states, actions)
+	>>> lst_states = array([s0, s1, s2])
+	>>> model = ja.MDP(lst_states,alphabet,actions,initial_state=0,name="My MDP")
 
 
 We can also generate a random MDP

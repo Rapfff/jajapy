@@ -1,6 +1,6 @@
 from random import random
 from scipy.stats import norm
-from numpy import nditer, array
+from numpy import nditer, array, ndarray
 
 
 def normpdf(x: float, params: list, variation:float = 0.01) -> float:
@@ -121,3 +121,19 @@ def randomProbabilities(size: int) -> list:
 	rand.append(1.0)
 	return [rand[i]-rand[i-1] for i in range(1,len(rand))]
 
+def checkProbabilities(l: ndarray) -> bool:
+	"""
+	Check if a ndarray contains probabilities i.e. check if the sum of the
+	ndarray is 0.0 or 1.0. 
+
+	Parameters
+	----------
+	l : ndarray
+		List of probabilities
+
+	Returns
+	-------
+	bool
+		True if the sum of the list is 0.0 or 1.0.
+	"""
+	return round(l.sum(),3) == 1.0
