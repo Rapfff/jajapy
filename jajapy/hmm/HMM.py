@@ -287,7 +287,7 @@ def HMM_state(output:list, transitions:list, alphabet:list, nb_states:int) -> nd
 	----------
 	transitions : [ list of tuples (int, float)]
 		Each tuple represents a transition as follow: 
-		(destination state ID, observation, probability).
+		(destination state ID, probability).
 	output : [ list of tuples (str, float)]
 		Each tuple represents an output as follow: 
 		(observation, probability).

@@ -1,6 +1,6 @@
 Baum-Welch for MDP
 ==================
 
-.. autoclass:: jajapy.BW_MDP
+.. automodule:: jajapy.BW_MDP
    :members:
    :inherited-members:

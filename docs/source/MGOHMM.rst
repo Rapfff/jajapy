@@ -1,8 +1,8 @@
 Multiple Gaussian Observations Hidden Markov Model (MGOHMM)
 ===========================================================
-A GOHMM is similar to a GOHMM, but this time each state will generated several real number according
-to different gaussian distributions. Instead of having a unique gaussian ditribution each state has
-here the several pairs of parameters *mu* and *sigma*.
+A MGOHMM is similar to a GOHMM, but this time each state will generated several real number according
+to different gaussian distributions. Instead of having a unique gaussian ditribution, each state has
+several pairs of parameters *mu* and *sigma*.
 
 Example
 -------
@@ -14,21 +14,21 @@ Creation
 	>>> import jajapy as ja
 	>>> from numpy import array
 	>>> nb_states = 5
-	>>> s0 = ja.GOHMM_state([(0,0.9),(1,0.1)],[[3.0,5.0],[2.0,4.0]],nb_states)
-	>>> s1 = ja.GOHMM_state([(0,0.05),(1,0.9),(2,0.04),(4,0.01)],[[0.5,1.5],[2.5,1.5]],nb_states)
-	>>> s2 = ja.GOHMM_state([(1,0.05),(2,0.8),(3,0.14),(4,0.01)],[[0.2,0.7],[1.0,1.0]],nb_states)
-	>>> s3 = ja.GOHMM_state([(2,0.05),(3,0.95)],[[0.0,0.3],[1.5,5.0]],nb_states)
-	>>> s4 = ja.GOHMM_state([(1,0.1),(4,0.9)],[[2.0,4.0],[0.5,0.5]],nb_states)
+	>>> s0 = ja.MGOHMM_state([(0,0.9),(1,0.1)],[[3.0,5.0],[2.0,4.0]],nb_states)
+	>>> s1 = ja.MGOHMM_state([(0,0.05),(1,0.9),(2,0.04),(4,0.01)],[[0.5,1.5],[2.5,1.5]],nb_states)
+	>>> s2 = ja.MGOHMM_state([(1,0.05),(2,0.8),(3,0.14),(4,0.01)],[[0.2,0.7],[1.0,1.0]],nb_states)
+	>>> s3 = ja.MGOHMM_state([(2,0.05),(3,0.95)],[[0.0,0.3],[1.5,5.0]],nb_states)
+	>>> s4 = ja.MGOHMM_state([(1,0.1),(4,0.9)],[[2.0,4.0],[0.5,0.5]],nb_states)
 	>>> matrix = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
 	>>> output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
-	>>> model = ja.GOHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],name="My MGOHMM")
+	>>> model = ja.MGOHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],name="My MGOHMM")
 	>>> #print(model)
 
 We can also generate a random MGOHMM
 
 .. code-block:: python
 
-	>>> random_model = GOHMM_random(nb_states=5,
+	>>> random_model = ja.GOHMM_random(nb_states=5,
 					nb_distributions=2,
 					random_initial_state=True,
 					min_mu = 0.0,
@@ -107,15 +107,10 @@ Model
    :members:
    :inherited-members:
 
-State
------
-
-.. autoclass:: jajapy.MGOHMM_state
-   :members:
-   :inherited-members:
-
 Other Functions
 ---------------
+
+.. autofunction:: jajapy.MGOHMM_state
 
 .. autofunction:: jajapy.loadMGOHMM
 

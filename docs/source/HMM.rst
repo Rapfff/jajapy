@@ -34,7 +34,7 @@ We can also generate a random HMM
 
 .. code-block:: python
 
-	>>> random_model = HMM_random(number_states=5,
+	>>> random_model = ja.HMM_random(number_states=5,
 					random_initial_state=False,
 					alphabet=['x','y','a','b'])
 Exploration
@@ -42,17 +42,17 @@ Exploration
 
 .. code-block:: python
 
-	>>> model.a(0,1)
+	>>> model.a(0,1) #probability of going from s0 to s1
 	0.5
-	>>> model.a(1,3)
+	>>> model.a(1,3) #probability of going from s1 to s3
 	1.0
-	>>> model.b(0,'x')
+	>>> model.b(0,'x') #probability of seeing 'x' while in s0
 	0.4
-	>>> model.tau(0,1,'x')
+	>>> model.tau(0,1,'x') #probability of going from s0 to s1 seeing 'x'
 	0.2
-	>>> model.getAlphabet()
+	>>> model.getAlphabet() #all possible observations
 	['x','y','a','b']
-	>>> model.getAlphabet(0)
+	>>> model.getAlphabet(0) #all possible observations in s0
 	['x','y']
 
 Running
@@ -60,17 +60,18 @@ Running
 
 .. code-block:: python
 
-	>>> model.run(5) # returns a list of 5 observations
+	>>> model.run(5) # Generate a run of length 5, i.e. returns a list of 5 observations
 	['y', 'a', 'y', 'a', 'y']
-	>>> s = model.generateSet(10,5) # returns a Set containing 10 traces of size 5
+	>>> s = model.generateSet(10,5) # returns a Set containing 10 traces of length 5
 	>>> s.sequences
 	[['x', 'a', 'x', 'y', 'a'], ['x', 'b', 'y', 'x', 'a'],
 	 ['y', 'b', 'y', 'a', 'x'], ['y', 'b', 'x', 'y', 'b'],
 	 ['x', 'b', 'x', 'y', 'a'], ['y', 'b', 'y', 'y', 'x'],
 	 ['y', 'b', 'y', 'y', 'y'], ['y', 'a', 'y', 'a', 'y'],
 	 ['y', 'a', 'x', 'a', 'y']]
-	>>> s.times
+	>>> s.times 
 	[1, 1, 1, 1, 1, 1, 2, 1, 1]
+	>>> # all the traces appear once in the set, except the 7th which appears twice
 
 Analysis
 ^^^^^^^^
@@ -95,15 +96,11 @@ Model
    :members:
    :inherited-members:
 
-State
------
-
-.. autoclass:: jajapy.HMM_state
-   :members:
-   :inherited-members:
 
 Other Functions
 ---------------
+
+.. autofunction:: jajapy.HMM_state
 
 .. autofunction:: jajapy.loadHMM
 

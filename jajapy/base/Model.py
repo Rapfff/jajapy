@@ -217,6 +217,7 @@ class Model:
 		Examples
 		--------
 		>>> model.logLikelihood(set1)
+		-4.442498878506513
 		"""
 		if platform != "win32":
 			return self._logLikelihood_multiproc(sequences)

@@ -4,9 +4,6 @@ from ast import literal_eval
 from numpy import ndarray, array, where, reshape, zeros
 
 class MC(Model):
-	"""
-	Class representing a MC.
-	"""	
 	def __init__(self,matrix: ndarray, alphabet: list, initial_state, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
