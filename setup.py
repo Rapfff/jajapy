@@ -10,7 +10,7 @@ with open(HERE / "README.md", encoding='utf-8') as f:
 setup(
     name='jajapy',
     long_description=long_description,
-    packages=['jajapy'],
+    packages=find_packages(),
     install_requires=['numpy', 'scipy'],
     long_description_content_type="text/markdown",
     version='0.5',

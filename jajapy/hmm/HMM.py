@@ -209,6 +209,7 @@ class HMM(Model):
 		"""
 		return [self.next_state(state),self.next_obs(state)]
 
+
 def loadHMM(file_path: str) -> HMM:
 	"""
 	Load an HMM saved into a text file.
