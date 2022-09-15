@@ -93,7 +93,7 @@ class BW:
 		pass
 
 	def _runProcesses(self,training_set):
-		if platform != "win32":
+		if platform != "win32" and platform != "darwin":
 			p = Pool(processes = NB_PROCESS)
 			tasks = []
 			for seq,times in zip(training_set.sequences,training_set.times):
