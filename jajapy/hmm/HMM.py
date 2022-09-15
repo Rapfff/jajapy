@@ -77,13 +77,13 @@ class HMM(Model):
 		----------
 		s : int
 			ID of the source state.		
-		o : str
+		l : str
 			observation.
 		
 		Returns
 		-------
 		float
-			probability of generating `o` in state `s`.
+			probability of generating `l` in state `s`.
 
 		Examples
 		--------

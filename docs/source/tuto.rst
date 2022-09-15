@@ -18,6 +18,8 @@ Creating a HMM
 	:width: 60%
 	:align: center
 
+.. _create-hmm-example:
+
 We can create the model depicted above like this:
 
 .. code-block:: python
@@ -121,15 +123,15 @@ This step is similar to what we did before.
 	...		alphabet = list("BTPSXVE")
 	...		initial_state = 0
 	...		nb_states = 7
-	...		s0 = MC_state([(1,'B',1.0)],alphabet,nb_states)
-	...		s1 = MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
-	...		s2 = MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
-	...		s3 = MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
-	...		s4 = MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
-	...		s5 = MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
-	...		s6 = MC_state([(6,'E',1.0)],alphabet,nb_states)
+	...		s0 = ja.MC_state([(1,'B',1.0)],alphabet,nb_states)
+	...		s1 = ja.MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
+	...		s2 = ja.MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
+	...		s3 = ja.MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
+	...		s4 = ja.MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
+	...		s5 = ja.MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
+	...		s6 = ja.MC_state([(6,'E',1.0)],alphabet,nb_states)
 	...		matrix = array([s0,s1,s2,s3,s4,s5,s6])
-	...		return MC(matrix,alphabet,initial_state,"MC_REBER")
+	...		return ja.MC(matrix,alphabet,initial_state,"MC_REBER")
 
 	>>> original_model = modelMC_REBER()
 	>>> training_set = original_model.generateSet(100,10)
@@ -208,3 +210,12 @@ The loglikelihood of the test set under the best model is good. Let's have a loo
 	s6 - (V) -> s1 : 0.34579439270651224
 	s6 - (T) -> s6 : 0.6542056072395087
 
+One can be suprised to see that the probability to leave *s4* is not equal to zero.
+This is because *jajapy* doesn't print out the transitions with a very low probability,
+for a better readability.  
+
+.. _stormpy-example:
+
+3. Working with Stormpy
+-----------------------
+In the previous example, we have learnt a MC representation of the Reber grammar.

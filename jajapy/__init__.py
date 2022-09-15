@@ -5,4 +5,7 @@ from .gohmm import *
 from .mdp import *
 from .ctmc import *
 from .mgohmm import *
-from .with_stormpy import *
+try:
+	from .with_stormpy import *
+except ModuleNotFoundError:
+	print("Stormpy not found.")

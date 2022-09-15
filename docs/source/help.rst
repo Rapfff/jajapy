@@ -11,7 +11,7 @@ To install jajapy just run the follwing command:
 	>>> pip install jajapy
 
 .. note::
-   jajapy requires to have `numpy <https://numpy.org/>`_. and `scipy <https://scipy.org/>` installed.
+   jajapy requires to have `numpy <https://numpy.org/>`_. and `scipy <https://scipy.org/>`_ installed.
 
 2. Some Terminology
 -------------------
@@ -109,10 +109,8 @@ MGOHMM.matrix   matrix[s1][s2]                           Probability (float)    
 MGOHMM.output       output[s1] List of List of parameters [mu, sigma] (list)           s1                  
 ============= ================ ============================================= ============ =================
 
-Creating such ndarray is complicated and not very funny, that's why we recommend to use the `HMM_state` function, `MC_state` etc...
-(see the examples).
-
-
+Creating such ndarray is complicated and not very funny, that's why we recommend to use the functions `HMM_state`, `MC_state`, `MDP_state` etc... 
+depending on the kind of model you are creating (see the examples :ref:`create-hmm-example`).
 
 4. Workflow
 -----------
@@ -124,3 +122,11 @@ Creating such ndarray is complicated and not very funny, that's why we recommend
 To learn a model with jajapy, you need to have a training set. And to evaluate it, you need a test set. In a real life application,
 these sets are given, but one can imagine a situation you have the original model. Then you first need to generate the sets and then you can 
 use them.
+
+Once a model is learnt, we can directly translate it to a *stormpy sparse model* and model check some properties (see the examples :ref:`stormpy-example`).
+
+
+5. Examples
+-----------
+
+You can find examples on the tutorial page.

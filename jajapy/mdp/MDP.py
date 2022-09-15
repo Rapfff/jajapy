@@ -70,15 +70,19 @@ class MDP(Model):
 		else:
 			return [self.actions[i] for i in where(self.matrix[state].sum(axis=2) > 0.0)[0]]
 
-	def getAlphabet(self,state: int = -1) -> list:
+	def getAlphabet(self,state: int = -1, action: str = None) -> list:
 		"""
 		If state is set, returns the list of all the observations we could
-		see in `state`. Otherwise it returns the alphabet of the model. 
+		see in `state`. If the action is set as well, it returns the list of 
+		all the observations we could see in `state` after executing `action`. 
+		Otherwise it returns the alphabet of the model. 
 
 		Parameters
 		----------
 		state : int, optional
 			a state ID
+		action : str
+			an action
 
 		Returns
 		-------
@@ -88,7 +92,13 @@ class MDP(Model):
 		if state == -1:
 			return self.alphabet
 		else:
-			return [self.alphabet[i] for i in where(self.matrix[state].sum(axis=0).sum(axis=0) > 0.0)[0]]
+			if action == None:
+				return [self.alphabet[i] for i in where(self.matrix[state].sum(axis=0).sum(axis=0) > 0.0)[0]]
+			elif action in self.getActions(state):
+				return [self.alphabet[i] for i in where(self.matrix[state][self.actions.index(action)].sum(axis=0) > 0.0)[0]]
+			else:
+				return []
+
 
 	def tau(self,s1: int,action: str,s2: int,obs: str) -> float:
 		"""
@@ -114,6 +124,54 @@ class MDP(Model):
 		if s1 < 0 or s1 > self.nb_states or not action in self.actions or not obs in self.alphabet:
 			return 0.0
 		return self.matrix[s1][self.actions.index(action)][s2][self.alphabet.index(obs)]
+	
+	def a(self,s1: int,s2: int, action: str) -> float:
+		"""
+		Returns the probability of moving from state `s1` to state `s2`,
+		just after executing `action`.
+		If `s1` or `s2` is not a valid state ID it returns 0.
+
+		Parameters
+		----------
+		s1 : int
+			ID of the source state.		
+		s2 : int
+			ID of the destination state.
+		action: str
+			an action.
+		
+		Returns
+		-------
+		float
+			Probability of moving from state `s1` to state `s2`.
+		"""
+		if s1 < 0 or s1 >= self.nb_states or s2 < 0 or s2 >= self.nb_states or action not in self.getActions(s1):
+			return 0.0
+		return self.matrix[s1][self.actions.index(action)][s2].sum(axis=1)
+	
+	def b(self, s: int, l: str, action: str) -> float:
+		"""
+		Returns the probability of generating `l` in state `s`,
+		just after executing `action`.
+		If `s` is not a valid state ID it returns 0.
+
+		Parameters
+		----------
+		s : int
+			ID of the source state.		
+		l : str
+			observation.
+		action: str
+			an action.
+		
+		Returns
+		-------
+		float
+			probability of generating `l` in state `s`.
+		"""
+		if s < 0 or s >= self.nb_states or l not in self.alphabet or action not in self.getActions(s):
+			return 0.0
+		return round(self.matrix[s][self.actions.index(action)].sum(axis=0)[self.alphabet.index(l)],5)
 	
 	def next(self,state: int, action: str) -> tuple:
 		"""

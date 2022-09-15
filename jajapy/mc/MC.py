@@ -52,7 +52,7 @@ class MC(Model):
 		else:
 			return [self.alphabet[i] for i in where(self.matrix[state].sum(axis=0) > 0.0)[0]]
 
-	def tau(self,s1: int,s2: int,obs) -> float:
+	def tau(self,s1: int,s2: int,obs: str) -> float:
 		"""
 		Returns the probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
 		Parameters
@@ -72,6 +72,48 @@ class MC(Model):
 		if not obs in self.alphabet:
 			return 0.0
 		return self.matrix[s1][s2][self.alphabet.index(obs)]
+	
+	def a(self,s1: int,s2: int) -> float:
+		"""
+		Returns the probability of moving from state `s1` to state `s2`.
+		If `s1` or `s2` is not a valid state ID it returns 0.
+
+		Parameters
+		----------
+		s1 : int
+			ID of the source state.		
+		s2 : int
+			ID of the destination state.
+		
+		Returns
+		-------
+		float
+			Probability of moving from state `s1` to state `s2`.
+		"""
+		if s1 < 0 or s1 >= self.nb_states or s2 < 0 or s2 >= self.nb_states:
+			return 0.0 
+		return self.matrix[s1][s2].sum(axis=1)
+	
+	def b(self, s: int, l: str) -> float:
+		"""
+		Returns the probability of generating `l` in state `s`.
+		If `s` is not a valid state ID it returns 0.
+
+		Parameters
+		----------
+		s : int
+			ID of the source state.		
+		l : str
+			observation.
+		
+		Returns
+		-------
+		float
+			probability of generating `l` in state `s`.
+		"""
+		if s < 0 or s >= self.nb_states or l not in self.alphabet:
+			return 0.0
+		return round(self.matrix[s].sum(axis=0)[self.alphabet.index(l)],5)
 
 	def next(self,state: int) -> tuple:
 		"""
