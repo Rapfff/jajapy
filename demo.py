@@ -1,4 +1,4 @@
-import jajapy.jajapy as ja
+import jajapy as ja
 from numpy import array
 
 def modelMC_REBER():
