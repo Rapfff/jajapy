@@ -113,7 +113,7 @@ class MC(Model):
 		"""
 		if s < 0 or s >= self.nb_states or l not in self.alphabet:
 			return 0.0
-		return round(self.matrix[s].sum(axis=0)[self.alphabet.index(l)],5)
+		return self.matrix[s].sum(axis=0)[self.alphabet.index(l)]
 
 	def next(self,state: int) -> tuple:
 		"""

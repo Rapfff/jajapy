@@ -11,7 +11,7 @@ To install jajapy just run the follwing command:
 	>>> pip install jajapy
 
 .. note::
-   jajapy requires to have `numpy <https://numpy.org/>`_. and `scipy <https://scipy.org/>`_ installed.
+   jajapy requires to have `numpy <https://numpy.org/>`_ and `scipy <https://scipy.org/>`_ installed.
 
 2. Some Terminology
 -------------------
@@ -110,7 +110,7 @@ MGOHMM.output       output[s1] List of List of parameters [mu, sigma] (list)    
 ============= ================ ============================================= ============ =================
 
 Creating such ndarray is complicated and not very funny, that's why we recommend to use the functions `HMM_state`, `MC_state`, `MDP_state` etc... 
-depending on the kind of model you are creating (see the examples :ref:`create-hmm-example`).
+depending on the kind of model you are creating (see the examples :ref:`_create-hmm-example`).
 
 4. Workflow
 -----------

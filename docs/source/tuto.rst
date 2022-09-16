@@ -4,6 +4,8 @@ Tutorial
 1. A simple example with HMMs
 -----------------------------
 
+`python file <https://github.com/Rapfff/jajapy/tree/main/examples/01-hmms.py>`_
+
 In this example, we will:
 
 1. Create a HMM *H* from scratch,
@@ -26,16 +28,17 @@ We can create the model depicted above like this:
 
 	import jajapy as ja
 	from numpy import array
-	alphabet = ['a','b','c','d']
+	alphabet = ['a','b','x','y']
 	nb_states = 5
+
 	# in the next state we generate 'x' with probability 0.4, and 'y' with probability 0.6
 	# once an observation generated, we move to state 1 or 2 with probability 0.5
 	# the id of this state is 0.
-	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
-	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
-	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
-	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
-	s4 = HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
+	s0 = ja.HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
+	s1 = ja.HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
+	s2 = ja.HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
+	s3 = ja.HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
+	s4 = ja.HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
 	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
 	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
 	original_model = ja.HMM(transitions,output,alphabet,initial_state=0,name="My HMM")
@@ -55,6 +58,7 @@ Now we can generate a training set. This training set contains 1000 traces, whic
 
 .. code-block:: python
 
+	# We generate 1000 sequences of 10 observations
 	training_set = original_model.generateSet(set_size=1000, param=10)
 
 *(optional)* This Set can be saved into a text file and then loaded as follow:
@@ -83,6 +87,7 @@ the loglikelihood of it under each of the two models. As the training set, our t
 
 .. code-block:: python
 
+	# We generate 1000 sequences of 10 observations
 	test_set = original_model.generateSet(set_size=1000, param=10)
 
 Now we can compute the loglikelihood under each model:
@@ -99,6 +104,9 @@ If ``quality`` is positive then we are overfitting.
 
 2. An example with MC: random restart
 -------------------------------------
+
+`python file <https://github.com/Rapfff/jajapy/tree/main/examples/02-mcs.py>`_
+
 
 This time we will try to learn the `Reber grammar <https://cnl.salk.edu/~schraudo/teach/NNcourse/reber.html>`_.
 We have added probabilities on the transitions in order to have a MC.
@@ -214,8 +222,235 @@ One can be suprised to see that the probability to leave *s4* is not equal to ze
 This is because *jajapy* doesn't print out the transitions with a very low probability,
 for a better readability.  
 
+3. An example with MDP: active learning
+---------------------------------------
+`python file <https://github.com/Rapfff/jajapy/tree/main/examples/03-mds.py>`_
+
+Here, we will learn a MDP representing the following grid world:
+
+We start in the top-left cell and our destination is the bottom-right one.
+We can move in any of the four directions *North, South, East and West*.
+We may make errors in movement, e.g. move south west instead of south with
+an error probability depending on the target terrain. This model is the one
+in `this paper <https://arxiv.org/pdf/2110.03014.pdf>`_.
+
+First we create the original model.
+
+.. code-block:: python
+
+	import jajapy as ja
+	from numpy import array
+
+	def modelMDP_gridworld():
+		alphabet = ['S','M','G','C','W',"done"]
+		actions = list("nsew")
+		nb_states = 12
+		s0 = ja.MDP_state({'n': [(0,'W',1.0)],
+						's': [(3,'M',0.6),(4,'G',0.4)],
+						'e': [(1,'M',0.6),(4,'G',0.4)],
+						'w': [(0,'W',1.0)]
+						},alphabet,nb_states,actions)
+		s1 = ja.MDP_state({'n': [(1,'W',1.0)],
+						's': [(4,'G',0.8),(3,'M',0.1),(5,'C',0.1)],
+						'e': [(2,'G',0.8),(5,'C',0.2)],
+						'w': [(0,'S',0.75),(3,'M',0.25)]
+						},alphabet,nb_states,actions)
+		s2 = ja.MDP_state({'n': [(2,'W',1.0)],
+						's': [(4,'G',0.8),(3,'M',0.1),(5,'C',0.1)],
+						'e': [(2,'W',1.0)],
+						'w': [(1,'M',0.6),(4,'G',0.4)]
+						},alphabet,nb_states,actions)
+		s3 = ja.MDP_state({'n': [(0,'S',0.75),(1,'M',0.25)],
+						's': [(6,'G',0.8),(7,'S',0.2)],
+						'e': [(4,'G',0.8),(1,'M',0.1),(7,'S',0.1)],
+						'w': [(3,'M',1.0)]
+						},alphabet,nb_states,actions)
+		s4 = ja.MDP_state({'n': [(1,'M',0.6),(0,'S',0.2),(2,'G',0.2)],
+						's': [(7,'S',0.75),(6,'G',0.125),(8,'done',0.125)],
+						'e': [(5,'C',1.0)],
+						'w': [(3,'M',0.6),(0,'S',0.2),(6,'G',0.2)]
+						},alphabet,nb_states,actions)
+		s5 = ja.MDP_state({'n': [(2,'G',0.8),(1,'M',0.2)],
+						's': [(8,'done',0.6),(7,'S',0.4)],
+						'e': [(5,'W',1.0)],
+						'w': [(4,'G',0.8),(1,'M',0.1),(7,'S',0.1)]
+						},alphabet,nb_states,actions)
+		s6 = ja.MDP_state({'n': [(3,'M',0.6),(4,'G',0.4)],
+						's': [(6,'W',1.0)],
+						'e': [(7,'S',0.75),(4,'G',0.25)],
+						'w': [(6,'W',1.0)]
+						},alphabet,nb_states,actions)
+		s7 = ja.MDP_state({'n': [(1,'M',0.6),(0,'S',0.2),(2,'G',0.2)],
+						's': [(7,'W',1.0)],
+						'e': [(8,'done',0.6),(5,'C',0.4)],
+						'w': [(6,'G',0.8),(3,'M',0.2)]
+						},alphabet,nb_states,actions)
+		s8 = ja.MDP_state({'n': [(8,'done',1.0)],
+						's': [(8,'done',1.0)],
+						'e': [(8,'done',1.0)],
+						'w': [(8,'done',1.0)]
+						},alphabet,nb_states,actions)
+		matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8])
+		return ja.MDP(matrix,alphabet,actions,initial_state=0,name="grid world")
+
+Then we generate our training set and test set. To generate a set we need to specify to
+jajapy which scheduler we want it to use, since MDPs are non-deterministic. Here we will
+use uniform scheduler (all the actions have the same probability to be chosen).
+
+.. code-block:: python
+
+	original_model = modelMDP_gridworld()
+	# SETS GENERATION
+	#------------------------
+	# We generate 1000 sequences of 10 observations for each set
+	scheduler = ja.UniformScheduler(original_model.getActions())
+	training_set = original_model.generateSet(1000,10,scheduler)
+	test_set = original_model.generateSet(1000,10,scheduler)
+
+Then we can learn the model. Here we do 20 active learning iterations:
+for each of them we generate 50 new sequences. These sequences will be generated
+using the *active learning scheduler* with probability 0.75, and with a uniform
+scheduler with probability 0.25. 
+
+.. code-block:: python
+
+	# LEARNING
+	#---------
+	learning_rate = 0
+	output_model = ja.Active_BW_MDP().fit(training_set,learning_rate,
+										  nb_iterations=20, nb_sequences=50,
+										  epsilon_greedy=0.75, nb_states=9)
+	output_quality = output_model.logLikelihood(test_set)
+	
+	print(output_model)
+	print(output_quality)
+
 .. _stormpy-example:
 
-3. Working with Stormpy
------------------------
-In the previous example, we have learnt a MC representation of the Reber grammar.
+4. An advanced example with MC and model checking
+-------------------------------------------------
+
+`python file <https://github.com/Rapfff/jajapy/tree/main/examples/04-mcs_with_stormpy.py>`_
+
+In this example, we will first learn a MC representation of the Yao-Knuth's
+using some structural knowledge we have. Then, we will use *stormpy* to check
+if our model satisfies some properties.
+
+As usual, we start by creating the training and test set.
+
+.. code-block:: python
+
+	import jajapy as ja
+	from numpy import array
+
+	def modelMC_KnuthDie(p=0.5):
+		alphabet = ["P","F","one","two","three","four","five","six"]
+		nb_states = 13
+		s0 = ja.MC_state([(1 ,'P',p),(2 ,'F',1-p)],alphabet,nb_states)
+		s1 = ja.MC_state([(3 ,'P',p),(4 ,'F',1-p)],alphabet,nb_states)
+		s2 = ja.MC_state([(5 ,'P',p),(6 ,'F',1-p)],alphabet,nb_states)
+		s3 = ja.MC_state([(1 ,'P',p),(7 ,'F',1-p)],alphabet,nb_states)
+		s4 = ja.MC_state([(8 ,'P',p),(9 ,'F',1-p)],alphabet,nb_states)
+		s5 = ja.MC_state([(10,'P',p),(11,'F',1-p)],alphabet,nb_states)
+		s6 = ja.MC_state([(12,'P',p),(2 ,'F',1-p)],alphabet,nb_states)
+		s7 = ja.MC_state([(7 ,  'one',1.0)],alphabet,nb_states)
+		s8 = ja.MC_state([(8 ,  'two',1.0)],alphabet,nb_states)
+		s9 = ja.MC_state([(9 ,'three',1.0)],alphabet,nb_states)
+		s10= ja.MC_state([(10, 'four',1.0)],alphabet,nb_states)
+		s11= ja.MC_state([(11, 'five',1.0)],alphabet,nb_states)
+		s12= ja.MC_state([(12,  'six',1.0)],alphabet,nb_states)
+		matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12])
+		return ja.MC(matrix,alphabet,initial_state=0,name="Knuth's Die")
+	
+	original_model = modelMC_KnuthDie()
+	# SETS GENERATION
+	#------------------------
+	# We generate 1000 sequences of 10 observations for each set
+	training_set = original_model.generateSet(1000,10)
+	test_set = original_model.generateSet(1000,10)
+
+Now, we can learn the model using Baum-Welch. But here, we assume that we have some knowledge about
+the structure of what we are learning. In fact, Baum-Welch improve the initial model iteratively by
+removing some transitions and changing some transitions probabilities, but it cannot create a new
+transition: if there is no transition between *s0* and *s1* in the initial hypothesis, there will be
+no transition there as well in the output model. Let say that here we know that what we are learning
+looks like this:
+
+
+We can now create our initial hypothesis and learn the model. Once again, we will use random restart
+to keep only the best model we get.
+
+.. code-block:: python
+
+	def firstGuess():
+		alphabet = ["P","F","one","two","three","four","five","six"]
+		nb_states = 13
+		s0 = ja.MC_state(list(zip([1,2],['P','F'],ja.randomProbabilities(2))),alphabet,nb_states)
+		s1 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6],
+								['P','F','P','F','P','F','P','F','P','F','P','F'],
+								ja.randomProbabilities(12))),
+						alphabet,nb_states)
+		s2 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6],
+								['P','F','P','F','P','F','P','F','P','F','P','F'],
+								ja.randomProbabilities(12))),
+						alphabet,nb_states)
+		s3 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
+								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
+								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
+								ja.randomProbabilities(24))),
+						alphabet,nb_states)
+
+		s4 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
+								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
+								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
+								ja.randomProbabilities(24))),
+						alphabet,nb_states)
+
+		s5 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
+								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
+								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
+								ja.randomProbabilities(24))),
+						alphabet,nb_states)
+
+		s6 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
+								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
+								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
+								ja.randomProbabilities(24))),
+						alphabet,nb_states)
+		s7 = ja.MC_state([(7 ,  'one',1.0)],alphabet,nb_states)
+		s8 = ja.MC_state([(8 ,  'two',1.0)],alphabet,nb_states)
+		s9 = ja.MC_state([(9 ,'three',1.0)],alphabet,nb_states)
+		s10= ja.MC_state([(10, 'four',1.0)],alphabet,nb_states)
+		s11= ja.MC_state([(11, 'five',1.0)],alphabet,nb_states)
+		s12= ja.MC_state([(12,  'six',1.0)],alphabet,nb_states)
+		matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12])
+		return ja.MC(matrix,alphabet,initial_state=0,name="first guess")
+	
+	# LEARNING
+	#---------
+	nb_trials = 10 # we will repeat learn this model 10 times
+	best_model = None
+	quality_best = -1024
+	for n in range(1,nb_trials+1):
+		current_model = ja.BW_MC().fit(training_set,initial_model=firstGuess())
+		current_quality = current_model.logLikelihood(test_set)
+		if quality_best < current_quality: #we keep the best model only
+				quality_best = current_quality
+				best_model = current_model
+
+	print(quality_best)
+	print(best_model)
+
+Now, we would like to check if we have a probability of 1/6 to get a *"five"* with 
+this new model.
+
+.. code-block:: python
+	
+	# MODEL CHECKING
+	#---------------
+	model_storm = ja.modeltoStorm(best_model)
+	formula_str = 'P=? [F "five"]'
+	properties = stormpy.parse_properties(formula_str)
+	result = stormpy.check_model_sparse(model_storm,properties[0])
+	print(result.at(model_storm.initial_states[0]))
+

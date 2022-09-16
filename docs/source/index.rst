@@ -28,6 +28,9 @@ To use **jajapy**, first install it using pip:
 
    pip install jajapy
 
+.. note::
+   **jajapy** runs on Windows, Linux and MacOS. However, it is **not** multithreaded 
+   on Windows and MacOS: hence, we trully recommend to use it on Linux! 
 
 Content
 -------

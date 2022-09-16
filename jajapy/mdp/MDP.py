@@ -560,10 +560,17 @@ def loadPrismMDP(file_path:str) -> MDP:
 	MDP
 		The MDP saved in `file_path`.
 	"""
+	def readline(f):
+		l = f.readline()
+		print(l)
+		while '//' in l or l == '\n':
+			l = f.readline()
+			print(l)
+		return l
+
 	f = open(file_path)
-	f.readline()
-	f.readline()
-	l = f.readline()
+	readline(f)
+	l = readline(f)
 	l = l.split(' ')
 
 	states = []
@@ -574,22 +581,22 @@ def loadPrismMDP(file_path:str) -> MDP:
 	actions = []
 	alphabet = []
 
-	l = f.readline()
+	l = readline(f)
 	while l[:-1] != "endmodule":
 		act = l[1]
 		actions.append(act)
 		state = int(l[l.find('=')+1:l.find('-')-1])
-		l = (' '+f.readline()).split('+')
+		l = (' '+readline(f)).split('+')
 		states[state][act] = []
 		states[state][act].append([ float(i[1:i.find(':')-1]) for i in l ]) #add proba
 		states[state][act].append([ int(i[i.find('=')+1:i.find(')')]) for i in l ]) #add state
 
-		l = f.readline()
+		l = readline(f)
 	
 	actions = list(set(actions))
 
 	map_s_o = {}
-	l = f.readline()
+	l = readline(f)
 
 	while l:
 		l = l[:-2]
@@ -601,7 +608,7 @@ def loadPrismMDP(file_path:str) -> MDP:
 			s = [int(i[i.rfind('=')+1:]) for i in l]
 			for ss in s:
 				map_s_o[ss] = obs
-		l = f.readline()
+		l = readline(f)
 
 	alphabet = list(set(alphabet))
 
