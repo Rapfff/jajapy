@@ -1,15 +1,19 @@
 import jajapy as ja
-
+from numpy import array
 
 def modelMC_REBER():
-	s0 = ja.MC_state([[1.0],[1],['B']],0)
-	s1 = ja.MC_state([[0.5,0.5],[2,3],['T','P']],1)
-	s2 = ja.MC_state([[0.6,0.4],[2,4],['S','X']],2)
-	s3 = ja.MC_state([[0.7,0.3],[3,5],['T','V']],3)
-	s4 = ja.MC_state([[0.5,0.5],[3,6],['X','S']],4)
-	s5 = ja.MC_state([[0.5,0.5],[4,6],['P','V']],5)
-	s6 = ja.MC_state([[1.0],[6],['E']],6)
-	return ja.MC([s0,s1,s2,s3,s4,s5,s6],0,"MC_REBER")
+	alphabet = list("BTPSXVE")
+	initial_state = 0
+	nb_states = 7
+	s0 = ja.MC_state([(1,'B',1.0)],alphabet,nb_states)
+	s1 = ja.MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
+	s2 = ja.MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
+	s3 = ja.MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
+	s4 = ja.MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
+	s5 = ja.MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
+	s6 = ja.MC_state([(6,'E',1.0)],alphabet,nb_states)
+	matrix = array([s0,s1,s2,s3,s4,s5,s6])
+	return ja.MC(matrix,alphabet,initial_state,"MC_REBER")
 
 original_model = modelMC_REBER()
 
