@@ -129,4 +129,4 @@ Once a model is learnt, we can directly translate it to a *stormpy sparse model*
 5. Examples
 -----------
 
-You can find examples on the tutorial page.
+You can find examples in the tutorial page.

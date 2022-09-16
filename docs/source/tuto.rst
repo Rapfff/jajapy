@@ -228,6 +228,11 @@ for a better readability.
 
 Here, we will learn a MDP representing the following grid world:
 
+
+.. image:: pictures/grid.png
+	:width: 40%
+	:align: center
+
 We start in the top-left cell and our destination is the bottom-right one.
 We can move in any of the four directions *North, South, East and West*.
 We may make errors in movement, e.g. move south west instead of south with
@@ -332,8 +337,13 @@ scheduler with probability 0.25.
 
 `python file <https://github.com/Rapfff/jajapy/tree/main/examples/04-mcs_with_stormpy.py>`_
 
-In this example, we will first learn a MC representation of the Yao-Knuth's
-using some structural knowledge we have. Then, we will use *stormpy* to check
+
+.. image:: pictures/knuthdie.png
+	:width: 60%
+	:align: center
+
+In this example, we will first learn a MC representation of the Yao-Knuth'die 
+(see above) using some structural knowledge we have. Then, we will use *stormpy* to check
 if our model satisfies some properties.
 
 As usual, we start by creating the training and test set.
@@ -374,7 +384,12 @@ the structure of what we are learning. In fact, Baum-Welch improve the initial m
 removing some transitions and changing some transitions probabilities, but it cannot create a new
 transition: if there is no transition between *s0* and *s1* in the initial hypothesis, there will be
 no transition there as well in the output model. Let say that here we know that what we are learning
-looks like this:
+looks like this (we don't have any information about the transitions in the shaded area):
+
+.. image:: pictures/knuthdie_hint.png
+	:width: 60%
+	:align: center
+
 
 
 We can now create our initial hypothesis and learn the model. Once again, we will use random restart
@@ -445,7 +460,7 @@ Now, we would like to check if we have a probability of 1/6 to get a *"five"* wi
 this new model.
 
 .. code-block:: python
-	
+
 	# MODEL CHECKING
 	#---------------
 	model_storm = ja.modeltoStorm(best_model)
