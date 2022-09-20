@@ -4,7 +4,7 @@ authors:
 - family-names: "Reynouard"
   given-names: "Raphaël"
 title: "jajapy"
-version: 0.6.1
+version: 0.6
 date-released: 2022-06-02
 url: "https://github.com/Rapfff/jajapy"
 license: MIT
