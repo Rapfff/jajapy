@@ -1,10 +1,11 @@
 import jajapy as ja
 from numpy import array
+import stormpy
 
 def modelMDP_gridworld():
 	alphabet = ['S','M','G','C','W',"done"]
 	actions = list("nsew")
-	nb_states = 12
+	nb_states = 9
 	s0 = ja.MDP_state({'n': [(0,'W',1.0)],
 					's': [(3,'M',0.6),(4,'G',0.4)],
 					'e': [(1,'M',0.6),(4,'G',0.4)],
@@ -56,7 +57,7 @@ def modelMDP_gridworld():
 def example_3():
 	original_model = modelMDP_gridworld()
 	# SETS GENERATION
-	#------------------------
+	#----------------
 	# We generate 1000 sequences of 10 observations for each set
 	scheduler = ja.UniformScheduler(original_model.getActions())
 	training_set = original_model.generateSet(1000,10,scheduler)
@@ -73,6 +74,19 @@ def example_3():
 	print(output_model)
 	print(output_quality)
 
+	# MODEL CHECKING
+	#---------------
+	storm_model = ja.modeltoStorm(output_model)
+	print(storm_model)
+	formula_str = "Rmax=? [ F \"done\" ]"
+	properties = stormpy.parse_properties(formula_str)
+	result = stormpy.check_model_sparse(storm_model, properties[0], extract_scheduler=True)
+	scheduler = result.scheduler
+	print(result)
+	for state in storm_model.states:
+		choice = scheduler.get_choice(state)
+		action = choice.get_deterministic_choice()
+		print("In state {} choose action {}".format(state, output_model.actions[action]))
 
 if __name__ == '__main__':
 	example_3()

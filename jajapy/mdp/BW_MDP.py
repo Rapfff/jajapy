@@ -2,7 +2,7 @@ from .MDP import *
 from ..base.BW import *
 from ..base.Set import Set
 from ..base.tools import normalize
-from numpy import array, dot, append, zeros, ones, log
+from numpy import array, dot, append, zeros, ones, log, inf
 
 NB_PROCESS = 11
 
@@ -18,7 +18,8 @@ class BW_MDP(BW):
 	
 	def fit(self, traces: Set, initial_model: MDP=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01, pp: str=''):
+			epsilon: float=0.01, max_it: int= inf, pp: str='',
+			verbose: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -46,8 +47,15 @@ class BW_MDP(BW):
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
 
 		Returns
 		-------
@@ -65,7 +73,7 @@ class BW_MDP(BW):
 			actions = initial_model.getActions()
 		self.alphabet = observations
 		self.actions = actions
-		return super().fit(traces, initial_model, output_file, epsilon, pp)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
 
 	def h_tau(self,s1: int,act: str,s2: int,obs: str) -> float:
 		"""

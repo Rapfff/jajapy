@@ -1,7 +1,7 @@
-from .MC import *
+from .MC import MC, MC_random
 from ..base.BW import *
 from ..base.Set import Set
-from numpy import log
+from numpy import log, newaxis, inf
 
 class BW_MC(BW):
 	"""
@@ -12,7 +12,7 @@ class BW_MC(BW):
 	
 	def fit(self, traces: Set, initial_model: MC=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01, pp: str=''):
+			epsilon: float=0.01, max_it: int = inf, pp: str='', verbose: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -40,8 +40,15 @@ class BW_MC(BW):
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
 
 		Returns
 		-------
@@ -54,24 +61,22 @@ class BW_MC(BW):
 				return
 			initial_model = MC_random(nb_states,traces.getAlphabet(),random_initial_state)
 		self.alphabet = initial_model.getAlphabet()
-		return super().fit(traces, initial_model, output_file, epsilon, pp)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
 
 	def _processWork(self,sequence,times):
 		alpha_matrix = self.computeAlphas(sequence)
 		beta_matrix = self.computeBetas(sequence)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
-			den = zeros(self.nb_states)
-			num = zeros(shape=(self.nb_states,self.nb_states*len(self.alphabet)))
+			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)
+			num = zeros(shape=(self.nb_states,self.nb_states,len(self.alphabet)))
 			for s in range(self.nb_states):
-				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
-				c = 0
 				for ss in range(self.nb_states):
 					p = array([self.h_tau(s,ss,o) for o in sequence])
-					for obs in self.alphabet:
-						arr_dirak = [1.0 if t == obs else 0.0 for t in sequence]
-						num[s,c] = dot(alpha_matrix[s][:-1]*arr_dirak*p*beta_matrix[ss][1:],times/proba_seq).sum()
-						c += 1
+					alph_bet = alpha_matrix[s][:-1]*p*beta_matrix[ss][1:]*times/proba_seq
+					for o,obs in enumerate(self.alphabet):
+						arr_dirak = [1 if t == obs else 0 for t in sequence]
+						num[s,ss,o] = (alph_bet*arr_dirak).sum()
 			####################
 			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 			####################
@@ -87,22 +92,12 @@ class BW_MC(BW):
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		list_sta = []
-		for i in range(self.nb_states):
-			for _ in self.alphabet:
-				list_sta.append(i)
-		list_obs = self.alphabet*self.nb_states
-		new_states = []
+		for s in range(len(den)):
+			if den[s] == 0.0:
+				den[s] = 1.0
+				num[s] = self.h.matrix[s]
 
-		new_states = []
-		for s in range(self.nb_states):
-			if den[s] != 0.0:
-				l = list(zip(list_sta, list_obs, num[s]/den[s]))
-				l = MC_state(l, self.alphabet, self.nb_states)
-			else:
-				l = self.h.matrix[s]
-			new_states.append(l)
-		matrix = array(new_states)
+		matrix = num/den[:, newaxis, newaxis]
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
 		return [MC(matrix,self.alphabet,initial_state),currentloglikelihood]
 		

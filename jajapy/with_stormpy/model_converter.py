@@ -108,8 +108,14 @@ def _MDPtoStorm(h):
 		choice_labeling.add_label(a)
 	for ia,a in enumerate(h.getActions()):
 		choice_labeling.add_label_to_choice(a,ia)
+
+	reward_models = {}
+	action_reward = [-1.0 for _ in range(len(transition_matrix))]
+	reward_models["nb_executed_actions"] = st.SparseRewardModel(optional_state_action_reward_vector = action_reward)
+
 	components = st.SparseModelComponents(transition_matrix=transition_matrix,
-										  state_labeling=state_labeling)
+										  state_labeling=state_labeling,
+										  reward_models=reward_models)
 	components.choice_labeling = choice_labeling
 	mdp = st.storage.SparseMdp(components)
 	return mdp

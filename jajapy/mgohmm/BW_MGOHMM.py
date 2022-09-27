@@ -1,9 +1,10 @@
-from .MGOHMM import *
-from ..gohmm.BW_GOHMM import *
-from numpy import log, sqrt
+from .MGOHMM import MGOHMM, MGOHMM_random
+from ..base.BW import *
+from ..base.Set import Set
+from numpy import log, sqrt, inf, newaxis, stack
 
 
-class BW_MGOHMM(BW_GOHMM):
+class BW_MGOHMM(BW):
 	"""
 	class for general Baum-Welch algorithm on MGOHMM.
 	"""
@@ -12,7 +13,8 @@ class BW_MGOHMM(BW_GOHMM):
 
 	def fit(self, traces: Set, initial_model: MGOHMM=None, nb_states: int=None,
 			nb_distributions: int=None, random_initial_state: bool=False,
-			output_file: str=None, epsilon: float=0.01, pp: str=''):
+			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
+			pp: str='', verbose: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -44,8 +46,15 @@ class BW_MGOHMM(BW_GOHMM):
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
 
 		Returns
 		-------
@@ -62,20 +71,19 @@ class BW_MGOHMM(BW_GOHMM):
 			initial_model = MGOHMM_random(nb_states,nb_distributions,
 										  random_initial_state)
 		self.nb_distr = initial_model.nb_distributions
-		return super().fit(traces, initial_model, output_file, epsilon, pp)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
 
 	def _processWork(self,sequence,times):
 		sequence = array(sequence)
-		alpha_matrix = self.computeAlphas(sequence)
-		beta_matrix = self.computeBetas(sequence)
+		alpha_matrix = self.computeAlphas(sequence,longdouble)
+		beta_matrix = self.computeBetas(sequence,longdouble)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
-			den    = zeros(self.nb_states)
+			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)
 			num_a  = zeros(shape=(self.nb_states,self.nb_states))
 			num_mu = zeros(shape=(self.nb_states,self.nb_distr))
 			num_va = zeros(shape=(self.nb_states,self.nb_distr))
 			for s in range(self.nb_states):
-				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
 				num_mu[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*sequence.T,times/proba_seq).sum(axis=1)
 				num_va[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*(sequence-self.h.mu(s)).T**2,times/proba_seq).sum(axis=1)
 				for ss in range(self.nb_states):
@@ -97,18 +105,13 @@ class BW_MGOHMM(BW_GOHMM):
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		mu = (mu.T/den).T
-		va = sqrt((va.T/den).T)
-		a  = (a.T /den).T
+		output_mu = (mu.T/den).T
+		output_va = sqrt((va.T/den).T)
 
-		matrix = []
-		output = []
-		for s in range(self.nb_states):
-			la = list(zip(list(range(self.nb_states)),a[s].tolist()))
-			l = MGOHMM_state(la,array([mu[s],va[s]]).T.tolist(),self.nb_states)
-			matrix.append(l[0])
-			output.append(l[1])
+		matrix = a/den[:, newaxis]
+		output = stack((output_mu,output_va),axis=2)
 
+		
 		initial_state = [init[s]/init.sum() for s in range(self.nb_states)]
 		
-		return [MGOHMM(array(matrix),array(output),initial_state),currentloglikelihood]
+		return [MGOHMM(matrix,output,initial_state),currentloglikelihood]

@@ -224,3 +224,15 @@ def loadSet(file_path: str) -> Set:
 	f.close()
 	return Set(res_set[0],res_set[1],from_MDP)
 
+def setFromList(l: list) -> Set:
+	"""
+	Convert a list of sequences of observations to a set.
+
+	Parameters
+	----------
+	l : list
+		list of sequences of observations.
+	"""
+	s = Set([],[])
+	s.setFromList(l)
+	return s

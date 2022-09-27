@@ -4,7 +4,7 @@ Tutorial
 1. A simple example with HMMs
 -----------------------------
 
-`python file <https://github.com/Rapfff/jajapy/tree/main/examples/01-hmms.py>`_
+:download:`python file <https://github.com/Rapfff/jajapy/tree/main/examples/01-hmms.py>`
 
 In this example, we will:
 
@@ -105,7 +105,7 @@ If ``quality`` is positive then we are overfitting.
 2. An example with MC: random restart
 -------------------------------------
 
-`python file <https://github.com/Rapfff/jajapy/tree/main/examples/02-mcs.py>`_
+:download:`python file <https://github.com/Rapfff/jajapy/tree/main/examples/02-mcs.py>`
 
 
 This time we will try to learn the `Reber grammar <https://cnl.salk.edu/~schraudo/teach/NNcourse/reber.html>`_.
@@ -224,7 +224,7 @@ for a better readability.
 
 3. An example with MDP: active learning
 ---------------------------------------
-`python file <https://github.com/Rapfff/jajapy/tree/main/examples/03-mds.py>`_
+:download:`python file <https://github.com/Rapfff/jajapy/tree/main/examples/03-mdps.py>`
 
 Here, we will learn a MDP representing the following grid world:
 
@@ -249,7 +249,7 @@ First we create the original model.
 	def modelMDP_gridworld():
 		alphabet = ['S','M','G','C','W',"done"]
 		actions = list("nsew")
-		nb_states = 12
+		nb_states = 9
 		s0 = ja.MDP_state({'n': [(0,'W',1.0)],
 						's': [(3,'M',0.6),(4,'G',0.4)],
 						'e': [(1,'M',0.6),(4,'G',0.4)],
@@ -332,10 +332,24 @@ scheduler with probability 0.25.
 
 .. _stormpy-example:
 
+Now, one could ask for the scheduler which minimizes the number of step before reaching our objective,
+the bottom-right state. For this, we can use stormpy:
+
+.. code-block:: python
+
+	# MODEL CHECKING
+	#---------------
+	storm_model = ja.modeltoStorm(output_model)
+	properties = stormpy.parse_properties("Rmax=? [ F \"done\" ]")
+	result = stormpy.check_model_sparse(storm_model, properties[0], extract_scheduler=True)
+	scheduler = result.scheduler
+	print(result)
+
+
 4. An advanced example with MC and model checking
 -------------------------------------------------
 
-`python file <https://github.com/Rapfff/jajapy/tree/main/examples/04-mcs_with_stormpy.py>`_
+:download:`python file <https://github.com/Rapfff/jajapy/tree/main/examples/04-mcs_with_stormpy.py>`
 
 
 .. image:: pictures/knuthdie.png

@@ -1,7 +1,7 @@
 from .CTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log
+from numpy import array, zeros, dot, append, ones, log, inf
 
 
 class BW_CTMC(BW):
@@ -148,7 +148,7 @@ class BW_CTMC(BW):
 	def fit(self, traces: Set, initial_model: CTMC=None, nb_states: int=None,
 			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
 			max_exit_rate_time: int=10.0, self_loop: bool = True,
-			output_file: str=None, epsilon: float=0.01, pp: str=''):
+			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='', verbose: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -185,8 +185,15 @@ class BW_CTMC(BW):
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
 
 		Returns
 		-------
@@ -202,7 +209,7 @@ class BW_CTMC(BW):
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
 		self.alphabet = initial_model.getAlphabet()
-		return super().fit(traces, initial_model, output_file, epsilon, pp)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
 
 
 	def splitTime(self,sequence: list) -> tuple:

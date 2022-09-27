@@ -123,7 +123,7 @@ To learn a model with jajapy, you need to have a training set. And to evaluate i
 these sets are given, but one can imagine a situation you have the original model. Then you first need to generate the sets and then you can 
 use them.
 
-Once a model is learnt, we can directly translate it to a *stormpy sparse model* and model check some properties (see the examples :ref:`stormpy-example`).
+Once a model is learnt, we can directly translate it to a *stormpy sparse model* and model check some properties (see the examples :ref:`_stormpy-example`).
 
 
 5. Examples

@@ -40,6 +40,7 @@ Content
 
    help
    tuto
+   formal
    References
 
 

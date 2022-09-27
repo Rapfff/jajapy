@@ -1,7 +1,7 @@
-from .GOHMM import *
+from .GOHMM import GOHMM, GOHMM_random
 from ..base.BW import *
 from ..base.Set import Set
-from numpy import log
+from numpy import log, inf, newaxis, sqrt, stack
 
 
 class BW_GOHMM(BW):
@@ -15,8 +15,8 @@ class BW_GOHMM(BW):
 
 	def fit(self, traces: Set, initial_model: GOHMM=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01,
-			pp: str=''):
+			epsilon: float=0.01,  max_it: int= inf,
+			pp: str='', verbose: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -44,8 +44,15 @@ class BW_GOHMM(BW):
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
 
 		Returns
 		-------
@@ -57,7 +64,7 @@ class BW_GOHMM(BW):
 				print("Either nb_states or initial_model should be set")
 				return
 			initial_model = GOHMM_random(nb_states,random_initial_state)
-		return super().fit(traces, initial_model, output_file, epsilon, pp)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
 
 	def _processWork(self,sequence,times):
 		sequence = array(sequence)
@@ -65,12 +72,11 @@ class BW_GOHMM(BW):
 		beta_matrix = self.computeBetas(sequence)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
-			den    = zeros(self.nb_states)
+			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)
 			num_a  = zeros(shape=(self.nb_states,self.nb_states))
 			num_mu = zeros(self.nb_states)
 			num_va = zeros(self.nb_states)
 			for s in range(self.nb_states):
-				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
 				num_mu[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*sequence,times/proba_seq).sum()
 				num_va[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*(sequence-self.h.mu(s))**2,times/proba_seq).sum()
 				for ss in range(self.nb_states):
@@ -78,13 +84,11 @@ class BW_GOHMM(BW):
 					num_a[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 			return [den,num_a,num_mu,num_va,proba_seq,times,num_init]
-		print('proba0')
 		return False
 
 	def _generateHhat(self,temp):
-		a   = zeros(shape=(self.nb_states,self.nb_states))
+		num_a = array([i[1] for i in temp]).sum(axis=0)
 		den = array([i[0] for i in temp]).sum(axis=0)
-		lst_num_a = array([i[1] for i in temp]).T.reshape(self.nb_states*self.nb_states,len(temp))
 		mu = array([i[2] for i in temp]).sum(axis=0)
 		va = array([i[3] for i in temp]).sum(axis=0)
 		lst_proba=array([i[4] for i in temp])
@@ -93,16 +97,11 @@ class BW_GOHMM(BW):
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		matrix = []
-		output = []
-		for s in range(self.nb_states):
-			for x in range(self.nb_states):
-				a[s,x] = lst_num_a[x*self.nb_states+s].sum()
-			la = list(zip(list(range(self.nb_states)) ,a[s]/den[s]))
-			l = GOHMM_state(la,(mu[s]/den[s],sqrt(va[s]/den[s])),self.nb_states)
-			matrix.append(l[0])
-			output.append(l[1])
+		matrix = num_a/den[:, newaxis]
+		output_mu = mu/den
+		output_va = sqrt(va/den)
+		output = stack((output_mu,output_va),axis=1)
 
 		initial_state = [init[s]/init.sum() for s in range(self.nb_states)]
 		
-		return [GOHMM(array(matrix),array(output),initial_state),currentloglikelihood]
+		return [GOHMM(matrix,output,initial_state),currentloglikelihood]
