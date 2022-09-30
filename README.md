@@ -38,6 +38,7 @@ Please cite this repository if you use this library.
 ## Requirements
 - numpy
 - scipy
+- stormpy (recommended)
 
 ## Documentation
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
