@@ -18,17 +18,19 @@ Please cite this repository if you use this library.
 
 ## Main features
 `jajapy` provides:
-- BW algorithm for Hidden Markov Models [reference](https://web.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/tutorial%20on%20hmm%20and%20applications.pdf)
-- BW algorithm for Markov Chains
-- BW algorithm for Gaussian Observation Hidden Markov Models [reference](http://www.inass.org/2020/2020022920.pdf)
-- BW algorithm for Markov Decision Processes [reference](https://arxiv.org/abs/2110.03014)
-- Active BW algorithm for Markov Decision Processes [reference](https://arxiv.org/abs/2110.03014)
-- BW algorithm for CTMC
-- BW algorithm for asynchronous parallel composition of CTMCs
 
-Additionally, it provides other learning algorithms:
-- Alergia, for Markov Chains [reference](https://www.researchgate.net/publication/2543721_Learning_Stochastic_Regular_Grammars_by_Means_of_a_State_Merging_Method/stats)
-- IOAlergia, for Markov Decision Processes [reference](https://link.springer.com/content/pdf/10.1007/s10994-016-5565-9.pdf)
+<div align="center">
+	
+| Markov Model   |      Learning Algorithm(s) |
+|-------|:-------------:|
+| HMM    | Baum-Welch for HMMs  ([ref](https://web.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/tutorial%20on%20hmm%20and%20applications.pdf)) |
+| MC     | Baum-Welch for MCs <br /> Alergia ([ref](https://www.researchgate.net/publication/2543721_Learning_Stochastic_Regular_Grammars_by_Means_of_a_State_Merging_Method/stats)) |
+| MDP    | Baum-Welch for MDPs ([ref](https://arxiv.org/abs/2110.03014))<br /> Active Baum-Welch ([ref](https://arxiv.org/abs/2110.03014))<br /> IOAlergia ([ref](https://link.springer.com/content/pdf/10.1007/s10994-016-5565-9.pdf))|
+| CTMC   | Baum-Welch for CTMCs<br /> MM for asynchronous composition of CTMCs|
+| GoHMM  | Baum-Welch for GoHMMs ([ref](http://www.inass.org/2020/2020022920.pdf)) |
+| MGoHMM | Baum-Welch for MGoHMMs |
+
+</div>
 
 ## Installation
 ``pip install jajapy``
