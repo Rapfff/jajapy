@@ -42,8 +42,3 @@ Please cite this repository if you use this library.
 
 ## Documentation
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
-
-## TO DO
-- Add examples in the documentation
-- link with stormpy, prism
-- errors management
