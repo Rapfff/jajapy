@@ -75,10 +75,11 @@ Let now use our training set to learn ``original_model`` with the Baum-Welch alg
 
 .. code-block:: python
 
-	output_model = ja.BW_HMM().fit(training_set, nb_states=5)
+	output_model = ja.BW_HMM().fit(training_set, nb_states=5, stormpy_output=False)
 	print(output_model)
 
-For the initial model we used a randomly generated HMM with 5 states.
+For the initial model we used a randomly generated HMM with 5 states. Since we are not planning to use Storm on this model,
+we set the `stormpy_output` parameter to False.
 
 Evaluating the BW output model
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -160,7 +161,7 @@ At each iteration, the library will generate a new model with 7 states.
 	>>> best_model = None
 	>>> quality_best = -1024
 	>>> for n in range(1,nb_trials+1):
-	...		current_model = ja.BW_MC().fit(training_set,nb_states=7,pp=n)
+	...		current_model = ja.BW_MC().fit(training_set,nb_states=7,pp=n, stormpy_output=False)
 	...		current_quality = current_model.logLikelihood(test_set)
 	...		if quality_best < current_quality: #we keep the best model only
 	...			quality_best = current_quality
@@ -324,7 +325,8 @@ scheduler with probability 0.25.
 	learning_rate = 0
 	output_model = ja.Active_BW_MDP().fit(training_set,learning_rate,
 										  nb_iterations=20, nb_sequences=50,
-										  epsilon_greedy=0.75, nb_states=9)
+										  epsilon_greedy=0.75, nb_states=9,
+										  stormpy_output=False)
 	output_quality = output_model.logLikelihood(test_set)
 	
 	print(output_model)
