@@ -1,6 +1,5 @@
 import stormpy as st
-from numpy import zeros, array, insert, where, full
-from ..hmm import HMM
+from numpy import zeros, where, full
 from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
@@ -23,86 +22,19 @@ def modeltoStorm(h):
 	stormpy.SparseCtmc, stormpy.SparseDtmc or stormpy.SparseMdp
 		A trace-equivalent model.
 	"""
-	if type(h) != MDP and type(h) != CTMC and type(h) != MC and type(h) != HMM:
-		print("The input model should be a MDP, a CTMC, a MC or a HMM.")
-		return None
+	state_index, c =  _buildStateIndex(h)
+	transition_matrix, exit_rates = _buildTransitionMatrix(h,state_index,c)
+	state_labeling = _buildStateLabeling(h,state_index,c)
 	if type(h) == MDP:
-		return _MDPtoStorm(h)
-	if type(h) == CTMC:
-		return _CTMCtoStorm(h)
+		model = _buildMDP(h,c,transition_matrix,state_labeling)
+	elif type(h) == CTMC:
+		model = _buildCTMC(transition_matrix,state_labeling,exit_rates)
+	else:
+		model = _buildDTMC(transition_matrix,state_labeling)
+	return model
 
-	nb_states = array([len(h.getAlphabet(i)) for i in range(h.nb_states)])
-	nb_states_i = nb_states.cumsum()
-	nb_states_i = insert(nb_states_i,0,0)
-	nb_states = sum(nb_states)
-	transition_matrix = zeros((nb_states+1,nb_states+1))
-
-	for sh in where(h.initial_state > 0.0)[0]:
-		for i,o in enumerate(h.getAlphabet(sh)):
-			ss = nb_states_i[sh]
-			transition_matrix[nb_states][ss+i] = h.pi(sh)*h.b(sh,o)
-
-	if type(h) == HMM:
-		_HMMtoStorm(h,transition_matrix,nb_states_i)
-	elif type(h) == MC or type(h) == CTMC:
-		_MCtoStorm( h,transition_matrix,nb_states_i)
-
-	transition_matrix = st.build_sparse_matrix(transition_matrix)
-
-	state_labeling = st.storage.StateLabeling(nb_states+1)
-	state_labeling.add_label('init')
-	for o in h.getAlphabet():
-		state_labeling.add_label(o)
-	
-	for s in range(h.nb_states):
-		for i,o in enumerate(h.getAlphabet(s)):
-			state_labeling.add_label_to_state(o,nb_states_i[s]+i)
-	state_labeling.add_label_to_state('init',nb_states)
-	
-	components = st.SparseModelComponents(transition_matrix, state_labeling)
-
-	return st.storage.SparseDtmc(components)
-
-
-def _MDPtoStorm(h):
-	state_index = full((h.nb_states, len(h.getAlphabet())+1),-1,dtype=int)
+def _buildMDP(h,c,transition_matrix,state_labeling):
 	nb_actions = len(h.getActions())
-	c = 0
-
-	for s in where(h.initial_state > 0.0)[0]:
-		state_index[s][len(h.getAlphabet())] = c
-		c += 1
-	for s in range(h.nb_states):
-		actions, states, observations = where(h.matrix[s] > 0.0)
-		for s2, o in zip(states,observations):
-			if state_index[s2][o] == -1:
-				state_index[s2][o] = c
-				c += 1
-
-	transition_matrix = zeros((c*nb_actions,c))
-	
-	for s in range(h.nb_states):
-		for a in h.getActions(s):
-			p = zeros(c)
-			ia = h.actions.index(a)
-			states, observations = where(h.matrix[s][ia] > 0.0)
-			for s2, o in zip(states,observations):
-				p[state_index[s2][o]] = h.tau(s,a,s2,h.getAlphabet()[o])
-			for x in [i for i in state_index[s] if i > -1]:
-				transition_matrix[x*nb_actions+ia] = p
-	transition_matrix = st.build_sparse_matrix(transition_matrix,[nb_actions*i for i in range(c)])
-
-	state_labeling = st.storage.StateLabeling(c)
-	for o in h.getAlphabet():
-		state_labeling.add_label(o)
-	state_labeling.add_label('init')
-	states, observations = where(state_index > -1)
-	for s,o in zip(states,observations):
-		if o == len(h.getAlphabet()):
-			state_labeling.add_label_to_state('init',state_index[s][o])
-		else:
-			state_labeling.add_label_to_state(h.getAlphabet()[o],state_index[s][o])
-
 	choice_labeling = st.storage.ChoiceLabeling(c*nb_actions)
 	for a in h.getActions():
 		choice_labeling.add_label(a)
@@ -112,7 +44,6 @@ def _MDPtoStorm(h):
 	reward_models = {}
 	action_reward = [-1.0 for _ in range(len(transition_matrix))]
 	reward_models["nb_executed_actions"] = st.SparseRewardModel(optional_state_action_reward_vector = action_reward)
-
 	components = st.SparseModelComponents(transition_matrix=transition_matrix,
 										  state_labeling=state_labeling,
 										  reward_models=reward_models)
@@ -120,34 +51,21 @@ def _MDPtoStorm(h):
 	mdp = st.storage.SparseMdp(components)
 	return mdp
 
+def _buildCTMC(transition_matrix,state_labeling,exit_rates):
+	components = st.SparseModelComponents(transition_matrix=transition_matrix,
+										  state_labeling=state_labeling,
+										  rate_transitions=True)
+	components.exit_rates = exit_rates
+	ctmc = st.storage.SparseCtmc(components)
+	return ctmc
 
-def _CTMCtoStorm(h):
-	state_index = full((h.nb_states, len(h.getAlphabet())+1),-1,dtype=int)
-	c = 0
-	for s in where(h.initial_state > 0.0)[0]:
-		state_index[s][len(h.getAlphabet())] = c
-		c += 1
-	for s in range(h.nb_states):
-		states, observations = where(h.matrix[s] > 0.0)
-		for s2, o in zip(states,observations):
-			if state_index[s2][o] == -1:
-				state_index[s2][o] = c
-				c += 1
+def _buildDTMC(transition_matrix, state_labeling):
+	components = st.SparseModelComponents(transition_matrix=transition_matrix,
+										  state_labeling=state_labeling)
+	mc = st.storage.SparseDtmc(components)
+	return mc
 
-	transition_matrix = zeros((c,c))
-	exit_rates = zeros(c)
-	
-	for s in range(h.nb_states):
-		p = zeros(c)
-		states, observations = where(h.matrix[s] > 0.0)
-		for s2, o in zip(states,observations):
-			p[state_index[s2][o]] = h.tau(s,s2,h.getAlphabet()[o])
-		for x in [i for i in state_index[s] if i > -1]:
-			transition_matrix[x] = p
-			exit_rates[x] = h.e(s)
-	transition_matrix = st.build_sparse_matrix(transition_matrix)
-
-	
+def _buildStateLabeling(h,state_index,c):
 	state_labeling = st.storage.StateLabeling(c)
 	for o in h.getAlphabet():
 		state_labeling.add_label(o)
@@ -158,30 +76,83 @@ def _CTMCtoStorm(h):
 			state_labeling.add_label_to_state('init',state_index[s][o])
 		else:
 			state_labeling.add_label_to_state(h.getAlphabet()[o],state_index[s][o])
+	return state_labeling
 
-	components = st.SparseModelComponents(transition_matrix=transition_matrix,
-										  state_labeling=state_labeling,
-										  rate_transitions=True)
-	components.exit_rates = exit_rates
-	ctmc = st.storage.SparseCtmc(components)
-	return ctmc
-				
+def _buildTransitionMatrix(h,state_index,c):
+	if type(h) == MDP:
+		nb_actions = len(h.getActions())
+		transition_matrix = zeros((c*nb_actions,c))
+		for s in range(h.nb_states):
+			for a in h.getActions(s):
+				p = zeros(c)
+				ia = h.actions.index(a)
+				states, observations = where(h.matrix[s][ia] > 0.0)
+				for s2, o in zip(states,observations):
+					p[state_index[s2][o]] = h.tau(s,a,s2,h.getAlphabet()[o])
+				for x in [i for i in state_index[s] if i > -1]:
+					transition_matrix[x*nb_actions+ia] = p
+		return st.build_sparse_matrix(transition_matrix,[nb_actions*i for i in range(c)]), None
+		
+	elif type(h) == CTMC:
+		transition_matrix = zeros((c,c))
+		exit_rates = zeros(c)
+		for s in range(h.nb_states):
+			p = zeros(c)
+			states, observations = where(h.matrix[s] > 0.0)
+			for s2, o in zip(states,observations):
+				p[state_index[s2][o]] = h.tau(s,s2,h.getAlphabet()[o])
+			for x in [i for i in state_index[s] if i > -1]:
+				transition_matrix[x] = p
+				exit_rates[x] = h.e(s)
+		return st.build_sparse_matrix(transition_matrix), exit_rates
+	else:
+		transition_matrix = zeros((c,c))
+		for s in range(h.nb_states):
+			p = zeros(c)
+			if type(h) == MC:
+				states, observations = where(h.matrix[s] > 0.0)
+				for s2, o in zip(states,observations):
+					p[state_index[s2][o]] = h.tau(s,s2,h.getAlphabet()[o])
+			else:
+				states = where(h.matrix[s] > 0.0)[0]
+				observations = where(h.output[s] > 0.0)[0]
+				for s2 in states:
+					for o in observations:
+						p[state_index[s2][o]] = h.tau(s,s2,h.getAlphabet()[o])
+			for x in [i for i in state_index[s] if i > -1]:
+				transition_matrix[x] = p
+		return st.build_sparse_matrix(transition_matrix), None
 
-def _HMMtoStorm(h,transition_matrix,nb_states_i):
-	for s1h in range(h.nb_states):
-		for i1 in range(len(h.getAlphabet(s1h))):
-			for s2h in where(h.matrix[s1h] > 0.0)[0]:
-				for i2,o2 in enumerate(h.getAlphabet(s2h)):
-					src = nb_states_i[s1h]+i1
-					dst = nb_states_i[s2h]+i2
-					transition_matrix[src][dst] = h.a(s1h,s2h)*h.b(s2h,o2)
 
-def _MCtoStorm(h,transition_matrix,nb_states_i):
-	for s1h in range(h.nb_states):
-		for i1,o1 in enumerate(h.getAlphabet(s1h)):
-			for s2h in where(h.matrix[s1h].T[h.alphabet.index(o1)] > 0.0)[0]:
-				for i2,o2 in enumerate(h.getAlphabet(s2h)):
-					src = nb_states_i[s1h]+i1
-					dst = nb_states_i[s2h]+i2
-					transition_matrix[src][dst] = h.b(s2h,o2)*h.tau(s1h,s2h,o1)/h.b(s1h,o1)
-	
+def _buildStateIndex(h):
+	if type(h) == MDP:
+		state_index = full((h.nb_states, len(h.getAlphabet())+1),-1,dtype=int)
+		c = 0
+
+		for s in where(h.initial_state > 0.0)[0]:
+			state_index[s][len(h.getAlphabet())] = c
+			c += 1
+		for s in range(h.nb_states):
+			_, states, observations = where(h.matrix[s] > 0.0)
+			for s2, o in zip(states,observations):
+				if state_index[s2][o] == -1:
+					state_index[s2][o] = c
+					c += 1
+	else:
+		state_index = full((h.nb_states, len(h.getAlphabet())+1),-1,dtype=int)
+		c = 0
+		for s in where(h.initial_state > 0.0)[0]:
+			state_index[s][len(h.getAlphabet())] = c
+			c += 1
+		for s in range(h.nb_states):
+			if type(h) == MC or type(h) == CTMC:
+				states, observations = where(h.matrix[s] > 0.0)
+			else:
+				states = where(h.matrix[s] > 0.0)[0]
+				observations = where(h.output[s] > 0.0)[0]
+			for s2 in states:
+				for o in observations:
+					if state_index[s2][o] == -1:
+						state_index[s2][o] = c
+						c += 1
+	return state_index, c

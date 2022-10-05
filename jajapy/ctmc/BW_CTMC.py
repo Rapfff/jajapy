@@ -1,7 +1,7 @@
 from .CTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log, inf
+from numpy import array, zeros, dot, append, ones, log, inf, newaxis
 
 
 class BW_CTMC(BW):
@@ -148,7 +148,8 @@ class BW_CTMC(BW):
 	def fit(self, traces: Set, initial_model: CTMC=None, nb_states: int=None,
 			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
 			max_exit_rate_time: int=10.0, self_loop: bool = True,
-			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='', verbose: bool = True):
+			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
+			verbose: bool = True, return_data: bool = False, stormpy_output: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -194,6 +195,14 @@ class BW_CTMC(BW):
 		verbose: bool, optional
 			Print or not a small recap at the end of the learning.
 			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
 
 		Returns
 		-------
@@ -209,7 +218,7 @@ class BW_CTMC(BW):
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
 		self.alphabet = initial_model.getAlphabet()
-		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 
 	def splitTime(self,sequence: list) -> tuple:
@@ -248,25 +257,25 @@ class BW_CTMC(BW):
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
 			return False
-		####################
+		####################	
 		for s in range(self.nb_states):
 			den = zeros(self.nb_states)
-			num = zeros(shape=(self.nb_states,self.nb_states*len(self.alphabet)))
+			#num = zeros(shape=(self.nb_states,self.nb_states*len(self.alphabet)))
+			num = zeros(shape=(self.nb_states,self.nb_states,len(self.alphabet)))
 
 			if timed:
 				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
 			else:
 				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
-			c = 0
 			for ss in range(self.nb_states):
 				if timed:
 					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				else:
 					p = array([self.h_l(s,ss,o) for o in obs_seq])
-				for obs in self.alphabet:
+				alph_bet = alpha_matrix[s][:-1]*p*beta_matrix[ss][1:]*times/proba_seq
+				for o,obs in enumerate(self.alphabet):
 					arr_dirak = [1.0 if o == obs else 0.0 for o in obs_seq]
-					num[s,c] = dot(alpha_matrix[s][:-1]*arr_dirak*beta_matrix[ss][1:]*p,times/proba_seq).sum()
-					c += 1
+					num[s,ss,o] = (alph_bet*arr_dirak).sum()
 		####################			
 		num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 		####################
@@ -281,18 +290,12 @@ class BW_CTMC(BW):
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		list_sta = []
-		for i in range(self.nb_states):
-			for _ in self.alphabet:
-				list_sta.append(i)
-		list_obs = self.alphabet*self.nb_states
-		new_states = []
+		for s in range(len(den)):
+			if den[s] == 0.0:
+				den[s] = 1.0
+				num[s] = self.h.matrix[s]
 
-		for s in range(self.nb_states):
-			if den[s] != 0.0:
-				l = list(zip(list_sta, list_obs, num[s]/den[s]))
-				new_states.append(CTMC_state(l,self.alphabet,self.nb_states))
-			else:
-				new_states.append(self.h.matrix[s])
+		matrix = num/den[:, newaxis, newaxis]
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [CTMC(array(new_states),self.alphabet,initial_state),currentloglikelihood]
+		return [CTMC(matrix,self.alphabet,initial_state),currentloglikelihood]
+		

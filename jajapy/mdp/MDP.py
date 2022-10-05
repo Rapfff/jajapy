@@ -3,7 +3,7 @@ from math import log
 from ..base.Model import Model
 from ..base.Set import Set
 from .Scheduler import Scheduler
-from numpy.random import geometric
+from numpy.random import geometric, randint
 from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape
 from ast import literal_eval
 from multiprocessing import cpu_count, Pool
@@ -68,7 +68,7 @@ class MDP(Model):
 		if state == -1:
 			return self.actions
 		else:
-			return [self.actions[i] for i in where(self.matrix[state].sum(axis=2) > 0.0)[0]]
+			return set(self.actions[i] for i in where(self.matrix[state].sum(axis=2) > 0.0)[0])
 
 	def getAlphabet(self,state: int = -1, action: str = None) -> list:
 		"""
@@ -495,7 +495,7 @@ def loadMDP(file_path: str) -> MDP:
 	return MDP(matrix, alphabet, actions, initial_state, name)
 
 
-def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state: bool = False) -> MDP:
+def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state: bool = False, deterministic: bool = False) -> MDP:
 	"""
 	Generate a random MDP.
 
@@ -510,6 +510,9 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
 		Default is False.
+	deterministic: bool, optional
+		If True, the model will be determinstic: in state `s`, with action `a`, there is only one transition labelled with `o`.
+		Default is False.
 	
 	Returns
 	-------
@@ -520,9 +523,18 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 	for s in range(nb_states):
 		matrix.append([])
 		for a in actions:
-			p = array(randomProbabilities(nb_states*len(alphabet)))
-			p = reshape(p, (nb_states,len(alphabet)))
+			if not deterministic:
+				p = array(randomProbabilities(nb_states*len(alphabet)))
+				p = reshape(p, (nb_states,len(alphabet)))
+			else:
+				p = zeros((nb_states,len(alphabet)))
+				probs = randomProbabilities(len(alphabet))
+				states = randint(0,nb_states,len(alphabet))
+				for i in range(len(alphabet)):
+					p[states[i]][i] = probs[i]
+			
 			matrix[-1].append(p)
+
 	matrix = array(matrix)
 
 	if random_initial_state:

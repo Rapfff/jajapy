@@ -70,7 +70,7 @@ class MDPTestclass(unittest.TestCase):
 		initial_model   = loadMDP("jajapy/tests/materials/mdp/random_MDP.txt")
 		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")
 		output_expected = loadMDP("jajapy/tests/materials/mdp/output_MDP.txt")
-		output_gotten   = BW_MDP().fit( training_set, initial_model)
+		output_gotten   = BW_MDP().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m.generateSet(10000,10,scheduler)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

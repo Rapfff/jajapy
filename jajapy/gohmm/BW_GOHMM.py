@@ -16,7 +16,7 @@ class BW_GOHMM(BW):
 	def fit(self, traces: Set, initial_model: GOHMM=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01,  max_it: int= inf,
-			pp: str='', verbose: bool = True):
+			pp: str='', verbose: bool = True, return_data: bool= False):
 		"""
 		Fits the model according to ``traces``.
 
@@ -53,6 +53,11 @@ class BW_GOHMM(BW):
 		verbose: bool, optional
 			Print or not a small recap at the end of the learning.
 			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
 
 		Returns
 		-------

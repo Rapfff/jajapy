@@ -8,4 +8,4 @@ from .mgohmm import *
 try:
 	from .with_stormpy import *
 except ModuleNotFoundError:
-	print("Stormpy not found.")
+	print("WARNING: Stormpy not found.")

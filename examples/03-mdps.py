@@ -68,7 +68,8 @@ def example_3():
 	learning_rate = 0
 	output_model = ja.Active_BW_MDP().fit(training_set,learning_rate,
 										  nb_iterations=20, nb_sequences=50,
-										  epsilon_greedy=0.75, nb_states=9)
+										  epsilon_greedy=0.75, nb_states=9,
+										  stormpy_output=False)
 	output_quality = output_model.logLikelihood(test_set)
 	
 	print(output_model)

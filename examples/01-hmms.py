@@ -32,7 +32,7 @@ def example_1():
 
 	# LEARNING
 	#---------
-	output_model = ja.BW_HMM().fit(training_set, nb_states=5)
+	output_model = ja.BW_HMM().fit(training_set, nb_states=5, stormpy_output=False)
 	print(output_model)
 
 	# OUTPUT EVALUATION

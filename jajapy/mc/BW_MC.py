@@ -12,7 +12,9 @@ class BW_MC(BW):
 	
 	def fit(self, traces: Set, initial_model: MC=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01, max_it: int = inf, pp: str='', verbose: bool = True):
+			epsilon: float=0.01, max_it: int = inf, pp: str='',
+			verbose: bool = True, return_data: bool= False,
+			stormpy_output: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -49,6 +51,14 @@ class BW_MC(BW):
 		verbose: bool, optional
 			Print or not a small recap at the end of the learning.
 			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
 
 		Returns
 		-------
@@ -61,7 +71,7 @@ class BW_MC(BW):
 				return
 			initial_model = MC_random(nb_states,traces.getAlphabet(),random_initial_state)
 		self.alphabet = initial_model.getAlphabet()
-		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 	def _processWork(self,sequence,times):
 		alpha_matrix = self.computeAlphas(sequence)

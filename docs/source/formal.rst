@@ -1,6 +1,6 @@
 Formalism
 =========
-This page contains the formal presentation of most of the learning algorithm and models implemented in Jajapy.
+This page contains the formal presentation of most of the learning algorithms and models implemented in Jajapy.
 
 * HMM
 	* Baum-Welch for HMMs :download:`pdf <pdfs/BW_for_HMM.pdf>`

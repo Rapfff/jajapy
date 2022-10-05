@@ -107,7 +107,7 @@ class MM_CTMC_Composition(BW_CTMC):
 		self.alphabets = [None,self.hs[1].getAlphabet(),self.hs[2].getAlphabet()]
 		self.disjoints_alphabet = len(set(self.alphabets[1]).intersection(set(self.alphabets[2]))) == 0
 		self.to_update = to_update
-		super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
+		super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,stormpy_output=False)
 		if output_file:
 			self.hs[1].save(output_file+"_1.txt")
 			self.hs[2].save(output_file+"_2.txt")

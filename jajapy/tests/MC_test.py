@@ -69,7 +69,7 @@ class MCTestclass(unittest.TestCase):
 		initial_model   = loadMC("jajapy/tests/materials/mc/random_MC.txt")
 		training_set    = loadSet("jajapy/tests/materials/mc/training_set_MC.txt")
 		output_expected = loadMC("jajapy/tests/materials/mc/output_MC.txt")
-		output_gotten   = BW_MC().fit( training_set, initial_model)
+		output_gotten   = BW_MC().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

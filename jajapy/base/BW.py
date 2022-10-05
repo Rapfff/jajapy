@@ -1,6 +1,6 @@
 from sys import platform
 from multiprocessing import cpu_count, Pool
-from numpy import array, dot, append, zeros, ones, longdouble, float64
+from numpy import array, dot, append, zeros, ones, float64
 from datetime import datetime
 from .Set import Set
 
@@ -116,7 +116,7 @@ class BW:
 		else:
 			return [self._processWork(seq, times) for seq,times in zip(training_set.sequences,training_set.times)]
 	
-	def _endPrint(self,it,rt,ll):
+	def _endPrint(self,it,rt):
 		print()
 		print("---------------------------------------------")
 		print("Learning finished")
@@ -125,7 +125,9 @@ class BW:
 		print("---------------------------------------------")
 		print()
 
-	def fit(self,training_set: Set,initial_model,output_file: str,epsilon: float, max_it: int, pp: str, verbose: bool):
+	def fit(self,training_set: Set,initial_model,output_file: str,
+			epsilon: float, max_it: int, pp: str, verbose: bool,
+			return_data: bool, stormpy_output: bool = False):
 		"""
 		Fits the model according to ``traces``.
 
@@ -151,12 +153,28 @@ class BW:
 			Will be printed at each iteration.
 		verbose: bool
 			Print or not a small recap at the end of the learning.
+		return_data: bool
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+		stormpy_output: bool
+			If set to True the output model will be a Stormpy sparse model.
+			Doesn't work for GOHMM and MGOHMM.
 
 		Returns
 		-------
 		Model
 			fitted model.
 		"""
+
+		if stormpy_output:
+			try:
+				#import stormpy as st
+				from ..with_stormpy import modeltoStorm
+			except ModuleNotFoundError:
+				print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
+				stormpy_output = False
+
 		start_time = datetime.now()
 		self.h = initial_model
 		self.nb_states = self.h.nb_states
@@ -176,11 +194,19 @@ class BW:
 				prevloglikelihood = currentloglikelihood
 		
 		running_time = datetime.now()-start_time
+		running_time = running_time.seconds+running_time.microseconds*10**-6
 
 		if output_file:
 			self.h.save(output_file)
 		
 		if verbose:
-			self._endPrint(counter,running_time,currentloglikelihood)
+			self._endPrint(counter,running_time)
 
+		if stormpy_output:
+			self.h = modeltoStorm(self.h)
+
+		if return_data:
+			info = {"learning_rounds":counter,"learning_time":running_time,"training_set_loglikelihood":currentloglikelihood}
+			return self.h, info
+			
 		return self.h

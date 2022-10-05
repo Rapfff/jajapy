@@ -8,6 +8,8 @@ from multiprocessing import Pool
 from random import random
 from numpy import zeros, dot, array, argmin
 from sys import platform
+from datetime import datetime
+
 class ActiveLearningScheduler:
 	"""
 	Class for a scheduler used during the active learning sampling.
@@ -86,7 +88,8 @@ class Active_BW_MDP(BW_MDP):
 			sequence_length: int = None, epsilon_greedy: float = 0.9,
 			initial_model: MDP=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01, pp: str='') -> MDP:
+			epsilon: float=0.01, pp: str='',
+			verbose: bool = True, return_data: bool= False, stormpy_output: bool = False):
 		"""
 		Fits the model according to ``traces``.
 
@@ -137,15 +140,37 @@ class Active_BW_MDP(BW_MDP):
 			but the longer the running time. By default 0.01.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood',
+			Default is False.
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
 
 		Returns
 		-------
 		MDP
 			fitted MDP.
 		"""
+		if stormpy_output:
+			try:
+				#import stormpy as st
+				from ..with_stormpy import modeltoStorm
+			except ModuleNotFoundError:
+				print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
+				stormpy_output = False
 
-		super().fit(traces, initial_model,nb_states,
-					random_initial_state, output_file,epsilon,"Passive iteration:"+pp)
+		counter = 0
+		start_time = datetime.now()
+		_, info = super().fit(traces, initial_model,nb_states,
+					random_initial_state, output_file,epsilon,"Passive iteration:"+pp,
+					return_data=True, stormpy_output=False)
+		counter += info['learning_rounds']
 	
 		total_traces = traces
 		
@@ -158,22 +183,41 @@ class Active_BW_MDP(BW_MDP):
 			total_traces.addSet(traces)
 			
 			if lr == 0:
-				super().fit(total_traces, initial_model=self.h,
+				_, info = super().fit(total_traces, initial_model=self.h,
 							output_file=output_file, epsilon=epsilon,
-							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp)
+							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp,
+							return_data=True, stormpy_output=False)
+				counter += info['learning_rounds']
 			else:
 				if lr == "dynamic":
 					lr_it = sum(traces.times)/(sum(total_traces.times)-sum(traces.times))
 				else:
 					lr_it = lr
 				old_h = self.h
-				super().fit(traces, initial_model=self.h,
+				_, info = super().fit(traces, initial_model=self.h,
 							output_file=output_file, epsilon=epsilon,
-							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp)
+							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp,
+							return_data=True, stormpy_output=False)
+				counter += info['learning_rounds']
 				self._mergeModels(old_h,lr_it)
 
 			c += 1
 		
+		running_time = datetime.now()-start_time
+		running_time = running_time.hours*60**2+running_time.minutes*60+running_time.seconds+running_time.microseconds*10**-6
+
+		if verbose:
+			self._endPrint(counter, running_time)
+
+		if stormpy_output:
+			self.h = modeltoStorm(self.h)
+			
+		if return_data:
+			info = {"learning_rounds":counter,
+					"learning_time":running_time,
+					"training_set_loglikelihood":self.h.logLikelihood(total_traces)}
+			return self.h, info
+
 		return self.h
 
 	def _mergeModels(self,old_h: MDP,lr: float) -> None:

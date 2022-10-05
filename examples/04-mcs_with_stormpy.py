@@ -80,7 +80,7 @@ def example_4():
 	best_model = None
 	quality_best = -1024
 	for n in range(1,nb_trials+1):
-		current_model = ja.BW_MC().fit(training_set,initial_model=firstGuess())
+		current_model = ja.BW_MC().fit(training_set,initial_model=firstGuess(),stormpy_output=False)
 		current_quality = current_model.logLikelihood(test_set)
 		if quality_best < current_quality: #we keep the best model only
 				quality_best = current_quality

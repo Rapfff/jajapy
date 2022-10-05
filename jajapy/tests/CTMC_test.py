@@ -79,7 +79,7 @@ class CTMCTestclass(unittest.TestCase):
 		initial_model   = loadCTMC("jajapy/tests/materials/ctmc/random_CTMC.txt")
 		training_set    = loadSet("jajapy/tests/materials/ctmc/training_set_CTMC.txt")
 		output_expected = loadCTMC("jajapy/tests/materials/ctmc/output_CTMC.txt")
-		output_gotten   = BW_CTMC().fit( training_set, initial_model)
+		output_gotten   = BW_CTMC().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m1.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
