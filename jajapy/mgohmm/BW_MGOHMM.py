@@ -78,7 +78,7 @@ class BW_MGOHMM(BW):
 			initial_model = MGOHMM_random(nb_states,nb_distributions,
 										  random_initial_state)
 		self.nb_distr = initial_model.nb_distributions
-		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose, return_data)
 
 	def _processWork(self,sequence,times):
 		sequence = array(sequence)
