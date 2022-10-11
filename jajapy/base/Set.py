@@ -1,5 +1,5 @@
 from ast import literal_eval
-from numpy import float64
+from numpy import float64, array
 class Set:
 	"""
 	Class representing a set (training set / test set).
@@ -51,11 +51,11 @@ class Set:
 			else:
 				self.type = 0 # HMM or MC
 
-		if not times:
+		if type(times) == type(None):
 			self.setFromList(sequences)
 		else:
 			self.sequences = sequences
-			self.times = times
+			self.times = array(times)
 	
 	def save(self,file_path: str) -> None:
 		"""
@@ -90,7 +90,7 @@ class Set:
 				res[1].append(0)
 			res[1][res[0].index(s)] += 1
 		self.sequences = res[0]
-		self.times = res[1]
+		self.times = array(res[1])
 	
 	def isEqual(self, set2) -> bool:
 		"""
@@ -223,16 +223,3 @@ def loadSet(file_path: str) -> Set:
 		l = f.readline()
 	f.close()
 	return Set(res_set[0],res_set[1],from_MDP)
-
-def setFromList(l: list) -> Set:
-	"""
-	Convert a list of sequences of observations to a set.
-
-	Parameters
-	----------
-	l : list
-		list of sequences of observations.
-	"""
-	s = Set([],[])
-	s.setFromList(l)
-	return s

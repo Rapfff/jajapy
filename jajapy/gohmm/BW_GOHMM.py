@@ -13,7 +13,7 @@ class BW_GOHMM(BW):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self, traces: Set, initial_model: GOHMM=None, nb_states: int=None,
+	def fit(self, traces, initial_model: GOHMM=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01,  max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool= False):
@@ -22,7 +22,7 @@ class BW_GOHMM(BW):
 
 		Parameters
 		----------
-		traces : list
+		traces : Set or list or numpy.ndarray
 			training set.
 		initial_model : GOHMM, optional.
 			first hypothesis. If not set it will create a random GOHMM with
@@ -64,6 +64,8 @@ class BW_GOHMM(BW):
 		GOHMM
 			fitted GOHMM.
 		"""
+		if type(traces) != Set:
+			traces = Set(traces, t=2)
 		if not initial_model:
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")

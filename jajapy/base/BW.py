@@ -174,6 +174,8 @@ class BW:
 			except ModuleNotFoundError:
 				print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
 				stormpy_output = False
+		
+		
 
 		start_time = datetime.now()
 		self.h = initial_model

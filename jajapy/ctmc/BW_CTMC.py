@@ -145,7 +145,7 @@ class BW_CTMC(BW):
 		return super().computeBetas(sequence)
 
 
-	def fit(self, traces: Set, initial_model: CTMC=None, nb_states: int=None,
+	def fit(self, traces, initial_model: CTMC=None, nb_states: int=None,
 			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
 			max_exit_rate_time: int=10.0, self_loop: bool = True,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
@@ -155,7 +155,7 @@ class BW_CTMC(BW):
 
 		Parameters
 		----------
-		traces : Set
+		traces : Set or list or numpy.ndarray
 			training set.
 		initial_model : CTMC, optional.
 			first hypothesis. If not set it will create a random CTMC with
@@ -209,6 +209,8 @@ class BW_CTMC(BW):
 		CTMC
 			fitted CTMC.
 		"""
+		if type(traces) != Set:
+			traces = Set(traces, t=4)
 		if not initial_model:
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")
