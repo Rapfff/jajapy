@@ -13,8 +13,8 @@
 
 ## Introduction
 `jajapy` is a python library implementing the **Baum-Welch** algorithm on various kinds of Markov models.
+`jajapy` generates models which are compatible with the Stormpy model checker. Thus, `jajapy`can be use as a learning extension to the Storm model checker.
 
-Please cite this repository if you use this library.
 
 ## Main features
 `jajapy` provides:
@@ -32,13 +32,15 @@ Please cite this repository if you use this library.
 
 </div>
 
+`jajapy` generates by default Stormpy models (except for GoHMM and MGoHMM).
+
 ## Installation
 ``pip install jajapy``
 
 ## Requirements
 - numpy
 - scipy
-- stormpy (recommended)
+- stormpy (recommended: if stormpy is not installed, `jajapy` will generate models in jajapy format).
 
 ## Documentation
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
