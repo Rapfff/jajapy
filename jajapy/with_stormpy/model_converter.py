@@ -1,17 +1,75 @@
 import stormpy as st
-from numpy import zeros, where, full
+from numpy import zeros, where, full, array, delete
 from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
 
+def stormModeltoJajapy(h,actions_name:list = []):
+
+	def mergeStates(m,i,j):
+		if type(m) != MDP:
+			for s in range(m.nb_states):
+				tmp = array([m.matrix[s][x] if (x!=i and x != j) else m.matrix[s][i]+m.matrix[s][j] for x in range(m.nb_states)])
+				m.matrix[s] = tmp
+			m.matrix = delete(m.matrix,j,0)
+			m.matrix = delete(m.matrix,j,1)
+		else:
+			for s in range(m.nb_states):
+				tmp = zeros((len(m.actions),m.nb_states,len(m.alphabet)))
+				for a in range(len(m.actions)):
+					tmp[a] = array([m.matrix[s][a][x] if (x!=i and x != j) else m.matrix[s][a][i]+m.matrix[s][a][j] for x in range(m.nb_states)])
+				m.matrix[s] = tmp
+			m.matrix = delete(m.matrix,j,0)
+			m.matrix = delete(m.matrix,j,2)
+
+		m.initial_state[i] += m.initial_state[j]
+		m.initial_state = delete(m.initial_state,j)
+		m.nb_states -= 1
+
+	def reduced(m):
+		#remove unused observation
+		if type(m) != MDP:
+			while len(where(m.matrix.sum(axis=1).sum(axis=0) == 0)[0]) > 0:
+				to_delete = where(m.matrix.sum(axis=1).sum(axis=0) == 0)[0][0]
+				m.matrix = delete(m.matrix,to_delete,2)
+				m.alphabet.remove(m.alphabet[to_delete])
+		else:
+			while len(where(m.matrix.sum(axis=1).sum(axis=1).sum(axis=0) == 0)[0]) > 0:
+				to_delete = where(m.matrix.sum(axis=1).sum(axis=1).sum(axis=0) == 0)[0][0]
+				m.matrix = delete(m.matrix,to_delete,3)
+				m.alphabet.remove(m.alphabet[to_delete])
+
+		i = 0
+		while i < m.nb_states-1:
+			j = i+1
+			while j < m.nb_states:
+				if type(m) != MDP:
+					tmp_i = array([m.matrix[i][x] if (x!=i and x != j) else m.matrix[i][i]+m.matrix[i][j] for x in range(m.nb_states)])
+					tmp_i = delete(tmp_i,j)
+
+					tmp_j = array([m.matrix[j][x] if (x!=i and x != j) else m.matrix[j][i]+m.matrix[j][j] for x in range(m.nb_states)])
+					tmp_j = delete(tmp_j,j)
+				else:
+					tmp_i = zeros((len(m.actions),m.nb_states-1,len(m.alphabet)))
+					tmp_j = zeros((len(m.actions),m.nb_states-1,len(m.alphabet)))
+					for a in range(len(m.actions)):
+						t = array([m.matrix[i][a][x] if (x!=i and x != j) else m.matrix[i][a][i]+m.matrix[i][a][j] for x in range(m.nb_states)])
+						t = delete(t,j,0)
+						tmp_i[a] = t
+						t = array([m.matrix[j][a][x] if (x!=i and x != j) else m.matrix[j][a][i]+m.matrix[j][a][j] for x in range(m.nb_states)])
+						t = delete(t,j,0)
+						tmp_j[a] = t
+
+				if (tmp_i==tmp_j).all():
+					mergeStates(m,i,j)
+					j -= 1
+				j += 1
+			i += 1
 
 
-
-
-def stormModeltoJajapy(h):
-	if type(h) == st.sparseDtmc:
+	if type(h) == st.SparseDtmc:
 		ty = 0
-	elif type(h) == st.sparseCtmc:
+	elif type(h) == st.SparseCtmc:
 		ty = 1
 	else:
 		ty = 2
@@ -35,10 +93,13 @@ def stormModeltoJajapy(h):
 
 		if ty > 0:
 			if len(state_labels[-1]) > 1:
-				print("ERROR") # for MDPs => ampty action, for CTMCs => no time
+				print("ERROR") # for MDPs => empty action, for CTMCs => no time
 				return False
 			for a in s.actions:
-				actions.append('a'+str(a))
+				if len(actions_name) <= int(str(a)):
+					actions.append('a'+str(a))
+				else:
+					actions.append(actions_name[int(str(a))])
 
 	labels = list(set(labels))
 	labels.remove('init')
@@ -59,12 +120,12 @@ def stormModeltoJajapy(h):
 		matrix = zeros((nb_states,nb_actions,nb_states,nb_labels))
 
 	c = 0
-	for s in state_labels:
-		for l in s[1:]:
+	for s in range(len(state_labels)):
+		for l in state_labels[s][1:]:
 			matrix[c][c+1][labels.index(l)] = 1.0
 			c += 1
 		
-		for a in s.actions:
+		for a in h.states[s].actions:
 			for t in a.transitions:
 				dest = states_id_mapping[t.column]
 				l = labels.index(state_labels[t.column][0])
@@ -79,13 +140,16 @@ def stormModeltoJajapy(h):
 		initial_states[states_id_mapping[i]] = 1.0/len(init)
 
 	if ty == 0:
-		return MC(matrix, labels, initial_states)
+		m = MC(matrix, labels, initial_states)
 	elif ty == 1:
 		for s in range(len(matrix)):
-			matrix[s] /= h.exit_rates[s]
-		return CTMC(matrix, labels, initial_states)
+			matrix[s] *= h.exit_rates[s]
+		m = CTMC(matrix, labels, initial_states)
 	else:
-		return MDP(matrix, labels, actions, initial_states)
+		m = MDP(matrix, labels, actions, initial_states)
+	
+	reduced(m)
+	return m
 
 
 def jajapyModeltoStorm(h):

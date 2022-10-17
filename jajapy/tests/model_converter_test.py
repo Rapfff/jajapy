@@ -3,7 +3,7 @@ from ..hmm import *
 from ..mc import *
 from ..ctmc import *
 from ..mdp import *
-from ..with_stormpy import jajapyModeltoStorm
+from ..with_stormpy import jajapyModeltoStorm, stormModeltoJajapy
 import stormpy
 
 def modelHMM():
@@ -59,8 +59,11 @@ class ModelConverterTestclass(unittest.TestCase):
 
 	def test_HMM(var):
 		m = modelHMM()
-		m = jajapyModeltoStorm(m)
 
+		ts = m.generateSet(1000,10)
+		ll1 = m.logLikelihood(ts)
+
+		m = jajapyModeltoStorm(m)
 		properties = stormpy.parse_properties('P=? [F "w"]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),0.6)
@@ -68,11 +71,18 @@ class ModelConverterTestclass(unittest.TestCase):
 		properties = stormpy.parse_properties('P=? [F "z"]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),0.4)
+
+		m = stormModeltoJajapy(m)
+		ll2 = m.logLikelihood(ts)
+		var.assertAlmostEqual(ll1,ll2)
 	
 	def test_MC(var):
 		m = modelMC_REBER()
-		m = jajapyModeltoStorm(m)
 
+		ts = m.generateSet(1000,10)
+		ll1 = m.logLikelihood(ts)
+
+		m = jajapyModeltoStorm(m)
 		properties = stormpy.parse_properties('P=? [F "E"]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),1.0)
@@ -80,11 +90,19 @@ class ModelConverterTestclass(unittest.TestCase):
 		properties = stormpy.parse_properties('P=? [G !"S"]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),0.4)
+
+		m = stormModeltoJajapy(m)
+		ll2 = m.logLikelihood(ts)
+		var.assertAlmostEqual(ll1,ll2)
 	
 	def test_MDP(var):
 		m = modelMDP_bigstreet()
-		m = jajapyModeltoStorm(m)
+		actions = m.actions
 
+		ts = m.generateSet(1000,10,scheduler=UniformScheduler(actions))
+		ll1 = m.logLikelihood(ts)
+
+		m = jajapyModeltoStorm(m)
 		properties = stormpy.parse_properties('Pmax=? [F "OK" ]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),1.0,places=5)
@@ -93,13 +111,28 @@ class ModelConverterTestclass(unittest.TestCase):
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),-7/3,places=5)
 
+		m2 = stormModeltoJajapy(m,actions)
+		ll2 = m2.logLikelihood(ts)
+		if abs(ll2-ll1) > 0.1:
+			m2.actions.reverse()
+			ll2 = m2.logLikelihood(ts)
+			
+		var.assertAlmostEqual(ll1,ll2)
+
 	def test_CTMC(var):
 		m = modelCTMC()
+
+		ts = m.generateSet(1000,10,timed=True)
+		ll1 = m.logLikelihood(ts)
+
 		m = jajapyModeltoStorm(m)
 		properties = stormpy.parse_properties('T=? [F "b" ]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),5.0,places=5)
 
+		m = stormModeltoJajapy(m)
+		ll2 = m.logLikelihood(ts)
+		var.assertAlmostEqual(ll1,ll2)
 
 
 if __name__ == "__main__":
