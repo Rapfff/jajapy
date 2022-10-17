@@ -135,7 +135,7 @@ class BW:
 		----------
 		traces : Set
 			The training set.
-		initial_model : Model
+		initial_model : Model or stormpy.sparse model
 			The first hypothesis.
 		output_file : str
 			If set path file of the output model. Otherwise the output model
@@ -166,16 +166,23 @@ class BW:
 		Model
 			fitted model.
 		"""
-
-		if stormpy_output:
-			try:
-				#import stormpy as st
-				from ..with_stormpy import modeltoStorm
-			except ModuleNotFoundError:
-				print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
-				stormpy_output = False
+		try:
+			from ..with_stormpy import jajapyModeltoStorm, stormModeltoJajapy
+			stormpy_installed = True
+		except ModuleNotFoundError:
+			stormpy_installed = False
 		
+		if stormpy_output and not stormpy_installed:
+			print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
+			stormpy_output = False
 		
+		try:
+			initial_model.name
+		except AttributeError: # then initial_model is a stormpy sparse model
+			if not stormpy_installed:
+				print("ERROR: the initial model is a Storm model and Storm is not installed on the machine")
+				return False
+			initial_model = stormModeltoJajapy(initial_model)		
 
 		start_time = datetime.now()
 		self.h = initial_model
@@ -205,7 +212,7 @@ class BW:
 			self._endPrint(counter,running_time)
 
 		if stormpy_output:
-			self.h = modeltoStorm(self.h)
+			self.h = jajapyModeltoStorm(self.h)
 
 		if return_data:
 			info = {"learning_rounds":counter,"learning_time":running_time,"training_set_loglikelihood":currentloglikelihood}

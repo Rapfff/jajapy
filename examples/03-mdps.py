@@ -77,7 +77,7 @@ def example_3():
 
 	# MODEL CHECKING
 	#---------------
-	storm_model = ja.modeltoStorm(output_model)
+	storm_model = ja.jajapyModeltoStorm(output_model)
 	print(storm_model)
 	formula_str = "Rmax=? [ F \"done\" ]"
 	properties = stormpy.parse_properties(formula_str)

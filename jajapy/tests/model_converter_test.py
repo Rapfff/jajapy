@@ -3,7 +3,7 @@ from ..hmm import *
 from ..mc import *
 from ..ctmc import *
 from ..mdp import *
-from ..with_stormpy import modeltoStorm
+from ..with_stormpy import jajapyModeltoStorm
 import stormpy
 
 def modelHMM():
@@ -59,7 +59,7 @@ class ModelConverterTestclass(unittest.TestCase):
 
 	def test_HMM(var):
 		m = modelHMM()
-		m = modeltoStorm(m)
+		m = jajapyModeltoStorm(m)
 
 		properties = stormpy.parse_properties('P=? [F "w"]')
 		result = stormpy.check_model_sparse(m,properties[0])
@@ -71,7 +71,7 @@ class ModelConverterTestclass(unittest.TestCase):
 	
 	def test_MC(var):
 		m = modelMC_REBER()
-		m = modeltoStorm(m)
+		m = jajapyModeltoStorm(m)
 
 		properties = stormpy.parse_properties('P=? [F "E"]')
 		result = stormpy.check_model_sparse(m,properties[0])
@@ -83,7 +83,7 @@ class ModelConverterTestclass(unittest.TestCase):
 	
 	def test_MDP(var):
 		m = modelMDP_bigstreet()
-		m = modeltoStorm(m)
+		m = jajapyModeltoStorm(m)
 
 		properties = stormpy.parse_properties('Pmax=? [F "OK" ]')
 		result = stormpy.check_model_sparse(m,properties[0])
@@ -95,7 +95,7 @@ class ModelConverterTestclass(unittest.TestCase):
 
 	def test_CTMC(var):
 		m = modelCTMC()
-		m = modeltoStorm(m)
+		m = jajapyModeltoStorm(m)
 		properties = stormpy.parse_properties('T=? [F "b" ]')
 		result = stormpy.check_model_sparse(m,properties[0])
 		var.assertAlmostEqual(result.at(m.initial_states[0]),5.0,places=5)

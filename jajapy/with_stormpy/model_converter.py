@@ -4,7 +4,54 @@ from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
 
-def modeltoStorm(h):
+"""
+def stormModelToJajapy(h):
+	if type(h) == st.storage.storage.SparseMdp:
+		ty = 2
+	elif type(h) == st.storage.storage.SparseDtmc:
+		ty = 0
+	else:
+		ty = 1
+
+	labels = []
+	for s in enumerate(h.states):
+		for l in s.labels:
+			labels.append(l)
+	
+	nb_states = len(labels)
+	labels = list(set(labels))
+	labels.remove("init")
+	nb_labels = len(labels)
+	
+	if ty == 2:
+		actions = []
+		for s in h.states:
+			for a in s.actions:
+				actions.append('a'+str(a))
+		actions = list(set(actions))
+	
+	matrix = [None for i in range(nb_states)]
+	c = 1
+	for s in h.states:
+		for l in range(0,len(s.labels)-1):
+			if ty == 2:
+				print("ERROR: Cannot translate Storm MDPs with several labels for one state.")
+				return False
+			matrix[?] = [[0 for i in range(nb_labels)] for i in range(nb_states)]
+			matrix[?][len(h.states)+c][labels.index(s.labels[l+1])]
+			c += 1
+	
+		for a in s.actions:
+			for t in a.transitions:
+				dest = t.column
+				obs = h.states[dest].labels[0]
+				if ty == 2:
+					matrix[?][int(str(a))][t.column][labels.index(obs)] = t.value()
+				else:
+					matrix[?][t.column][labels.index(obs)] = t.value()
+	return None
+"""
+def jajapyModeltoStorm(h):
 	"""
 	Returns a trace-equivalent model that can be use by Storm.
 	The input model can be a jajapy.HMM, a jajapy.MC, a jajapy.CTMC or

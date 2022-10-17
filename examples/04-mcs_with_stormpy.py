@@ -91,7 +91,7 @@ def example_4():
 
 	# MODEL CHECKING
 	#---------------
-	model_storm = ja.modeltoStorm(best_model)
+	model_storm = ja.jajapyModeltoStorm(best_model)
 	formula_str = 'P=? [F "five"]'
 	properties = stormpy.parse_properties(formula_str)
 	result = stormpy.check_model_sparse(model_storm,properties[0])
