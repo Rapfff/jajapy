@@ -145,7 +145,7 @@ class BW_CTMC(BW):
 		return super().computeBetas(sequence)
 
 
-	def fit(self, traces, initial_model: CTMC=None, nb_states: int=None,
+	def fit(self, traces, initial_model = None, nb_states: int=None,
 			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
 			max_exit_rate_time: int=10.0, self_loop: bool = True,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
@@ -157,7 +157,7 @@ class BW_CTMC(BW):
 		----------
 		traces : Set or list or numpy.ndarray
 			training set.
-		initial_model : CTMC, optional.
+		initial_model : CTMC or stormpy.SparseCtmc, optional.
 			first hypothesis. If not set it will create a random CTMC with
 			``nb_states`` states. Should be set if ``nb_states`` is not set.
 		nb_states: int
@@ -206,8 +206,10 @@ class BW_CTMC(BW):
 
 		Returns
 		-------
-		CTMC
-			fitted CTMC.
+		CTMC or stormpy.SparseCtmc
+			The fitted CTMC.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.CTMC`, otherwise it returns a `stormpy.SparseCtmc`
 		"""
 		if type(traces) != Set:
 			traces = Set(traces, t=4)

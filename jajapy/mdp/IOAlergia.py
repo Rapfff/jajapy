@@ -477,7 +477,7 @@ class IOAlergia:
 
 		return IOFPTA(states_sorted,self.observations,self.actions)
 
-	def fit(self,sample:Set,epsilon:float) -> MDP:
+	def fit(self,sample:Set,epsilon:float, stormpy_output: bool = True):
 		"""
 		Fits the model according to ``traces``.
 
@@ -488,11 +488,16 @@ class IOAlergia:
 		epsilon : float
 			Espilon parameter for the compatibility test.
 			Should be between 0 and 1 (0 excluded).
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
 
 		Returns
 		-------
-		MDP
-			Fitted MDP.
+		MDP or stormpy.SparseMdp
+			The fitted MDP.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.MDP`, otherwise it returns a `stormpy.SparseMdp`
 		"""
 		self.actions, self.observations = sample.getActionsObservations()
 		self._initialize(sample,epsilon,self.actions,self.observations)
@@ -521,4 +526,18 @@ class IOAlergia:
 			blue = list(set(blue))
 			blue.sort()
 
-		return self.a.cleanMDP(red)
+		m = self.a.cleanMDP(red)
+
+		try:
+			from ..with_stormpy import jajapyModeltoStorm
+			stormpy_installed = True
+		except ModuleNotFoundError:
+			stormpy_installed = False
+		if stormpy_output and not stormpy_installed:
+			print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
+			stormpy_output = False
+		
+		if stormpy_output:
+			return jajapyModeltoStorm(m)
+		else:
+			return m
