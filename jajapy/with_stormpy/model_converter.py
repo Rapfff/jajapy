@@ -4,53 +4,90 @@ from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
 
-"""
-def stormModelToJajapy(h):
-	if type(h) == st.storage.storage.SparseMdp:
-		ty = 2
-	elif type(h) == st.storage.storage.SparseDtmc:
+
+
+
+
+def stormModeltoJajapy(h):
+	if type(h) == st.sparseDtmc:
 		ty = 0
-	else:
+	elif type(h) == st.sparseCtmc:
 		ty = 1
+	else:
+		ty = 2
 
 	labels = []
-	for s in enumerate(h.states):
-		for l in s.labels:
-			labels.append(l)
-	
-	nb_states = len(labels)
-	labels = list(set(labels))
-	labels.remove("init")
-	nb_labels = len(labels)
-	
-	if ty == 2:
-		actions = []
-		for s in h.states:
+	state_labels = []
+	actions = [] # for MDPs
+	init = []
+
+	for s in h.states:		
+		state_labels.append(list(s.labels))
+		labels += list(s.labels)
+
+		if 'init' in s.labels:
+			init.append(int(str(s)))
+			state_labels[-1].remove('init')
+
+		if len(state_labels[-1]) == 0:
+			labels.append("empty")
+			state_labels[-1].append('empty')
+
+		if ty > 0:
+			if len(state_labels[-1]) > 1:
+				print("ERROR") # for MDPs => ampty action, for CTMCs => no time
+				return False
 			for a in s.actions:
 				actions.append('a'+str(a))
-		actions = list(set(actions))
-	
-	matrix = [None for i in range(nb_states)]
-	c = 1
-	for s in h.states:
-		for l in range(0,len(s.labels)-1):
-			if ty == 2:
-				print("ERROR: Cannot translate Storm MDPs with several labels for one state.")
-				return False
-			matrix[?] = [[0 for i in range(nb_labels)] for i in range(nb_states)]
-			matrix[?][len(h.states)+c][labels.index(s.labels[l+1])]
+
+	labels = list(set(labels))
+	labels.remove('init')
+	actions = list(set(actions))
+	c = 0 
+	states_id_mapping = [0]
+	for i in range(1, len(state_labels)):
+		c += len(state_labels[i-1])
+		states_id_mapping.append(c)
+
+	nb_states = states_id_mapping[-1] + len(state_labels[-1])
+	nb_labels = len(labels)
+	nb_actions = len(actions)
+
+	if ty < 2:
+		matrix = zeros((nb_states,nb_states,nb_labels))
+	else:
+		matrix = zeros((nb_states,nb_actions,nb_states,nb_labels))
+
+	c = 0
+	for s in state_labels:
+		for l in s[1:]:
+			matrix[c][c+1][labels.index(l)] = 1.0
 			c += 1
-	
+		
 		for a in s.actions:
 			for t in a.transitions:
-				dest = t.column
-				obs = h.states[dest].labels[0]
-				if ty == 2:
-					matrix[?][int(str(a))][t.column][labels.index(obs)] = t.value()
+				dest = states_id_mapping[t.column]
+				l = labels.index(state_labels[t.column][0])
+				if ty < 2:
+					matrix[c][dest][l] = t.value()
 				else:
-					matrix[?][t.column][labels.index(obs)] = t.value()
-	return None
-"""
+					matrix[c][int(str(a))][dest][l] = t.value()
+		c += 1
+
+	initial_states = [0.0 for i in range(c)]
+	for i in init:
+		initial_states[states_id_mapping[i]] = 1.0/len(init)
+
+	if ty == 0:
+		return MC(matrix, labels, initial_states)
+	elif ty == 1:
+		for s in range(len(matrix)):
+			matrix[s] /= h.exit_rates[s]
+		return CTMC(matrix, labels, initial_states)
+	else:
+		return MDP(matrix, labels, actions, initial_states)
+
+
 def jajapyModeltoStorm(h):
 	"""
 	Returns a trace-equivalent model that can be use by Storm.
