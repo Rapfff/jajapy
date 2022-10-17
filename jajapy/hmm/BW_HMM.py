@@ -12,7 +12,7 @@ class BW_HMM(BW):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self, traces: Set, initial_model: HMM=None, nb_states: int=None,
+	def fit(self, traces: Set, initial_model=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool= False,
@@ -24,7 +24,7 @@ class BW_HMM(BW):
 		----------
 		traces : Set
 			training set.
-		initial_model : HMM, optional.
+		initial_model : HMM or stormpy.SparseCtmc, optional.
 			first hypothesis. If not set it will create a random HMM with
 			``nb_states`` states. Should be set if ``nb_states`` is not set.
 		nb_states: int

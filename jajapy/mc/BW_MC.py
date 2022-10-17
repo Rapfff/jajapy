@@ -10,7 +10,7 @@ class BW_MC(BW):
 	def __init__(self):
 		super().__init__()
 	
-	def fit(self, traces, initial_model: MC=None, nb_states: int=None,
+	def fit(self, traces, initial_model=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01, max_it: int = inf, pp: str='',
 			verbose: bool = True, return_data: bool= False,
@@ -22,7 +22,7 @@ class BW_MC(BW):
 		----------
 		traces : Set or list or numpy.ndarray
 			training set.
-		initial_model : MC, optional.
+		initial_model : MC or stormpy.SparseCtmc, optional.
 			first hypothesis. If not set it will create a random MC with
 			``nb_states`` states. Should be set if ``nb_states`` is not set.
 		nb_states: int
@@ -62,8 +62,10 @@ class BW_MC(BW):
 
 		Returns
 		-------
-		MC
-			fitted MC.
+		MC or stormpy.SparseDtmc
+			The fitted MC.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.MC`, otherwise it returns a `stormpy.SparseDtmc`
 		"""
 		if type(traces) != Set:
 			traces = Set(traces, t=0)

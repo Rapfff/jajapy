@@ -85,7 +85,7 @@ class Alergia:
 					self.states_transitions[-1][2].append(self.states_lbl[s2][-1])
 					s2 += 1
 
-	def fit(self,traces: Set,alpha: float=0.1,alphabet: list=None) -> MC:
+	def fit(self,traces: Set,alpha: float=0.1,alphabet: list=None, stormpy_output: bool = True):
 		"""
 		Fits a MC according to ``traces``.
 
@@ -98,11 +98,16 @@ class Alergia:
 		alphabet : list, optional
 			The alphabet of the model we are learning.
 			Can be omitted.
-			
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
+
 		Returns
 		-------
-		MC
-			fitted MC.
+		MC or stormpy.SparseDtmc
+			The fitted MC.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.MC`, otherwise it returns a `stormpy.SparseDtmc`
 		"""
 		self._initialize(traces,alpha,alphabet)
 		
@@ -114,7 +119,22 @@ class Alergia:
 							j -= 1
 							break
 
-		return self._toMC()
+		m = self._toMC()
+
+		try:
+			from ..with_stormpy import jajapyModeltoStorm
+			stormpy_installed = True
+		except ModuleNotFoundError:
+			stormpy_installed = False
+		if stormpy_output and not stormpy_installed:
+			print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
+			stormpy_output = False
+		
+		if stormpy_output:
+			return jajapyModeltoStorm(m)
+		else:
+			return m
+		
 
 	def _transitionStateAction(self,state,action):
 		try:

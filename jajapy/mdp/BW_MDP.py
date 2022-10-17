@@ -16,7 +16,7 @@ class BW_MDP(BW):
 	def __init__(self):
 		super().__init__()
 	
-	def fit(self, traces, initial_model: MDP=None, nb_states: int=None,
+	def fit(self, traces, initial_model=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
 			epsilon: float=0.01, max_it: int= inf, pp: str='',
 			verbose: bool = True, return_data: bool= False, stormpy_output: bool = True):
@@ -27,7 +27,7 @@ class BW_MDP(BW):
 		----------
 		traces : Set or list or numpy.ndarray
 			training set.
-		initial_model : MDP, optional.
+		initial_model : MDP or stormpy.SparseCtmc, optional.
 			first hypothesis. If not set it will create a random MDP with
 			``nb_states`` states. Should be set if ``nb_states`` is not set.
 		nb_states: int
@@ -67,8 +67,10 @@ class BW_MDP(BW):
 
 		Returns
 		-------
-		MDP
-			fitted MDP.
+		MDP or stormpy.SparseMdp
+			The fitted MDP.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.MDP`, otherwise it returns a `stormpy.SparseMdp`
 		"""
 		if type(traces) != Set:
 			traces = Set(traces, t=1)
