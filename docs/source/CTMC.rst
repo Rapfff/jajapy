@@ -103,12 +103,12 @@ Asynchronous Composition
 We can also compose asynchronously two CTMCs as follow
 
 .. code-block:: python
+
 	>>> alphabet = ['r','g','b']
 	>>> nb_states = 2
 	>>> s0 = CTMC_state([[0.6/3,0.4/3],[1,1], ['r','g']],alphabet,nb_states)
 	>>> s1 = CTMC_state([[0.2/4,0.7/4,0.1/4],[0,0,0], ['r','g','b']],alphabet,nb_states)
 	>>> model2 = CTMC(array(s0,s1),alphabet,initial_state=0,name="CTMC2")
-	>>>
 	>>> composition = ja.asynchronousComposition(model,model2, name="my_composition")
 	>>> composition.run(5)
 	['r','r','r','b','r']
