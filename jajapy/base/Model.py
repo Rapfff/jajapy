@@ -1,7 +1,7 @@
 from math import  log
 from .tools import resolveRandom
 from .Set import Set
-from numpy import array, array2string, where, append, dot, zeros, vsplit
+from numpy import array, where, append, dot, zeros, vsplit
 from numpy.random import geometric
 from multiprocessing import cpu_count, Pool
 from sys import platform
