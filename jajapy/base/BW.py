@@ -197,13 +197,13 @@ class BW:
 		else:
 			alive_parameter = 0
 		
-		with alive_bar(alive_parameter, dual_line=True) as bar:
+		with alive_bar(alive_parameter, dual_line=True, title=str(pp)) as bar:
 			while counter < max_it:
 				temp = self._runProcesses(training_set)
 				self.hhat, currentloglikelihood = self._generateHhat(temp)
 				counter += 1
 				self.h = self.hhat
-				bar_text = str(pp)+'   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
+				bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
 				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
 				bar.text = bar_text
 				bar()

@@ -1,6 +1,6 @@
 from random import random
 from scipy.stats import norm
-from numpy import nditer, array, ndarray
+from numpy import nditer, array, ndarray, where, nonzero
 
 
 def normpdf(x: float, params: list, variation:float = 0.01) -> float:
@@ -53,14 +53,14 @@ def resolveRandom(m: list) -> int:
 	>>> print(chosen)
 	1
 	"""
-	while True:
-		r = random()
-		i = 0
-		while r > sum(m[:i+1]) and i < len(m):
-			i += 1
-		if i < len(m):
-			break
-	return i
+	m = array(m).cumsum()
+	mi = nonzero(m)[0]
+	r = random()
+	i = 0
+	while r > m[mi[i]]:
+		i += 1
+	
+	return mi[i]
 
 def normalize(ll):
 	"""
