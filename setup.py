@@ -11,7 +11,7 @@ setup(
     name='jajapy',
     long_description=long_description,
     packages=find_packages(),
-    install_requires=['numpy', 'scipy'],
+    install_requires=['numpy', 'scipy', 'alive-progress'],
     long_description_content_type="text/markdown",
     version='0.7.1',
     url="",
@@ -28,6 +28,7 @@ setup(
         "Programming Language :: Python :: 3.7",
         "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
         "Operating System :: OS Independent"
     ],
     include_package_data=True

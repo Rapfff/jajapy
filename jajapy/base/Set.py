@@ -1,5 +1,5 @@
 from ast import literal_eval
-from numpy import float64, array
+from numpy import float64, array, append
 class Set:
 	"""
 	Class representing a set (training set / test set).
@@ -193,7 +193,7 @@ class Set:
 		for i in range(len(s2.sequences)):
 			if not s2.sequences[i] in self.sequences:
 				self.sequences.append(s2.sequences[i])
-				self.times.append(s2.times[i])
+				self.times = append(self.times, s2.times[i])
 			else:
 				self.times[self.sequences.index(s2.sequences[i])] += s2.times[i]
 

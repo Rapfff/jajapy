@@ -6,7 +6,7 @@ from .MDP import MDP
 from ..base.tools import resolveRandom
 from multiprocessing import Pool
 from random import random
-from numpy import zeros, dot, array, argmin
+from numpy import zeros, dot, array, argmin, inf
 from sys import platform
 from datetime import datetime
 
@@ -88,7 +88,7 @@ class Active_BW_MDP(BW_MDP):
 			sequence_length: int = None, epsilon_greedy: float = 0.9,
 			initial_model: MDP=None, nb_states: int=None,
 			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01, pp: str='',
+			epsilon: float=0.01, max_it: int=inf,pp: str='',
 			verbose: bool = True, return_data: bool= False, stormpy_output: bool = False):
 		"""
 		Fits the model according to ``traces``.
@@ -138,6 +138,10 @@ class Active_BW_MDP(BW_MDP):
 			loglikelihood of the training set under the two last hypothesis is
 			lower than ``epsilon``. The lower this value the better the output,
 			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations for the passive learning round.
+			The algorithm will stop after `max_it` iterations.
+			Default is infinity.
 		pp : str, optional
 			Will be printed at each iteration. By default ''
 		verbose: bool, optional
@@ -168,7 +172,8 @@ class Active_BW_MDP(BW_MDP):
 		counter = 0
 		start_time = datetime.now()
 		_, info = super().fit(traces, initial_model,nb_states,
-					random_initial_state, output_file,epsilon,"Passive iteration:"+pp,
+					random_initial_state, output_file,epsilon,
+					max_it,"Passive iteration:"+pp,
 					return_data=True, stormpy_output=False)
 		counter += info['learning_rounds']
 	
@@ -186,7 +191,7 @@ class Active_BW_MDP(BW_MDP):
 				_, info = super().fit(total_traces, initial_model=self.h,
 							output_file=output_file, epsilon=epsilon,
 							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp,
-							return_data=True, stormpy_output=False)
+							return_data=True, stormpy_output=False, verbose=False)
 				counter += info['learning_rounds']
 			else:
 				if lr == "dynamic":
@@ -197,14 +202,14 @@ class Active_BW_MDP(BW_MDP):
 				_, info = super().fit(traces, initial_model=self.h,
 							output_file=output_file, epsilon=epsilon,
 							pp="Active iteration "+str(c)+"/"+str(nb_iterations)+": "+pp,
-							return_data=True, stormpy_output=False)
+							return_data=True, stormpy_output=False, verbose=False)
 				counter += info['learning_rounds']
 				self._mergeModels(old_h,lr_it)
 
 			c += 1
 		
 		running_time = datetime.now()-start_time
-		running_time = running_time.hours*60**2+running_time.minutes*60+running_time.seconds+running_time.microseconds*10**-6
+		running_time = running_time.total_seconds()
 
 		if verbose:
 			self._endPrint(counter, running_time)

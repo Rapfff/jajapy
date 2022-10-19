@@ -1,10 +1,11 @@
 from sys import platform
 from multiprocessing import cpu_count, Pool
-from numpy import array, dot, append, zeros, ones, float64
+from numpy import array, dot, append, zeros, ones, float64, inf
 from datetime import datetime
 from .Set import Set
+from alive_progress import alive_bar
 
-NB_PROCESS = cpu_count()-1
+NB_PROCESS = cpu_count()-2
 
 class BW:
 	"""
@@ -190,20 +191,29 @@ class BW:
 
 		counter = 0
 		prevloglikelihood = 10
-		nb_traces = sum(training_set.times)
-		while counter < max_it:
-			print(pp, datetime.now(),counter, prevloglikelihood/nb_traces,end='\r')
-			temp = self._runProcesses(training_set)
-			self.hhat, currentloglikelihood = self._generateHhat(temp)
-			counter += 1
-			self.h = self.hhat
-			if abs(prevloglikelihood - currentloglikelihood) < epsilon:
-				break
-			else:
-				prevloglikelihood = currentloglikelihood
+
+		if max_it != inf:
+			alive_parameter = max_it
+		else:
+			alive_parameter = 0
 		
+		with alive_bar(alive_parameter, dual_line=True) as bar:
+			while counter < max_it:
+				temp = self._runProcesses(training_set)
+				self.hhat, currentloglikelihood = self._generateHhat(temp)
+				counter += 1
+				self.h = self.hhat
+				bar_text = str(pp)+'   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
+				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
+				bar.text = bar_text
+				bar()
+				if abs(prevloglikelihood - currentloglikelihood) < epsilon:
+					break
+				else:
+					prevloglikelihood = currentloglikelihood
+
 		running_time = datetime.now()-start_time
-		running_time = running_time.seconds+running_time.microseconds*10**-6
+		running_time = running_time.total_seconds()
 
 		if output_file:
 			self.h.save(output_file)
