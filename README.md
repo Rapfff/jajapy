@@ -38,9 +38,10 @@
 ``pip install jajapy``
 
 ## Requirements
-- numpy
-- scipy
-- stormpy (recommended: if stormpy is not installed, `jajapy` will generate models in jajapy format).
+- [numpy](https://numpy.org/)
+- [scipy](https://scipy.org/)
+- [alive-progress](https://github.com/rsalmei/alive-progress) 
+- [stormpy](https://github.com/moves-rwth/stormpy) (recommended: if stormpy is not installed, `jajapy` will generate models in jajapy format).
 
 ## Documentation
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
