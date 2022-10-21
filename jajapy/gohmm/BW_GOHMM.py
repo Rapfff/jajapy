@@ -71,7 +71,7 @@ class BW_GOHMM(BW):
 				print("Either nb_states or initial_model should be set")
 				return
 			initial_model = GOHMM_random(nb_states,random_initial_state)
-		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose)
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose, return_data)
 
 	def _processWork(self,sequence,times):
 		sequence = array(sequence)

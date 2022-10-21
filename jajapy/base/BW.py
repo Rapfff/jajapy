@@ -5,7 +5,7 @@ from datetime import datetime
 from .Set import Set
 from alive_progress import alive_bar
 
-NB_PROCESS = cpu_count()-2
+NB_PROCESS = cpu_count()-1
 
 class BW:
 	"""
