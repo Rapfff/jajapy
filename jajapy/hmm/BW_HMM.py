@@ -67,6 +67,8 @@ class BW_HMM(BW):
 		HMM
 			fitted HMM.
 		"""
+		if type(traces) != Set:
+			traces = Set(traces, t=0)
 		if not initial_model:
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")

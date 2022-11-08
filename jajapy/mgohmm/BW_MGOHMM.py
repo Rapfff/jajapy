@@ -1,7 +1,7 @@
 from .MGOHMM import MGOHMM, MGOHMM_random
 from ..base.BW import *
 from ..base.Set import Set
-from numpy import log, sqrt, inf, newaxis, stack, longdouble
+from numpy import log, sqrt, inf, newaxis, stack, longdouble, isnan
 
 
 class BW_MGOHMM(BW):
@@ -83,6 +83,8 @@ class BW_MGOHMM(BW):
 	def _processWork(self,sequence,times):
 		sequence = array(sequence)
 		alpha_matrix = self.computeAlphas(sequence,longdouble)
+		if isnan(alpha_matrix).any():
+			return False
 		beta_matrix = self.computeBetas(sequence,longdouble)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
