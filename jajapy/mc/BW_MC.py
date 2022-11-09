@@ -74,23 +74,19 @@ class BW_MC(BW):
 				print("Either nb_states or initial_model should be set")
 				return
 			initial_model = MC_random(nb_states,traces.getAlphabet(),random_initial_state)
-		self.alphabet = initial_model.getAlphabet()
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 	def _processWork(self,sequence,times):
 		alpha_matrix = self.computeAlphas(sequence)
-		beta_matrix = self.computeBetas(sequence)
+		beta_matrix  = self.computeBetas( sequence)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
-			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)
-			num = zeros(shape=(self.nb_states,self.nb_states,len(self.alphabet)))
+			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)			
+			num = zeros(shape=(self.nb_states,self.nb_states))
 			for s in range(self.nb_states):
 				for ss in range(self.nb_states):
 					p = array([self.h_tau(s,ss,o) for o in sequence])
-					alph_bet = alpha_matrix[s][:-1]*p*beta_matrix[ss][1:]*times/proba_seq
-					for o,obs in enumerate(self.alphabet):
-						arr_dirak = [1 if t == obs else 0 for t in sequence]
-						num[s,ss,o] = (alph_bet*arr_dirak).sum()
+					num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 			####################
 			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 			####################
@@ -111,7 +107,7 @@ class BW_MC(BW):
 				den[s] = 1.0
 				num[s] = self.h.matrix[s]
 
-		matrix = num/den[:, newaxis, newaxis]
+		matrix = num/den[:, newaxis]
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [MC(matrix,self.alphabet,initial_state),currentloglikelihood]
+		return [MC(matrix,self.h.labeling,initial_state),currentloglikelihood]
 		

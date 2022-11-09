@@ -6,18 +6,14 @@ from math import log
 from numpy import array
 
 def modelMC_REBER():
-	alphabet = list("BTPSXVE")
+	labeling = list("BTSXSPTXPVVE")
 	initial_state = 0
-	nb_states = 7
-	s0 = MC_state([(1,'B',1.0)],alphabet,nb_states)
-	s1 = MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
-	s2 = MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
-	s3 = MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
-	s4 = MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
-	s5 = MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
-	s6 = MC_state([(6,'E',1.0)],alphabet,nb_states)
-	matrix = array([s0,s1,s2,s3,s4,s5,s6])
-	return MC(matrix,alphabet,initial_state,"MC_REBER")
+	name = "MC_REBER"
+	transitions = [(0,1,0.5),(0,5,0.5),(1,2,0.6),(1,3,0.4),(2,2,0.6),(2,3,0.4),
+				   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
+				   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
+				   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
+	return createMC(transitions,labeling,initial_state,name)
 
 m = modelMC_REBER()
 
@@ -25,11 +21,12 @@ class MCTestclass(unittest.TestCase):
 
 	def test_MC_state(var):
 		var.assertEqual(m.tau(1,0,'B'),0.0)
-		var.assertEqual(m.tau(1,2,'T'),0.5)
-		var.assertEqual(m.tau(2,4,'X'),0.4)
-		var.assertEqual(m.tau(2,4,'something else'),0.0)
-		var.assertEqual(set(m.getAlphabet(1)),
-						set(['T','P']))
+		var.assertEqual(m.tau(0,1,'B'),0.5)
+		var.assertEqual(m.getLabel(2),'S')
+		var.assertEqual(m.tau(2,3,'S'),0.4)
+		var.assertEqual(m.tau(2,3,'something else'),0.0)
+		var.assertEqual(m.getLabel(1),'T')
+
 	
 	def test_MC_save_load_str(var):
 		m.save("test_save.txt")
@@ -65,6 +62,14 @@ class MCTestclass(unittest.TestCase):
 		l3 = m.logLikelihood(set1)
 		var.assertAlmostEqual(l3,(log(0.1)+2*log(0.245))/3)
 	
+	def test_MC_random(var):
+		alphabet = list("BTSXPVE")
+		random_model = MC_random(12, alphabet, False)
+		for i in alphabet:
+			var.assertGreaterEqual(random_model.labeling.count(i),1)
+
+
+	
 	def test_BW_MC(var):
 		initial_model   = loadMC("jajapy/tests/materials/mc/random_MC.txt")
 		training_set    = loadSet("jajapy/tests/materials/mc/training_set_MC.txt")
@@ -76,7 +81,12 @@ class MCTestclass(unittest.TestCase):
 	
 	def test_Alergia(var):
 		training_set    = loadSet("jajapy/tests/materials/mc/training_set_MC.txt")
-		Alergia().fit(training_set,0.000005)
+		output_expected = loadMC("jajapy/tests/materials/mc/output_alergia_MC.txt")
+		output_gotten =  Alergia().fit(training_set,0.000005,stormpy_output=False)
+		test_set = m.generateSet(10000,10)
+		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
+							  output_gotten.logLikelihood(test_set))
+
 
 
 if __name__ == "__main__":

@@ -234,17 +234,38 @@ class Alergia:
 		self.states_counter[j] = None
 
 	def _toMC(self):
-		self.nb_states = len(self.states_lbl) - self.states_lbl.count(None)
-		states = []
-		c = -1 
-		for i in range(len(self.states_transitions)):
-			if self.states_lbl[i] != None:
-				c+=1
-				self.states_transitions[i][0] = [j/self.states_counter[i] for j in self.states_transitions[i][0]]
-				self.states_transitions[i][0] = normalize(self.states_transitions[i][0])
-				self.states_transitions[i][1] = [j-self.states_lbl[:j].count(None) for j in self.states_transitions[i][1]]
-				l = list(zip(self.states_transitions[i][1], self.states_transitions[i][2], self.states_transitions[i][0]))
-				l = MC_state(l, self.alphabet, self.nb_states)
-				states.append(l)
-		states = array(states)
-		return MC(states, self.alphabet,0)
+		states = [j for j in range(len(self.states_transitions)) if self.states_lbl[j] != None]
+		nb_init= len(states)
+		# states[x] = y : y->index alergia x->index jajapy
+		labeling = [None for s in states]
+		transitions = []
+
+		for s in range(nb_init):
+			ai = states[s]
+			p = [j/self.states_counter[ai] for j in self.states_transitions[ai][0]]
+			p = normalize(p)
+			o = self.states_transitions[ai][2]
+			d = [states.index(dest) for dest in self.states_transitions[ai][1]]
+			for obs, dest, i in zip(o,d,range(len(d))):
+				if labeling[dest] == None:
+					labeling[dest] = obs
+				elif labeling[dest] != obs:
+					d[i] = len(states)
+					labeling.append(obs)
+					states.append(states[dest])
+			transitions.append([(s,d[i],p[i]) for i in range(len(p))])
+				
+		for s in range(nb_init,len(states)):
+			transitions.append([(s,i[1],i[2]) for i in transitions[states.index(states[s])]])
+		
+		for i,j in enumerate(labeling):
+			if j == None:
+				labeling[i] = ''
+				initial_state = i
+		
+		trans = []
+		for i in transitions:
+			trans += i
+
+		return createMC(trans,labeling,initial_state)
+		

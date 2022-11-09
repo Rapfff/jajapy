@@ -1,24 +1,20 @@
 import jajapy as ja
-from numpy import array
 
 def example_2():
-	alphabet = list("BTPSXVE")
-	initial_state = 0
-	nb_states = 7
-
 	# MODEL CREATION
 	#----------------
-	# in the next state we generate 'B' while moving to state 1
-	# with probability 1.0.
-	s0 = ja.MC_state([(1,'B',1.0)],alphabet,nb_states)
-	s1 = ja.MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
-	s2 = ja.MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
-	s3 = ja.MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
-	s4 = ja.MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
-	s5 = ja.MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
-	s6 = ja.MC_state([(6,'E',1.0)],alphabet,nb_states)
-	matrix = array([s0,s1,s2,s3,s4,s5,s6])
-	original_model = ja.MC(matrix,alphabet,initial_state,"MC_REBER")
+	# State 0 is labelled with B, state 1 with T, etc...
+	labeling = list("BTSXSPTXPVVE")
+	initial_state = 0
+	name = "MC_REBER"
+	# From state 0 we move to state 1 with probability 0.5
+	# and to state 5 with probability 0.5
+	transitions = [(0,1,0.5),(0,5,0.5),(1,2,0.6),(1,3,0.4),(2,2,0.6),(2,3,0.4),
+				   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
+				   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
+				   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
+
+	original_model = ja.createMC(transitions,labeling,initial_state,name)
 
 	# SETS GENERATION
 	#------------------------
@@ -32,7 +28,7 @@ def example_2():
 	best_model = None
 	quality_best = -1024
 	for n in range(1,nb_trials+1):
-		current_model = ja.BW_MC().fit(training_set,nb_states=7,pp=n, stormpy_output=False)
+		current_model = ja.BW_MC().fit(training_set,nb_states=12,pp=n, stormpy_output=False)
 		current_quality = current_model.logLikelihood(test_set)
 		if quality_best < current_quality: #we keep the best model only
 				quality_best = current_quality

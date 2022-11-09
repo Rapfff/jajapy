@@ -126,24 +126,21 @@ This step is similar to what we did before.
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> from numpy import array
 	>>> def modelMC_REBER():
-	...		alphabet = list("BTPSXVE")
+	...		# State 0 is labelled with B, state 1 with T, etc...
+	...		labeling = list("BTSXSPTXPVVE")
 	...		initial_state = 0
-	...		nb_states = 7
-	...		s0 = ja.MC_state([(1,'B',1.0)],alphabet,nb_states)
-	...		s1 = ja.MC_state([(2,'T',0.5),(3,'P',0.5)],alphabet,nb_states)
-	...		s2 = ja.MC_state([(2,'S',0.6),(4,'X',0.4)],alphabet,nb_states)
-	...		s3 = ja.MC_state([(3,'T',0.7),(5,'V',0.3)],alphabet,nb_states)
-	...		s4 = ja.MC_state([(3,'X',0.5),(6,'S',0.5)],alphabet,nb_states)
-	...		s5 = ja.MC_state([(4,'P',0.5),(6,'V',0.5)],alphabet,nb_states)
-	...		s6 = ja.MC_state([(6,'E',1.0)],alphabet,nb_states)
-	...		matrix = array([s0,s1,s2,s3,s4,s5,s6])
-	...		return ja.MC(matrix,alphabet,initial_state,"MC_REBER")
-
+	...		name = "MC_REBER"
+	...		# From state 0 we move to state 1 with probability 0.5
+	...		# and to state 5 with probability 0.5
+	...		transitions = [(0,1,0.5),(0,5,0.5),(1,2,0.6),(1,3,0.4),(2,2,0.6),(2,3,0.4),
+	...			       (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
+	...			       (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
+	...			       (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
+	...		return ja.createMC(transitions,labeling,initial_state,name)
 	>>> original_model = modelMC_REBER()
-	>>> training_set = original_model.generateSet(100,10)
-	>>> test_set = original_model.generateSet(100,10)
+	>>> training_set = original_model.generateSet(1000,10)
+	>>> test_set = original_model.generateSet(1000,10)
 
 Learning a MC using random restart
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -166,16 +163,86 @@ At each iteration, the library will generate a new model with 7 states.
 	...			quality_best = current_quality
 	...			best_model = current_model
 
-	1 2022-06-10 15:30:40.182680 18 -4.9172406492680425
-	2 2022-06-10 15:30:42.374435 39 -6.4018575770548175
-	3 2022-06-10 15:30:43.294718 16 -3.7554041624120225
-	4 2022-06-10 15:30:45.055337 32 -6.386989354949701
-	5 2022-06-10 15:30:46.182094 20 -4.9172608945837965
-	6 2022-06-10 15:30:47.737216 28 -4.8655273045172875
-	7 2022-06-10 15:30:48.954496 21 -4.8655375569300075
-	8 2022-06-10 15:30:49.838456 15 -3.7553820970441403
-	9 2022-06-10 15:30:51.707971 34 -6.5912424914366295
-	10 2022-06-10 15:30:53.624749 35 -4.8603055582095825
+	1 |████████████████████████████████████████| (!) 15 in 1.1s (13.32/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   15
+	Running time:	   1.148518
+	---------------------------------------------
+
+	2 |████████████████████████████████████████| (!) 17 in 1.3s (13.27/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   17
+	Running time:	   1.282217
+	---------------------------------------------
+
+	3 |████████████████████████████████████████| (!) 15 in 1.1s (13.29/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   15
+	Running time:	   1.130267
+	---------------------------------------------
+
+	4 |████████████████████████████████████████| (!) 15 in 1.1s (13.11/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   15
+	Running time:	   1.145003
+	---------------------------------------------
+
+	5 |████████████████████████████████████████| (!) 20 in 1.4s (13.85/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   20
+	Running time:	   1.445236
+	---------------------------------------------
+
+	6 |████████████████████████████████████████| (!) 13 in 1.0s (13.48/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   13
+	Running time:	   0.966637
+	---------------------------------------------
+
+	7 |████████████████████████████████████████| (!) 19 in 1.4s (13.25/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   19
+	Running time:	   1.435106
+	---------------------------------------------
+
+	8 |████████████████████████████████████████| (!) 11 in 0.8s (13.31/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   11
+	Running time:	   0.828422
+	---------------------------------------------
+
+	9 |████████████████████████████████████████| (!) 16 in 1.2s (13.11/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   16
+	Running time:	   1.222533
+	---------------------------------------------
+
+	10 |████████████████████████████████████████| (!) 14 in 1.1s (13.19/s) 
+
+	---------------------------------------------
+	Learning finished
+	Iterations:	   14
+	Running time:	   1.062477
+	---------------------------------------------
+
 
 Notice that the current trial number appears at the beginnig of each print: this is because we 
 have set the ``pp`` parameter of the ``fit`` method with the current trial number.
@@ -183,7 +250,7 @@ have set the ``pp`` parameter of the ``fit`` method with the current trial numbe
 .. code-block:: python
 
 	>>> print(quality_best)
-	-4.203193155960113
+	-4.649108177287
 
 The loglikelihood of the test set under the best model is good. Let's have a look to the model:
 
@@ -192,31 +259,55 @@ The loglikelihood of the test set under the best model is good. Let's have a loo
 	>>> print(best_model)
 	Name: unknown_MC
 	Initial state: s0
-	----STATE s0----
-	s0 - (B) -> s2 : 1.0
+	----STATE 0--B----
+	s0 -> s1 : 0.507
+	s0 -> s2 : 0.493
 
-	----STATE s1----
-	s1 - (P) -> s3 : 0.442856225551485
-	s1 - (V) -> s4 : 0.557142857159759
+	----STATE 1--P----
+	s1 -> s6 : 0.17521902311933552
+	s1 -> s8 : 0.1902377448236495
+	s1 -> s10 : 0.18022528160197424
+	s1 -> s11 : 0.45431789737171446
 
-	----STATE s2----
-	s2 - (T) -> s5 : 0.47000000065663733
-	s2 - (P) -> s6 : 0.5299999993433626
+	----STATE 2--T----
+	s2 -> s5 : 0.43872597184243073
+	s2 -> s7 : 0.0014362999628431126
+	s2 -> s9 : 0.5598377281947261
 
-	----STATE s3----
-	s3 - (S) -> s4 : 0.5945946507179358
-	s3 - (X) -> s6 : 0.40540533276914115
+	----STATE 3--V----
+	s3 -> s4 : 0.9999999999308414
 
-	----STATE s4----
-	s4 - (E) -> s4 : 0.9999990255327565
+	----STATE 4--E----
+	s4 -> s4 : 0.9999999999711968
 
-	----STATE s5----
-	s5 - (X) -> s3 : 0.46078434394781576
-	s5 - (S) -> s5 : 0.5392156560521841
+	----STATE 5--X----
+	s5 -> s6 : 0.5517000753834211
+	s5 -> s8 : 0.44829992460404955
 
-	----STATE s6----
-	s6 - (V) -> s1 : 0.34579439270651224
-	s6 - (T) -> s6 : 0.6542056072395087
+	----STATE 6--S----
+	s6 -> s4 : 0.9999999999985493
+
+	----STATE 7--X----
+	s7 -> s6 : 0.6098517550064492
+	s7 -> s8 : 0.3901482394741814
+
+	----STATE 8--X----
+	s8 -> s10 : 0.2910662820008986
+	s8 -> s11 : 0.708933717432188
+
+	----STATE 9--S----
+	s9 -> s5 : 0.40493202909358567
+	s9 -> s7 : 0.0010381201601459317
+	s9 -> s9 : 0.594029850746269
+
+	----STATE 10--V----
+	s10 -> s1 : 0.484490398807296
+	s10 -> s3 : 0.515509601192651
+
+	----STATE 11--T----
+	s11 -> s10 : 0.3041301466409757
+	s11 -> s11 : 0.6958698371678799
+
 
 One can be suprised to see that the probability to leave *s4* is not equal to one.
 The reason is that *jajapy* doesn't print out the transitions with a very low probability,

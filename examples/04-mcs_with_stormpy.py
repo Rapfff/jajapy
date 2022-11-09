@@ -1,75 +1,37 @@
 import jajapy as ja
-from numpy import array
 import stormpy
 
 def modelMC_KnuthDie(p=0.5):
-	alphabet = ["P","F","one","two","three","four","five","six"]
-	nb_states = 13
-	s0 = ja.MC_state([(1 ,'P',p),(2 ,'F',1-p)],alphabet,nb_states)
-	s1 = ja.MC_state([(3 ,'P',p),(4 ,'F',1-p)],alphabet,nb_states)
-	s2 = ja.MC_state([(5 ,'P',p),(6 ,'F',1-p)],alphabet,nb_states)
-	s3 = ja.MC_state([(1 ,'P',p),(7 ,'F',1-p)],alphabet,nb_states)
-	s4 = ja.MC_state([(8 ,'P',p),(9 ,'F',1-p)],alphabet,nb_states)
-	s5 = ja.MC_state([(10,'P',p),(11,'F',1-p)],alphabet,nb_states)
-	s6 = ja.MC_state([(12,'P',p),(2 ,'F',1-p)],alphabet,nb_states)
-	s7 = ja.MC_state([(7 ,  'one',1.0)],alphabet,nb_states)
-	s8 = ja.MC_state([(8 ,  'two',1.0)],alphabet,nb_states)
-	s9 = ja.MC_state([(9 ,'three',1.0)],alphabet,nb_states)
-	s10= ja.MC_state([(10, 'four',1.0)],alphabet,nb_states)
-	s11= ja.MC_state([(11, 'five',1.0)],alphabet,nb_states)
-	s12= ja.MC_state([(12,  'six',1.0)],alphabet,nb_states)
-	matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12])
-	return ja.MC(matrix,alphabet,initial_state=0,name="Knuth's Die")
+	labeling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
+	initial_state = 0
+	name="Knuth's Die"
+	transitions = [(0,1,p),(0,2,1-p),(1,3,p),(1,4,1-p),(2,5,p),(2,6,1-p),
+				   (3,1,p),(3,7,1-p),(4,8,p),(4,9,1-p),(5,10,p),(5,11,1-p),
+				   (6,12,p),(6,2,1-p),(7,13,1.0),(8,14,1.0),(9,15,1.0),
+				   (10,16,1.0),(11,17,1.0),(12,18,1.0)]
+	return ja.createMC(transitions,labeling,initial_state,name)
 
 def firstGuess():
-	alphabet = ["P","F","one","two","three","four","five","six"]
-	nb_states = 13
-	s0 = ja.MC_state(list(zip([1,2],['P','F'],ja.randomProbabilities(2))),alphabet,nb_states)
-	s1 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6],
-							  ['P','F','P','F','P','F','P','F','P','F','P','F'],
-							  ja.randomProbabilities(12))),
-					 alphabet,nb_states)
-	s2 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6],
-							  ['P','F','P','F','P','F','P','F','P','F','P','F'],
-							  ja.randomProbabilities(12))),
-					 alphabet,nb_states)
-	s3 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-							  ['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-							  'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-							  ja.randomProbabilities(24))),
-					 alphabet,nb_states)
+	labeling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
+	initial_state = 0
+	name="first guess"
+	p = ja.randomProbabilities(2)
+	transitions = [(0,1,p[0]),(0,2,p[2])]
 
-	s4 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-							  ['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-							  'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-							  ja.randomProbabilities(24))),
-					 alphabet,nb_states)
+	for src in range(1,7):
+		p = ja.randomProbabilities(6)
+		for dest in range(1,7):
+			transitions.append((src,dest,p[dest-1]))
 
-	s5 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-							  ['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-							  'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-							  ja.randomProbabilities(24))),
-					 alphabet,nb_states)
-
-	s6 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-							  ['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-							  'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-							  ja.randomProbabilities(24))),
-					 alphabet,nb_states)
-	s7 = ja.MC_state([(7 ,  'one',1.0)],alphabet,nb_states)
-	s8 = ja.MC_state([(8 ,  'two',1.0)],alphabet,nb_states)
-	s9 = ja.MC_state([(9 ,'three',1.0)],alphabet,nb_states)
-	s10= ja.MC_state([(10, 'four',1.0)],alphabet,nb_states)
-	s11= ja.MC_state([(11, 'five',1.0)],alphabet,nb_states)
-	s12= ja.MC_state([(12,  'six',1.0)],alphabet,nb_states)
-	matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12])
-	return ja.MC(matrix,alphabet,initial_state=0,name="first guess")
+	transitions += [(7,13,1.0),(8,14,1.0),(9,15,1.0),
+				   (10,16,1.0),(11,17,1.0),(12,18,1.0)]
+	return ja.createMC(transitions,labeling,initial_state,name)
 
 
 def example_4():
 	original_model = modelMC_KnuthDie()
 	# SETS GENERATION
-	#------------------------
+	#----------------
 	# We generate 1000 sequences of 10 observations for each set
 	training_set = original_model.generateSet(1000,10)
 	test_set = original_model.generateSet(1000,10)

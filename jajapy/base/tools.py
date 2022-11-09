@@ -1,6 +1,7 @@
 from random import random
 from scipy.stats import norm
 from numpy import nditer, array, ndarray, where, nonzero
+from numpy.random import randint
 
 
 def normpdf(x: float, params: list, variation:float = 0.01) -> float:
@@ -113,13 +114,7 @@ def randomProbabilities(size: int) -> list:
 		raise ValueError("The size parameter should be higher than 0.")
 	if type(size) != int:
 		raise TypeError("The size parameter should be an int.")
-	rand = []
-	for i in range(size-1):
-		rand.append(random())
-	rand.sort()
-	rand.insert(0,0.0)
-	rand.append(1.0)
-	return [rand[i]-rand[i-1] for i in range(1,len(rand))]
+	return normalize(randint(1,11,size))
 
 def checkProbabilities(l: ndarray) -> bool:
 	"""
@@ -136,4 +131,4 @@ def checkProbabilities(l: ndarray) -> bool:
 	bool
 		True if the sum of the list is 0.0 or 1.0.
 	"""
-	return round(l.sum(),3) == 1.0
+	return round(l.sum(),3) == 1.0 or round(l.sum(),3) == 0.0

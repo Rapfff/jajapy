@@ -37,8 +37,9 @@ class Model:
 			self.initial_state[initial_state] = 1.0
 		else:
 			if round(sum(initial_state)) != 1.0:
-				print("Error: the sum of initial_state should be 1.0, here it's",sum(initial_state))
-				return False
+				msg = "Error: the sum of initial_state should be 1.0, here it's"
+				msg+= str(sum(initial_state))
+				raise ValueError(msg)
 			self.initial_state = array(initial_state)
 		self.matrix = matrix
 		self.name = name
@@ -363,3 +364,11 @@ class Model:
 		if prev_arr.sum() == 0.0:
 			return 0.0
 		return log(prev_arr.sum())*times
+	
+	def _checkStateIndex(self,s:int) -> None:
+		if type(s) != int:
+			raise TypeError('The parameter must be a valid state ID')
+		elif s < 0:
+			raise IndexError('The parameter must be a valid state ID')
+		elif s >= self.nb_states:
+			raise IndexError('This model contains only '+str(self.labeling)+' states')

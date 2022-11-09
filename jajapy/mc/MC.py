@@ -1,22 +1,25 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from ast import literal_eval
-from numpy import ndarray, array, where, reshape, zeros
+from numpy import ndarray, array, reshape, zeros
+from numpy.random import randint
+from random import choices
 
 class MC(Model):
-	def __init__(self,matrix: ndarray, alphabet: list, initial_state, name: str ="unknown_MC") -> None:
+	def __init__(self, matrix: ndarray, labeling: list, initial_state, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
 
 		Parameters
 		----------
 		matrix : ndarray
+			A N^2 ndarray.
 			Represents the transition matrix.
-			`matrix[s1][s2][obs_ID]` is the probability of moving from `s1` to 
-			`s2` seeing the observation of ID `obs_ID`.
-		alphabet: list
-			The list of all possible observations, such that:
-			`alphabet.index("obs")` is the ID of `obs`.
+			`matrix[s1][s2]` is the probability of moving from `s1` to `s2`.
+		labeling: list of str
+			A list of N observations (with N the nb of states).
+			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			Each state has exactly one label.
 		initial_state : int or list of float
 			Determine which state is the initial one (then it's the id of the
 			state), or what are the probability to start in each state (then it's
@@ -25,36 +28,58 @@ class MC(Model):
 			Name of the model.
 			Default is "unknow_MC"
 		"""
-		self.alphabet = alphabet
+		self.alphabet = list(set(labeling))
+		self.labeling = labeling
 		super().__init__(matrix,initial_state,name)
 		for i in range(self.nb_states):
 			if not checkProbabilities(matrix[i]):
-				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
-				return False
+				msg = "Error: the probability to take a transition from state "
+				msg+= str(i)+" should be 1.0, here it's "+str(matrix[i].sum())
+				raise ValueError(msg)
 	
-	def getAlphabet(self,state: int = -1) -> list:
+	def getLabel(self,state: int) -> str:
 		"""
-		If state is set, returns the list of all the observations we could
-		see in `state`. Otherwise it returns the alphabet of the model. 
+		Returns the label of `state`.
 
 		Parameters
 		----------
-		state : int, optional
+		state : int
 			a state ID
 
 		Returns
 		-------
-		list of str
-			list of observations
-		"""
-		if state == -1:
-			return self.alphabet
-		else:
-			return [self.alphabet[i] for i in where(self.matrix[state].sum(axis=0) > 0.0)[0]]
+		str
+			a label
 
-	def tau(self,s1: int,s2: int,obs: str) -> float:
+		Example
+		-------
+		>>> model.getLabel(2)
+		'Label-of-state-2'
 		"""
-		Returns the probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
+		self._checkStateIndex(state)
+		return self.labeling[state]
+	
+	def getAlphabet(self) -> list:
+		"""
+		Returns the alphabet of this model.
+
+		Returns
+		-------
+		list of str
+			The alphabet of this model
+		
+		Example
+		-------
+		>>> model.getAlphabet()
+		['a','b','c','d','done']
+		"""
+		return self.alphabet
+		
+	def tau(self,s1: int, s2: int, obs: str) -> float:
+		"""
+		Returns the probability of moving from state `s1` to `s2` seeing label `obs`.
+		(i.e. if `s1` is not labelled with `obs` the probability is 0.0).
+
 		Parameters
 		----------
 		s1: int
@@ -62,21 +87,33 @@ class MC(Model):
 		s2: int
 			destination state ID.
 		obs: str
-			generated observation.
+			seen label.
 		
 		Returns
 		-------
 		float
-			probability of moving from state ``s1`` to ``s2`` generating observation ``obs``.
+			probability of moving from state `s1` to `s2` seeing label `obs`.
+		
+		Example
+		-------
+		>>> model.tau(0,1,'a')
+		0.6
+		>>> model.getLabel(0)
+		'a'
+		>>> model.tau(0,1,'b')
+		0.0
+		>>> model.getLabel(1)
+		'b'
 		"""
-		if not obs in self.alphabet:
+		self._checkStateIndex(s1)
+		self._checkStateIndex(s2)
+		if obs != self.labeling[s1]:
 			return 0.0
-		return self.matrix[s1][s2][self.alphabet.index(obs)]
+		return self.matrix[s1][s2]
 	
 	def a(self,s1: int,s2: int) -> float:
 		"""
 		Returns the probability of moving from state `s1` to state `s2`.
-		If `s1` or `s2` is not a valid state ID it returns 0.
 
 		Parameters
 		----------
@@ -89,31 +126,15 @@ class MC(Model):
 		-------
 		float
 			Probability of moving from state `s1` to state `s2`.
-		"""
-		if s1 < 0 or s1 >= self.nb_states or s2 < 0 or s2 >= self.nb_states:
-			return 0.0 
-		return self.matrix[s1][s2].sum(axis=1)
-	
-	def b(self, s: int, l: str) -> float:
-		"""
-		Returns the probability of generating `l` in state `s`.
-		If `s` is not a valid state ID it returns 0.
-
-		Parameters
-		----------
-		s : int
-			ID of the source state.		
-		l : str
-			observation.
 		
-		Returns
+		Example
 		-------
-		float
-			probability of generating `l` in state `s`.
+		>>> model.a(0,1)
+		0.6
 		"""
-		if s < 0 or s >= self.nb_states or l not in self.alphabet:
-			return 0.0
-		return self.matrix[s].sum(axis=0)[self.alphabet.index(l)]
+		self._checkStateIndex(s1)
+		self._checkStateIndex(s2)
+		return self.matrix[s1][s2]
 
 	def next(self,state: int) -> tuple:
 		"""
@@ -123,11 +144,26 @@ class MC(Model):
 		-------
 		output : (int, str)
 			A state-observation pair.
+			
+		Example
+		-------
+		>>> model.next(0)
+		(1,'a')
+		>>> model.getLabel(0)
+		'a'
+		>>> model.next(0)
+		(1,'a')
+		>>> model.next(0)
+		(2,'a')
+		>>> model.a(0,1)
+		0.6
+		>>> model.a(0,2)
+		0.4
 		"""
-		c = resolveRandom(self.matrix[state].flatten())
-		return (c//len(self.alphabet), self.alphabet[c%len(self.alphabet)])
+		c = resolveRandom(self.matrix[state])
+		return (c, self.labeling[state])
 
-	def save(self,file_path:str):
+	def save(self, file_path:str):
 		"""Save the model into a text file.
 
 		Parameters
@@ -141,16 +177,15 @@ class MC(Model):
 		"""
 		f = open(file_path, 'w')
 		f.write("MC\n")
-		f.write(str(self.alphabet))
+		f.write(str(self.labeling))
 		f.write('\n')
 		super()._save(f)
 
 	def _stateToString(self,state:int) -> str:
-		res = "----STATE s"+str(state)+"----\n"
+		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
 		for j in range(len(self.matrix[state])):
-			for k in range(len(self.matrix[state][j])):
-				if self.matrix[state][j][k] > 0.0001:
-					res += "s"+str(state)+" - ("+str(self.alphabet[k])+") -> s"+str(j)+" : "+str(self.matrix[state][j][k])+'\n'
+			if self.matrix[state][j] > 0.0001:
+				res += "s"+str(state)+" -> s"+str(j)+" : "+str(self.matrix[state][j])+'\n'
 		return res
 
 def loadMC(file_path: str) -> MC:
@@ -166,18 +201,22 @@ def loadMC(file_path: str) -> MC:
 	-------
 	output : MC
 		The MC saved in `file_path`.
+	
+	Examples
+	--------
+	>>> model = loadMC("my_model.txt")
 	"""
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
 	if l != "MC":
 		print("ERROR: this file doesn't describe an MC: it describes a "+l)
-	alphabet = literal_eval(f.readline()[:-1])
+	labeling = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MC(matrix, alphabet, initial_state, name)
+	return MC(matrix, labeling, initial_state, name)
 
 def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) -> MC:
 	"""
@@ -190,27 +229,48 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) 
 	alphabet : list of str
 		List of alphabet.
 	random_initial_state: bool, optional
-		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
+		If set to True we will start in each state with a random probability,
+		otherwise we will always start in state 0.
 		Default is False.
 	
 	Returns
 	-------
 	A pseudo-randomly generated MC.
+
+	Examples
+	--------
+	>>> model = MC_random(2,['a','b'],False)
+	>>> print(model)
+	Name: MC_random_2_states
+	Initial state: s0
+	----STATE 0--a----
+	s0 -> s0 : 0.625
+	s0 -> s1 : 0.375
+	----STATE 1--b----
+	s1 -> s0 : 0.9
+	s1 -> s1 : 0.1
 	"""
+	if nb_states < len(alphabet):
+		print("WARNING: the size of the alphabet is higher than the",end=" ")
+		print("number of states. Some labels will not be assigned to",end=" ")
+		print("any states.")
+	
+	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
+	
 	matrix = []
-	for s in range(nb_states):
-		p = array(randomProbabilities(nb_states*len(alphabet)))
-		p = reshape(p, (nb_states,len(alphabet)))
+	for _ in range(nb_states):
+		p = randomProbabilities(nb_states)
 		matrix.append(p)
+
 	matrix = array(matrix)
 
 	if random_initial_state:
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
-	return MC(matrix, alphabet, init,"MC_random_"+str(nb_states)+"_states")
+	return MC(matrix, labeling, init,"MC_random_"+str(nb_states)+"_states")
 
-def MC_state(transitions:list, alphabet:list, nb_states:int) -> ndarray:
+def createMC(transitions: list, labeling: list, initial_state, name: str ="unknown_MC") -> MC:
 	"""
 	Given the list of all transition leaving a state `s`, it generates
 	the ndarray describing this state `s` in the MC.matrix.
@@ -218,21 +278,50 @@ def MC_state(transitions:list, alphabet:list, nb_states:int) -> ndarray:
 
 	Parameters
 	----------
-	transitions : [ list of tuples (int, str, float)]
+	transitions : [ list of tuples (int, int, float)]
 		Each tuple represents a transition as follow: 
-		(destination state ID, observation, probability).
-	alphabet : list
-		alphabet of the model in which this state is.
-	nb_states: int
-		number of states in which this state is
-
+		(source state ID, destination state ID, probability).
+	labeling: list of str
+		A list of N observations (with N the nb of states).
+		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+		Each state has exactly one label.
+	initial_state : int or list of float
+		Determine which state is the initial one (then it's the id of the
+		state), or what are the probability to start in each state (then it's
+		a list of probabilities).
+	name : str, optional
+		Name of the model.
+		Default is "unknow_MC"
+	
 	Returns
 	-------
 	ndarray
 		ndarray describing this state `s` in the MC.matrix.
+	
+	Examples
+	--------
+	>>> model = createMC([(0,1,1.0),(1,0,0.6),(1,1,0.4)],['b','a'],0,"My_MC")
+	>>> print(model)
+	Name: My_MC
+	Initial state: s0
+	----STATE 0--b----
+	s0 -> s1 : 1.0
+	----STATE 1--a----
+	s1 -> s0 : 0.6
+	s1 -> s1 : 0.4
 	"""
+	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
+	states.sort()
+	nb_states = len(states)
+	
+	if nb_states > len(labeling):
+		print("ERROR: all states are not labelled ")
+		return None
+	elif nb_states < len(labeling):
+		print("WARNING: the labeling list is bigger than the number of states")
 
-	res = zeros((nb_states,len(alphabet)))
+	res = zeros((nb_states,nb_states))
 	for t in transitions:
-		res[t[0]][alphabet.index(t[1])] = t[2]
-	return res
+		res[states.index(t[0])][states.index(t[1])] = t[2]
+	
+	return MC(res, labeling, initial_state, name)

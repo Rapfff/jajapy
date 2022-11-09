@@ -150,7 +150,7 @@ class BW:
 			Maximal number of iterations. The algorithm will stop after `max_it`
 			iterations.
 			Default is infinity.
-		pp : str
+		pp:	str
 			Will be printed at each iteration.
 		verbose: bool
 			Print or not a small recap at the end of the learning.
