@@ -125,6 +125,8 @@ class Model:
 			[next_state, symbol] = self.next(current)
 			output.append(symbol)
 			current = next_state
+		
+		output.append(self.labeling[current])
 		return output
 	
 	def generateSet(self, set_size: int, param, distribution=None, min_size=None, timed: bool=False) -> Set:
@@ -371,4 +373,4 @@ class Model:
 		elif s < 0:
 			raise IndexError('The parameter must be a valid state ID')
 		elif s >= self.nb_states:
-			raise IndexError('This model contains only '+str(self.labeling)+' states')
+			raise IndexError('This model contains only '+str(self.nb_states)+' states')

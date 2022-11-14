@@ -185,12 +185,17 @@ class IOFPTA:
 		self.states = states
 		self.observations = o
 		self.actions = a
+		self.initial = []
 
 	def __str__(self) -> str:
 		res = ""
 		for s in self.states:
 			res += str(s)
 		return res
+	
+	def addInitialState(self,state:int) -> None:
+		if not state in self.initial:
+			self.initial.append(state)
 
 	def successor(self, state: int, action: str, obs: str) -> int:
 		"""
@@ -360,27 +365,25 @@ class IOFPTA:
 		Returns
 		-------
 		bool
-			_description_
+			True if the IOFTPA can generate the given trace ``seq``.
 		"""
-		s_current = 0
-		i_current = 0
-		path = [s_current]
-		while i_current < len(seq):
+		for s_current in self.initial:
+			i_current = 0
+			path = [s_current]
 			f = True
-			for s in self.states[s_current].successorsAction(seq[i_current]):
-				if self.states[s].observation == seq[i_current+1]:
-					s_current = s
-					path.append(s_current)
-					i_current += 2
-					f = False
-					break
+			while i_current < len(seq) and f:
+				f = False
+				for s in self.states[s_current].successorsAction(seq[i_current]):
+					if self.states[s].observation == seq[i_current+1]:
+						s_current = s
+						path.append(s_current)
+						i_current += 2
+						f = True
+						break
+				
 			if f:
-				for s in path:
-					self.states[s].pprint()
-				print()
-				print(seq)
-				return False
-		return True
+				return True
+		return False
 
 
 	def cleanMDP(self,red: list) -> MDP:
@@ -397,23 +400,19 @@ class IOFPTA:
 		MDP
 			An MDP.
 		"""
-		states = []
-		for i in range(len(red)):
-			self.states[red[i]].setId(i)
 
-		for i in red:
-			new_dic = {}
-			dic = self.states[i].transitions
-			for a in dic:
-				dic[a].append([])
-				new_dic[a] = []
-				tot = sum(self.states[i].transitions[a][0])
-				for j in range(len(dic[a][0])):
-					new_dic[a].append((self.states[dic[a][1][j]].id,self.states[dic[a][1][j]].observation,dic[a][0][j]/tot))
-			states.append(MDP_state(new_dic, self.observations,len(red),self.actions))
-		matrix = array(states)
+		actions = self.actions
+		states = red
+		labeling = [self.states[i].observation for i in states]
+		transitions = zeros((len(states),len(actions),len(states)))
+		
+		for si,s in enumerate([self.states[i] for i in states]):
+			for ai,a in enumerate([a for a in actions if s.actionAllowed(a)]):
+				tot = sum(s.transitions[a][0])
+				for p,s2 in zip(s.transitions[a][0],s.transitions[a][1]):
+					transitions[si][ai][states.index(s2)] = p/tot
 
-		return MDP(matrix,self.observations,self.actions,0)
+		return MDP(transitions, labeling, actions, 0)
 
 
 
@@ -442,16 +441,16 @@ class IOAlergia:
 		self.a = self.t
 		
 	def _buildIOFPTA(self):
-		states_lbl = [[]]
-		states = [IOFPTA_state("",self.N,[])]
+		states_lbl = []
+		states = []
 		#init states_lbl and states_counter
-		for i in range(0,self.n,2):
-			for seq in range(len(self.sample.sequences)):
-				if not self.sample.sequences[seq][:i+2] in states_lbl:
-					states_lbl.append(self.sample.sequences[seq][:i+2])
-					states.append( IOFPTA_state(self.sample.sequences[seq][i+1], self.sample.times[seq], self.sample.sequences[seq][:i+2]))
+		for seq,times in zip(self.sample.sequences, self.sample.times):
+			for i in range(0,len(seq),2):
+				if not seq[:i+1] in states_lbl:
+					states_lbl.append(seq[:i+1])
+					states.append( IOFPTA_state(seq[i], times, seq[:i+1]))
 				else:
-					states[states_lbl.index(self.sample.sequences[seq][:i+2])].counterAdd(self.sample.times[seq])
+					states[states_lbl.index(seq[:i+1])].counterAdd(times)
 		#sorting states
 		states_lbl.sort()
 		for s in states:
@@ -460,8 +459,13 @@ class IOAlergia:
 		for s in states:
 			states_sorted[s.id] = s
 		#init states_transitions
+
+		initial = []
 		for s1 in range(len(states_sorted)):
 			len_s1 = len(states_sorted[s1].label)
+			if len_s1 == 1:
+				initial.append(s1)
+				
 			s2 = s1 + 1
 			while s2 < len(states_sorted):
 				if len(states_sorted[s2].label) < len_s1 + 2: # too short
@@ -475,7 +479,10 @@ class IOAlergia:
 					states_sorted[s1].transitionsAdd(act, states_sorted[s2].counter, s2)
 					s2 += 1
 
-		return IOFPTA(states_sorted,self.observations,self.actions)
+		res =  IOFPTA(states_sorted,self.observations,self.actions)
+		for i in initial:
+			res.addInitialState(i)
+		return res
 
 	def fit(self,sample:Set,epsilon:float, stormpy_output: bool = True):
 		"""
@@ -502,7 +509,9 @@ class IOAlergia:
 		self.actions, self.observations = sample.getActionsObservations()
 		self._initialize(sample,epsilon,self.actions,self.observations)
 		red = [0]
-		blue = self.a.states[0].successors()
+		blue = []
+		for i in self.a.initial:
+			blue += self.a.states[i].successors()
 
 		while len(blue) != 0:
 			state_b = blue[0]

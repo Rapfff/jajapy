@@ -5,16 +5,12 @@ from ..base.Set import *
 from math import log
 
 def modelMDP_bigstreet(p=0.75):
-	alphabet = ['L','R','OK','HIT']
-	actions  = ['m','s']
-	nb_states = 5
-	m_s_rr = MDP_state({'m': list(zip([1,2],['L','R'],[p,1-p])), 's': list(zip([2,0],['L','R'],[p,1-p]))},alphabet,nb_states,actions)
-	m_s_ll = MDP_state({'m': list(zip([0,2],['R','L'],[p,1-p])), 's': list(zip([2,1],['R','L'],[p,1-p]))},alphabet,nb_states,actions)
-	m_s_di = MDP_state({'m': [(3,'HIT',1.0)],       's': [(4,'OK',1.0)]},alphabet,nb_states,actions)
-	m_s_de = MDP_state({'m': [(3,'HIT',1.0)],       's': [(3,'HIT',1.0)]},alphabet,nb_states,actions)
-	m_s_vi = MDP_state({'m': [(4,'OK' ,1.0)],       's': [(4,'OK',1.0)]},alphabet,nb_states,actions)
-	matrix = array([m_s_rr,m_s_ll,m_s_di,m_s_de,m_s_vi])
-	return MDP(matrix,alphabet,actions,0,"bigstreet")
+	labeling = ['R','L','R','L','OK','HIT']
+	transitions = [(0,'m',1,p),(0,'m',2,1-p),(0,'s',3,p),(0,'s',0,1-p),
+				   (1,'m',0,p),(1,'m',3,1-p),(1,'s',2,p),(1,'s',1,1-p),
+				   (2,'m',5,1.0),(2,'s',4,1.0),(3,'m',5,1.0),(3,'s',4,1.0),
+				   (4,'m',4,1.0),(4,'s',4,1.0),(5,'m',5,1.0),(5,'s',5,1.0)]
+	return createMDP(transitions,labeling,0,"bigstreet")
 
 m = modelMDP_bigstreet()
 scheduler = UniformScheduler(m.getActions())
@@ -23,11 +19,11 @@ class MDPTestclass(unittest.TestCase):
 
 	def test_MDP_state(var):
 		var.assertEqual(m.tau(0,'m',1,'B'),0.0)
-		var.assertEqual(m.tau(0,'m',1,'L'),0.75)
-		var.assertEqual(m.tau(0,'something else',1,'L'),0.0)
+		var.assertEqual(m.tau(0,'m',1,'R'),0.75)
+		var.assertEqual(m.tau(0,'something else',1,'R'),0.0)
 		var.assertEqual(m.tau(0,'m',1,'something else'),0.0)
-		var.assertEqual(set(m.getAlphabet(0)),
-						set(['L','R']))
+		var.assertEqual(set(m.getLabel(0)),
+						set('R'))
 		var.assertEqual(set(m.getActions(0)),
 						set(['m','s']))
 	
@@ -54,10 +50,10 @@ class MDPTestclass(unittest.TestCase):
 		remove("test_save.txt")
 
 	def test_MDP_logLikelihood(var):
-		set1 = Set([['m','L','s','L','s','R','m','HIT','m','HIT','s','HIT']],[1],from_MDP=True)
-		set2 = Set([['s','R','m','R','s','OK','m','OK','m','OK']],[2],from_MDP=True)
-		l11 = m._logLikelihood_oneproc(set1)
+		set1 = Set([['R','m','L','s','L','s','R','m','HIT','m','HIT','s','HIT']],[1],t=1)
+		set2 = Set([['R','s','R','m','R','s','OK','m','OK','m','OK']],[2],t=1)
 		l12 = m._logLikelihood_multiproc(set1)
+		l11 = m._logLikelihood_oneproc(set1)
 		var.assertAlmostEqual(l11,l12)
 		var.assertAlmostEqual(l11,log(9/64))
 		l2 = m.logLikelihood(set2)
@@ -77,7 +73,7 @@ class MDPTestclass(unittest.TestCase):
 	
 	def test_IOAlergia(var):
 		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")
-		IOAlergia().fit(training_set,0.0005)
+		IOAlergia().fit(training_set,0.01, stormpy_output=False)
 
 	def test_UniformScheduler(var):
 		nb_trials = 100000

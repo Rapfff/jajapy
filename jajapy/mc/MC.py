@@ -209,7 +209,8 @@ def loadMC(file_path: str) -> MC:
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
 	if l != "MC":
-		print("ERROR: this file doesn't describe an MC: it describes a "+l)
+		msg = "ERROR: this file doesn't describe an MC: it describes a "+l
+		raise ValueError(msg)
 	labeling = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
@@ -272,9 +273,7 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) 
 
 def createMC(transitions: list, labeling: list, initial_state, name: str ="unknown_MC") -> MC:
 	"""
-	Given the list of all transition leaving a state `s`, it generates
-	the ndarray describing this state `s` in the MC.matrix.
-	This method is useful while creating a model manually.
+	A user-friendly way to create a MC.
 
 	Parameters
 	----------
@@ -295,8 +294,8 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	
 	Returns
 	-------
-	ndarray
-		ndarray describing this state `s` in the MC.matrix.
+	MC
+		the MC describes by `transitions`, `labeling`, and `initial_state`.
 	
 	Examples
 	--------
@@ -315,8 +314,7 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	nb_states = len(states)
 	
 	if nb_states > len(labeling):
-		print("ERROR: all states are not labelled ")
-		return None
+		raise ValueError("ERROR: all states are not labelled (the labeling list is too small).")
 	elif nb_states < len(labeling):
 		print("WARNING: the labeling list is bigger than the number of states")
 

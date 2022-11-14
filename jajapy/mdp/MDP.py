@@ -3,17 +3,17 @@ from math import log
 from ..base.Model import Model
 from ..base.Set import Set
 from .Scheduler import Scheduler
-from numpy.random import geometric, randint
+from numpy.random import geometric
 from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape
 from ast import literal_eval
 from multiprocessing import cpu_count, Pool
+from random import choices
 
 class MDP(Model):
 	"""
 	Class representing a MDP.
 	"""
-	def __init__(self,matrix: ndarray, alphabet: list,
-				 actions: list,initial_state,name: str="unknown_MDP"):
+	def __init__(self,matrix: ndarray, labeling: list, actions:list, initial_state,name: str="unknown_MDP"):
 		"""
 		Create a MDP.
 
@@ -24,12 +24,13 @@ class MDP(Model):
 			`matrix[s1][act_ID][s2][obs_ID]` is the probability of moving 
 			from `s1` to `s2` by executing action of ID `act_ID` and seeing 
 			the observation of ID `obs_ID`.
-		alphabet: list
-			The list of all possible observations, such that:
-			`alphabet.index("obs")` is the ID of `obs`.
-		alphabet: list
-			The list of all possible observations, such that:
-			`alphabet.index("obs")` is the ID of `obs`.
+		labeling: list of str
+			A list of N observations (with N the nb of states).
+			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			Each state has exactly one label.
+		actions: list of str
+			The list of all possible actions, such that:
+			`actions.index("act")` is the ID of `act`.
 		initial_state : int or list of float
 			Determine which state is the initial one (then it's the id of the
 			state), or what are the probability to start in each state (then it's
@@ -38,16 +39,16 @@ class MDP(Model):
 			Name of the model. Default is "unknow_MDP"
 		"""
 		self.actions = actions
-		self.nb_actions = len(actions)
-		self.alphabet = alphabet
+		self.nb_actions = len(self.actions)
+		self.alphabet = list(set(labeling))
+		self.labeling = labeling
 		super().__init__(matrix,initial_state,name)
 		for i in range(self.nb_states):
 			for a in range(self.nb_actions):
-				if not checkProbabilities(matrix[i][a]) and round(matrix[i][a].sum(),3) != 0.0:
-					print("Error: the probability to take a transition from",end=" ")
-					print("state",i,"executing",actions[a],"should be",end=" ")
-					print("1.0 or 0.0, here it's",matrix[i][a].sum())
-					return False
+				if not checkProbabilities(matrix[i][a]):
+					msg = "Error: the probability to take a transition from state "
+					msg+= str(i)+" executing action "+self.actions[a]+" should be 1.0 or 0.0, here it's "+str(matrix[i][a].sum())
+					raise ValueError(msg)
 
 	def getActions(self, state:int =-1) -> list:
 		"""
@@ -64,40 +65,56 @@ class MDP(Model):
 		-------
 		list of str
 			list of actions
+		
+		Example
+		-------
+		>>> model.getActions()
+		['A','B','C','D']
+		>>> model.getActions(1)
+		['A','C']
 		"""
 		if state == -1:
 			return self.actions
 		else:
-			return set(self.actions[i] for i in where(self.matrix[state].sum(axis=2) > 0.0)[0])
+			return list(set(self.actions[i] for i in where(self.matrix[state].sum(axis=1) > 0.0)[0]))
 
-	def getAlphabet(self,state: int = -1, action: str = None) -> list:
+	def getAlphabet(self) -> list:
 		"""
-		If state is set, returns the list of all the observations we could
-		see in `state`. If the action is set as well, it returns the list of 
-		all the observations we could see in `state` after executing `action`. 
-		Otherwise it returns the alphabet of the model. 
-
-		Parameters
-		----------
-		state : int, optional
-			a state ID
-		action : str
-			an action
+		Returns the alphabet of this model.
 
 		Returns
 		-------
 		list of str
-			list of observations
+			The alphabet of this model
+		
+		Example
+		-------
+		>>> model.getAlphabet()
+		['a','b','c','d','done']
 		"""
-		if state == -1:
-			return self.alphabet
-		else:
-			if action == None:
-				return [self.alphabet[i] for i in where(self.matrix[state].sum(axis=0).sum(axis=0) > 0.0)[0]]
-			elif action in self.getActions(state):
-				return [self.alphabet[i] for i in where(self.matrix[state][self.actions.index(action)].sum(axis=0) > 0.0)[0]]
-			else:
-				return []
+		return self.alphabet
+	
+	def getLabel(self,state: int) -> str:
+		"""
+		Returns the label of `state`.
+
+		Parameters
+		----------
+		state : int
+			a state ID
+
+		Returns
+		-------
+		str
+			a label
+
+		Example
+		-------
+		>>> model.getLabel(2)
+		'Label-of-state-2'
+		"""
+		self._checkStateIndex(state)
+		return self.labeling[state]
 
 
 	def tau(self,s1: int,action: str,s2: int,obs: str) -> float:
@@ -120,17 +137,32 @@ class MDP(Model):
 		-------
 		float
 			A probability.
+		
+		Example
+		-------
+		>>> model.tau(0,'A',1,'a')
+		0.6
+		>>> model.getLabel(0)
+		'a'
+		>>> model.tau(0,'A',1,'b')
+		0.0
+		>>> model.tau(0,'B',1,'b')
+		0.0
+		>>> model.getActions(0)
+		['A']		
 		"""
-		if s1 < 0 or s1 > self.nb_states or not action in self.actions or not obs in self.alphabet:
+		self._checkStateIndex(s1)
+		self._checkStateIndex(s2)
+		if obs != self.labeling[s1]:
 			return 0.0
-		return self.matrix[s1][self.actions.index(action)][s2][self.alphabet.index(obs)]
+		if action not in self.actions:
+			return 0.0
+		return self.matrix[s1][self.actions.index(action)][s2]
 	
 	def a(self,s1: int,s2: int, action: str) -> float:
 		"""
 		Returns the probability of moving from state `s1` to state `s2`,
 		just after executing `action`.
-		If `s1` or `s2` is not a valid state ID it returns 0.
-
 		Parameters
 		----------
 		s1 : int
@@ -144,39 +176,21 @@ class MDP(Model):
 		-------
 		float
 			Probability of moving from state `s1` to state `s2`.
-		"""
-		if s1 < 0 or s1 >= self.nb_states or s2 < 0 or s2 >= self.nb_states or action not in self.getActions(s1):
-			return 0.0
-		return self.matrix[s1][self.actions.index(action)][s2].sum(axis=1)
-	
-	def b(self, s: int, l: str, action: str) -> float:
-		"""
-		Returns the probability of generating `l` in state `s`,
-		just after executing `action`.
-		If `s` is not a valid state ID it returns 0.
-
-		Parameters
-		----------
-		s : int
-			ID of the source state.		
-		l : str
-			observation.
-		action: str
-			an action.
 		
-		Returns
+		Example
 		-------
-		float
-			probability of generating `l` in state `s`.
+		>>> model.a(0,1)
+		0.6
 		"""
-		if s < 0 or s >= self.nb_states or l not in self.alphabet or action not in self.getActions(s):
-			return 0.0
-		return round(self.matrix[s][self.actions.index(action)].sum(axis=0)[self.alphabet.index(l)],5)
+		self._checkStateIndex(s1)
+		self._checkStateIndex(s2)
+		return self.matrix[s1][self.actions.index(action)][s2]
 	
+
 	def next(self,state: int, action: str) -> tuple:
 		"""
 		Return a state-observation pair according to the distributions 
-		described by matrix
+		described by matrix.
 
 		Parameters
 		----------
@@ -189,9 +203,28 @@ class MDP(Model):
 		-------
 		output : (int, str)
 			A state-observation pair.
+
+		Example
+		-------
+		>>> model.next(0,'A')
+		(1,'a')
+		>>> model.getLabel(0)
+		'a'
+		>>> model.next(0)
+		(1,'a')
+		>>> model.next(0)
+		(2,'a')
+		>>> model.a(0,1,'A')
+		0.6
+		>>> model.a(0,2,'A')
+		0.4
+		>>> model.next(0,'C')
+		(2,'a')
+		>>> model.a(0,2,'C')
+		1.0
 		"""
-		c = resolveRandom(self.matrix[state][self.actions.index(action)].flatten())
-		return (c//len(self.alphabet), self.alphabet[c%len(self.alphabet)])
+		c = resolveRandom(self.matrix[state][self.actions.index(action)])
+		return (c, self.labeling[state])
 			
 	def run(self,number_steps: int,scheduler: Scheduler) -> list:
 		"""
@@ -218,13 +251,13 @@ class MDP(Model):
 			while action not in self.getActions(current):
 				action = scheduler.getAction()
 			
-			res.append(action)
 			next_state, observation = self.next(current,action)
 			res.append(observation)
+			res.append(action)
 			scheduler.addObservation(observation)
-			
 			current = next_state
 			current_len += 1
+		res.append(self.labeling[current])
 		return res
 
 	def generateSet(self, set_size: int, param, scheduler: Scheduler, distribution=None, min_size=None) -> list:
@@ -275,16 +308,7 @@ class MDP(Model):
 
 			val[seq.index(trace)] += 1
 
-		return Set(seq,val,from_MDP=True)
-	
-	def _stateToString(self,state:int) -> str:
-		res = "----STATE s"+str(state)+"----\n"
-		for ai,a in enumerate(self.actions):
-			for s in range(self.nb_states):
-				for oi,o in enumerate(self.alphabet):
-					if self.matrix[state][ai][s][oi] > 0.0001:
-						res += "s"+str(state)+" - ("+a+") -> s"+str(s)+" : "+o+" : "+str(self.matrix[state][ai][s][oi])+'\n'
-		return res
+		return Set(seq,val,t=1)
 	
 	def save(self,file_path:str):
 		"""Save the model into a text file.
@@ -300,11 +324,20 @@ class MDP(Model):
 		"""
 		f = open(file_path, 'w')
 		f.write("MDP\n")
-		f.write(str(self.alphabet))
+		f.write(str(self.labeling))
 		f.write('\n')
 		f.write(str(self.actions))
 		f.write('\n')
 		super()._save(f)
+	
+	def _stateToString(self,state:int) -> str:
+		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
+		for ai,a in enumerate(self.actions):
+			for s in range(self.nb_states):
+				if self.matrix[state][ai][s] > 0.0001:
+					res += "s"+str(state)+" - ("+a+") -> s"+str(s)+" : "+str(self.matrix[state][ai][s])+'\n'
+		return res
+	
 
 	def _logLikelihood_oneproc(self,sequences: Set) -> float:
 		"""
@@ -325,8 +358,8 @@ class MDP(Model):
 		loglikelihood = 0.0
 		alpha_matrix = self._initAlphaMatrix(len(sequences_sorted[0])//2)
 		for seq in range(len(sequences_sorted)):
-			sequence_actions = [sequences_sorted[seq][i] for i in range(0,len(sequences_sorted[seq]),2)]
-			sequence_obs = [sequences_sorted[seq][i+1] for i in range(0,len(sequences_sorted[seq]),2)]
+			sequence_actions = [sequences_sorted[seq][i+1] for i in range(0,len(sequences_sorted[seq])-1,2)]
+			sequence_obs = [sequences_sorted[seq][i] for i in range(0,len(sequences_sorted[seq])-1,2)]
 			sequence = sequences_sorted[seq]
 			times = sequences.times[sequences.sequences.index(sequence)]
 			common = 0
@@ -337,8 +370,11 @@ class MDP(Model):
 					common += 1
 			common = int(common/2)
 			alpha_matrix = self._updateAlphaMatrix(sequence_obs,sequence_actions,common,alpha_matrix)
-			if alpha_matrix[-1].sum() > 0:
-				loglikelihood += log(alpha_matrix[-1].sum()) * times
+			
+			last_arr = alpha_matrix[-1] * (array(self.labeling) == sequence[-1])
+			last_arr = last_arr.sum()
+			if last_arr > 0.0:
+				loglikelihood += log(last_arr) * times
 
 		return loglikelihood/sum(sequences.times)
 	
@@ -416,56 +452,17 @@ class MDP(Model):
 		"""
 		len_seq = len(sequence)
 		prev_arr = array(self.initial_state)
-		for k in range(0,len_seq,2):
+		
+		for k in range(0,len_seq-1,2):
 			new_arr = zeros(self.nb_states)
 			for s in range(self.nb_states):
-				p = array([self.tau(ss,sequence[k],s,sequence[k+1]) for ss in range(self.nb_states)])
+				p = array([self.tau(ss,sequence[k+1],s,sequence[k]) for ss in range(self.nb_states)])
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
+		prev_arr = prev_arr*(array(self.labeling) == sequence[-1])
 		if prev_arr.sum() == 0.0:
 			return 0.0
 		return log(prev_arr.sum())*times
-
-	#-------------------------------------------
-
-	def saveToPrism(self,output_file:str) -> None:
-		"""
-		Save the MDP into a file with the Prism format.
-		WARNING: This works only if we start in a given state
-		with probability 1.0.
-
-		Parameters
-		----------
-		output_file : str 
-			Where to save the output Prism MDP.
-		"""
-		if not 1.0 in self.initial_state:
-			print("ERROR: in PRISM the initial state is deterministic (not stochastic).")
-			return None
-		f = open(output_file,'w',encoding="utf-8")
-		f.write("mdp\n")
-		f.write("\tmodule "+self.name+"\n")
-		f.write("\ts : [0.."+str(self.nb_states-1)+"] init "+str(self.initial_state.index(1.0))+";\n")
-		f.write("\tl : [0.."+str(len(self.observations()))+"] init "+str(len(self.observations()))+";\n")
-		f.write("\n")
-		for s in range(self.nb_states):
-			for a in self.getActions(s):
-				ai = self.actions.index(a)
-				f.write("\t["+a+"] s="+str(s)+" -> ")
-				res = ""
-				for s2 in range(self.nb_states):
-					for oi,o in enumerate(self.alphabet):
-						if self.matrix[s][a][s2][oi] > 0.0:
-							res += self.matrix[s][a][s2][oi]+" : (s'="+str(s2)+") & (l'="+o+") + "
-				res = res[:-3]
-				res+= ";\n"
-				f.write(res)
-		f.write("\n")
-		f.write("endmodule\n")
-
-		for l in range(len(self.alphabet)):
-			f.write('label "'+self.alphabet[l]+'" = l='+str(l)+';\n')
-		f.close()
 
 def loadMDP(file_path: str) -> MDP:
 	"""
@@ -484,18 +481,19 @@ def loadMDP(file_path: str) -> MDP:
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
 	if l != "MDP":
-		print("ERROR: this file doesn't describe an MDP: it describes a "+l)
-	alphabet = literal_eval(f.readline()[:-1])
+		msg = "ERROR: this file doesn't describe an MC: it describes a "+l
+		raise ValueError(msg)
+	labeling = literal_eval(f.readline()[:-1])
 	actions = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MDP(matrix, alphabet, actions, initial_state, name)
+	return MDP(matrix, labeling, actions, initial_state, name)
 
 
-def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state: bool = False, deterministic: bool = False) -> MDP:
+def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state: bool = False, deterministic: bool = False) -> MDP:
 	"""
 	Generate a random MDP.
 
@@ -519,21 +517,29 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 	MDP
 		A pseudo-randomly generated MDP.
 	"""
+	if nb_states < len(alphabet):
+		print("WARNING: the size of the alphabet is higher than the",end=" ")
+		print("number of states. Some labels will not be assigned to",end=" ")
+		print("any states.")
+	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
+	alphabet = list(set(labeling))
+
+	
 	matrix = []
 	for s in range(nb_states):
-		matrix.append([])
-		for a in actions:
-			if not deterministic:
-				p = array(randomProbabilities(nb_states*len(alphabet)))
-				p = reshape(p, (nb_states,len(alphabet)))
-			else:
-				p = zeros((nb_states,len(alphabet)))
+		if not deterministic:
+			p = array([randomProbabilities(nb_states) for a in actions])
+			p = reshape(p,(len(actions),nb_states))
+			matrix.append(p)
+		else:
+			matrix.append([])
+			for a in actions:
+				dest = [choices(where(array(labeling) == o)[0]) for o in alphabet]
+				p = zeros(nb_states)
 				probs = randomProbabilities(len(alphabet))
-				states = randint(0,nb_states,len(alphabet))
-				for i in range(len(alphabet)):
-					p[states[i]][i] = probs[i]
-			
-			matrix[-1].append(p)
+				for i,j in zip(dest,probs):
+					p[i] = j
+				matrix[-1].append(p)
 
 	matrix = array(matrix)
 
@@ -541,129 +547,53 @@ def MDP_random(nb_states: int,alphabet: list,actions: list,random_initial_state:
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
-	return MDP(matrix, alphabet, actions, init,"MDP_random_"+str(nb_states)+"_states")
+	return MDP(matrix, labeling, actions, init,"MDP_random_"+str(nb_states)+"_states")
 
 
-def MDPFileToPrism(file_path:str,output_file:str) -> None:
+def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknown_MDP") -> MDP:
 	"""
-	Translate a MDP save file into a MDP Prism save file.
-	
-	Parameters
-	----------
-	file_path : str
-		The MDP save file.
-	output_file : str 
-		Where to save the output Prism MDP.
-	"""
-	m = loadMDP(file_path)
-	m.saveToPrism(output_file)
-
-def loadPrismMDP(file_path:str) -> MDP:
-	"""
-	Load an MDP saved into a text file with the Prism format.
+	A user-friendly way to create an MDP.
 
 	Parameters
 	----------
-	file_path : str
-		Location of the Prism file.
+	transitions : [ list of tuples (int, str, int, float)]
+		Each tuple represents a transition as follow: 
+		(source state ID, action, destination state ID, probability).
+	labeling: list of str
+		A list of N observations (with N the nb of states).
+		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+		Each state has exactly one label.
+	initial_state : int or list of float
+		Determine which state is the initial one (then it's the id of the
+		state), or what are the probability to start in each state (then it's
+		a list of probabilities).
+	name : str, optional
+		Name of the model.
+		Default is "unknow_MC"
 	
 	Returns
 	-------
 	MDP
-		The MDP saved in `file_path`.
-	"""
-	def readline(f):
-		l = f.readline()
-		print(l)
-		while '//' in l or l == '\n':
-			l = f.readline()
-			print(l)
-		return l
-
-	f = open(file_path)
-	readline(f)
-	l = readline(f)
-	l = l.split(' ')
-
-	states = []
-	init = int(l[-1][:-2])
-	for i in range(int(l[2][4:-1])+1):
-		states.append({})
-
-	actions = []
-	alphabet = []
-
-	l = readline(f)
-	while l[:-1] != "endmodule":
-		act = l[1]
-		actions.append(act)
-		state = int(l[l.find('=')+1:l.find('-')-1])
-		l = (' '+readline(f)).split('+')
-		states[state][act] = []
-		states[state][act].append([ float(i[1:i.find(':')-1]) for i in l ]) #add proba
-		states[state][act].append([ int(i[i.find('=')+1:i.find(')')]) for i in l ]) #add state
-
-		l = readline(f)
+		the MDP describes by `transitions`, `labeling`, and `initial_state`.
 	
-	actions = list(set(actions))
-
-	map_s_o = {}
-	l = readline(f)
-
-	while l:
-		l = l[:-2]
-		if not "goal" in l:
-			obs = l[l.find('"')+1:l.rfind('"')]
-			obs = obs[0].upper() + obs[1:]
-			alphabet.append(obs)
-			l = l.split('|')
-			s = [int(i[i.rfind('=')+1:]) for i in l]
-			for ss in s:
-				map_s_o[ss] = obs
-		l = readline(f)
-
-	alphabet = list(set(alphabet))
-
-	for state in range(len(states)):
-		for a in states[state]:
-			o = [ map_s_o[states[state][a][1][i]] for i in range(len(states[state][a][1])) ]
-			p = states[a][0]
-			s = states[a][1]
-			states[state][a] = list(zip(s,o,p))
-
-
-	states = [MDP_state(j,i) for i,j in enumerate(states)]
-
-	m = MDP(array(states),alphabet,actions,init,file_path[:-6])
-	return m
-
-def MDP_state(transitions:dict, alphabet:list, nb_states:int, actions: list) -> ndarray:
+	Examples
+	--------
 	"""
-	Given the list of all transition leaving a state `s`, it generates
-	the ndarray describing this state `s` in the MDP.matrix.
-	This method is useful while creating a model manually.
+	states = list(set([i[0] for i in transitions]+[i[2] for i in transitions]))
+	states.sort()
+	nb_states = len(states)
+	actions = list(set([i[1] for i in transitions]))
+	actions.sort()
+	nb_actions = len(actions)
+	
+	if nb_states > len(labeling):
+		raise ValueError("ERROR: all states are not labelled (the labeling list is too small).")
+	elif nb_states < len(labeling):
+		print("WARNING: the labeling list is bigger than the number of states")
 
-	Parameters
-	----------
-	transition : dict
-			transition = {action1 : [(destination_state_1,observation_1,proba_1),(destination_state_1,observation_1,proba_1)...],
-			action2 : [(destination_state_1,observation_1,proba_1),(destination_state_1,observation_1,proba_1)...],
-			...}
-	alphabet : list
-		alphabet of the model in which this state is.
-	nb_states: int
-		number of states in which this state is
-	actions : list
-		actions of the model in which this state is.
+	res = zeros((nb_states,nb_actions,nb_states))
+	for t in transitions:
+		res[states.index(t[0])][actions.index(t[1])][states.index(t[2])] = t[3]
+	
 
-	Returns
-	-------
-	ndarray
-		ndarray describing this state `s` in the MDP.matrix.
-	"""
-
-	res = zeros((len(actions),nb_states,len(alphabet)))
-	for a in transitions:
-		for t in transitions[a]:
-			res[actions.index(a)][t[0]][alphabet.index(t[1])] = t[2]
-	return res
+	return MDP(res,labeling,actions,initial_state,name)

@@ -129,12 +129,14 @@ class BW_MDP(BW):
 		"""
 		len_seq = len(sequence)
 		init_arr = self.h.initial_state
-		zero_arr = zeros(shape=(len_seq*self.nb_states,))
-		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states)
-		for k in range(len_seq):
+		zero_arr = zeros(shape=((len_seq-1)*self.nb_states,))
+		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq,self.nb_states)
+		for k in range(len_seq-1):
 			for s in range(self.nb_states):
 				p = array([self.h_tau(ss,sequence_actions[k],s,sequence[k]) for ss in range(self.nb_states)])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
+		
+		alpha_matrix[-1] *= (array(self.h.labeling) == sequence[-1])
 		return alpha_matrix.T
 
 	def computeBetas(self,sequence: list,sequence_actions: list) -> array:
@@ -155,71 +157,58 @@ class BW_MDP(BW):
 			array containing the beta values.
 		"""
 		len_seq = len(sequence)
-		init_arr = ones(self.nb_states)
-		zero_arr = zeros(shape=(len_seq*self.nb_states,))
-		beta_matrix = append(zero_arr,init_arr).reshape(len_seq+1,self.nb_states)
-		for k in range(len(sequence)-1,-1,-1):
+		init_arr = ones(self.nb_states)*(array(self.h.labeling) == sequence[-1])
+		zero_arr = zeros(shape=((len_seq-1)*self.nb_states,))
+		beta_matrix = append(zero_arr,init_arr).reshape(len_seq,self.nb_states)
+		for k in range(len(sequence)-2,-1,-1):
 			for s in range(self.nb_states):
 				p = array([self.h_tau(s,sequence_actions[k],ss,sequence[k]) for ss in range(self.nb_states)])
 				beta_matrix[k,s] = dot(beta_matrix[k+1],p)
 		return beta_matrix.T
 
 	def _processWork(self,sequence,times):
-		sequence_actions = [sequence[i] for i in range(0,len(sequence),2)]
-		sequence_obs = [sequence[i+1] for i in range(0,len(sequence),2)]
+		sequence_actions = [sequence[i+1] for i in range(0,len(sequence)-1,2)]
+		sequence_obs = [sequence[i] for i in range(0,len(sequence)-1,2)]+[sequence[-1]]
 		alpha_matrix = self.computeAlphas(sequence_obs,sequence_actions)
 		beta_matrix = self.computeBetas(sequence_obs,sequence_actions)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
 			den = zeros(shape=(self.nb_states,len(self.actions)))
-			num = zeros(shape=(self.nb_states,len(self.actions),self.nb_states*len(self.alphabet)))	
+			num = zeros(shape=(self.nb_states,len(self.actions),self.nb_states))
+			
 			for s in range(self.nb_states):
 				for i,a in enumerate(self.actions):
-					arr_dirak = [1.0 if t == a else 0.0 for t in sequence_actions]
+					arr_dirak = array([1.0 if t == a else 0.0 for t in sequence_actions])
 					den[s,i] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*arr_dirak,times/proba_seq).sum()
-				c = 0
+			
 				for ss in range(self.nb_states):
-					p = array([self.h_tau(s,a,ss,o) for o,a in zip(sequence_obs,sequence_actions)])
-					for obs in self.alphabet:
-						for ia,act in enumerate(self.actions):
-							arr_dirak = [1.0 if o == obs and a == act else 0.0 for o,a in zip(sequence_obs,sequence_actions)]
-							num[s,ia,c] = dot(alpha_matrix[s][:-1]*arr_dirak*beta_matrix[ss][1:]*p,times/proba_seq).sum()
-						c += 1
+					p = array([self.h_tau(s,a,ss,o) for o,a in zip(sequence_obs[:-1],sequence_actions)])
+					for ia,act in enumerate(self.actions):
+						arr_dirak = [1.0 if a == act else 0.0 for a in sequence_actions]
+						num[s,ia,ss] = dot(alpha_matrix[s][:-1]*arr_dirak*beta_matrix[ss][1:]*p,times/proba_seq).sum()
+			
 			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
-			return [den,num, proba_seq,times,num_init]
+			return [den,num,proba_seq,times,num_init]
 		return False
 
 	def _generateHhat(self,temp):
 		den = array([i[0] for i in temp]).sum(axis=0)
-		num = array([i[1] for i in temp]).T.sum(axis=3).T
+		num = array([i[1] for i in temp]).sum(axis=0)
 		lst_proba=array([i[2] for i in temp])
 		lst_times=array([i[3] for i in temp])
 		lst_init =array([i[4] for i in temp]).T
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		list_sta = []
-		for i in range(self.nb_states):
-			for _ in self.alphabet:
-				list_sta.append(i)
-		list_obs = self.alphabet*self.nb_states
-		new_states = []
+		for s,a in zip(range(self.nb_states),range(len(self.actions))):
+			if den[s][a] == 0.0:
+				den[s][a] = 1.0
+				num[s][a] = self.h.matrix[s][a]
 
-		for s in range(self.nb_states):
-			array_s = []
-			for j,a in enumerate(self.actions):
-				if den[s][j] != 0.0:
-					temp = list(zip(list_sta, list_obs, [num[s][j][i]/den[s][j] for i in range(len(list_sta))]))
-					temp = MDP_state({a:temp},self.h.alphabet,self.h.nb_states,[a])
-					array_s.append(temp[0])
-				else:
-					# if we have no info about action a in state s -> don't change anything
-					# this can happen specially with active learning
-					array_s.append(self.h.matrix[s][j])
-		
-			new_states.append(array_s)
+		den = den.reshape(self.nb_states,len(self.actions),1)
+		matrix = num/den
 
 		initial_state = normalize([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
-		matrix = array(new_states)
-		return [MDP(matrix,self.h.alphabet,self.h.actions,initial_state), currentloglikelihood]
+
+		return [MDP(matrix,self.h.labeling,self.h.actions,initial_state), currentloglikelihood]
 		

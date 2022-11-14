@@ -338,56 +338,29 @@ First we create the original model.
 	from numpy import array
 
 	def modelMDP_gridworld():
-		alphabet = ['S','M','G','C','W',"done"]
+		labeling = ['S','M','G',
+					'M','G','C',
+					'G','S',"done",
+					'W','W','W','W','W','W','W']
 		actions = list("nsew")
 		nb_states = 9
-		s0 = ja.MDP_state({'n': [(0,'W',1.0)],
-						's': [(3,'M',0.6),(4,'G',0.4)],
-						'e': [(1,'M',0.6),(4,'G',0.4)],
-						'w': [(0,'W',1.0)]
-						},alphabet,nb_states,actions)
-		s1 = ja.MDP_state({'n': [(1,'W',1.0)],
-						's': [(4,'G',0.8),(3,'M',0.1),(5,'C',0.1)],
-						'e': [(2,'G',0.8),(5,'C',0.2)],
-						'w': [(0,'S',0.75),(3,'M',0.25)]
-						},alphabet,nb_states,actions)
-		s2 = ja.MDP_state({'n': [(2,'W',1.0)],
-						's': [(5,'C',1.0)],
-						'e': [(2,'W',1.0)],
-						'w': [(1,'M',0.6),(4,'G',0.4)]
-						},alphabet,nb_states,actions)
-		s3 = ja.MDP_state({'n': [(0,'S',0.75),(1,'M',0.25)],
-						's': [(6,'G',0.8),(7,'S',0.2)],
-						'e': [(4,'G',0.8),(1,'M',0.1),(7,'S',0.1)],
-						'w': [(3,'M',1.0)]
-						},alphabet,nb_states,actions)
-		s4 = ja.MDP_state({'n': [(1,'M',0.6),(0,'S',0.2),(2,'G',0.2)],
-						's': [(7,'S',0.75),(6,'G',0.125),(8,'done',0.125)],
-						'e': [(5,'C',1.0)],
-						'w': [(3,'M',0.6),(0,'S',0.2),(6,'G',0.2)]
-						},alphabet,nb_states,actions)
-		s5 = ja.MDP_state({'n': [(2,'G',0.8),(1,'M',0.2)],
-						's': [(8,'done',0.6),(7,'S',0.4)],
-						'e': [(5,'W',1.0)],
-						'w': [(4,'G',0.8),(1,'M',0.1),(7,'S',0.1)]
-						},alphabet,nb_states,actions)
-		s6 = ja.MDP_state({'n': [(3,'M',0.6),(4,'G',0.4)],
-						's': [(6,'W',1.0)],
-						'e': [(7,'S',0.75),(4,'G',0.25)],
-						'w': [(6,'W',1.0)]
-						},alphabet,nb_states,actions)
-		s7 = ja.MDP_state({'n': [(1,'M',0.6),(0,'S',0.2),(2,'G',0.2)],
-						's': [(7,'W',1.0)],
-						'e': [(8,'done',0.6),(5,'C',0.4)],
-						'w': [(6,'G',0.8),(3,'M',0.2)]
-						},alphabet,nb_states,actions)
-		s8 = ja.MDP_state({'n': [(8,'done',1.0)],
-						's': [(8,'done',1.0)],
-						'e': [(8,'done',1.0)],
-						'w': [(8,'done',1.0)]
-						},alphabet,nb_states,actions)
-		matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8])
-		return ja.MDP(matrix,alphabet,actions,initial_state=0,name="grid world")
+		transitions=[(0,'n',9,1.0),(0,'s',3,0.6),(0,'s',5,0.4),(0,'e',1,0.6),(0,'e',5,0.4),(0,'w',9,1.0),
+			(9,'n',9,1.0),(9,'s',3,0.6),(9,'s',5,0.4),(9,'e',1,0.6),(9,'e',5,0.4),(9,'w',9,1.0),
+			(1,'n',10,1.0),(1,'s',4,0.8),(1,'s',3,0.1),(1,'s',5,0.1),(1,'e',2,0.8),(1,'e',5,0.2),(1,'w',0,0.75),(1,'w',3,0.25),
+			(10,'n',10,1.0),(10,'s',4,0.8),(10,'s',3,0.1),(10,'s',5,0.1),(10,'e',2,0.8),(10,'e',5,0.2),(10,'w',0,0.75),(10,'w',3,0.25),
+			(2,'n',11,1.0),(2,'s',5,1.0),(2,'e',11,1.0),(2,'w',1,0.6),(2,'w',4,0.4),
+			(11,'n',11,1.0),(11,'s',5,1.0),(11,'e',11,1.0),(11,'w',1,0.6),(11,'w',4,0.4),
+			(3,'n',0,0.75),(3,'n',1,0.25),(3,'s',6,0.8),(3,'s',7,0.2),(3,'e',4,0.8),(3,'e',1,0.1),(3,'e',7,0.1),(3,'w',12,1.0),
+			(12,'n',0,0.75),(12,'n',1,0.25),(12,'s',6,0.8),(12,'s',7,0.2),(12,'e',4,0.8),(12,'e',1,0.1),(12,'e',7,0.1),(12,'w',12,1.0),
+			(4,'n',1,0.6),(4,'n',0,0.2),(4,'n',2,0.2),(4,'s',7,0.75),(4,'s',6,0.125),(4,'s',8,0.125),(4,'e',5,1.0),(4,'w',3,0.6),(4,'w',0,0.2),(4,'w',6,0.2),
+			(5,'n',2,0.8),(5,'n',1,0.2),(5,'s',8,0.6),(5,'s',7,0.4),(5,'e',13,1.0),(5,'w',4,0.8),(5,'w',1,0.1),(5,'w',7,0.1),
+			(13,'n',2,0.8),(13,'n',1,0.2),(13,'s',8,0.6),(13,'s',7,0.4),(13,'e',13,1.0),(13,'w',4,0.8),(13,'w',1,0.1),(13,'w',7,0.1),
+			(6,'n',3,0.6),(6,'n',4,0.4),(6,'s',14,1.0),(6,'e',7,0.75),(6,'e',4,0.25),(6,'w',14,1.0),
+			(14,'n',3,0.6),(14,'n',4,0.4),(14,'s',14,1.0),(14,'e',7,0.75),(14,'e',4,0.25),(14,'w',14,1.0),
+			(7,'n',4,0.8),(7,'n',3,0.1),(7,'n',5,0.1),(7,'s',15,1.0),(7,'e',8,0.6),(7,'e',4,0.4),(7,'w',6,0.8),(7,'w',3,0.2),
+			(15,'n',4,0.8),(15,'n',3,0.1),(15,'n',5,0.1),(15,'s',15,1.0),(15,'e',8,0.6),(15,'e',4,0.4),(15,'w',6,0.8),(15,'w',3,0.2),
+			(8,'n',8,1.0),(8,'s',8,1.0),(8,'e',8,1.0),(8,'w',8,1.0)]
+	return ja.createMDP(transitions,labeling,initial_state=0,name="grid world")
 
 Then we generate our training set and test set. Since MDPs are non-deterministic, we need to specify to
 jajapy which scheduler we want it to use to generate training/test sets. Here we will
@@ -459,26 +432,16 @@ As usual, we start by creating the training and test set.
 .. code-block:: python
 
 	import jajapy as ja
-	from numpy import array
 
 	def modelMC_KnuthDie(p=0.5):
-		alphabet = ["P","F","one","two","three","four","five","six"]
-		nb_states = 13
-		s0 = ja.MC_state([(1 ,'P',p),(2 ,'F',1-p)],alphabet,nb_states)
-		s1 = ja.MC_state([(3 ,'P',p),(4 ,'F',1-p)],alphabet,nb_states)
-		s2 = ja.MC_state([(5 ,'P',p),(6 ,'F',1-p)],alphabet,nb_states)
-		s3 = ja.MC_state([(1 ,'P',p),(7 ,'F',1-p)],alphabet,nb_states)
-		s4 = ja.MC_state([(8 ,'P',p),(9 ,'F',1-p)],alphabet,nb_states)
-		s5 = ja.MC_state([(10,'P',p),(11,'F',1-p)],alphabet,nb_states)
-		s6 = ja.MC_state([(12,'P',p),(2 ,'F',1-p)],alphabet,nb_states)
-		s7 = ja.MC_state([(7 ,  'one',1.0)],alphabet,nb_states)
-		s8 = ja.MC_state([(8 ,  'two',1.0)],alphabet,nb_states)
-		s9 = ja.MC_state([(9 ,'three',1.0)],alphabet,nb_states)
-		s10= ja.MC_state([(10, 'four',1.0)],alphabet,nb_states)
-		s11= ja.MC_state([(11, 'five',1.0)],alphabet,nb_states)
-		s12= ja.MC_state([(12,  'six',1.0)],alphabet,nb_states)
-		matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12])
-		return ja.MC(matrix,alphabet,initial_state=0,name="Knuth's Die")
+		labeling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
+		initial_state = 0
+		name="Knuth's Die"
+		transitions = [(0,1,p),(0,2,1-p),(1,3,p),(1,4,1-p),(2,5,p),(2,6,1-p),
+			       (3,1,p),(3,7,1-p),(4,8,p),(4,9,1-p),(5,10,p),(5,11,1-p),
+			       (6,12,p),(6,2,1-p),(7,13,1.0),(8,14,1.0),(9,15,1.0),
+			       (10,16,1.0),(11,17,1.0),(12,18,1.0)]
+		return ja.createMC(transitions,labeling,initial_state,name)
 	
 	original_model = modelMC_KnuthDie()
 	# SETS GENERATION
@@ -506,48 +469,20 @@ to keep only the best model we get.
 .. code-block:: python
 
 	def firstGuess():
-		alphabet = ["P","F","one","two","three","four","five","six"]
-		nb_states = 13
-		s0 = ja.MC_state(list(zip([1,2],['P','F'],ja.randomProbabilities(2))),alphabet,nb_states)
-		s1 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6],
-								['P','F','P','F','P','F','P','F','P','F','P','F'],
-								ja.randomProbabilities(12))),
-						alphabet,nb_states)
-		s2 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6],
-								['P','F','P','F','P','F','P','F','P','F','P','F'],
-								ja.randomProbabilities(12))),
-						alphabet,nb_states)
-		s3 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-								ja.randomProbabilities(24))),
-						alphabet,nb_states)
+		labeling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
+		initial_state = 0
+		name="first guess"
+		p = ja.randomProbabilities(2)
+		transitions = [(0,1,p[0]),(0,2,p[2])]
 
-		s4 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-								ja.randomProbabilities(24))),
-						alphabet,nb_states)
+		for src in range(1,7):
+			p = ja.randomProbabilities(6)
+			for dest in range(1,7):
+				transitions.append((src,dest,p[dest-1]))
 
-		s5 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-								ja.randomProbabilities(24))),
-						alphabet,nb_states)
-
-		s6 = ja.MC_state(list(zip([1,1,2,2,3,3,4,4,5,5,6,6,7,7,8,8,9,9,10,10,11,11,12,12],
-								['P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',
-								'P','F','P','F','P','F','P','F','P','F','P','F','P','F','P','F',],
-								ja.randomProbabilities(24))),
-						alphabet,nb_states)
-		s7 = ja.MC_state([(7 ,  'one',1.0)],alphabet,nb_states)
-		s8 = ja.MC_state([(8 ,  'two',1.0)],alphabet,nb_states)
-		s9 = ja.MC_state([(9 ,'three',1.0)],alphabet,nb_states)
-		s10= ja.MC_state([(10, 'four',1.0)],alphabet,nb_states)
-		s11= ja.MC_state([(11, 'five',1.0)],alphabet,nb_states)
-		s12= ja.MC_state([(12,  'six',1.0)],alphabet,nb_states)
-		matrix = array([s0,s1,s2,s3,s4,s5,s6,s7,s8,s9,s10,s11,s12])
-		return ja.MC(matrix,alphabet,initial_state=0,name="first guess")
+		transitions += [(7,13,1.0),(8,14,1.0),(9,15,1.0),
+				(10,16,1.0),(11,17,1.0),(12,18,1.0)]
+		return ja.createMC(transitions,labeling,initial_state,name)
 	
 	# LEARNING
 	#---------
@@ -569,6 +504,7 @@ this new model.
 
 .. code-block:: python
 
+	import stormpy
 	# MODEL CHECKING
 	#---------------
 	model_storm = ja.jajapyModeltoStorm(best_model)

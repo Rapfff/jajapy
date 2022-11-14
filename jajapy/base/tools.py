@@ -1,6 +1,6 @@
 from random import random
 from scipy.stats import norm
-from numpy import nditer, array, ndarray, where, nonzero
+from numpy import nditer, array, ndarray, nonzero
 from numpy.random import randint
 
 

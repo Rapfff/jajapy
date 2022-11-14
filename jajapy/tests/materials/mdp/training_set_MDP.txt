@@ -1,1611 +1,201 @@
 True
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-4
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-3
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['s', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 's', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-3
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-3
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'R', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['R', 'm', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-4
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['m', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-3
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-3
-['m', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-5
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-3
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-3
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-3
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-3
-['s', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L']
+['R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-3
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['m', 'L', 'm', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-3
-['s', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-3
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-3
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-3
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-4
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-3
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-3
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-3
-['m', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-3
-['m', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-3
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-3
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-3
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['m', 'L', 's', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-2
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-2
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['s', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-2
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-2
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-2
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-2
-['s', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-2
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
-1
-['s', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
-1
-['s', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
-1
-['m', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['m', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
-1
-['s', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
-1
-['s', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1

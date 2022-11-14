@@ -28,16 +28,16 @@ time model (or a discrete time model). A continuous time model will wait in each
 of time before moving to another state.
 
 
-======  ==================== ====================== ============= ===============
-Model   Observations type    Observation generation Deterministic Continuous time
-======  ==================== ====================== ============= ===============
-HMM                 Discrete                  State           Yes              No
-MC                  Discrete             Transition           Yes              No
-MDP                 Discrete             Transition            No              No
-CTMC                Discrete             Transition           Yes             Yes
-GOHMM             Continuous                  State           Yes              No
-MGOHMM  Vector of Continuous                  State           Yes              No
-======  ==================== ====================== ============= ===============
+======  ==================== ============= ===============
+Model   Observations type    Deterministic Continuous time
+======  ==================== ============= ===============
+HMM                 Discrete           Yes              No
+MC                  Discrete           Yes              No
+MDP                 Discrete            No              No
+CTMC                Discrete           Yes             Yes
+GOHMM             Continuous           Yes              No
+MGOHMM  Vector of Continuous           Yes              No
+======  ==================== ============= ===============
 
 
 
@@ -66,23 +66,23 @@ HMM.matrix   matrix[s1][s2]    Probability (float)           s1                s
 HMM.output  output[s1][obs]    Probability (float)           s1                s2 HMM.alphabet[obs]
 ========== ================ ====================== ============ ================= =================
 
-========== ==================== ====================== ============ ================= =================
-MC                        Usage         Type of output Source state Destination State       Observation
-========== ==================== ====================== ============ ================= =================
-MC.matrix   matrix[s1][s2][obs]    Probability (float)           s1                s2  MC.alphabet[obs]
-========== ==================== ====================== ============ ================= =================
+========== =============== ====================== ============ ================= ================
+MC                   Usage         Type of output Source state Destination State      Observation
+========== =============== ====================== ============ ================= ================
+MC.matrix   matrix[s1][s2]    Probability (float)           s1                s2  MC.labeling[s1]
+========== =============== ====================== ============ ================= ================
 
-========== ========================== ====================== ============ ================= ================= ================
-MDP                       Usage               Type of output Source state Destination State       Observation           Action
-========== ========================== ====================== ============ ================= ================= ================
-MDP.matrix   matrix[s1][act][s2][obs]    Probability (float)           s1                s2 MDP.alphabet[obs] MDP.actions[act]
-========== ========================== ====================== ============ ================= ================= ================
+========== ===================== ====================== ============ ================= ================ ================
+MDP                        Usage         Type of output Source state Destination State      Observation           Action
+========== ===================== ====================== ============ ================= ================ ================
+MDP.matrix   matrix[s1][act][s2]    Probability (float)           s1                s2 MDP.labeling[s1] MDP.actions[act]
+========== ===================== ====================== ============ ================= ================ ================
 
-============ ==================== ============== ============ ================= ==================
-CTMC                        Usage Type of output Source state Destination State        Observation
-============ ==================== ============== ============ ================= ==================
-CTMC.matrix   matrix[s1][s2][obs]   Rate (float)           s1                s2 CTMC.alphabet[obs]
-============ ==================== ============== ============ ================= ==================
+============ =============== ============== ============ ================= ==================
+CTMC                   Usage Type of output Source state Destination State        Observation
+============ =============== ============== ============ ================= ==================
+CTMC.matrix   matrix[s1][s2]   Rate (float)           s1                s2 CTMC.labeling[s1]
+============ =============== ============== ============ ================= ==================
 
 ============ ================ ===================================== ============= =================
 GOHMM                   Usage                        Type of output  Source state Destination State

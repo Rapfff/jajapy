@@ -17,22 +17,18 @@ Creation
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> from numpy import array
-	>>> alphabet = ['a','b','c','d']
-	>>> actions  = ['red', 'blue']
-	>>> nb_states = 3
-	>>> s0 = ja.MDP_state({'red': [(1,'a',0.5),(2,'a',0.5)], 'blue': [(2,'a',1.0)]}, alphabet, nb_states, actions)
-	>>> s1 = ja.MDP_state({'red': [(2,'b',1.0),(2,'a',0.5)], 'blue': [(1,'c',1.0)]}, alphabet, nb_states, actions)
-	>>> s2 = ja.MDP_state({'blue': [(2,'d',1.0)]}, alphabet, nb_states, actions)
-	>>> lst_states = array([s0, s1, s2])
-	>>> model = ja.MDP(lst_states,alphabet,actions,initial_state=0,name="My MDP")
+	>>> labeling = ['a','a','a','c','b','d']
+	>>> transitions = [(0,'red',1,0.5),(0,'red',2,0.5),(0,'blue',2,1.0),
+	... 		   (1,'blue',3,1.0),(1,'red',4,1.0),(3,'blue',3,1.0),(3,'red',4,1.0),
+	...		   (2,'blue',5,1.0),(4,'blue',5,1.0),(5,'blue',5,1.0)]
+	>>> model = ja.createMDP(transitions,labeling,initial_state=0,name="My MDP")
 
 
 We can also generate a random MDP
 
 .. code-block:: python
 
-	>>> random_model = ja.MDP_random(number_states=5,
+	>>> random_model = ja.MDP_random(number_states=6,
 					random_initial_state=False,
 					alphabet=['a','b','c','d'],
 					actions=['red','blue'])
@@ -44,13 +40,13 @@ Exploration
 
 	>>> model.tau(0,'red',1,'a') # probability of moving from s0 to s1 seeing 'a' after executing 'red'
 	0.5
-	>>> model.observations() # all possible observations
+	>>> model.getAlphabet() # all possible observations
 	['a','b','c','d']
-	>>> model.states[0].observations() # all possible observations in s0
-	['a']
-	>>> model.actions() # all possible actions
+	>>> model.getLabel(0) # label on state 0
+	'a'
+	>>> model.getActions() # all possible actions
 	['red','blue']
-	>>> model.actions(2) # all actions available in state s2
+	>>> model.getActions(2) # all actions available in state 2
 	['blue']
 
 Running
@@ -58,17 +54,19 @@ Running
 
 .. code-block:: python
 
-	>>> scheduler = ja.UniformScheduler(model.actions())
+	>>> scheduler = ja.UniformScheduler(model.getActions())
 	>>> model.run(5,scheduler) # returns a list of 5 actions and 5 observations
-	['blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd']
+	['a', 'blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd']
 	>>> s = model.generateSet(10,5,scheduler) # returns a Set containing 10 traces of size 5
 	>>> s.sequences
-	[['blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
-	 ['red', 'a', 'blue', 'c', 'red', 'b', 'blue', 'd', 'blue', 'd'],
-	 ['red', 'a', 'red', 'b', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
-	 ['red', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd']]
+	[['a', 'red', 'a', 'red', 'b', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
+	 ['a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'red', 'b', 'blue', 'd'],
+	 ['a', 'red', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
+	 ['a', 'blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
+	 ['a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'blue', 'c', 'blue', 'c'],
+	 ['a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'blue', 'c', 'red', 'b']]
 	>>> s.times # first sequence appears 6 times, the second twice, etc...
-	[6, 2, 1, 1]
+	[3, 1, 1, 2, 2, 1]
 
 Analysis
 ^^^^^^^^
@@ -76,7 +74,7 @@ Analysis
 .. code-block:: python
 
 	>>> model.logLikelihood(s) # loglikelihood of this set of traces under this model
-	-0.2772588722239781
+	-0.5545177444479562
 
 Saving/Loading
 ^^^^^^^^^^^^^^
@@ -84,7 +82,7 @@ Saving/Loading
 .. code-block:: python
 
 	>>> model.save("my_mdp.txt")
-	>>> another_model = ja.loadMDP("my_mdp.txt")
+	>>> the_same_model = ja.loadMDP("my_mdp.txt")
 	
 Model
 -----
@@ -95,15 +93,12 @@ Model
 
 Other Functions
 ---------------
-.. autofunction:: jajapy.MDP_state
+.. autofunction:: jajapy.createMDP
 
 .. autofunction:: jajapy.loadMDP
 
 .. autofunction:: jajapy.MDP_random
 
-.. autofunction:: jajapy.MDPFileToPrism
-
-.. autofunction:: jajapy.loadPrismMDP
 
 Scheduler
 ---------
