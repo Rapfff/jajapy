@@ -43,10 +43,12 @@ class MDP(Model):
 		self.alphabet = list(set(labeling))
 		self.labeling = labeling
 		super().__init__(matrix,initial_state,name)
+		if len(labeling) != self.nb_states:
+			raise ValueError("The length of labeling is not equal to the number of states")
 		for i in range(self.nb_states):
 			for a in range(self.nb_actions):
 				if not checkProbabilities(matrix[i][a]):
-					msg = "Error: the probability to take a transition from state "
+					msg = "The probability to take a transition from state "
 					msg+= str(i)+" executing action "+self.actions[a]+" should be 1.0 or 0.0, here it's "+str(matrix[i][a].sum())
 					raise ValueError(msg)
 
@@ -552,7 +554,7 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 
 def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknown_MDP") -> MDP:
 	"""
-	A user-friendly way to create an MDP.
+	An user-friendly way to create an MDP.
 
 	Parameters
 	----------

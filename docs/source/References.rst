@@ -15,19 +15,21 @@ if the model is deterministic. And finally the *fourth column* shows if the mode
 time model (or a discrete time model). A continuous time model will wait in each state for some period
 of time before moving to another state.
 
+======  ==================== ============= ===============
+Model   Observations type    Deterministic Continuous time
+======  ==================== ============= ===============
+HMM                 Discrete           Yes              No
+MC                  Discrete           Yes              No
+MDP                 Discrete            No              No
+CTMC                Discrete           Yes             Yes
+GOHMM             Continuous           Yes              No
+MGOHMM  Vector of Continuous           Yes              No
+======  ==================== ============= ===============
 
-======  ==================== ====================== ============= ===============
-Model   Observations type    Observation generation Deterministic Continuous time
-======  ==================== ====================== ============= ===============
-HMM                 Discrete                  State           Yes              No
-MC                  Discrete             Transition           Yes              No
-MDP                 Discrete             Transition            No              No
-CTMC                Discrete             Transition           Yes             Yes
-GOHMM             Continuous                  State           Yes              No
-MGOHMM  Vector of Continuous                  State           Yes              No
-======  ==================== ====================== ============= ===============
-
-
+One can wander what is the difference between MC and HMM: each MC state is labelled with exactly one
+observation, which is seen each time we are in this state. On the other hand, each HMM state is
+associated with a probability distribution over the observations. Each time we are in this HMM state,
+an observation is generated according to the probability distribution associated to this state.
 
 .. toctree::
    :maxdepth: 1
@@ -57,7 +59,6 @@ Advanced extensions:
 
 .. toctree::
    Active_BW_MDP
-   MM_CTMC_Composition
 
 Alergia (state-merging) methods:
 

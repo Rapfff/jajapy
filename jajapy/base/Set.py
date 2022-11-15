@@ -37,14 +37,13 @@ class Set:
 			self.type = t
 		else:
 			if type(sequences[0][0])  == float64 or type(sequences[0][0])  == float:
-				if type(sequences[0][1]) == float64 or type(sequences[0][1])  == float:
-					self.type = 2 # GOHMM
-				else:
-					self.type = 4 # CTMC
+				self.type = 2 # GOHMM
+			elif type(sequences[0][1])  == float64 or type(sequences[0][1])  == float:
+				self.type = 4 # timed CTMC
 			elif type(sequences[0][0])  == list:
 				self.type = 3 # MGOHMM
 			else:
-				self.type = 0 # HMM or MC
+				self.type = 0 # HMM or MC or non-timed CTMC
 
 		if type(times) == type(None):
 			self.setFromList(sequences)
@@ -62,7 +61,7 @@ class Set:
 			where to save
 		"""
 		f = open(file_path,'w')
-		f.write(str(self.type == 1)+'\n')
+		f.write(str(self.type)+'\n')
 		for i in range(len(self.sequences)):
 			f.write(str(self.sequences[i])+'\n')
 			f.write(str(self.times[i])+'\n')
@@ -207,7 +206,7 @@ def loadSet(file_path: str) -> Set:
 	res_set = [[],[]]
 	f = open(file_path,'r')
 	l = f.readline()
-	from_MDP = literal_eval(l[:-1])
+	t = literal_eval(l[:-1])
 	l = f.readline()
 	while l:
 		res_set[0].append(literal_eval(l[:-1]))
@@ -215,4 +214,4 @@ def loadSet(file_path: str) -> Set:
 		res_set[1].append(int(l[:-1]))
 		l = f.readline()
 	f.close()
-	return Set(res_set[0],res_set[1],from_MDP)
+	return Set(res_set[0],res_set[1],t)

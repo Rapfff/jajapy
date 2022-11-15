@@ -126,7 +126,6 @@ class Model:
 			output.append(symbol)
 			current = next_state
 		
-		output.append(self.labeling[current])
 		return output
 	
 	def generateSet(self, set_size: int, param, distribution=None, min_size=None, timed: bool=False) -> Set:
@@ -226,7 +225,7 @@ class Model:
 		>>> model.logLikelihood(set1)
 		-4.442498878506513
 		"""
-		if platform != "win32":
+		if platform != "win32" and platform != "darwin":
 			return self._logLikelihood_multiproc(sequences)
 		else:
 			return self._logLikelihood_oneproc(sequences)

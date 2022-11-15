@@ -72,7 +72,7 @@ class BW_CTMC(BW):
 		2-D narray
 			array containing the beta values.
 		"""
-		len_seq = len(obs_seq)
+		len_seq = len(obs_seq)-1
 		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states)
@@ -80,6 +80,7 @@ class BW_CTMC(BW):
 			for s in range(self.nb_states):
 				p = array([self.h_l(ss,s,obs_seq[k])*exp(-self.h_e(ss)*times_seq[k]) for ss in range(self.nb_states)])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
+		alpha_matrix[-1] *= (array(self.h.labeling) == obs_seq[-1])
 		return alpha_matrix.T
 
 	def computeBetas_timed(self,obs_seq: list, times_seq: list) -> array:
@@ -99,11 +100,11 @@ class BW_CTMC(BW):
 		2-D narray
 			array containing the beta values.
 		"""
-		len_seq = len(obs_seq)
-		init_arr = ones(self.nb_states)
+		len_seq = len(obs_seq)-1
+		init_arr = ones(self.nb_states)*(array(self.h.labeling) == obs_seq[-1])
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
 		beta_matrix = append(zero_arr,init_arr).reshape(len_seq+1,self.nb_states)
-		for k in range(len(obs_seq)-1,-1,-1):
+		for k in range(len_seq-1,-1,-1):
 			for s in range(self.nb_states):
 				p = array([self.h_l(s,ss,obs_seq[k]) for ss in range(self.nb_states)])
 				p = p * exp(-self.h_e(s)*times_seq[k])
@@ -212,16 +213,15 @@ class BW_CTMC(BW):
 			the machine it returns a `jajapy.CTMC`, otherwise it returns a `stormpy.SparseCtmc`
 		"""
 		if type(traces) != Set:
-			traces = Set(traces, t=4)
+			traces = Set(traces)
 		if not initial_model:
 			if not nb_states:
-				print("Either nb_states or initial_model should be set")
-				return
+				raise ValueError("Either nb_states or initial_model should be set")
+
 			initial_model = CTMC_random(nb_states,
 										traces.getAlphabet(),
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
-		self.alphabet = initial_model.getAlphabet()
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 
@@ -241,9 +241,9 @@ class BW_CTMC(BW):
 		tuple
 			_description_
 		"""
-		if type(sequence[0]) == float and type(sequence[1]) == str:
-			times_seq = [sequence[i] for i in range(0,len(sequence),2)]
-			obs_seq   = [sequence[i] for i in range(1,len(sequence),2)]
+		if type(sequence[1]) == float and type(sequence[0]) == str:
+			times_seq = [sequence[i] for i in range(1,len(sequence),2)]
+			obs_seq   = [sequence[i] for i in range(0,len(sequence),2)]
 		else:
 			times_seq = None
 			obs_seq = sequence
@@ -255,32 +255,26 @@ class BW_CTMC(BW):
 			timed = False
 		else:
 			timed = True
-
 		alpha_matrix = self.computeAlphas(obs_seq, times_seq)
 		beta_matrix  = self.computeBetas( obs_seq, times_seq)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
 			return False
-		####################	
-		for s in range(self.nb_states):
-			den = zeros(self.nb_states)
-			#num = zeros(shape=(self.nb_states,self.nb_states*len(self.alphabet)))
-			num = zeros(shape=(self.nb_states,self.nb_states,len(self.alphabet)))
+		####################
+		if timed:
+			den = (alpha_matrix[:,:-1]*beta_matrix[:,:-1]*times_seq*times/proba_seq).sum(axis=1)	
+		else:
+			den = (alpha_matrix[:,:-1]*beta_matrix[:,:-1]*times/proba_seq).sum(axis=1)
 
-			if timed:
-				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
-			else:
-				den[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
+		num = zeros(shape=(self.nb_states,self.nb_states))	
+		for s in range(self.nb_states):
 			for ss in range(self.nb_states):
 				if timed:
 					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				else:
 					p = array([self.h_l(s,ss,o) for o in obs_seq])
-				alph_bet = alpha_matrix[s][:-1]*p*beta_matrix[ss][1:]*times/proba_seq
-				for o,obs in enumerate(self.alphabet):
-					arr_dirak = [1.0 if o == obs else 0.0 for o in obs_seq]
-					num[s,ss,o] = (alph_bet*arr_dirak).sum()
-		####################			
+				num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+		####################		
 		num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 		####################
 		return [den, num, proba_seq, times, num_init]
@@ -299,7 +293,7 @@ class BW_CTMC(BW):
 				den[s] = 1.0
 				num[s] = self.h.matrix[s]
 
-		matrix = num/den[:, newaxis, newaxis]
+		matrix = num/den[:, newaxis]
 		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [CTMC(matrix,self.alphabet,initial_state),currentloglikelihood]
+		return [CTMC(matrix,self.h.labeling,initial_state),currentloglikelihood]
 		

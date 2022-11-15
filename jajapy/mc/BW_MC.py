@@ -80,18 +80,19 @@ class BW_MC(BW):
 		alpha_matrix = self.computeAlphas(sequence)
 		beta_matrix  = self.computeBetas( sequence)
 		proba_seq = alpha_matrix.T[-1].sum()
-		if proba_seq != 0.0:
-			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)			
-			num = zeros(shape=(self.nb_states,self.nb_states))
-			for s in range(self.nb_states):
-				for ss in range(self.nb_states):
-					p = array([self.h_tau(s,ss,o) for o in sequence])
-					num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-			####################
-			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
-			####################
-			return [den,num, proba_seq,times,num_init]
-		return False
+		if proba_seq == 0.0:
+			return False
+		####################
+		den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)			
+		num = zeros(shape=(self.nb_states,self.nb_states))
+		for s in range(self.nb_states):
+			for ss in range(self.nb_states):
+				p = array([self.h_tau(s,ss,o) for o in sequence])
+				num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+		####################
+		num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
+		####################
+		return [den,num, proba_seq,times,num_init]
 
 	def _generateHhat(self,temp):
 		den = array([i[0] for i in temp]).sum(axis=0)

@@ -1,15 +1,18 @@
 Continuous Time Markov Chain (CTMC)
 ===================================
-In a CTMC, each transition from :math:`s` to :math:`s'` generating :math:`\ell` is associated to a exponential probability distribution of parameter :math:`R(s,\ell,s')`.
-The probability of this transition to be triggered within :math:`\tau \in \mathbb{R}_{>0}` time-units is :math:`1 - e^{- R(s,\ell,s') \, \tau}`. 
+In a CTMC, each transition from :math:`s` to :math:`s'` is associated to a exponential probability distribution of parameter :math:`R(s,s')`.
+The probability of this transition to be triggered within :math:`\tau \in \mathbb{R}_{>0}` time-units is :math:`1 - e^{- R(s,s') \, \tau}`. 
 When, from a state :math:`s`, there are more than one outgoing transition, we are in presence of a race condition.
 In this case, the first transition to be triggered determines which observation is generated as well as the next state of the CTMC.
-According to these dynamics, the time spent in state :math:`s` before any transition occurs, called waiting time, is exponentially distributed with parameter :math:`E(s) = \sum_{\ell \in L}\sum_{s' \in S} R(s,\ell,s')`, called exit-rate of :math:`s`.
+According to these dynamics, the time spent in state :math:`s` before any transition occurs, called waiting time, is exponentially
+distributed with parameter :math:`E(s) = \sum_{s' \in S} R(s,s')`, called exit-rate of :math:`s`.
 
 Example
 -------
 
-In the following picture, the values in the states are the exit-rates. The observations, which are *red, green, blue* are represented by the color of the transitions.
+In the following picture, the values on the transitions are the parameters :math:`R(s,s')`.
+The observations, which are *red, yellow, blue* are represented by the color of the states.
+The values on each state correspond to the exit-rates.
 
 .. image:: pictures/CTMC.png
    :width: 75 %
@@ -21,65 +24,81 @@ Creation
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> from numpy import array
-	>>> alphabet = ['r', 'g', 'b']
-	>>> nb_states = 4
-	>>> s0 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],alphabet,nb_states)
-	>>> s1 = CTMC_state([(0,'r',0.08),(2,'r',0.25),(2,'g',0.6),(3,'b',0.07)],alphabet,nb_states)
-	>>> s2 = CTMC_state([(1,'b',0.5/4),(3,'g',0.2/4),(3,'r',0.3/4)],alphabet,nb_states)
-	>>> s3 = CTMC_state([(1,'r',0.3/5),(2,'g',0.5/5),(3,'r',0.2/5)],alphabet,nb_states)
-	>>> states = array([s0,s1,s2,s3])
-	>>> model = CTMC(states,alphabet,intial_state=0,name="My_CTMC")
+	>>> labeling = ['red','red','yellow','blue','blue']
+	>>> transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
+			   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),
+			   (3,1,0.1),(3,4,0.1),(4,2,0.25)]
+
+	>>> model = ja.createCTMC(transitions,labeling,initial_state=0,name="My_CTMC")
 
 We can also generate a random CTMC
 
 .. code-block:: python
 
-	>>> random_model = CTMC_random(number_states=4,
-					alphabet=['r','g','b'],
-					random_initial_state=False,
-					min_exit_rate_time = 1.0,
-					max_exit_rate_time = 5.0,
-					self_loop = False)
+	>>> random_model = CTMC_random(number_states=5,
+				       alphabet=['red','yellow','blue'],
+				       random_initial_state=False,
+				       min_exit_rate_time = 1.0,
+				       max_exit_rate_time = 5.0)
 
 Exploration
 ^^^^^^^^^^^
 
 .. code-block:: python
 
-	>>> model.l(0,1,'r')		 
-	0.06
-	>>> model.e(0)
+	>>> model.e(0)	 
 	0.2
-	>>> model.tau(0,1,'r')
-	0.3
+	>>> model.expected_time(0)
+	5.0
+	>>> model.l(0,2)
+	0.12
+	>>> model.l(0,3)
+	0.0
+	>>> model.tau(0,2,'red')
+	0.6
+	>>> model.tau(0,2,'yellow')
+	0.0
+	>>> model.lkl(0,1.0)
+	0.1637461506155964
+	>>> # which is equal to 0.2*exp(-0.2*1.0), and 0.2 == model.e(0)
 	>>> model.getAlphabet()
-	['r','g','b']
-	>>> model.getAlphabet(0) 
-	['r','g']
+	['red','yellow','blue']
+	>>> model.getLabel(2) 
+	'yellow'
+
 
 Running
 ^^^^^^^
 
 .. code-block:: python
 
-	>>> model.run(5) # returns a list of 5 observations without the waiting times
-	['g', 'b', 'r', 'b', 'g']
-	>>> model.run(5,timed=True) # returns a list of 5 observations with the waiting times
-	[1.7899, 'r', 1.2648, 'b', 4.1180, 'r', 1.6083, 'r', 0.2341, 'r']
+	>>> model.run(5) # returns a list of 5 observations plus the initial one without the waiting times
+	['red', 'yellow', 'blue', 'blue', 'yellow', 'blue']
+	>>> model.run(5,timed=True) # returns a list of 5 observations plus the intial one with the waiting times
+	['red', 1.806338759176371, 'red', 0.05237298538963968, 'red', 0.5556197125154162, 'red', 0.35592063754974723, 'red', 0.6101068433945884, 'red']
 	>>> s = model.generateSet(10,5,timed=True) # returns a Set containing 10 traces of size 5
 	>>> s.sequences
-	[[2.3239, 'r', 1.7607, 'r', 0.2709, 'r', 10.9915, 'r',1.1925, 'r'],
-	 [5.8109, 'r', 1.3057, 'g', 1.2301, 'b', 0.6581, 'r', 0.2011, 'r'],
-	 [2.5906, 'g', 2.6406, 'r', 1.5017, 'r', 3.8134, 'r', 0.6904, 'g'],
-	 [1.9201, 'r', 0.0616, 'r', 0.9485, 'g', 1.0669, 'r', 2.3073, 'r'],
-	 [3.0573, 'g', 0.1462, 'g', 3.8546, 'r', 0.5556, 'r', 8.5845, 'r'],
-	 [5.1257, 'r', 0.7490, 'g', 2.2573, 'b', 0.2812, 'g', 5.5121, 'b'],
-	 [8.2343, 'g', 0.8015, 'b', 0.0581, 'r', 6.6946, 'r', 12.0532,'r'],
-	 [0.1189, 'g', 8.1670, 'g', 0.4115, 'r', 2.4241, 'r', 0.5023, 'g'],
-	 [10.183, 'r', 1.1402, 'r', 4.3048, 'g', 3.3382, 'g', 0.4647, 'r'],
-	 [9.8944, 'g', 8.4187, 'r', 3.4253, 'r', 8.9404, 'g', 5.7353, 'r']]
-	>>> s.times #each of them appears only once
+	[['red', 1.6789349613457798, 'red', 0.27255276944298595, 'red', 0.42350152604909247,
+	'yellow', 0.20220224981867935, 'blue', 9.704572104709351, 'yellow'],
+	['red', 4.1800880483401555, 'yellow', 1.8656306179724005, 'red', 9.427748853607259,
+	'yellow', 0.21286758511326231, 'red', 2.278263556837526, 'red'],
+	['red', 1.2355021955427197, 'yellow', 0.31248093363627166, 'red', 8.824559530285878,
+	'red', 0.4529508092055165, 'red', 0.07274692217838562, 'red'],
+	['red', 0.4723999201503642, 'yellow', 0.6743349646745602, 'red', 0.7452790320928603,
+	'yellow', 0.7757445460815905, 'blue', 3.1265714080061575, 'yellow'],
+	['red', 8.945809803848748, 'yellow', 1.3509604669493112, 'blue', 2.1740236675910465,
+	'yellow', 7.560013081702193, 'blue', 0.6371556825230754, 'yellow'],
+	['red', 2.1083387658424524, 'red', 1.5993222803300493, 'yellow', 1.1866495308662353,
+	'blue', 0.8608021252016191, 'yellow', 1.6199990800624533, 'blue'],
+	['red', 1.3025805686943215, 'yellow', 2.6383860396412477, 'red', 18.014055444939096,
+	'red', 1.2034307567991924, 'yellow', 0.06152914313554882, 'red'],
+	['red', 0.7250888175057543, 'red', 0.23039664620400085, 'red', 0.8155342281890401,
+	'yellow', 0.06167580348263705, 'red', 3.2313274235968423, 'red'],
+	['red', 4.7893235714423605, 'yellow', 2.5583220293445823, 'red', 3.1703454235936244,
+	'red', 0.98555132768311, 'yellow', 0.6707954977567278, 'blue'],
+	['red', 7.057133997012888, 'yellow', 0.7762876536605751, 'blue', 0.6567357090100437,
+	'yellow', 3.3142910438173105, 'blue', 1.397231565238264, 'blue']]
+	>>> s.times # each of them appears only once
 	[ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 
 Analysis
@@ -88,7 +107,8 @@ Analysis
 .. code-block:: python
 
 	>>> model.logLikelihood(s) # loglikelihood of this set of traces under this model
-	-14.649420263996365
+	-12.185488019773823
+	>>> # the result is quite low since it is a timed data set.
 
 Saving/Loading
 ^^^^^^^^^^^^^^
@@ -96,31 +116,7 @@ Saving/Loading
 .. code-block:: python
 
 	>>> model.save("my_ctmc.txt")
-	>>> another_model = ja.loadCTMC("my_ctmc.txt")
-
-Asynchronous Composition
-^^^^^^^^^^^^^^^^^^^^^^^^
-We can also compose asynchronously two CTMCs as follow
-
-.. code-block:: python
-
-	>>> alphabet = ['r','g','b']
-	>>> nb_states = 2
-	>>> s0 = CTMC_state([[0.6/3,0.4/3],[1,1], ['r','g']],alphabet,nb_states)
-	>>> s1 = CTMC_state([[0.2/4,0.7/4,0.1/4],[0,0,0], ['r','g','b']],alphabet,nb_states)
-	>>> model2 = CTMC(array(s0,s1),alphabet,initial_state=0,name="CTMC2")
-	>>> composition = ja.asynchronousComposition(model,model2, name="my_composition")
-	>>> composition.run(5)
-	['r','r','r','b','r']
-
-If we want to keep track of which model is generating the observation in the composition
-we need to set the ``disjoint`` parameter to ``True``
-
-.. code-block:: python
-
-	>>> disjoint_composition = ja.asynchronousComposition(model,model2, name="my_composition",disjoint=True)
-	>>> disjoint_composition.run(6)
-	['r2', 'r1', 'g2', 'g2', 'g2', 'r2']
+	>>> the_same_model = ja.loadCTMC("my_ctmc.txt")
 
 Model
 -----
@@ -131,10 +127,9 @@ Model
 
 Other Functions
 ---------------
-.. autofunction:: jajapy.CTMC_state
+.. autofunction:: jajapy.createCTMC
 
 .. autofunction:: jajapy.loadCTMC
 
 .. autofunction:: jajapy.CTMC_random
 
-.. autofunction:: jajapy.asynchronousComposition
