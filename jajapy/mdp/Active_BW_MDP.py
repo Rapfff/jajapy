@@ -163,8 +163,7 @@ class Active_BW_MDP(BW_MDP):
 		"""
 		if stormpy_output:
 			try:
-				#import stormpy as st
-				from ..with_stormpy import jajapyModeltoStorm
+				from ..with_stormpy import jajapyModeltoStormpy
 			except ModuleNotFoundError:
 				print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
 				stormpy_output = False
@@ -215,7 +214,7 @@ class Active_BW_MDP(BW_MDP):
 			self._endPrint(counter, running_time)
 
 		if stormpy_output:
-			self.h = jajapyModeltoStorm(self.h)
+			self.h = jajapyModeltoStormpy(self.h)
 			
 		if return_data:
 			info = {"learning_rounds":counter,

@@ -8,12 +8,9 @@ Models
 
 The following table summarizes the main properties of these models. The *first column* indicates
 if, at each timestep, a model generates a discrete observation, a continuous observations, or a
-vector of continuous observations. The *second column* shows if the observations are generated while
-in a state or while moving from one state to another (in the first case the generation function is
-independant to the transition function, not in the second case). The *third column* indicates
-if the model is deterministic. And finally the *fourth column* shows if the model is a continuous
-time model (or a discrete time model). A continuous time model will wait in each state for some period
-of time before moving to another state.
+vector of continuous observations. The *second column* indicates if the model is deterministic or not.
+And finally the *third column* shows if the model is a continuous time model (or a discrete time model).
+A continuous time model will wait in each state for some period of time before moving to another state.
 
 ======  ==================== ============= ===============
 Model   Observations type    Deterministic Continuous time
@@ -33,7 +30,7 @@ an observation is generated according to the probability distribution associated
 
 .. toctree::
    :maxdepth: 1
-
+   
    HMM
    MC
    MDP
@@ -71,3 +68,4 @@ Others
 .. toctree::
 	Set
 	Tools
+	working_with_stormpy

@@ -33,21 +33,19 @@ class MGOHMM(Model):
 		self.nb_distributions = len(output[0])
 		for i in range(len(output)):
 			if len(output[i]) != self.nb_distributions:
-				print("ERROR: all state must have as much distributions")
-				return False
+				raise ValueError("All state must have as much distributions")
+
 		self.output = array(output)
 		if min(self.output.T[1].flatten()) < 0.0:
-			print("ERROR: the sigma parameters must be positive")
-			return False
+			raise ValueError("The sigma parameters must be positive")
+
 		super().__init__(matrix,initial_state,name)
 		for i in range(self.nb_states):
 			if not checkProbabilities(matrix[i]):
-				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
-				return False
+				raise ValueError("The probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
 
 		if len(self.output.flatten()) != self.nb_distributions*self.nb_states*2:
-			print("ERROR: all distribution must have two parameters")
-			return False
+			raise ValueError("All distribution must have two parameters")
 
 
 	def a(self,s1: int,s2: int) -> float:

@@ -122,7 +122,7 @@ class Alergia:
 		m = self._toMC()
 
 		try:
-			from ..with_stormpy import jajapyModeltoStorm
+			from ..with_stormpy import jajapyModeltoStormpy
 			stormpy_installed = True
 		except ModuleNotFoundError:
 			stormpy_installed = False
@@ -131,7 +131,7 @@ class Alergia:
 			stormpy_output = False
 		
 		if stormpy_output:
-			return jajapyModeltoStorm(m)
+			return jajapyModeltoStormpy(m)
 		else:
 			return m
 		

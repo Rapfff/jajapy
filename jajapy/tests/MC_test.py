@@ -3,7 +3,7 @@ from ..mc import *
 from os import remove
 from ..base.Set import *
 from math import log
-from numpy import array
+from numpy import where, array
 
 def modelMC_REBER():
 	labeling = list("BTSXSPTXPVVE")
@@ -19,6 +19,33 @@ m = modelMC_REBER()
 
 class MCTestclass(unittest.TestCase):
 
+	def test_MC_initial_state(var):
+		labeling=['a','b','c','d','a']
+		transitions = [(0,1,0.8),(0,2,0.2),
+				   (1,3,0.6),(1,2,0.4),
+				   (2,0,0.5),(2,4,0.5),
+				   (3,2,0.3),(3,3,0.7),
+				   (4,2,0.2),(4,3,0.1),(4,4,0.7)]
+		mc = createMC(transitions,labeling,0)
+		var.assertEqual(mc.nb_states,6)
+		var.assertEqual(mc.labeling.count('init'),1)
+		var.assertEqual(mc.getLabel(int(where(mc.initial_state == 1.0)[0][0])),'init')
+		
+		labeling=['a','b','c','d','a']
+		mc = createMC(transitions,labeling,[0.3,0.0,0.0,0.2,0.5])
+		var.assertEqual(mc.nb_states,6)
+		var.assertEqual(mc.labeling.count('init'),1)
+		var.assertEqual(mc.pi(5),1.0)
+		var.assertTrue((mc.matrix[-1]==array([0.3,0.0,0.0,0.2,0.5,0.0])).all())
+		
+		labeling=['a','b','c','d','a']
+		mc = createMC(transitions,labeling,array([0.3,0.0,0.0,0.2,0.5]))
+		var.assertEqual(mc.nb_states,6)
+		var.assertEqual(mc.labeling.count('init'),1)
+		var.assertEqual(mc.pi(5),1.0)
+		var.assertTrue((mc.matrix[-1]==array([0.3,0.0,0.0,0.2,0.5,0.0])).all())
+		
+
 	def test_MC_state(var):
 		var.assertEqual(m.tau(1,0,'B'),0.0)
 		var.assertEqual(m.tau(0,1,'B'),0.5)
@@ -31,13 +58,12 @@ class MCTestclass(unittest.TestCase):
 	def test_MC_save_load_str(var):
 		m.save("test_save.txt")
 		mprime = loadMC("test_save.txt")
-		mprime.name
 		var.assertEqual(str(m),str(mprime))
 		remove("test_save.txt")
 	
 	def test_MC_getAlphabet(var):
 		var.assertEqual(set(m.getAlphabet()),
-						set(list("BTPXSVE")))
+						set(list("BTPXSVE")+['init']))
 	
 	def test_MC_Set(var):
 		set1 = m.generateSet(50,10)
@@ -50,8 +76,8 @@ class MCTestclass(unittest.TestCase):
 		remove("test_save.txt")
 
 	def test_MC_logLikelihood(var):
-		set1 = Set([['B','T','X','X']],[1])
-		set2 = Set([['B','P','T','T']],[2])
+		set1 = Set([['init','B','T','X','X']],[1])
+		set2 = Set([['init','B','P','T','T']],[2])
 		l11 = m._logLikelihood_oneproc(set1)
 		l12 = m._logLikelihood_multiproc(set1)
 		var.assertAlmostEqual(l11,l12)
@@ -64,12 +90,10 @@ class MCTestclass(unittest.TestCase):
 	
 	def test_MC_random(var):
 		alphabet = list("BTSXPVE")
-		random_model = MC_random(12, alphabet, False)
+		random_model = MC_random(11, alphabet, False)
 		for i in alphabet:
 			var.assertGreaterEqual(random_model.labeling.count(i),1)
 
-
-	
 	def test_BW_MC(var):
 		initial_model   = loadMC("jajapy/tests/materials/mc/random_MC.txt")
 		training_set    = loadSet("jajapy/tests/materials/mc/training_set_MC.txt")
@@ -86,7 +110,6 @@ class MCTestclass(unittest.TestCase):
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
-
 
 
 if __name__ == "__main__":

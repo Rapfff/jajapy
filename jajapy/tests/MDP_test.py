@@ -16,6 +16,33 @@ m = modelMDP_bigstreet()
 scheduler = UniformScheduler(m.getActions())
 
 class MDPTestclass(unittest.TestCase):
+	
+	def test_MC_initial_state(var):
+		p = 0.75
+		labeling = ['R','L','R','L','OK','HIT']
+		transitions = [(0,'m',1,p),(0,'m',2,1-p),(0,'s',3,p),(0,'s',0,1-p),
+				   (1,'m',0,p),(1,'m',3,1-p),(1,'s',2,p),(1,'s',1,1-p),
+				   (2,'m',5,1.0),(2,'s',4,1.0),(3,'m',5,1.0),(3,'s',4,1.0),
+				   (4,'m',4,1.0),(4,'s',4,1.0),(5,'m',5,1.0),(5,'s',5,1.0)]
+		mdp = createMDP(transitions,labeling,0)
+		var.assertEqual(mdp.nb_states,7)
+		var.assertEqual(mdp.labeling.count('init'),1)
+		var.assertEqual(mdp.getLabel(int(where(mdp.initial_state == 1.0)[0][0])),'init')
+		
+		labeling = ['R','L','R','L','OK','HIT']
+		mdp = createMDP(transitions,labeling,[0.3,0.0,0.0,0.2,0.5,0.0])
+		var.assertEqual(mdp.nb_states,7)
+		var.assertEqual(mdp.labeling.count('init'),1)
+		var.assertEqual(mdp.pi(6),1.0)
+		var.assertTrue((mdp.matrix[-1][0]==array([0.3,0.0,0.0,0.2,0.5,0.0,0.0])).all())
+		
+		labeling = ['R','L','R','L','OK','HIT']
+		mdp = createMDP(transitions,labeling,array([0.3,0.0,0.0,0.2,0.5,0.0]))
+		var.assertEqual(mdp.nb_states,7)
+		var.assertEqual(mdp.labeling.count('init'),1)
+		var.assertEqual(mdp.pi(6),1.0)
+		var.assertTrue((mdp.matrix[-1][0]==array([0.3,0.0,0.0,0.2,0.5,0.0,0.0])).all())
+		
 
 	def test_MDP_state(var):
 		var.assertEqual(m.tau(0,'m',1,'B'),0.0)
@@ -35,7 +62,7 @@ class MDPTestclass(unittest.TestCase):
 	
 	def test_MDP_observations_actions(var):
 		var.assertEqual(set(m.getAlphabet()),
-						set(['L','R','HIT','OK']))
+						set(['L','R','HIT','OK','init']))
 		var.assertEqual(set(m.getActions()),
 						set(['m','s']))
 	
@@ -50,8 +77,8 @@ class MDPTestclass(unittest.TestCase):
 		remove("test_save.txt")
 
 	def test_MDP_logLikelihood(var):
-		set1 = Set([['R','m','L','s','L','s','R','m','HIT','m','HIT','s','HIT']],[1],t=1)
-		set2 = Set([['R','s','R','m','R','s','OK','m','OK','m','OK']],[2],t=1)
+		set1 = Set([['init','m','R','m','L','s','L','s','R','m','HIT','m','HIT','s','HIT']],[1],t=1)
+		set2 = Set([['init','m','R','s','R','m','R','s','OK','m','OK','m','OK']],[2],t=1)
 		l12 = m._logLikelihood_multiproc(set1)
 		l11 = m._logLikelihood_oneproc(set1)
 		var.assertAlmostEqual(l11,l12)

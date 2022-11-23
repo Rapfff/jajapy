@@ -1,8 +1,7 @@
 from .MDP import *
 from ..base.BW import *
 from ..base.Set import Set
-from ..base.tools import normalize
-from numpy import array, dot, append, zeros, ones, log, inf
+from numpy import array, dot, append, zeros, ones, log, inf, isnan
 
 NB_PROCESS = 11
 
@@ -74,17 +73,22 @@ class BW_MDP(BW):
 		"""
 		if type(traces) != Set:
 			traces = Set(traces, t=1)
+
+		actions, alphabet = traces.getActionsObservations()
+
 		if not initial_model:
 			if not nb_states:
-				print("Either nb_states or initial_model should be set")
-				return
-			actions, observations = traces.getActionsObservations()
-			initial_model = MDP_random(nb_states,observations,actions,random_initial_state)
-		else:
-			observations = initial_model.getAlphabet()
-			actions = initial_model.getActions()
-		self.alphabet = observations
-		self.actions = actions
+				raise ValueError("Either nb_states or initial_model should be set")
+			if 'init' in alphabet:
+				alphabet.remove("init")
+			initial_model = MDP_random(nb_states,alphabet,actions,random_initial_state)
+
+		if not 'init' in alphabet:
+			for s in range(len(traces.sequences)):
+				traces.sequences[s].insert(0,initial_model.getActions(initial_model.labeling.index("init"))[0])
+				traces.sequences[s].insert(0,'init')
+					
+		self.actions = initial_model.actions
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 	def h_tau(self,s1: int,act: str,s2: int,obs: str) -> float:
@@ -186,9 +190,7 @@ class BW_MDP(BW):
 					for ia,act in enumerate(self.actions):
 						arr_dirak = [1.0 if a == act else 0.0 for a in sequence_actions]
 						num[s,ia,ss] = dot(alpha_matrix[s][:-1]*arr_dirak*beta_matrix[ss][1:]*p,times/proba_seq).sum()
-			
-			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
-			return [den,num,proba_seq,times,num_init]
+			return [den,num,proba_seq,times]
 		return False
 
 	def _generateHhat(self,temp):
@@ -196,19 +198,16 @@ class BW_MDP(BW):
 		num = array([i[1] for i in temp]).sum(axis=0)
 		lst_proba=array([i[2] for i in temp])
 		lst_times=array([i[3] for i in temp])
-		lst_init =array([i[4] for i in temp]).T
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		for s,a in zip(range(self.nb_states),range(len(self.actions))):
-			if den[s][a] == 0.0:
-				den[s][a] = 1.0
-				num[s][a] = self.h.matrix[s][a]
-
+		for s in range(self.nb_states):
+			for a in range(len(self.actions)):
+				if den[s][a] == 0.0 or isnan(den[s][a]):
+					den[s][a] = 1.0
+					num[s][a] = self.h.matrix[s][a]
 		den = den.reshape(self.nb_states,len(self.actions),1)
 		matrix = num/den
 
-		initial_state = normalize([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
-
-		return [MDP(matrix,self.h.labeling,self.h.actions,initial_state), currentloglikelihood]
+		return [MDP(matrix,self.h.labeling,self.h.actions), currentloglikelihood]
 		

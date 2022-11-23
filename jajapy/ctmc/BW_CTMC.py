@@ -214,12 +214,24 @@ class BW_CTMC(BW):
 		"""
 		if type(traces) != Set:
 			traces = Set(traces)
+		
+		alphabet = traces.getAlphabet()
+		if not 'init' in alphabet:
+			if nb_states != None:
+				nb_states += 1
+			alphabet.append('init')
+			timed = type(traces.sequences[0][1]) != str
+			for s in range(len(traces.sequences)):
+				if timed:
+					traces.sequences[s].insert(0,0.5)
+				traces.sequences[s].insert(0,'init')
+		
 		if not initial_model:
 			if not nb_states:
 				raise ValueError("Either nb_states or initial_model should be set")
 
 			initial_model = CTMC_random(nb_states,
-										traces.getAlphabet(),
+										alphabet,
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
@@ -274,17 +286,14 @@ class BW_CTMC(BW):
 				else:
 					p = array([self.h_l(s,ss,o) for o in obs_seq])
 				num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-		####################		
-		num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 		####################
-		return [den, num, proba_seq, times, num_init]
+		return [den, num, proba_seq, times]
 
 	def _generateHhat(self,temp):
 		den = array([i[0] for i in temp]).sum(axis=0)
 		num = array([i[1] for i in temp]).sum(axis=0)
 		lst_proba=array([i[2] for i in temp])
 		lst_times=array([i[3] for i in temp])
-		lst_init =array([i[4] for i in temp]).T
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
@@ -294,6 +303,5 @@ class BW_CTMC(BW):
 				num[s] = self.h.matrix[s]
 
 		matrix = num/den[:, newaxis]
-		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [CTMC(matrix,self.h.labeling,initial_state),currentloglikelihood]
+		return [CTMC(matrix,self.h.labeling),currentloglikelihood]
 		

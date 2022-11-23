@@ -407,7 +407,7 @@ the bottom-right state. For this, we can use stormpy:
 
 	# MODEL CHECKING
 	#---------------
-	storm_model = ja.jajapyModeltoStorm(output_model)
+	storm_model = ja.jajapyModeltoStormpy(output_model)
 	properties = stormpy.parse_properties("Rmax=? [ F \"done\" ]")
 	result = stormpy.check_model_sparse(storm_model, properties[0], extract_scheduler=True)
 	scheduler = result.scheduler
@@ -507,7 +507,7 @@ this new model.
 	import stormpy
 	# MODEL CHECKING
 	#---------------
-	model_storm = ja.jajapyModeltoStorm(best_model)
+	model_storm = ja.jajapyModeltoStormpy(best_model)
 	formula_str = 'P=? [F "five"]'
 	properties = stormpy.parse_properties(formula_str)
 	result = stormpy.check_model_sparse(model_storm,properties[0])

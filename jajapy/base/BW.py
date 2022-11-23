@@ -168,7 +168,7 @@ class BW:
 			fitted model.
 		"""
 		try:
-			from ..with_stormpy import jajapyModeltoStorm, stormModeltoJajapy
+			from ..with_stormpy import jajapyModeltoStormpy, stormpyModeltoJajapy
 			stormpy_installed = True
 		except ModuleNotFoundError:
 			stormpy_installed = False
@@ -183,7 +183,7 @@ class BW:
 			if not stormpy_installed:
 				print("ERROR: the initial model is a Storm model and Storm is not installed on the machine")
 				return False
-			initial_model = stormModeltoJajapy(initial_model)		
+			initial_model = stormpyModeltoJajapy(initial_model)		
 
 		start_time = datetime.now()
 		self.h = initial_model
@@ -222,7 +222,7 @@ class BW:
 			self._endPrint(counter,running_time)
 
 		if stormpy_output:
-			self.h = jajapyModeltoStorm(self.h)
+			self.h = jajapyModeltoStormpy(self.h)
 
 		if return_data:
 			info = {"learning_rounds":counter,"learning_time":running_time,"training_set_loglikelihood":currentloglikelihood}

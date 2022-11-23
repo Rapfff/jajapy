@@ -69,11 +69,19 @@ class BW_MC(BW):
 		"""
 		if type(traces) != Set:
 			traces = Set(traces, t=0)
+				
+		alphabet = traces.getAlphabet()
+		if not 'init' in alphabet:
+			for s in range(len(traces.sequences)):
+				traces.sequences[s].insert(0,'init')
+		else:
+			alphabet.remove("init")
+		
 		if not initial_model:
 			if not nb_states:
-				print("Either nb_states or initial_model should be set")
-				return
-			initial_model = MC_random(nb_states,traces.getAlphabet(),random_initial_state)
+				raise ValueError("Either nb_states or initial_model should be set")
+			initial_model = MC_random(nb_states,alphabet,random_initial_state)
+
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 	def _processWork(self,sequence,times):
@@ -90,16 +98,13 @@ class BW_MC(BW):
 				p = array([self.h_tau(s,ss,o) for o in sequence])
 				num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 		####################
-		num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
-		####################
-		return [den,num, proba_seq,times,num_init]
+		return [den,num, proba_seq,times]
 
 	def _generateHhat(self,temp):
 		den = array([i[0] for i in temp]).sum(axis=0)
 		num = array([i[1] for i in temp]).sum(axis=0)
 		lst_proba=array([i[2] for i in temp])
 		lst_times=array([i[3] for i in temp])
-		lst_init =array([i[4] for i in temp]).T
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
@@ -109,6 +114,5 @@ class BW_MC(BW):
 				num[s] = self.h.matrix[s]
 
 		matrix = num/den[:, newaxis]
-		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
-		return [MC(matrix,self.h.labeling,initial_state),currentloglikelihood]
+		return [MC(matrix,self.h.labeling),currentloglikelihood]
 		

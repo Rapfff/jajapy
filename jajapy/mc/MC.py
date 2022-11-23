@@ -1,11 +1,11 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from ast import literal_eval
-from numpy import ndarray, array, zeros
+from numpy import ndarray, array, zeros, vstack, hstack, newaxis
 from random import choices
 
 class MC(Model):
-	def __init__(self, matrix: ndarray, labeling: list, initial_state, name: str ="unknown_MC") -> None:
+	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
 
@@ -19,19 +19,22 @@ class MC(Model):
 			A list of N observations (with N the nb of states).
 			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
-		initial_state : int or list of float
-			Determine which state is the initial one (then it's the id of the
-			state), or what are the probability to start in each state (then it's
-			a list of probabilities).
 		name : str, optional
 			Name of the model.
 			Default is "unknow_MC"
 		"""
-		self.alphabet = list(set(labeling))
 		self.labeling = labeling
+		self.alphabet = list(set(labeling))
+		
+		if not 'init' in self.labeling:
+			msg = "No initial state given: at least one"
+			msg += " state should be labelled by 'init'."
+			raise ValueError(msg)
+		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
+
 		super().__init__(matrix,initial_state,name)
-		if len(labeling) != self.nb_states:
-			raise ValueError("The length of labeling is not equal to the number of states")
+		if len(self.labeling) != self.nb_states:
+			raise ValueError("The length of labeling ("+str(len(labeling))+") is not equal to the number of states("+str(self.nb_states)+")")
 		for i in range(self.nb_states):
 			if not checkProbabilities(matrix[i]):
 				msg = "The probability to take a transition from state "
@@ -248,9 +251,9 @@ def loadMC(file_path: str) -> MC:
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MC(matrix, labeling, initial_state, name)
+	return MC(matrix, labeling, name)
 
-def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) -> MC:
+def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=True) -> MC:
 	"""
 	Generate a random MC.
 
@@ -263,7 +266,7 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) 
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability,
 		otherwise we will always start in state 0.
-		Default is False.
+		Default is True.
 	
 	Returns
 	-------
@@ -275,33 +278,37 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=False) 
 	>>> model = MC_random(2,['a','b'],False)
 	>>> print(model)
 	Name: MC_random_2_states
-	Initial state: s0
+	Initial state: s2
 	----STATE 0--a----
 	s0 -> s0 : 0.625
 	s0 -> s1 : 0.375
 	----STATE 1--b----
 	s1 -> s0 : 0.9
 	s1 -> s1 : 0.1
+	----STATE 2--init----
+	s2 -> s0 : 1.0
 	"""
+	if 'init' in alphabet:
+		msg =  "The label 'init' cannot be used: it is reserved for initial states."
+		raise SyntaxError(msg)
+
 	if nb_states < len(alphabet):
 		print("WARNING: the size of the alphabet is higher than the",end=" ")
 		print("number of states. Some labels will not be assigned to",end=" ")
 		print("any states.")
 	
 	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
-	
 	matrix = []
 	for _ in range(nb_states):
-		p = randomProbabilities(nb_states)
-		matrix.append(p)
+		matrix.append(randomProbabilities(nb_states)+[0.0])
 
-	matrix = array(matrix)
-
+	labeling.append("init")
 	if random_initial_state:
-		init = randomProbabilities(nb_states)
+		matrix.append(randomProbabilities(nb_states)+[0.0])
 	else:
-		init = 0
-	return MC(matrix, labeling, init,"MC_random_"+str(nb_states)+"_states")
+		matrix.append([1.0]+[0.0 for i in range(nb_states)])
+	matrix = array(matrix)
+	return MC(matrix, labeling,"MC_random_"+str(nb_states)+"_states")
 
 def createMC(transitions: list, labeling: list, initial_state, name: str ="unknown_MC") -> MC:
 	"""
@@ -334,19 +341,25 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	>>> model = createMC([(0,1,1.0),(1,0,0.6),(1,1,0.4)],['b','a'],0,"My_MC")
 	>>> print(model)
 	Name: My_MC
-	Initial state: s0
+	Initial state: s2
 	----STATE 0--b----
 	s0 -> s1 : 1.0
 	----STATE 1--a----
 	s1 -> s0 : 0.6
 	s1 -> s1 : 0.4
+	----STATE 2--init----
+	s2 -> s0 : 1.0
 	"""
+	if 'init' in labeling:
+		msg =  "The label 'init' cannot be used: it is reserved for initial states."
+		raise SyntaxError(msg)
+	
 	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
 	states.sort()
 	nb_states = len(states)
 	
 	if nb_states > len(labeling):
-		raise ValueError("ERROR: all states are not labelled (the labeling list is too small).")
+		raise ValueError("All states are not labelled (the labeling list is too small).")
 	elif nb_states < len(labeling):
 		print("WARNING: the labeling list is bigger than the number of states")
 
@@ -354,4 +367,14 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	for t in transitions:
 		res[states.index(t[0])][states.index(t[1])] = t[2]
 	
-	return MC(res, labeling, initial_state, name)
+	labeling.append('init')
+	res = vstack((res,zeros(len(res))))
+	res = hstack((res,zeros(len(res))[:,newaxis]))
+	if type(initial_state) == int:
+		res[-1][initial_state] = 1.0
+	else:
+		if type(initial_state) == ndarray:
+			initial_state = initial_state.tolist()
+		res[-1] = array(initial_state+[0.0])
+
+	return MC(res, labeling, name)

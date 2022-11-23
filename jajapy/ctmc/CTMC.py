@@ -6,7 +6,7 @@ from ..mc.MC import MC
 from ..base.Model import Model
 from math import exp, log
 from random import randint
-from numpy import array, zeros, dot, ndarray
+from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from random import choices
@@ -15,9 +15,9 @@ class CTMC(Model):
 	"""
 	Class representing a CTMC.
 	"""
-	def __init__(self, matrix: ndarray, labeling: list, initial_state, name: str ="unknown_MC") -> None:
+	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_CTMC") -> None:
 		"""
-		Creates an MC.
+		Creates an CTMC.
 
 		Parameters
 		----------
@@ -36,10 +36,17 @@ class CTMC(Model):
 			a list of probabilities).
 		name : str, optional
 			Name of the model.
-			Default is "unknow_MC"
+			Default is "unknow_CTMC"
 		"""
 		self.alphabet = list(set(labeling))
 		self.labeling = labeling
+
+		if not 'init' in self.labeling:
+			msg = "No initial state given: at least one"
+			msg += " state should be labelled by 'init'."
+			raise ValueError(msg)
+		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
+
 		super().__init__(matrix,initial_state,name)
 		if len(labeling) != self.nb_states:
 			raise ValueError("The length of labeling is not equal to the number of states")
@@ -291,7 +298,7 @@ class CTMC(Model):
 		for i in range(self.nb_states):
 			new_matrix[i] /= self.e(i)
 
-		return MC(new_matrix,self.labeling,self.initial_state,name)
+		return MC(new_matrix,self.labeling,name)
 
 	def save(self,file_path:str):
 		"""Save the model into a text file.
@@ -335,11 +342,11 @@ def loadCTMC(file_path: str) -> MC:
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return CTMC(matrix, labeling, initial_state, name)
+	return CTMC(matrix, labeling, name)
 
 def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 				max_exit_rate_time: int, self_loop: bool = True,
-				random_initial_state: bool=False) -> CTMC:
+				random_initial_state: bool=True) -> CTMC:
 	"""
 	Generates a random CTMC. All the rates will be between 0 and 1.
 	All the exit rates will be integers.
@@ -359,7 +366,7 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 		Default is True.
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
-		Default is False.
+		Default is True.
 	
 	Returns
 	-------
@@ -371,7 +378,7 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	>>> model = CTMC_random(2,['a','b'],1,5)
 	>>> print(model)
 	Name: CTMC_random_2_states
-	Initial state: s0
+	Initial state: s2
 	----STATE 0--a----
 	Exepected waiting time: 2.0
 	s0 -> s0 : lambda = 0.38461538461538464
@@ -380,12 +387,20 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	Exepected waiting time: 4.0
 	s1 -> s0 : lambda = 0.13636363636363635
 	s1 -> s1 : lambda = 0.11363636363636363
-
+	----STATE 2--init----
+	Exepected waiting time: 1.0
+	s2 -> s0 : lambda = 0.2
+	s2 -> s1 : lambda = 0.8
 	"""
 	if nb_states < len(alphabet):
 		print("WARNING: the size of the alphabet is higher than the",end=" ")
 		print("number of states. Some labels will not be assigned to",end=" ")
 		print("any states.")
+	
+	if 'init' in alphabet:
+		msg =  "The label 'init' cannot be used: it is reserved for initial states."
+		raise SyntaxError(msg)
+
 	
 	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
 	
@@ -400,14 +415,15 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 		av_waiting_time = randint(min_exit_rate_time,max_exit_rate_time)
 		p = random_probs/av_waiting_time
 		matrix.append(p)
-
-	matrix = array(matrix)
-
+	
+	labeling.append("init")
 	if random_initial_state:
-		init = randomProbabilities(nb_states)
+		matrix.append(randomProbabilities(nb_states)+[0.0])
 	else:
-		init = 0
-	return CTMC(matrix, labeling, init,"CTMC_random_"+str(nb_states)+"_states")
+		matrix.append([1.0]+[0.0 for i in range(nb_states)])
+	
+	matrix = array(matrix)
+	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
 
 def createCTMC(transitions: list, labeling: list, initial_state, name: str ="unknown_CTMC") -> CTMC:
 	"""
@@ -449,6 +465,10 @@ def createCTMC(transitions: list, labeling: list, initial_state, name: str ="unk
 	s1 -> s0 : lambda = 0.3
 	s1 -> s1 : lambda = 0.2
 	"""
+	if 'init' in labeling:
+		msg =  "The label 'init' cannot be used: it is reserved for initial states."
+		raise SyntaxError(msg)
+	
 	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
 	states.sort()
 	nb_states = len(states)
@@ -462,4 +482,14 @@ def createCTMC(transitions: list, labeling: list, initial_state, name: str ="unk
 	for t in transitions:
 		res[states.index(t[0])][states.index(t[1])] = t[2]
 	
-	return CTMC(res, labeling, initial_state, name)
+	labeling.append('init')
+	res = vstack((res,zeros(len(res))))
+	res = hstack((res,zeros(len(res))[:,newaxis]))
+	if type(initial_state) == int:
+		res[-1][initial_state] = 1.0
+	else:
+		if type(initial_state) == ndarray:
+			initial_state = initial_state.tolist()
+		res[-1] = array(initial_state+[0.0])
+
+	return CTMC(res, labeling, name)

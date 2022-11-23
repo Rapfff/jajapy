@@ -4,7 +4,7 @@ from ..base.Model import Model
 from ..base.Set import Set
 from .Scheduler import Scheduler
 from numpy.random import geometric
-from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape
+from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape, vstack, hstack, newaxis, concatenate
 from ast import literal_eval
 from multiprocessing import cpu_count, Pool
 from random import choices
@@ -13,7 +13,7 @@ class MDP(Model):
 	"""
 	Class representing a MDP.
 	"""
-	def __init__(self,matrix: ndarray, labeling: list, actions:list, initial_state,name: str="unknown_MDP"):
+	def __init__(self,matrix: ndarray, labeling: list, actions:list, name: str="unknown_MDP"):
 		"""
 		Create a MDP.
 
@@ -31,17 +31,20 @@ class MDP(Model):
 		actions: list of str
 			The list of all possible actions, such that:
 			`actions.index("act")` is the ID of `act`.
-		initial_state : int or list of float
-			Determine which state is the initial one (then it's the id of the
-			state), or what are the probability to start in each state (then it's
-			a list of probabilities).
 		name : str, optional
 			Name of the model. Default is "unknow_MDP"
 		"""
 		self.actions = actions
 		self.nb_actions = len(self.actions)
-		self.alphabet = list(set(labeling))
 		self.labeling = labeling
+		self.alphabet = list(set(labeling))
+
+		if not 'init' in self.labeling:
+			msg = "No initial state given: at least one"
+			msg += " state should be labelled by 'init'."
+			raise ValueError(msg)
+		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
+
 		super().__init__(matrix,initial_state,name)
 		if len(labeling) != self.nb_states:
 			raise ValueError("The length of labeling is not equal to the number of states")
@@ -483,7 +486,7 @@ def loadMDP(file_path: str) -> MDP:
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
 	if l != "MDP":
-		msg = "ERROR: this file doesn't describe an MC: it describes a "+l
+		msg = " this file doesn't describe an MC: it describes a "+l
 		raise ValueError(msg)
 	labeling = literal_eval(f.readline()[:-1])
 	actions = literal_eval(f.readline()[:-1])
@@ -492,10 +495,10 @@ def loadMDP(file_path: str) -> MDP:
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MDP(matrix, labeling, actions, initial_state, name)
+	return MDP(matrix, labeling, actions, name)
 
 
-def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state: bool = False, deterministic: bool = False) -> MDP:
+def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state: bool = True, deterministic: bool = False) -> MDP:
 	"""
 	Generate a random MDP.
 
@@ -509,7 +512,7 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 		List of actions.	
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
-		Default is False.
+		Default is True.
 	deterministic: bool, optional
 		If True, the model will be determinstic: in state `s`, with action `a`, there is only one transition labelled with `o`.
 		Default is False.
@@ -519,19 +522,22 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 	MDP
 		A pseudo-randomly generated MDP.
 	"""
+	if 'init' in alphabet:
+		msg =  "The label 'init' cannot be used: it is reserved for initial states."
+		raise SyntaxError(msg)
+
 	if nb_states < len(alphabet):
-		print("WARNING: the size of the alphabet is higher than the",end=" ")
+		print("WARNING: the size of the alphabet is geater than the",end=" ")
 		print("number of states. Some labels will not be assigned to",end=" ")
 		print("any states.")
 	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
 	alphabet = list(set(labeling))
 
-	
 	matrix = []
 	for s in range(nb_states):
 		if not deterministic:
-			p = array([randomProbabilities(nb_states) for a in actions])
-			p = reshape(p,(len(actions),nb_states))
+			p = array([randomProbabilities(nb_states)+[0.0] for a in actions])
+			p = reshape(p,(len(actions),nb_states+1))
 			matrix.append(p)
 		else:
 			matrix.append([])
@@ -541,15 +547,16 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 				probs = randomProbabilities(len(alphabet))
 				for i,j in zip(dest,probs):
 					p[i] = j
-				matrix[-1].append(p)
-
-	matrix = array(matrix)
+				matrix[-1].append(p+[0.0])
 
 	if random_initial_state:
-		init = randomProbabilities(nb_states)
+		matrix.append([randomProbabilities(nb_states)+[0.0]])
 	else:
-		init = 0
-	return MDP(matrix, labeling, actions, init,"MDP_random_"+str(nb_states)+"_states")
+		matrix.append([[1.0]+[0.0 for i in range(nb_states)]])
+	for a in range(len(actions)-1):
+		matrix[-1].append([0.0 for i in range(nb_states+1)])
+	matrix = array(matrix)
+	return MDP(matrix, labeling, actions, "MDP_random_"+str(nb_states)+"_states")
 
 
 def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknown_MDP") -> MDP:
@@ -581,6 +588,10 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	Examples
 	--------
 	"""
+	if 'init' in labeling:
+		msg =  "The label 'init' cannot be used: it is reserved for initial states."
+		raise SyntaxError(msg)
+
 	states = list(set([i[0] for i in transitions]+[i[2] for i in transitions]))
 	states.sort()
 	nb_states = len(states)
@@ -589,7 +600,7 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	nb_actions = len(actions)
 	
 	if nb_states > len(labeling):
-		raise ValueError("ERROR: all states are not labelled (the labeling list is too small).")
+		raise ValueError("all states are not labelled (the labeling list is too small).")
 	elif nb_states < len(labeling):
 		print("WARNING: the labeling list is bigger than the number of states")
 
@@ -597,5 +608,14 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	for t in transitions:
 		res[states.index(t[0])][actions.index(t[1])][states.index(t[2])] = t[3]
 	
-
-	return MDP(res,labeling,actions,initial_state,name)
+	labeling.append('init')
+	res = vstack((res,zeros((1,nb_actions,nb_states))))
+	res = concatenate((res,zeros((nb_states+1,nb_actions,1))),axis=2)
+	if type(initial_state) == int:
+		res[-1][0][initial_state] = 1.0
+	else:
+		if type(initial_state) == ndarray:
+			initial_state = initial_state.tolist()
+		res[-1][0] = array(initial_state+[0.0])
+	
+	return MDP(res,labeling,actions,name)
