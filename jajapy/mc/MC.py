@@ -1,7 +1,7 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Model import Model
 from ast import literal_eval
-from numpy import ndarray, array, zeros, vstack, hstack, newaxis
+from numpy import ndarray, array, zeros, vstack, hstack, newaxis, append
 from random import choices
 
 class MC(Model):
@@ -300,13 +300,13 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=True) -
 	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
 	matrix = []
 	for _ in range(nb_states):
-		matrix.append(randomProbabilities(nb_states)+[0.0])
+		matrix.append(append(randomProbabilities(nb_states),0.0))
 
 	labeling.append("init")
 	if random_initial_state:
-		matrix.append(randomProbabilities(nb_states)+[0.0])
+		matrix.append(append(randomProbabilities(nb_states),0.0))
 	else:
-		matrix.append([1.0]+[0.0 for i in range(nb_states)])
+		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
 	matrix = array(matrix)
 	return MC(matrix, labeling,"MC_random_"+str(nb_states)+"_states")
 

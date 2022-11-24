@@ -41,7 +41,7 @@ Exploration
 	>>> model.tau(0,'red',1,'a') # probability of moving from s0 to s1 seeing 'a' after executing 'red'
 	0.5
 	>>> model.getAlphabet() # all possible observations
-	['a','b','c','d']
+	['init','a','b','c','d']
 	>>> model.getLabel(0) # label on state 0
 	'a'
 	>>> model.getActions() # all possible actions
@@ -56,15 +56,15 @@ Running
 
 	>>> scheduler = ja.UniformScheduler(model.getActions())
 	>>> model.run(5,scheduler) # returns a list of 5 actions and 5 observations
-	['a', 'blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd']
+	['init','red','a', 'blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd']
 	>>> s = model.generateSet(10,5,scheduler) # returns a Set containing 10 traces of size 5
 	>>> s.sequences
-	[['a', 'red', 'a', 'red', 'b', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
-	 ['a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'red', 'b', 'blue', 'd'],
-	 ['a', 'red', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
-	 ['a', 'blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
-	 ['a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'blue', 'c', 'blue', 'c'],
-	 ['a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'blue', 'c', 'red', 'b']]
+	[['init','red','a', 'red', 'a', 'red', 'b', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
+	 ['init','blue','a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'red', 'b', 'blue', 'd'],
+	 ['init','blue','a', 'red', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
+	 ['init','red','a', 'blue', 'a', 'blue', 'd', 'blue', 'd', 'blue', 'd', 'blue', 'd'],
+	 ['init','blue','a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'blue', 'c', 'blue', 'c'],
+	 ['init','red','a', 'red', 'a', 'blue', 'c', 'blue', 'c', 'blue', 'c', 'red', 'b']]
 	>>> s.times # first sequence appears 6 times, the second twice, etc...
 	[3, 1, 1, 2, 2, 1]
 

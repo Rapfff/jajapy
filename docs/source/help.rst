@@ -60,7 +60,7 @@ The following tables recaps how the models and the ndarrays are structured:
 HMM                   Usage         Type of output Source state Destination State       Observation
 ========== ================ ====================== ============ ================= =================
 HMM.matrix   matrix[s1][s2]    Probability (float)           s1                s2
-HMM.output  output[s1][obs]    Probability (float)           s1                s2 HMM.alphabet[obs]
+HMM.output  output[s1][obs]    Probability (float)           s1                   HMM.alphabet[obs]
 ========== ================ ====================== ============ ================= =================
 
 ========== =============== ====================== ============ ================= ================
@@ -115,6 +115,8 @@ You can change this behaviour by changing the value of the parameter `stormpy_ou
 
 4. From Jajapy to stormpy and vice versa 
 ----------------------------------------
+.. note::
+	This section concerns MDPs, MCs and CTMCs only. Other models are not compatible with Stormpy.
 
 Due to performance reasons, Jajapy uses its representation of the models during the learning process.
 Once the learning process is over, Jajapy converts the output model to a sparse Stormpy model.
@@ -125,8 +127,28 @@ If a stormpy model is provided, jajapy will first translate it.
 These translation are straightforward and doesn't change the structures of the models.
 
 .. note::
-   Stormpy sparseCtmc and spraseMdp can be translated to Jajapy model only if all of the state in the sparse model
-   are labelled with at most one observation (without counting the *init* one).
+   Stormpy models can be translated to Jajapy ones only if all of the state in the Stormpy model
+   are labelled with at most one observation.
+
+Initial distributions and the *init* label
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Stormpy doesn't handle initial distribution: it chooses the intial state according to an uniform
+distribution over the states labelled with *init*. On the other hand, Jajapy chooses the initial
+state according to any distribution over the states defined by the user. 
+
+To make Jajapy models compatible with Stormpy one, Jajapy add one state labelled with *init* at the
+creation of the model. The transitions leaving this state simulate the initial distribution given by
+the user as on the following pictures:
+
+.. image:: pictures/init_MC.png
+	:width: 80%
+	:align: center
+
+The transformation is the same for an MDP, except that the transitions are available for any action.
+
+.. image:: pictures/init_MDP.png
+	:width: 80%
+	:align: center
 
 5. Examples
 -----------

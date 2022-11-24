@@ -87,7 +87,7 @@ class Active_BW_MDP(BW_MDP):
 	def fit(self,traces: Set, lr, nb_iterations: int, nb_sequences: int,
 			sequence_length: int = None, epsilon_greedy: float = 0.9,
 			initial_model: MDP=None, nb_states: int=None,
-			random_initial_state: bool=False, output_file: str=None,
+			random_initial_state: bool=True, output_file: str=None,
 			epsilon: float=0.01, max_it: int=inf,pp: str='',
 			verbose: bool = True, return_data: bool= False, stormpy_output: bool = False):
 		"""

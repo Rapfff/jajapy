@@ -24,10 +24,10 @@ We can create the model depicted above as follow:
 	>>> 		   (2,0,0.5),(2,4,0.5),
 	>>> 		   (3,2,0.3),(3,3,0.7),
 	>>> 		   (4,2,0.2),(4,3,0.1),(4,4,0.7)]
-	>>> mc = createMC(transitions, labeling, initial_state=0, name='My_MC')
+	>>> mc = ja.createMC(transitions, labeling, initial_state=0, name='My_MC')
 	>>> print(mc)
 	Name: My_MC
-	Initial state: s0
+	Initial state: s5
 	----STATE 0--a----
 	s0 -> s1 : 0.8
 	s0 -> s2 : 0.2
@@ -48,40 +48,49 @@ We can create the model depicted above as follow:
 	s4 -> s2 : 0.2
 	s4 -> s3 : 0.1
 	s4 -> s4 : 0.7
-	
+
+	----STATE 5--init----
+	s5 -> s0 : 1.0
+
 We can also generate a random MC
 
 .. code-block:: python
 
 	>>> random_model = ja.MC_random(nb_states=4,
-					random_initial_state=False,
+					random_initial_state=True,
 					alphabet=['a','b','c'])
 	>>> print(random_model)
 	Name: MC_random_4_states
-	Initial state: s0
+	Initial state: s4
 	----STATE 0--a----
-	s0 -> s0 : 0.2
-	s0 -> s1 : 0.26666666666666666
-	s0 -> s2 : 0.23333333333333334
-	s0 -> s3 : 0.3
+	s0 -> s0 : 0.32142857142857145
+	s0 -> s1 : 0.07142857142857142
+	s0 -> s2 : 0.35714285714285715
+	s0 -> s3 : 0.25
 
 	----STATE 1--b----
-	s1 -> s0 : 0.28
-	s1 -> s1 : 0.36
-	s1 -> s2 : 0.04
-	s1 -> s3 : 0.32
+	s1 -> s0 : 0.32
+	s1 -> s1 : 0.2
+	s1 -> s2 : 0.24
+	s1 -> s3 : 0.24
 
 	----STATE 2--c----
-	s2 -> s0 : 0.1875
-	s2 -> s1 : 0.125
-	s2 -> s2 : 0.1875
-	s2 -> s3 : 0.5
+	s2 -> s0 : 0.3225806451612903
+	s2 -> s1 : 0.16129032258064516
+	s2 -> s2 : 0.1935483870967742
+	s2 -> s3 : 0.3225806451612903
 
-	----STATE 3--c----
-	s3 -> s0 : 0.5625
-	s3 -> s1 : 0.0625
-	s3 -> s2 : 0.1875
-	s3 -> s3 : 0.1875
+	----STATE 3--a----
+	s3 -> s0 : 0.2413793103448276
+	s3 -> s1 : 0.3103448275862069
+	s3 -> s2 : 0.3103448275862069
+	s3 -> s3 : 0.13793103448275862
+
+	----STATE 4--init----
+	s4 -> s0 : 0.04
+	s4 -> s1 : 0.32
+	s4 -> s2 : 0.4
+	s4 -> s3 : 0.24
 
 
 Exploration
@@ -100,7 +109,7 @@ Exploration
 	>>> model.a(0,1) # same as model.tau(0,1,'a') since state 0 is labelled with 'a'
 	0.8
 	>>> model.getAlphabet()	 # all possible observations
-	['a','b','c','d']
+	['init','a','b','c','d']
 
 Running
 ^^^^^^^
@@ -108,11 +117,11 @@ Running
 .. code-block:: python
 
 	>>> model.run(5) # returns a list of 5 observations
-	['a', 'b', 'd', 'd', 'c']
+	['init','a', 'b', 'd', 'd', 'c']
 	>>> s = model.generateSet(10,5) # returns a Set containing 10 traces of size 5
 	>>> s.sequences
-	[['a', 'b', 'd', 'd', 'd'], ['a', 'b', 'c', 'a', 'b'],
-	['a', 'b', 'd', 'c', 'a'], ['a', 'b', 'd', 'd', 'c']]
+	[['init','a', 'b', 'd', 'd', 'd'], ['init','a', 'b', 'c', 'a', 'b'],
+	['init','a', 'b', 'd', 'c', 'a'], ['init','a', 'b', 'd', 'd', 'c']]
 	>>> s.times # the first sequence appears four times, the second twice, etc...
 	[4, 2, 3, 1]
 

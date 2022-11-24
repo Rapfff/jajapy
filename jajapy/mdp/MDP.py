@@ -4,7 +4,7 @@ from ..base.Model import Model
 from ..base.Set import Set
 from .Scheduler import Scheduler
 from numpy.random import geometric
-from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape, vstack, hstack, newaxis, concatenate
+from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape, vstack, append, concatenate
 from ast import literal_eval
 from multiprocessing import cpu_count, Pool
 from random import choices
@@ -536,7 +536,7 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 	matrix = []
 	for s in range(nb_states):
 		if not deterministic:
-			p = array([randomProbabilities(nb_states)+[0.0] for a in actions])
+			p = array([append(randomProbabilities(nb_states),0.0) for a in actions])
 			p = reshape(p,(len(actions),nb_states+1))
 			matrix.append(p)
 		else:
@@ -547,15 +547,15 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 				probs = randomProbabilities(len(alphabet))
 				for i,j in zip(dest,probs):
 					p[i] = j
-				matrix[-1].append(p+[0.0])
+				matrix[-1].append(append(p,0.0))
 
 	if random_initial_state:
-		matrix.append([randomProbabilities(nb_states)+[0.0]])
+		init = randomProbabilities(nb_states).tolist()+[0.0]
 	else:
-		matrix.append([[1.0]+[0.0 for i in range(nb_states)]])
-	for a in range(len(actions)-1):
-		matrix[-1].append([0.0 for i in range(nb_states+1)])
+		init = [1.0]+[0.0 for i in range(nb_states)]
+	matrix.append(array([init for a in actions]))
 	matrix = array(matrix)
+	labeling.append('init')
 	return MDP(matrix, labeling, actions, "MDP_random_"+str(nb_states)+"_states")
 
 
@@ -612,10 +612,12 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	res = vstack((res,zeros((1,nb_actions,nb_states))))
 	res = concatenate((res,zeros((nb_states+1,nb_actions,1))),axis=2)
 	if type(initial_state) == int:
-		res[-1][0][initial_state] = 1.0
+		for a in range(nb_actions):
+			res[-1][a][initial_state] = 1.0
 	else:
 		if type(initial_state) == ndarray:
 			initial_state = initial_state.tolist()
-		res[-1][0] = array(initial_state+[0.0])
+		for a in range(nb_actions):
+			res[-1][a] = array(initial_state+[0.0])
 	
 	return MDP(res,labeling,actions,name)

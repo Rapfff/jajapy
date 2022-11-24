@@ -1,7 +1,6 @@
 import jajapy as ja
 import stormpy
 
-
 def modelMDP_gridworld():
 	labeling = ['S','M','G',
 				'M','G','C',

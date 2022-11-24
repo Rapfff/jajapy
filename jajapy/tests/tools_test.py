@@ -18,7 +18,7 @@ class ToolsTestclass(unittest.TestCase):
 		for length in range(1, 6):
 			p = randomProbabilities(length)
 			var.assertEqual(len(p),length)
-			var.assertEqual(sum(p),1.0)
+			var.assertAlmostEqual(sum(p),1.0)
 			for i in range(length):
 				var.assertGreaterEqual(p[i],0.0)
 

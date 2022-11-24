@@ -83,8 +83,8 @@ class BW_MDP(BW):
 				alphabet.remove("init")
 			initial_model = MDP_random(nb_states,alphabet,actions,random_initial_state)
 
-		if not 'init' in alphabet:
-			for s in range(len(traces.sequences)):
+		for s in range(len(traces.sequences)):
+			if traces.sequences[s][0] != 'init':
 				traces.sequences[s].insert(0,initial_model.getActions(initial_model.labeling.index("init"))[0])
 				traces.sequences[s].insert(0,'init')
 					
@@ -195,6 +195,11 @@ class BW_MDP(BW):
 
 	def _generateHhat(self,temp):
 		den = array([i[0] for i in temp]).sum(axis=0)
+		if type(den) == float64: # den == 0.0
+			msg = 'The current hypothesis is not able to generate any of the '
+			msg+= 'sequence in the training set.'
+			raise ValueError(msg)
+		
 		num = array([i[1] for i in temp]).sum(axis=0)
 		lst_proba=array([i[2] for i in temp])
 		lst_times=array([i[3] for i in temp])

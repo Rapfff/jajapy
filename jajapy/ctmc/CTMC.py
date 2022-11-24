@@ -6,7 +6,7 @@ from ..mc.MC import MC
 from ..base.Model import Model
 from math import exp, log
 from random import randint
-from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis
+from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from random import choices
@@ -418,7 +418,7 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	
 	labeling.append("init")
 	if random_initial_state:
-		matrix.append(randomProbabilities(nb_states)+[0.0])
+		matrix.append(append(randomProbabilities(nb_states),0.0))
 	else:
 		matrix.append([1.0]+[0.0 for i in range(nb_states)])
 	
