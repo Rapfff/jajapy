@@ -222,6 +222,22 @@ class MC(Model):
 				res += "s"+str(state)+" -> s"+str(j)+" : "+str(self.matrix[state][j])+'\n'
 		return res
 
+	def toStormpy(self):
+		"""
+		Returns the equivalent stormpy sparse model.
+		The output object will be a stormpy.SparseDtmc.
+
+		Returns
+		-------
+		stormpy.SparseDtmc
+			The same model in stormpy format.
+		"""
+		try:
+			from ..with_stormpy import jajapyModeltoStormpy
+			return jajapyModeltoStormpy(self)
+		except ModuleNotFoundError:
+			raise RuntimeError("Stormpy is not installed on this machine.")
+
 def loadMC(file_path: str) -> MC:
 	"""
 	Load an MC saved into a text file.

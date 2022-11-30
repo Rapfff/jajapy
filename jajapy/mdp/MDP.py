@@ -343,6 +343,21 @@ class MDP(Model):
 					res += "s"+str(state)+" - ("+a+") -> s"+str(s)+" : "+str(self.matrix[state][ai][s])+'\n'
 		return res
 	
+	def toStormpy(self):
+		"""
+		Returns the equivalent stormpy sparse model.
+		The output object will be a stormpy.SparseMdp.
+
+		Returns
+		-------
+		stormpy.SparseMdp
+			The same model in stormpy format.
+		"""
+		try:
+			from ..with_stormpy import jajapyModeltoStormpy
+			return jajapyModeltoStormpy(self)
+		except ModuleNotFoundError:
+			raise RuntimeError("Stormpy is not installed on this machine.")
 
 	def _logLikelihood_oneproc(self,sequences: Set) -> float:
 		"""

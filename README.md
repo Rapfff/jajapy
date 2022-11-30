@@ -32,7 +32,7 @@
 
 </div>
 
-`jajapy` generates by default Stormpy models (except for GoHMM and MGoHMM).
+`jajapy` generates by default Stormpy models (except for HMMs, GoHMMs and MGoHMMs).
 
 ## Installation
 ``pip install jajapy``

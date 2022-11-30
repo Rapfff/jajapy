@@ -1,7 +1,7 @@
 from .CTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log, inf, newaxis
+from numpy import array, zeros, dot, append, ones, log, inf, newaxis, full
 
 
 class BW_CTMC(BW):
@@ -150,7 +150,8 @@ class BW_CTMC(BW):
 			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
 			max_exit_rate_time: int=10.0, self_loop: bool = True,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
-			verbose: bool = True, return_data: bool = False, stormpy_output: bool = True):
+			verbose: bool = True, return_data: bool = False, stormpy_output: bool = True,
+			fixed_parameters: ndarray = False) -> CTMC:
 		"""
 		Fits the model according to ``traces``.
 
@@ -204,6 +205,12 @@ class BW_CTMC(BW):
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
+		fixed_parameters: ndarray of bool, optional
+			ndarray of bool with the same shape as the transition matrix (i.e
+			nb_states x nb_states). If `fixed_parameters[s1,s2] == True`, the
+			transition parameter from s1 to s2 will not be changed during the
+			learning (it's a fixed parameter).
+			By default no parameters will be fixed.
 
 		Returns
 		-------
@@ -234,6 +241,11 @@ class BW_CTMC(BW):
 										alphabet,
 										min_exit_rate_time, max_exit_rate_time,
 										self_loop, random_initial_state)
+		if type(fixed_parameters) == bool:
+			self.fixed_parameters = full(initial_model.matrix.shape,False)
+		else:
+			self.fixed_parameters = fixed_parameters
+
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 
@@ -281,11 +293,14 @@ class BW_CTMC(BW):
 		num = zeros(shape=(self.nb_states,self.nb_states))	
 		for s in range(self.nb_states):
 			for ss in range(self.nb_states):
-				if timed:
-					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				if not self.fixed_parameters[s,ss]:
+					if timed:
+						p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+					else:
+						p = array([self.h_l(s,ss,o) for o in obs_seq])
+					num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 				else:
-					p = array([self.h_l(s,ss,o) for o in obs_seq])
-				num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+					num[s,ss] = 0.0
 		####################
 		return [den, num, proba_seq, times]
 
@@ -303,5 +318,5 @@ class BW_CTMC(BW):
 				num[s] = self.h.matrix[s]
 
 		matrix = num/den[:, newaxis]
+		matrix = self.h.matrix*self.fixed_parameters + matrix
 		return [CTMC(matrix,self.h.labeling),currentloglikelihood]
-		

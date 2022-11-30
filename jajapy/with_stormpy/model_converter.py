@@ -1,9 +1,11 @@
 import stormpy as st
-from numpy import zeros, array, newaxis, reshape
+from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, newaxis
 from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
 from copy import deepcopy
+from io import StringIO
+from contextlib import redirect_stderr
 
 def stormpyModeltoJajapy(h,actions_name:list = []):
 	"""
@@ -51,14 +53,20 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	else:
 		matrix = zeros((len(h.states),len(h.states)))
 
+
+	add_init_state = None
 	for si,s in enumerate(h.states):
 		c = si
-		if len(s.labels)>1:
-			raise ValueError('Each state can be labelled with at most one observation.')
-		elif len(s.labels) == 0:
+		if len(s.labels) == 0:
 			labeling[si] = "empty"
+		elif 'init' in s.labels and len(s.labels) > 1:
+			temp = list(s.labels)
+			temp.remove("init")
+			labeling.append("init")
+			labeling[si] = ','.join(list(temp))
+			add_init_state = c
 		else:
-			labeling[si] = list(s.labels)[0]
+			labeling[si] = ','.join(list(s.labels))
 
 		for a in s.actions:
 			for t in a.transitions:
@@ -67,8 +75,15 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 					matrix[c][int(str(a))][dest] = t.value()
 				else:
 					matrix[c][dest] = t.value()
-		if ty == 1:
-			matrix[c] *= h.exit_rates[si]
+		#if ty == 1:
+		#	matrix[c] *= h.exit_rates[si]
+	
+	if add_init_state != None:
+		matrix = vstack((matrix,matrix[add_init_state]))
+		if ty == 2:
+			matrix = concatenate((matrix,zeros((matrix.shape[0],matrix.shape[1],1))),axis=2)
+		else:
+			matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
 	
 	if ty == 0:
 		return MC(matrix, labeling)
@@ -112,6 +127,20 @@ def _buildStateLabeling(h):
 	return state_labeling
 
 def MDPtoStormpy(h):
+	"""
+	Given a jajapy.MDP, it returns the equivalent stormpy sparse model.
+	The output object will be a stormpy.SparseMdp.
+
+	Parameters
+	----------
+	h : jajapy.MDP
+		The model to convert.
+
+	Returns
+	-------
+	stormpy.SparseMdp
+		The same model in stormpy format.
+	"""
 	state_labeling = _buildStateLabeling(h)
 	nb_actions = len(h.getActions())
 	transition_matrix = h.matrix
@@ -132,6 +161,20 @@ def MDPtoStormpy(h):
 	return mdp
 
 def MCtoStormpy(h):
+	"""
+	Given a jajapy.MC, it returns the equivalent stormpy sparse model.
+	The output object will be a stormpy.SparseDtmc.
+
+	Parameters
+	----------
+	h : jajapy.MC
+		The model to convert.
+
+	Returns
+	-------
+	stormpy.SparseDtmc
+		The same model in stormpy format.
+	"""
 	state_labeling = _buildStateLabeling(h)
 	transition_matrix = h.matrix
 	transition_matrix =  st.build_sparse_matrix(transition_matrix)
@@ -141,6 +184,20 @@ def MCtoStormpy(h):
 	return mc
 
 def CTMCtoStormpy(h):
+	"""
+	Given a jajapy.CTMC, it returns the equivalent stormpy sparse model.
+	The output object will be a stormpy.SparseCtmc.
+
+	Parameters
+	----------
+	h : jajapy.CTMC
+		The model to convert.
+
+	Returns
+	-------
+	stormpy.SparseCtmc
+		The same model in stormpy format.
+	"""
 	state_labeling = _buildStateLabeling(h)
 	transition_matrix = deepcopy(h.matrix)
 	e = array([h.e(s) for s in range(h.nb_states)])
@@ -152,3 +209,28 @@ def CTMCtoStormpy(h):
 	components.exit_rates = e
 	ctmc = st.storage.SparseCtmc(components)
 	return ctmc
+
+def loadPrism(path: str):
+	"""
+	Load the model described in file `path` under Prism format.
+	Remark: this function uses the stormpy parser for Prism file.
+
+	Parameters
+	----------
+	path : str
+		Path to the Prism model to load.
+
+	Returns
+	-------
+	jajapy.MC or jajapy.CTMC or jajapy.MDP
+		A jajapy model equivalent to the model described in `path`.
+	"""
+	text_trap = StringIO()
+	with redirect_stderr(text_trap):
+		try:
+			prism_program = st.parse_prism_program(path,False)
+		except RuntimeError:
+			prism_program = st.parse_prism_program(path,True)
+	stormpy_model = st.build_model(prism_program)	
+	jajapy_model = stormpyModeltoJajapy(stormpy_model)
+	return jajapy_model

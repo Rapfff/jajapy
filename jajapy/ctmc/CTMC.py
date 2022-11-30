@@ -300,6 +300,23 @@ class CTMC(Model):
 
 		return MC(new_matrix,self.labeling,name)
 
+	def toStormpy(self):
+		"""
+		Returns the equivalent stormpy sparse model.
+		The output object will be a stormpy.SparseCtmc.
+
+		Returns
+		-------
+		stormpy.SparseCtmc
+			The same model in stormpy format.
+		"""
+		try:
+			from ..with_stormpy import jajapyModeltoStormpy
+			return jajapyModeltoStormpy(self)
+		except ModuleNotFoundError:
+			raise RuntimeError("Stormpy is not installed on this machine.")
+
+
 	def save(self,file_path:str):
 		"""Save the model into a text file.
 
