@@ -6,7 +6,7 @@ from ..mc.MC import MC
 from ..base.Model import Model
 from math import exp, log
 from random import randint
-from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append
+from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, full
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from random import choices
@@ -15,7 +15,9 @@ class CTMC(Model):
 	"""
 	Class representing a CTMC.
 	"""
-	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_CTMC") -> None:
+	def __init__(self, matrix: ndarray, labeling: list,
+				 name: str ="unknown_CTMC",
+				 synchronous_transitions: list =[]) -> None:
 		"""
 		Creates an CTMC.
 
@@ -37,9 +39,14 @@ class CTMC(Model):
 		name : str, optional
 			Name of the model.
 			Default is "unknow_CTMC"
+		synchronous_transitions: list, optional.
+			This is useful only for synchronously composing this CTMC with
+			another one.
+			List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
 		"""
 		self.alphabet = list(set(labeling))
 		self.labeling = labeling
+		self.synchronous_transitions = synchronous_transitions
 
 		if not 'init' in self.labeling:
 			msg = "No initial state given: at least one"
@@ -51,8 +58,9 @@ class CTMC(Model):
 		if len(labeling) != self.nb_states:
 			raise ValueError("The length of labeling is not equal to the number of states")
 		for s in range(self.nb_states):
-			if self.e(s) == 0.0:
-				raise ValueError("State "+str(s)+" doesn't have any leaving transition.")
+			synchronous_transitions_source = [i[0] for i in synchronous_transitions]
+			if self.e(s) == 0.0 and s not in synchronous_transitions_source:
+				print("WARNING: State "+str(s)+" doesn't have any leaving transition.")
 
 	def e(self,s: int) -> float:
 		"""
@@ -442,7 +450,8 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	matrix = array(matrix)
 	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
 
-def createCTMC(transitions: list, labeling: list, initial_state, name: str ="unknown_CTMC") -> CTMC:
+def createCTMC(transitions: list, labeling: list, initial_state,
+			   name: str ="unknown_CTMC",synchronous_transitions: list =[]) -> CTMC:
 	"""
 	An user-friendly way to create a CTMC.
 
@@ -486,7 +495,9 @@ def createCTMC(transitions: list, labeling: list, initial_state, name: str ="unk
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 	
-	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
+	states = [i[0] for i in transitions]+[i[1] for i in transitions]
+	states +=[i[0] for i in synchronous_transitions]+[i[2] for i in synchronous_transitions]
+	states = list(set(states))
 	states.sort()
 	nb_states = len(states)
 	
@@ -507,6 +518,99 @@ def createCTMC(transitions: list, labeling: list, initial_state, name: str ="unk
 	else:
 		if type(initial_state) == ndarray:
 			initial_state = initial_state.tolist()
-		res[-1] = array(initial_state+[0.0])
+		res[-1] = array(initial_state+[1.0])
+		for i in range(len(res[-1])):
+			if res[-1][i] != 0.0:
+				res[-1][i] = 1.0 - res[-1][i]
+	return CTMC(res, labeling, name,synchronous_transitions)
 
-	return CTMC(res, labeling, name)
+
+def synchronousComposition(m1: CTMC, m2: CTMC) -> CTMC:
+	"""
+	Returns the synchornous compotision of `m1` and `m2`.
+
+	Parameters
+	----------
+	m1 : CTMC
+		First CTMC to compose with.
+	m2 : CTMC
+		Second CTMC to compose with.
+
+	Returns
+	-------
+	CTMC
+		Synchronous composition of `m1` and `m2`.
+	"""
+	m1_init = [i for i,li in enumerate(m1.labeling) if li == 'init']
+	m2_init = [i for i,li in enumerate(m2.labeling) if li == 'init']
+
+	m1_nb_states = m1.nb_states - len(m1_init)
+	m2_nb_states = m2.nb_states - len(m2_init)
+	nb_states = m1_nb_states * m2_nb_states
+	
+	m1_sids = [i-m1.labeling[:i].count("init") for i,li in enumerate(m1.labeling) if li != 'init']
+	m2_sids = [i-m1.labeling[:i].count("init") for i,li in enumerate(m2.labeling) if li != 'init']
+	
+	labeling = []
+	a1 = [i[1] for i in m1.synchronous_transitions]
+	a2 = [i[1] for i in m2.synchronous_transitions]
+	actions = list(set(a1+a2))
+
+	m1_sync_trans = zeros((m1_nb_states,len(actions),nb_states))
+	for s,a,d,p in m1.synchronous_transitions:
+		d = m1_sids.index(d)
+		m1_sync_trans[m1_sids.index(s)][actions.index(a)][d*m2_nb_states:(d+1)*m2_nb_states] = full(m2_nb_states,p)
+	m2_sync_trans = zeros((m2_nb_states,len(actions), nb_states))
+	for s,a,d,p in m2.synchronous_transitions:
+		d = m2_sids.index(d)
+		m2_sync_trans[m1_sids.index(s)][actions.index(a)][d*m1_nb_states:(d+1)*m1_nb_states] = full(m1_nb_states,p)
+	for s in range(m2_nb_states):
+		for a in range(len(actions)):
+			m2_sync_trans[s][a] = m2_sync_trans[s][a].reshape(m2_nb_states,m1_nb_states).T.flatten()
+
+	matrix = zeros((nb_states,nb_states))
+
+	for ns1,s1 in enumerate(m1_sids):
+		for ns2,s2 in enumerate(m2_sids):
+			labeling.append(m1.labeling[s1]+','+m2.labeling[s2])
+			tmp = zeros((m1_nb_states,m2_nb_states))
+			tmp[ns1] = array([m2.matrix[s2][i] for i in m2_sids]) # transitions m2
+			tmp.T[ns2] = array([m1.matrix[s1][i] for i in m1_sids]) # transitions m1
+			tmp[ns1][ns2] = m1.matrix[s1][s1] * m2.matrix[s2][s2] # self loop: m1 & m2
+
+			source = ns1*m2_nb_states + ns2
+			matrix[source] = tmp.flatten()
+			for a in range(len(actions)):
+				for i in range(len(m1_sync_trans[s1][a])):
+					tmp = m1_sync_trans[s1][a][i]*m2_sync_trans[s2][a][i]
+					if tmp*matrix[source][i] > 0.0:
+						matrix[source][i] *= tmp
+					else:
+						matrix[source][i] += tmp
+	
+	labeling.append('init')
+	matrix = vstack((matrix,zeros(nb_states)))
+	matrix = hstack((matrix,zeros(nb_states+1)[:,newaxis]))
+
+
+	m1_init_trans = zeros(m1_nb_states)
+	for i in m1_init:
+		tmp = [m1.matrix[i][j] for j in m1_sids]
+		for j in range(m1_nb_states):
+			if m1_init_trans[j]*tmp[j]>0.0:
+				m1_init_trans[j] *= tmp[j]
+			else:
+				m1_init_trans[j] += tmp[j]
+	m2_init_trans = zeros(m2_nb_states)
+	for i in m2_init:
+		tmp = [m2.matrix[i][j] for j in m2_sids]
+		for j in range(m2_nb_states):
+			if m2_init_trans[j]*tmp[j]>0.0:
+				m2_init_trans[j] *= tmp[j]
+			else:
+				m2_init_trans[j] += tmp[j]
+	for i,si in enumerate(m1_init_trans):
+		for j,sj in enumerate(m2_init_trans):
+			matrix[-1][i*m2_nb_states+j] = si*sj
+
+	return CTMC(matrix, labeling)

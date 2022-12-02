@@ -13,6 +13,21 @@ def modelCTMC1():
 
 	return createCTMC(transitions,labeling,0,"My_CTMC")
 
+def modelCTMC_car_tl():
+	labeling = ['red','green','orange']
+	transitions = [(2,0,2.0)]
+	sync_trans = [(0,'ped_red',1,0.5),
+				  (1,'button',2,1.0)]
+	return createCTMC(transitions,labeling,[0.6,0.4,0.0],"Car_tl",sync_trans)
+
+def modelCTMC_ped_tl():
+	labeling = ['red','green']
+	transitions = [(1,0,0.1)]
+	sync_trans = [(0,'button',1,0.5),
+				  (0,'ped_red',0,10.0)]
+	return createCTMC(transitions,labeling,0,"Pedestrian_tl",sync_trans)
+
+
 m1 = modelCTMC1()
 
 class CTMCTestclass(unittest.TestCase):
@@ -107,6 +122,10 @@ class CTMCTestclass(unittest.TestCase):
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
 	
+	def test_sync_composition(var):
+		output_gotten = synchronousComposition(modelCTMC_car_tl(),modelCTMC_ped_tl())
+		output_expected = loadCTMC("jajapy/tests/materials/ctmc/composition.txt")
+		var.assertEqual(str(output_expected),str(output_gotten))
 
 if __name__ == "__main__":
 	unittest.main()
