@@ -32,7 +32,7 @@ m1 = modelCTMC1()
 
 class CTMCTestclass(unittest.TestCase):
 	
-	def test_MC_initial_state(var):
+	def test_CTMC_initial_state(var):
 		labeling = ['red','red','yellow','blue','blue']
 		transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
 				   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),

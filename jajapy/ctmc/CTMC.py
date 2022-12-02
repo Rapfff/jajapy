@@ -3,15 +3,14 @@ from ast import literal_eval
 from ..base.tools import resolveRandom, randomProbabilities
 from ..base.Set import Set
 from ..mc.MC import MC
-from ..base.Model import Model
+from ..base.Base_MC import *
 from math import exp, log
 from random import randint
 from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, full
 from sys import platform
 from multiprocessing import cpu_count, Pool
-from random import choices
 
-class CTMC(Model):
+class CTMC(Base_MC):
 	"""
 	Class representing a CTMC.
 	"""
@@ -32,10 +31,6 @@ class CTMC(Model):
 			A list of N observations (with N the nb of states).
 			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
-		initial_state : int or list of float
-			Determine which state is the initial one (then it's the id of the
-			state), or what are the probability to start in each state (then it's
-			a list of probabilities).
 		name : str, optional
 			Name of the model.
 			Default is "unknow_CTMC"
@@ -43,20 +38,11 @@ class CTMC(Model):
 			This is useful only for synchronously composing this CTMC with
 			another one.
 			List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
+			Default is an empty list.
 		"""
-		self.alphabet = list(set(labeling))
-		self.labeling = labeling
 		self.synchronous_transitions = synchronous_transitions
 
-		if not 'init' in self.labeling:
-			msg = "No initial state given: at least one"
-			msg += " state should be labelled by 'init'."
-			raise ValueError(msg)
-		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
-
-		super().__init__(matrix,initial_state,name)
-		if len(labeling) != self.nb_states:
-			raise ValueError("The length of labeling is not equal to the number of states")
+		super().__init__(matrix,labeling,name)
 		for s in range(self.nb_states):
 			synchronous_transitions_source = [i[0] for i in synchronous_transitions]
 			if self.e(s) == 0.0 and s not in synchronous_transitions_source:
@@ -159,44 +145,6 @@ class CTMC(Model):
 			expected waiting time in this state.
 		"""
 		return 1/self.e(s)
-
-	def getLabel(self,state: int) -> str:
-		"""
-		Returns the label of `state`.
-
-		Parameters
-		----------
-		state : int
-			a state ID
-
-		Returns
-		-------
-		str
-			a label
-
-		Example
-		-------
-		>>> model.getLabel(2)
-		'Label-of-state-2'
-		"""
-		self._checkStateIndex(state)
-		return self.labeling[state]
-	
-	def getAlphabet(self) -> list:
-		"""
-		Returns the alphabet of this model.
-
-		Returns
-		-------
-		list of str
-			The alphabet of this model
-		
-		Example
-		-------
-		>>> model.getAlphabet()
-		['a','b','c','d','done']
-		"""
-		return self.alphabet
 
 	def _stateToString(self,state:int) -> str:
 		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
@@ -308,24 +256,7 @@ class CTMC(Model):
 
 		return MC(new_matrix,self.labeling,name)
 
-	def toStormpy(self):
-		"""
-		Returns the equivalent stormpy sparse model.
-		The output object will be a stormpy.SparseCtmc.
-
-		Returns
-		-------
-		stormpy.SparseCtmc
-			The same model in stormpy format.
-		"""
-		try:
-			from ..with_stormpy import jajapyModeltoStormpy
-			return jajapyModeltoStormpy(self)
-		except ModuleNotFoundError:
-			raise RuntimeError("Stormpy is not installed on this machine.")
-
-
-	def save(self,file_path:str):
+	def save(self,file_path:str) -> None:
 		"""Save the model into a text file.
 
 		Parameters
@@ -339,8 +270,6 @@ class CTMC(Model):
 		"""
 		f = open(file_path, 'w')
 		f.write("CTMC\n")
-		f.write(str(self.labeling))
-		f.write('\n')
 		super()._save(f)
 
 def loadCTMC(file_path: str) -> MC:
@@ -417,18 +346,6 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	s2 -> s0 : lambda = 0.2
 	s2 -> s1 : lambda = 0.8
 	"""
-	if nb_states < len(alphabet):
-		print("WARNING: the size of the alphabet is higher than the",end=" ")
-		print("number of states. Some labels will not be assigned to",end=" ")
-		print("any states.")
-	
-	if 'init' in alphabet:
-		msg =  "The label 'init' cannot be used: it is reserved for initial states."
-		raise SyntaxError(msg)
-
-	
-	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
-	
 	matrix = []
 	for i in range(nb_states):
 		if self_loop:
@@ -440,14 +357,14 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 		av_waiting_time = randint(min_exit_rate_time,max_exit_rate_time)
 		p = random_probs/av_waiting_time
 		matrix.append(p)
-	
-	labeling.append("init")
+
 	if random_initial_state:
 		matrix.append(append(randomProbabilities(nb_states),0.0))
 	else:
-		matrix.append([1.0]+[0.0 for i in range(nb_states)])
-	
+		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
 	matrix = array(matrix)
+
+	labeling = labelsForRandomModel(nb_states,labeling)
 	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
 
 def createCTMC(transitions: list, labeling: list, initial_state,
@@ -518,10 +435,7 @@ def createCTMC(transitions: list, labeling: list, initial_state,
 	else:
 		if type(initial_state) == ndarray:
 			initial_state = initial_state.tolist()
-		res[-1] = array(initial_state+[1.0])
-		for i in range(len(res[-1])):
-			if res[-1][i] != 0.0:
-				res[-1][i] = 1.0 - res[-1][i]
+		res[-1] = array(initial_state+[0.0])
 	return CTMC(res, labeling, name,synchronous_transitions)
 
 

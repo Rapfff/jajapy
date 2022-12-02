@@ -1,10 +1,9 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
-from ..base.Model import Model
+from ..base.Base_MC import *
 from ast import literal_eval
 from numpy import ndarray, array, zeros, vstack, hstack, newaxis, append
-from random import choices
 
-class MC(Model):
+class MC(Base_MC):
 	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
@@ -22,63 +21,14 @@ class MC(Model):
 		name : str, optional
 			Name of the model.
 			Default is "unknow_MC"
-		"""
-		self.labeling = labeling
-		self.alphabet = list(set(labeling))
-		
-		if not 'init' in self.labeling:
-			msg = "No initial state given: at least one"
-			msg += " state should be labelled by 'init'."
-			raise ValueError(msg)
-		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
-
-		super().__init__(matrix,initial_state,name)
-		if len(self.labeling) != self.nb_states:
-			raise ValueError("The length of labeling ("+str(len(labeling))+") is not equal to the number of states("+str(self.nb_states)+")")
+		"""	
+		super().__init__(matrix,labeling,name)
 		for i in range(self.nb_states):
 			if not checkProbabilities(matrix[i]):
 				msg = "The probability to take a transition from state "
 				msg+= str(i)+" should be 1.0, here it's "+str(matrix[i].sum())
 				raise ValueError(msg)
-	
-	def getLabel(self,state: int) -> str:
-		"""
-		Returns the label of `state`.
-
-		Parameters
-		----------
-		state : int
-			a state ID
-
-		Returns
-		-------
-		str
-			a label
-
-		Example
-		-------
-		>>> model.getLabel(2)
-		'Label-of-state-2'
-		"""
-		self._checkStateIndex(state)
-		return self.labeling[state]
-	
-	def getAlphabet(self) -> list:
-		"""
-		Returns the alphabet of this model.
-
-		Returns
-		-------
-		list of str
-			The alphabet of this model
-		
-		Example
-		-------
-		>>> model.getAlphabet()
-		['a','b','c','d','done']
-		"""
-		return self.alphabet
-		
+			
 	def tau(self,s1: int, s2: int, obs: str) -> float:
 		"""
 		Returns the probability of moving from state `s1` to `s2` seeing label `obs`.
@@ -197,7 +147,7 @@ class MC(Model):
 		output.append(self.labeling[current])
 		return output
 
-	def save(self, file_path:str):
+	def save(self, file_path:str) -> None:
 		"""Save the model into a text file.
 
 		Parameters
@@ -211,8 +161,6 @@ class MC(Model):
 		"""
 		f = open(file_path, 'w')
 		f.write("MC\n")
-		f.write(str(self.labeling))
-		f.write('\n')
 		super()._save(f)
 
 	def _stateToString(self,state:int) -> str:
@@ -221,22 +169,6 @@ class MC(Model):
 			if self.matrix[state][j] > 0.0001:
 				res += "s"+str(state)+" -> s"+str(j)+" : "+str(self.matrix[state][j])+'\n'
 		return res
-
-	def toStormpy(self):
-		"""
-		Returns the equivalent stormpy sparse model.
-		The output object will be a stormpy.SparseDtmc.
-
-		Returns
-		-------
-		stormpy.SparseDtmc
-			The same model in stormpy format.
-		"""
-		try:
-			from ..with_stormpy import jajapyModeltoStormpy
-			return jajapyModeltoStormpy(self)
-		except ModuleNotFoundError:
-			raise RuntimeError("Stormpy is not installed on this machine.")
 
 def loadMC(file_path: str) -> MC:
 	"""
@@ -269,7 +201,7 @@ def loadMC(file_path: str) -> MC:
 	f.close()
 	return MC(matrix, labeling, name)
 
-def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=True) -> MC:
+def MC_random(nb_states: int, labeling: list, random_initial_state: bool=True) -> MC:
 	"""
 	Generate a random MC.
 
@@ -277,7 +209,7 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=True) -
 	----------
 	number_states : int
 		Number of states.
-	alphabet : list of str
+	labeling : list of str
 		List of observations.
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability,
@@ -304,26 +236,16 @@ def MC_random(nb_states: int, alphabet: list, random_initial_state: bool=True) -
 	----STATE 2--init----
 	s2 -> s0 : 1.0
 	"""
-	if 'init' in alphabet:
-		msg =  "The label 'init' cannot be used: it is reserved for initial states."
-		raise SyntaxError(msg)
-
-	if nb_states < len(alphabet):
-		print("WARNING: the size of the alphabet is higher than the",end=" ")
-		print("number of states. Some labels will not be assigned to",end=" ")
-		print("any states.")
-	
-	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
 	matrix = []
 	for _ in range(nb_states):
 		matrix.append(append(randomProbabilities(nb_states),0.0))
 
-	labeling.append("init")
 	if random_initial_state:
 		matrix.append(append(randomProbabilities(nb_states),0.0))
 	else:
 		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
 	matrix = array(matrix)
+	labeling = labelsForRandomModel(nb_states,labeling)
 	return MC(matrix, labeling,"MC_random_"+str(nb_states)+"_states")
 
 def createMC(transitions: list, labeling: list, initial_state, name: str ="unknown_MC") -> MC:

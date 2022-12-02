@@ -1,6 +1,6 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from math import log
-from ..base.Model import Model
+from ..base.Base_MC import *
 from ..base.Set import Set
 from .Scheduler import Scheduler
 from numpy.random import geometric
@@ -9,7 +9,7 @@ from ast import literal_eval
 from multiprocessing import cpu_count, Pool
 from random import choices
 
-class MDP(Model):
+class MDP(Base_MC):
 	"""
 	Class representing a MDP.
 	"""
@@ -36,18 +36,7 @@ class MDP(Model):
 		"""
 		self.actions = actions
 		self.nb_actions = len(self.actions)
-		self.labeling = labeling
-		self.alphabet = list(set(labeling))
-
-		if not 'init' in self.labeling:
-			msg = "No initial state given: at least one"
-			msg += " state should be labelled by 'init'."
-			raise ValueError(msg)
-		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
-
-		super().__init__(matrix,initial_state,name)
-		if len(labeling) != self.nb_states:
-			raise ValueError("The length of labeling is not equal to the number of states")
+		super().__init__(matrix,labeling,name)
 		for i in range(self.nb_states):
 			for a in range(self.nb_actions):
 				if not checkProbabilities(matrix[i][a]):
@@ -82,44 +71,6 @@ class MDP(Model):
 			return self.actions
 		else:
 			return list(set(self.actions[i] for i in where(self.matrix[state].sum(axis=1) > 0.0)[0]))
-
-	def getAlphabet(self) -> list:
-		"""
-		Returns the alphabet of this model.
-
-		Returns
-		-------
-		list of str
-			The alphabet of this model
-		
-		Example
-		-------
-		>>> model.getAlphabet()
-		['a','b','c','d','done']
-		"""
-		return self.alphabet
-	
-	def getLabel(self,state: int) -> str:
-		"""
-		Returns the label of `state`.
-
-		Parameters
-		----------
-		state : int
-			a state ID
-
-		Returns
-		-------
-		str
-			a label
-
-		Example
-		-------
-		>>> model.getLabel(2)
-		'Label-of-state-2'
-		"""
-		self._checkStateIndex(state)
-		return self.labeling[state]
 
 
 	def tau(self,s1: int,action: str,s2: int,obs: str) -> float:
@@ -191,7 +142,6 @@ class MDP(Model):
 		self._checkStateIndex(s2)
 		return self.matrix[s1][self.actions.index(action)][s2]
 	
-
 	def next(self,state: int, action: str) -> tuple:
 		"""
 		Return a state-observation pair according to the distributions 
@@ -231,7 +181,7 @@ class MDP(Model):
 		c = resolveRandom(self.matrix[state][self.actions.index(action)])
 		return (c, self.labeling[state])
 			
-	def run(self,number_steps: int,scheduler: Scheduler) -> list:
+	def run(self,number_steps: int,scheduler: Scheduler, current: int = -1) -> list:
 		"""
 		Simulates a run of length ``number_steps`` of the model under
 		``scheduler`` and returns the sequence of actions-observations generated.
@@ -240,6 +190,9 @@ class MDP(Model):
 		----------
 		number_steps: int
 			length of the simulation.
+		current : int, optional.
+			If current it set, it starts from the state `current`.
+			Otherwise it starts from an initial state.
 
 		Returns
 		-------
@@ -247,7 +200,8 @@ class MDP(Model):
 			List of alterning state-observation.
 		"""
 		res = []
-		current = resolveRandom(self.initial_state)
+		if current == -1:
+			current = resolveRandom(self.initial_state)
 		scheduler.reset()
 		current_len = 0
 		while current_len < number_steps:
@@ -315,7 +269,7 @@ class MDP(Model):
 
 		return Set(seq,val,t=1)
 	
-	def save(self,file_path:str):
+	def save(self,file_path:str) -> None:
 		"""Save the model into a text file.
 
 		Parameters
@@ -329,8 +283,6 @@ class MDP(Model):
 		"""
 		f = open(file_path, 'w')
 		f.write("MDP\n")
-		f.write(str(self.labeling))
-		f.write('\n')
 		f.write(str(self.actions))
 		f.write('\n')
 		super()._save(f)
@@ -343,22 +295,6 @@ class MDP(Model):
 					res += "s"+str(state)+" - ("+a+") -> s"+str(s)+" : "+str(self.matrix[state][ai][s])+'\n'
 		return res
 	
-	def toStormpy(self):
-		"""
-		Returns the equivalent stormpy sparse model.
-		The output object will be a stormpy.SparseMdp.
-
-		Returns
-		-------
-		stormpy.SparseMdp
-			The same model in stormpy format.
-		"""
-		try:
-			from ..with_stormpy import jajapyModeltoStormpy
-			return jajapyModeltoStormpy(self)
-		except ModuleNotFoundError:
-			raise RuntimeError("Stormpy is not installed on this machine.")
-
 	def _logLikelihood_oneproc(self,sequences: Set) -> float:
 		"""
 		Compute the average loglikelihood of a set of sequences.
@@ -503,8 +439,8 @@ def loadMDP(file_path: str) -> MDP:
 	if l != "MDP":
 		msg = " this file doesn't describe an MC: it describes a "+l
 		raise ValueError(msg)
-	labeling = literal_eval(f.readline()[:-1])
 	actions = literal_eval(f.readline()[:-1])
+	labeling = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
 	matrix = literal_eval(f.readline()[:-1])
@@ -513,7 +449,7 @@ def loadMDP(file_path: str) -> MDP:
 	return MDP(matrix, labeling, actions, name)
 
 
-def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state: bool = True, deterministic: bool = False) -> MDP:
+def MDP_random(nb_states: int,labeling: list, actions: list,random_initial_state: bool = True, deterministic: bool = False) -> MDP:
 	"""
 	Generate a random MDP.
 
@@ -521,7 +457,7 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 	----------
 	number_states : int
 		Number of states.
-	alphabet : list of str
+	labeling : list of str
 		List of observations.
 	actions : list of str
 		List of actions.	
@@ -537,17 +473,7 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 	MDP
 		A pseudo-randomly generated MDP.
 	"""
-	if 'init' in alphabet:
-		msg =  "The label 'init' cannot be used: it is reserved for initial states."
-		raise SyntaxError(msg)
-
-	if nb_states < len(alphabet):
-		print("WARNING: the size of the alphabet is geater than the",end=" ")
-		print("number of states. Some labels will not be assigned to",end=" ")
-		print("any states.")
-	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
 	alphabet = list(set(labeling))
-
 	matrix = []
 	for s in range(nb_states):
 		if not deterministic:
@@ -570,7 +496,8 @@ def MDP_random(nb_states: int,alphabet: list, actions: list,random_initial_state
 		init = [1.0]+[0.0 for i in range(nb_states)]
 	matrix.append(array([init for a in actions]))
 	matrix = array(matrix)
-	labeling.append('init')
+	
+	labeling = labelsForRandomModel(nb_states,labeling)
 	return MDP(matrix, labeling, actions, "MDP_random_"+str(nb_states)+"_states")
 
 
