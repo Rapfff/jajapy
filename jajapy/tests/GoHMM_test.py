@@ -1,25 +1,25 @@
 import unittest
-from ..mgohmm import *
+from ..gohmm import *
 from os import remove
 from ..base.Set import *
-from math import log, exp, sqrt, pi
+from math import exp, sqrt, pi
 
-def modelMGOHMM():
+def modelGoHMM():
 	nb_states = 5
-	s0 = MGOHMM_state([(0,0.9),(1,0.1)],[[3.0,5.0],[2.0,4.0]],nb_states)
-	s1 = MGOHMM_state([(0,0.05),(1,0.9),(2,0.04),(4,0.01)],[[0.5,1.5],[2.5,1.5]],nb_states)
-	s2 = MGOHMM_state([(1,0.05),(2,0.8),(3,0.14),(4,0.01)],[[0.2,0.7],[1.0,1.0]],nb_states)
-	s3 = MGOHMM_state([(2,0.05),(3,0.95)],[[0.0,0.3],[1.5,5.0]],nb_states)
-	s4 = MGOHMM_state([(1,0.1),(4,0.9)],[[2.0,4.0],[0.5,0.5]],nb_states)
+	s0 = GoHMM_state([(0,0.9),(1,0.1)],[[3.0,5.0],[2.0,4.0]],nb_states)
+	s1 = GoHMM_state([(0,0.05),(1,0.9),(2,0.04),(4,0.01)],[[0.5,1.5],[2.5,1.5]],nb_states)
+	s2 = GoHMM_state([(1,0.05),(2,0.8),(3,0.14),(4,0.01)],[[0.2,0.7],[1.0,1.0]],nb_states)
+	s3 = GoHMM_state([(2,0.05),(3,0.95)],[[0.0,0.3],[1.5,5.0]],nb_states)
+	s4 = GoHMM_state([(1,0.1),(4,0.9)],[[2.0,4.0],[0.5,0.5]],nb_states)
 	matrix = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
 	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
-	return MGOHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],name="MGOHMM")
+	return GoHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],name="GoHMM")
 
-m = modelMGOHMM()
+m = modelGoHMM()
 
-class MGOHMMTestclass(unittest.TestCase):
+class GoHMMTestclass(unittest.TestCase):
 
-	def test_MGOHMM_state(var):
+	def test_GoHMM_state(var):
 		mu = m.mu(0)
 		b = exp(-0.02)/(5.0*sqrt(2*pi))*exp(-1/32)/(4.0*sqrt(2*pi))
 		sigma = [m.output[0][i][1] for i in range(2)]
@@ -31,16 +31,16 @@ class MGOHMMTestclass(unittest.TestCase):
 		var.assertEqual(m.b(0,[4.0,3.0]),b)
 		var.assertEqual(m.tau(0,0,[4.0,3.0]),0.9*b)
 	
-	def test_MGOHMM_save_load_str(var):
+	def test_GoHMM_save_load_str(var):
 		m.save("test_save.txt")
-		mprime = loadMGOHMM("test_save.txt")
+		mprime = loadGoHMM("test_save.txt")
 		var.assertEqual(type(m),type(mprime))
-		var.assertEqual(type(m),MGOHMM)
+		var.assertEqual(type(m),GoHMM)
 		
 		var.assertEqual(str(m),str(mprime))
 		remove("test_save.txt")
 	
-	def test_MGOHMM_Set(var):
+	def test_GoHMM_Set(var):
 		set1 = m.generateSet(50,10)
 		var.assertEqual(set1.type,3)
 		set2 = m.generateSet(50,1/4,"geo",6)
@@ -51,11 +51,11 @@ class MGOHMMTestclass(unittest.TestCase):
 		var.assertTrue(set1.isEqual(set2))
 		remove("test_save.txt")
 	
-	def test_BW_MGOHMM(var):
-		initial_model   = loadMGOHMM("jajapy/tests/materials/mgohmm/random_MGOHMM.txt")
-		training_set    = loadSet("jajapy/tests/materials/mgohmm/training_set_MGOHMM.txt")
-		output_expected = loadMGOHMM("jajapy/tests/materials/mgohmm/output_MGOHMM.txt")
-		output_gotten   = BW_MGOHMM().fit( training_set, initial_model)
+	def test_BW_GoHMM(var):
+		initial_model   = loadGoHMM("jajapy/tests/materials/gohmm/random_GoHMM.txt")
+		training_set    = loadSet("jajapy/tests/materials/gohmm/training_set_GoHMM.txt")
+		output_expected = loadGoHMM("jajapy/tests/materials/gohmm/output_GoHMM.txt")
+		output_gotten   = BW_GoHMM().fit( training_set, initial_model)
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

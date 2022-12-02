@@ -1,2 +1,2 @@
-from .GOHMM import *
-from .BW_GOHMM import *
+from .GoHMM import *
+from .BW_GoHMM import *

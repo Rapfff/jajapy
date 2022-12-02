@@ -1,9 +1,9 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
-from ..base.Model import Model
+from ..base.Base_HMM import Base_HMM
 from ast import literal_eval
 from numpy import ndarray, array, where, zeros
 
-class HMM(Model):
+class HMM(Base_HMM):
 
 	def __init__(self,matrix, output, alphabet, initial_state,name="unknown_HMM"):
 		"""
@@ -14,7 +14,7 @@ class HMM(Model):
 		matrix : ndarray
 			Represents the transition matrix.
 			`matrix[s1][s2]` is the probability of moving from `s1` to `s2`.
-		output : ndarray
+		output : ndarray or list
 			Represents the output matrix.
 			`output[s1][obs]` is the probability of seeing `alphabet[obs]` in 
 			state `s1`. 
@@ -30,43 +30,11 @@ class HMM(Model):
 			Default is "unknow_MC"
 		"""
 		self.alphabet = alphabet
-		self.output = output
+		self.output = array(output)
 		super().__init__(matrix,initial_state,name)
 		for i in range(self.nb_states):
 			if not checkProbabilities(output[i]):
-				print("Error: the probability to generate an observation in state",i,"should be 1.0, here it's",output[i].sum())
-				return False
-			if not checkProbabilities(matrix[i]):
-				print("Error: the probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
-				return False
-
-	def a(self,s1: int,s2: int) -> float:
-		"""
-		Returns the probability of moving from state `s1` to state `s2`.
-		If `s1` or `s2` is not a valid state ID it returns 0.
-
-		Parameters
-		----------
-		s1 : int
-			ID of the source state.		
-		s2 : int
-			ID of the destination state.
-		
-		Returns
-		-------
-		float
-			Probability of moving from state `s1` to state `s2`.
-		
-		Examples
-		--------
-		>>> model.a(0,1)
-		0.5
-		>>> model.a(0,0)
-		0.0
-		"""
-		if s1 < 0 or s1 >= self.nb_states or s2 < 0 or s2 >= self.nb_states:
-			return 0.0 
-		return self.matrix[s1][s2]
+				raise ValueError("The probability to generate an observation in state",i,"should be 1.0, here it's",output[i].sum())
 
 	def b(self, s: int, l: str) -> float:
 		"""
@@ -120,7 +88,7 @@ class HMM(Model):
 		>>> model.tau(0,1,'x')
 		0.2
 		"""
-		return self.a(s1,s2)*self.b(s1,obs)
+		return super().tau(s1,s2,obs)
 	
 	def getAlphabet(self,state: int = -1) -> list:
 		"""
@@ -140,14 +108,11 @@ class HMM(Model):
 		if state == -1:
 			return self.alphabet
 		else:
+			self._checkStateIndex(state)
 			return [self.alphabet[i] for i in where(self.output[state] > 0.0)[0]]
 
 	def _stateToString(self, state: int) -> str:
-		res = "----STATE s"+str(state)+"----\n"
-		for j in range(len(self.matrix[state])):
-			if self.matrix[state][j] > 0.0001:
-				res += "s"+str(state)+" -> s"+str(j)+" : "+str(self.matrix[state][j])+'\n'
-		res += "************\n"
+		res = super()._stateToString(state)
 		for j in range(len(self.output[state])):
 			if self.output[state][j] > 0.0001:
 				res += "s"+str(state)+" => "+str(self.alphabet[j])+" : "+str(self.output[state][j])+'\n'
@@ -170,8 +135,6 @@ class HMM(Model):
 		f.write("HMM\n")
 		f.write(str(self.alphabet))
 		f.write('\n')
-		f.write(str(self.output.tolist()))
-		f.write('\n')
 		super()._save(f)
 
 	def next_obs(self, state: int) -> str:
@@ -185,29 +148,6 @@ class HMM(Model):
 		"""
 		c = resolveRandom(self.output[state].flatten())
 		return self.alphabet[c]
-
-	def next_state(self, state: int) -> int:
-		"""
-		Returns one state according to the distribution described by the `self.next_matrix`.
-		
-		Returns
-		-------
-		int
-			A state ID.
-		"""
-		c = resolveRandom(self.matrix[state].flatten())
-		return c
-
-	def next(self, state: int) -> list:
-		"""
-		Returns a state-observation pair according to the distributions described by `self.next_matrix` and `self.output_matrix`.
-
-		Returns
-		-------
-		[int, str]
-			A state-observation pair.
-		"""
-		return [self.next_state(state),self.next_obs(state)]
 
 
 def loadHMM(file_path: str) -> HMM:

@@ -1,21 +1,21 @@
 from numpy.random import normal
 from numpy import array, zeros, ndarray
 from ast import literal_eval
-from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
-from ..base.Model import Model
+from ..base.tools import randomProbabilities
+from ..base.Base_HMM import Base_HMM
 from math import sqrt, exp, pi
 from random import uniform
 	
-class MGOHMM(Model):
+class GoHMM(Base_HMM):
 	"""
-	Creates a MGOHMM.
+	Creates a GoHMM.
 
 	Parameters
 	----------
 	matrix : ndarray
 			Represents the transition matrix.
 			`matrix[s1][s2]` is the probability of moving from `s1` to `s2`.
-	output : ndarray of  or list
+	output : ndarray of list
 			Contains the parameters of the guassian distributions.
 			`output[s1][0][0]` is the mu parameter of the first distribution in `s1`,
 			`output[s1][0][1]` is the sigma parameter of the first distribution in `s1`.
@@ -27,46 +27,24 @@ class MGOHMM(Model):
 		a list of probabilities).
 	name : str, optional
 		Name of the model.
-		Default is "unknown_MGOHMM"
+		Default is "unknown_GoHMM"
 	"""
-	def __init__(self,matrix,output,initial_state,name="unknown_MGOHMM"):
+	def __init__(self,matrix,output,initial_state,name="unknown_GoHMM"):
 		self.nb_distributions = len(output[0])
 		for i in range(len(output)):
 			if len(output[i]) != self.nb_distributions:
 				raise ValueError("All state must have as much distributions")
 
 		self.output = array(output)
-		if min(self.output.T[1].flatten()) < 0.0:
-			raise ValueError("The sigma parameters must be positive")
-
+		try:
+			if min(self.output.T[1].flatten()) < 0.0:
+				raise ValueError("The sigma parameters must be positive")
+		except IndexError:
+			raise ValueError("All distribution must have two parameters")
+		
 		super().__init__(matrix,initial_state,name)
-		for i in range(self.nb_states):
-			if not checkProbabilities(matrix[i]):
-				raise ValueError("The probability to take a transition from state",i,"should be 1.0, here it's",matrix[i].sum())
-
 		if len(self.output.flatten()) != self.nb_distributions*self.nb_states*2:
 			raise ValueError("All distribution must have two parameters")
-
-
-	def a(self,s1: int,s2: int) -> float:
-		"""
-		Returns the probability of moving from state `s1` to state `s2`.
-
-		Parameters
-		----------
-		s1 : int
-			ID of the source state.		
-		s2 : int
-			ID of the destination state.
-		
-		Returns
-		-------
-		output : float
-			Probability of moving from state `s1` to state `s2`
-		"""
-		if s1 < 0 or s2 < 0 or s1 >= self.nb_states or s2 >= self.nb_states:
-			return 0.0
-		return self.matrix[s1][s2]
 	
 	def mu(self,s: int) -> ndarray:
 		"""
@@ -161,41 +139,6 @@ class MGOHMM(Model):
 			An observation.
 		"""
 		return [normal(parameter[0],parameter[1],1)[0] for parameter in self.output[s]]
-
-	def next_state(self, s:int) -> int:
-		"""
-		Returns one state ID at random according to the distribution described 
-		by the `self.matrix`.
-		
-		Parameters
-		----------
-		s : int
-			ID of the source state.	
-		
-		Returns
-		-------
-		output : int
-			A state ID.
-		"""
-		c = resolveRandom(self.matrix[s].flatten())
-		return c
-
-	def next(self, s:int) -> list:
-		"""
-		Returns a state-observation pair according to the distributions
-		described by `self.matrix[s]` and `self.output[s]`.
-
-		Parameters
-		----------
-		s : int
-			ID of the source state.
-
-		Returns
-		-------
-		output : [int, list of floats]
-			A state-observation pair.
-		"""
-		return [self.next_state(s),self.next_obs(s)]
 	
 	def tau(self,s1:int,s2:int,obs: list) -> float:
 		"""
@@ -217,7 +160,7 @@ class MGOHMM(Model):
 			The likelihood of generating, from from `s1`, observation `obs` 
 			while moving to state `s2`.
 		"""
-		return self.a(s1,s2)*self.b(s1,obs)
+		return super().tau(s1,s2,obs)
 
 	def save(self,file_path:str):
 		"""Save the model into a text file.
@@ -232,26 +175,20 @@ class MGOHMM(Model):
 		>>> model.save("my_model.txt")
 		"""
 		f = open(file_path, 'w')
-		f.write("MGOHMM\n")
-		f.write(str(self.output.tolist()))
-		f.write('\n')
+		f.write("GoHMM\n")
 		super()._save(f)
 
 	def _stateToString(self,state:int) -> str:
-		res = "----STATE s"+str(state)+"----\n"
-		for j in range(len(self.matrix[state])):
-			if self.matrix[state][j] > 0.0001:
-					res += "s"+str(state)+" -> s"+str(j)+" : "+str(self.matrix[state][j])+'\n'
-		res += "************\n"
+		res = super()._stateToString(state)
 		for n in range(self.nb_distributions):
 			res += "mean "+str(n+1)+": "+str(round(self.output[state][n][0],4))+'\n'
 			res += "std "+str(n+1)+": "+str(round(self.output[state][n][1],4))+'\n'
 		return res
 
 
-def loadMGOHMM(file_path: str) -> MGOHMM:
+def loadGoHMM(file_path: str) -> GoHMM:
 	"""
-	Load an MGOHMM saved into a text file.
+	Load an GoHMM saved into a text file.
 
 	Parameters
 	----------
@@ -260,13 +197,13 @@ def loadMGOHMM(file_path: str) -> MGOHMM:
 	
 	Returns
 	-------
-	output : MGOHMM
-		The MGOHMM saved in `file_path`.
+	output : GoHMM
+		The GoHMM saved in `file_path`.
 	"""
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
-	if l != "MGOHMM":
-		print("ERROR: this file doesn't describe an MGOHMM: it describes a "+l)
+	if l != "GoHMM":
+		print("ERROR: this file doesn't describe an GoHMM: it describes a "+l)
 	output = literal_eval(f.readline()[:-1])
 	output = array(output)
 	name = f.readline()[:-1]
@@ -274,14 +211,14 @@ def loadMGOHMM(file_path: str) -> MGOHMM:
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MGOHMM(matrix, output, initial_state, name)
+	return GoHMM(matrix, output, initial_state, name)
 
-def MGOHMM_random(nb_states:int,nb_distributions:int,
+def GoHMM_random(nb_states:int,nb_distributions:int,
 				  random_initial_state:bool=False,
 				  min_mu: float=0.0,max_mu: float=2.0,
-				  min_sigma: float=0.5,max_sigma: float=2.0) -> MGOHMM:
+				  min_sigma: float=0.5,max_sigma: float=2.0) -> GoHMM:
 	"""
-	Generates a random MGOHMM.
+	Generates a random GoHMM.
 
 	Parameters
 	----------
@@ -306,8 +243,8 @@ def MGOHMM_random(nb_states:int,nb_distributions:int,
 
 	Returns
 	-------
-	MGOHMM
-		A pseudo-randomly generated MGOHMM.
+	GoHMM
+		A pseudo-randomly generated GoHMM.
 	"""
 	matrix = []
 	output = []
@@ -324,13 +261,13 @@ def MGOHMM_random(nb_states:int,nb_distributions:int,
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
-	return MGOHMM(matrix, output, init,"MGOHMM_random_"+str(nb_states)+"_states")
+	return GoHMM(matrix, output, init,"GoHMM_random_"+str(nb_states)+"_states")
 
 
-def MGOHMM_state(transitions:list, output:list, nb_states:int) -> ndarray:
+def GoHMM_state(transitions:list, output:list, nb_states:int) -> ndarray:
 	"""
 	Given the list of all transition leaving a state `s`, it generates
-	the ndarray describing this state `s` in the MGOHMM.matrix.
+	the ndarray describing this state `s` in the GoHMM.matrix.
 	This method is useful while creating a model manually.
 
 	Parameters
@@ -349,7 +286,7 @@ def MGOHMM_state(transitions:list, output:list, nb_states:int) -> ndarray:
 	Returns
 	-------
 	ndarray
-		ndarray describing this state `s` in the MGOHMM.matrix.
+		ndarray describing this state `s` in the GoHMM.matrix.
 	"""
 	res = zeros(nb_states)
 	for t in transitions:

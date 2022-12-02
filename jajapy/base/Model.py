@@ -15,7 +15,7 @@ class Model:
 	"""
 	def __init__(self,matrix,initial_state,name: str) -> None:
 		"""
-		Creates a an abstract model.
+		Creates an abstract model.
 
 		Parameters
 		----------

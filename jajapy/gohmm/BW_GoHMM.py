@@ -1,21 +1,19 @@
-from .GOHMM import GOHMM, GOHMM_random
+from .GoHMM import GoHMM, GoHMM_random
 from ..base.BW import *
 from ..base.Set import Set
-from numpy import log, inf, newaxis, sqrt, stack
+from numpy import log, sqrt, inf, newaxis, stack, longdouble, isnan
 
 
-class BW_GOHMM(BW):
+class BW_GoHMM(BW):
 	"""
-	class for general Baum-Welch algorithm on GOHMM.
-	This algorithm is described here:
-	http://www.inass.org/2020/2020022920.pdf
+	class for general Baum-Welch algorithm on GoHMM.
 	"""
 	def __init__(self):
 		super().__init__()
 
-	def fit(self, traces, initial_model: GOHMM=None, nb_states: int=None,
-			random_initial_state: bool=False, output_file: str=None,
-			epsilon: float=0.01,  max_it: int= inf,
+	def fit(self, traces, initial_model: GoHMM=None, nb_states: int=None,
+			nb_distributions: int=None, random_initial_state: bool=False,
+			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool= False):
 		"""
 		Fits the model according to ``traces``.
@@ -24,15 +22,19 @@ class BW_GOHMM(BW):
 		----------
 		traces : Set or list or numpy.ndarray
 			training set.
-		initial_model : GOHMM, optional.
-			first hypothesis. If not set it will create a random GOHMM with
+		initial_model : GoHMM, optional.
+			first hypothesis. If not set it will create a random GoHMM with
 			``nb_states`` states. Should be set if ``nb_states`` is not set.
-		nb_states: int
-			If ``initial_model`` is not set it will create a random GOHMM with
+		nb_states: int, optional.
+			If ``initial_model`` is not set it will create a random GoHMM with
 			``nb_states`` states. Should be set if ``initial_model`` is not set.
 			Default is None.
+		nb_distributions: int, optional.
+			If ``initial_model`` is not set it will create a random GoHMM with
+			``nb_distributions`` distributions in each state.
+			Should be set if ``initial_model`` is not set.
 		random_initial_state: bool
-			If ``initial_model`` is not set it will create a random GOHMM with
+			If ``initial_model`` is not set it will create a random GoHMM with
 			random initial state according to this sequence of probabilities.
 			Should be set if ``initial_model`` is not set.
 			Default is False.
@@ -61,31 +63,38 @@ class BW_GOHMM(BW):
 
 		Returns
 		-------
-		GOHMM
-			fitted GOHMM.
+		GoHMM
+			fitted GoHMM.
 		"""
 		if type(traces) != Set:
-			traces = Set(traces, t=2)
+			traces = Set(traces, t=3)
 		if not initial_model:
 			if not nb_states:
 				print("Either nb_states or initial_model should be set")
 				return
-			initial_model = GOHMM_random(nb_states,random_initial_state)
+			if not nb_distributions:
+				print("Either nb_distributions or initial_model should be set")
+				return
+			initial_model = GoHMM_random(nb_states,nb_distributions,
+										  random_initial_state)
+		self.nb_distr = initial_model.nb_distributions
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose, return_data)
 
 	def _processWork(self,sequence,times):
 		sequence = array(sequence)
-		alpha_matrix = self.computeAlphas(sequence)
-		beta_matrix = self.computeBetas(sequence)
+		alpha_matrix = self.computeAlphas(sequence,longdouble)
+		if isnan(alpha_matrix).any():
+			return False
+		beta_matrix = self.computeBetas(sequence,longdouble)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
 			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)
 			num_a  = zeros(shape=(self.nb_states,self.nb_states))
-			num_mu = zeros(self.nb_states)
-			num_va = zeros(self.nb_states)
+			num_mu = zeros(shape=(self.nb_states,self.nb_distr))
+			num_va = zeros(shape=(self.nb_states,self.nb_distr))
 			for s in range(self.nb_states):
-				num_mu[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*sequence,times/proba_seq).sum()
-				num_va[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*(sequence-self.h.mu(s))**2,times/proba_seq).sum()
+				num_mu[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*sequence.T,times/proba_seq).sum(axis=1)
+				num_va[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*(sequence-self.h.mu(s)).T**2,times/proba_seq).sum(axis=1)
 				for ss in range(self.nb_states):
 					p = array([self.h_tau(s,ss,o) for o in sequence])
 					num_a[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
@@ -94,21 +103,24 @@ class BW_GOHMM(BW):
 		return False
 
 	def _generateHhat(self,temp):
-		num_a = array([i[1] for i in temp]).sum(axis=0)
-		den = array([i[0] for i in temp]).sum(axis=0)
+		a  = array([i[1] for i in temp]).sum(axis=0)
+		den= array([i[0] for i in temp]).sum(axis=0)
 		mu = array([i[2] for i in temp]).sum(axis=0)
 		va = array([i[3] for i in temp]).sum(axis=0)
 		lst_proba=array([i[4] for i in temp])
 		lst_times=array([i[5] for i in temp])
 		init =array([i[6] for i in temp]).sum(axis=0)
 
+
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		matrix = num_a/den[:, newaxis]
-		output_mu = mu/den
-		output_va = sqrt(va/den)
-		output = stack((output_mu,output_va),axis=1)
+		output_mu = (mu.T/den).T
+		output_va = sqrt((va.T/den).T)
 
+		matrix = a/den[:, newaxis]
+		output = stack((output_mu,output_va),axis=2)
+
+		
 		initial_state = [init[s]/init.sum() for s in range(self.nb_states)]
 		
-		return [GOHMM(matrix,output,initial_state),currentloglikelihood]
+		return [GoHMM(matrix,output,initial_state),currentloglikelihood]
