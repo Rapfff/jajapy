@@ -8,7 +8,7 @@ class Base_MC(Model):
 	Is inherited by MC, CTMC and MDP.
 	Should not be instantiated itself!
 	"""
-	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_MC") -> None:
+	def __init__(self, matrix: ndarray, labeling: list, name: str) -> None:
 		"""
 		Creates an abstract model for MC, CTMC and MDP.
 
@@ -76,17 +76,6 @@ class Base_MC(Model):
 		return self.alphabet
 
 	def _save(self, f) -> None:
-		"""Save the model into a text file.
-
-		Parameters
-		----------
-		file_path : str
-			path of the output file.
-		
-		Examples
-		--------
-		>>> model.save("my_model.txt")
-		"""
 		f.write(str(self.labeling))
 		f.write('\n')
 		super()._save(f)

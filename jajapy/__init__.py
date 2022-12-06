@@ -4,6 +4,7 @@ from .mc import *
 from .mdp import *
 from .ctmc import *
 from .gohmm import *
+from .pmc import *
 try:
 	from .with_stormpy import *
 except ModuleNotFoundError:
