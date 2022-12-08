@@ -405,14 +405,12 @@ def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict
 def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition") -> PCTMC:
 	"""
 	Returns the synchornous compotision of `m1` and `m2`.
-
 	Parameters
 	----------
 	m1 : PCTMC
 		First PCTMC to compose with.
 	m2 : PCTMC
 		Second PCTMC to compose with.
-
 	Returns
 	-------
 	PCTMC
@@ -444,22 +442,68 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			pass
 		return s
 
+	def get_params(string,model):
+		if model == 1:
+			m = m1
+		else:
+			m = m2
+		p = []
+		pstr = get_param_str(string,model)
+		i = 0
+		while '$' in pstr[i:]:
+			s = pstr.index('$',i)
+			i = pstr.index('$',s+1)
+			p.append(pstr[s+1:i])
+			i += 1
+		p.append(pstr)
+		return p
+
 	def get_state_index(s1,s2):
 		s2 = m2_sids.index(s2)
 		s1 = m1_sids.index(s1)
 		return s1*m2_nb_states+s2
 
-	def add_in_matrix(param,s1,s2,model):
+	def add_in_matrix(param,s1,s2,model,add_index=-1):
+		if add_index == -1:
+			add_index = param
 		if model == 1:
 			for i in m2_sids:
 				x,y = get_state_index(s1,i),get_state_index(s2,i)
 				matrix[x,y] = param
-				p_i[param].append([x,y])
+				p_i[add_index].append([x,y])
 		elif model == 2:
 			for i in m1_sids:
 				x,y = get_state_index(i,s1),get_state_index(i,s2)
 				matrix[x,y] = param
-				p_i[param].append([x,y])
+				p_i[add_index].append([x,y])
+
+	def add_unamed_param(s1,s2,model):
+		if model == 1:
+			p_str.append("$p_unamed_"+str(s1)+'_'+str(s2)+'$')
+			p_v.append(m1.transitionValue(s1,s2))
+		else:
+			p_str.append("$q_unamed_"+str(s1)+'_'+str(s2)+'$')
+			p_v.append(m1.transitionValue(s1,s2))
+		p_i.append([])
+		add_in_matrix(param=len(p_v)-1,s1=s1,s2=s2,model=model)
+
+	def add_named_parameter(s1,s2,model):
+		if model == 1:
+			m = m1
+		else:
+			m = m2
+		p = get_params(m.transitionStr(s1,s2),model)
+		pstr = p[-1]
+		p = p[:-1]
+		for k in p:
+			if not k in p_str:
+				p_str.append(k)
+				p_v.append(nan)
+			add_in_matrix(len(p_str)-1,s1,s2,model)
+		if not pstr in p_str:
+			p_str.append(pstr)
+			p_v.append(m.transitionValue(s1,s2))
+		add_in_matrix(len(p_str)-1,s1,s2,model)
 
 	for s1 in m1_sids: # labeling
 		for s2 in m2_sids:
@@ -470,34 +514,18 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			if m1.transitionValue(i,j) == 0.0:
 				add_in_matrix(param=0,s1=i,s2=j,model=1)
 			elif m1.transitionStr(i,j) != None:
-				t_str = get_param_str(m1.transitionStr(i,j),1)
-				if t_str not in p_str:
-					p_str.append(t_str)
-					p_v.append(m1.transitionValue(i,j))
-					p_i.append([])
-					add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=1)
+				add_named_parameter(i,j,1)
 			else:
-				p_str.append("$p_unamed_"+str(i)+'_'+str(j)+'$')
-				p_v.append(m1.transitionValue(i,j))
-				p_i.append([])
-				add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=1)
+				add_unamed_param(i,j,1)
 	
 	for i in m2_sids: # m2 transitions
 		for j in m2_sids:
 			if m2.transitionValue(i,j) == 0.0:
 				add_in_matrix(param=0,s1=i,s2=j,model=2)
 			elif m2.transitionStr(i,j) != None:
-				t_str = get_param_str(m1.transitionStr(i,j),2)
-				if t_str not in p_str:
-					p_str.append(t_str)
-					p_v.append(m2.transitionValue(i,j))
-					p_i.append([])
-					add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=2)
+				add_named_parameter(i,j,2)
 			else:
-				p_str.append("$q_unamed_"+str(i)+'_'+str(j)+'$')
-				p_v.append(m2.transitionValue(i,j))
-				p_i.append([])
-				add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=2)
+				add_unamed_param(i,j,2)
 
 	for i in m1_sids: # self loops
 		if m1.transitionValue(i,i) != 0.0:
@@ -518,11 +546,28 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 	for si,ai,di,pi in m1.synchronous_transitions: # synchronous transitions
 		for sj,aj,dj,pj in m2.synchronous_transitions:
 			if ai == aj:
-				matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
-				p_str.append(None)
-				p_i.append([])
-				p_v.append(pi*pj)
-	
+				if type(pi) != float or type(pj) != float:
+					ps = []
+					if type(pi) != float:
+						ps += get_params(pi,2)[:-1]
+					if type(pj) != float:
+						ps += get_params(pj,2)[:-1]
+					for i in ps:
+						if not i in p_str:
+							p_str.append(i)
+							p_v.append(nan)
+							p_i.append([[get_state_index(si,sj),get_state_index(di,dj)]])
+
+					p_str.append('('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
+					p_i.append([])
+					p_v.append(nan)
+
+				else:
+					matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
+					p_str.append(None)
+					p_i.append([])
+					p_v.append(pi*pj)
+					
 	labeling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
 	matrix = hstack((matrix,zeros(nb_states+1,dtype='uint8')[:,newaxis]))
