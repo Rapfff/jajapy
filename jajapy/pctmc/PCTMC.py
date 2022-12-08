@@ -1,49 +1,50 @@
-from numpy.random import exponential
-from ast import literal_eval
-from ..base.tools import resolveRandom, randomProbabilities
+from ..base.tools import resolveRandom
+from ..base.Parametric_Model import *
 from ..base.Set import Set
-from ..mc.MC import MC
-from ..pctmc.PCTMC import PCTMC
-from ..base.Base_MC import *
+from numpy import ndarray, array, zeros, dot, nan, newaxis, hstack, vstack, delete
+from numpy.random import exponential
 from math import exp, log
-from random import randint
-from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete
-from sys import platform
 from multiprocessing import cpu_count, Pool
+from sys import platform
 
-class CTMC(Base_MC):
+class PCTMC(Parametric_Model):
 	"""
-	Class representing a CTMC.
+	Class representing a PCTMC.
 	"""
 	def __init__(self, matrix: ndarray, labeling: list,
-				 name: str ="unknown_CTMC",
-				 synchronous_transitions: list =[]) -> None:
+				 parameter_values: ndarray, parameter_indexes: list,
+				 parameter_str: list, name: str="unknow_PCTMC",
+				 synchronous_transitions: list = []) -> None:
 		"""
-		Creates an CTMC.
+		Creates an PCTMC.
 
 		Parameters
 		----------
 		matrix : ndarray
-			A (N x N) ndarray (with N the nb of states).
 			Represents the transition matrix.
-			`matrix[s1][s2]` is the rate associated to the transition 
-			from `s1` to `s2`.
 		labeling: list of str
 			A list of N observations (with N the nb of states).
 			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
+		parameter_values: list of float
+			Contains the value for each parameter.
+			`parameter_values[i]` is the instantiation for parameter `i`.
+		parameter_indexes: list of ndarray
+			Contains the indexes of each transition using each parameter.
+			`parameter_indexes[i] = array([[0,1],[2,1]])` means that parameter `i`
+			is used by the transition from state 0 to state 1 and from state 2 to state 1.
 		name : str, optional
 			Name of the model.
-			Default is "unknow_CTMC"
+			Default is "unknow_PCTMC"
 		synchronous_transitions: list, optional.
-			This is useful only for synchronously composing this CTMC with
+			This is useful only for synchronously composing this PCTMC with
 			another one.
 			List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
 			Default is an empty list.
 		"""
 		self.synchronous_transitions = synchronous_transitions
 
-		super().__init__(matrix,labeling,name)
+		super().__init__(matrix,labeling,parameter_values,parameter_indexes,parameter_str,name)
 		for s in range(self.nb_states):
 			synchronous_transitions_source = [i[0] for i in synchronous_transitions]
 			if self.e(s) == 0.0 and s not in synchronous_transitions_source:
@@ -61,9 +62,10 @@ class CTMC(Base_MC):
 		float
 			An exit rate.
 		"""
-		self._checkStateIndex(s)
-		return sum(self.matrix[s])
-	
+		if self.isInstantiated(s):
+			return sum([self.parameter_values[i] for i in self.matrix[s]])
+		print("WARN: cannot compute the exit rate of non-instantiated state "+str(s))
+
 	def l(self, s1:int, s2:int, obs:str) -> float:
 		"""
 		Returns the rate associated to the transition from state `s1`, seeing
@@ -87,7 +89,7 @@ class CTMC(Base_MC):
 		self._checkStateIndex(s2)
 		if self.labeling[s1] != obs:
 			return 0.0
-		return self.matrix[s1][s2]
+		return self.parameter_values[self.matrix[s1][s2]]
 	
 	def lkl(self, s: int, t: float) -> float:
 		"""
@@ -146,15 +148,22 @@ class CTMC(Base_MC):
 			expected waiting time in this state.
 		"""
 		return 1/self.e(s)
-
+	
 	def _stateToString(self,state:int) -> str:
 		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
-		res += "Exepected waiting time: "+str(self.expected_time(state))+'\n'
-		den = self.e(state)
+		if self.isInstantiated(state):
+			res += "Exepected waiting time: "+str(self.expected_time(state))+'\n'
 		for j in range(len(self.matrix[state])):
-			if self.matrix[state][j]/den > 0.0001:
-				res += "s"+str(state)+" -> s"
-				res += str(j)+" : lambda = "+str(self.matrix[state][j])+'\n'
+			if self.matrix[state][j] != 0:
+				p = self.matrix[state][j]
+				if self.parameter_str[p] == None:
+					val = str(self.parameter_values[p])
+				else:
+					val = self.parameter_str[p]
+					val = val.replace("$","")
+					if not isnan(self.parameter_values[p]):
+						val+=' (='+str(self.parameter_values[p])+')'
+				res += "s"+str(state)+" -> s"+str(j)+" : lambda = "+val+'\n'
 		return res
 	
 	def next(self,state: int) -> tuple:
@@ -167,8 +176,10 @@ class CTMC(Base_MC):
 		output : (int, str)
 			A state-observation pair.
 		"""
+		if not self.isInstantiated(state):
+			raise ValueError("At least one of the parameter is not instantiated.")
 		exps = []
-		for exp_lambda in self.matrix[state]:
+		for exp_lambda in [self.parameter_str[self.matrix[state]]]:
 			if exp_lambda <= 0.0:
 				exps.append(1024)
 			else:
@@ -237,26 +248,6 @@ class CTMC(Base_MC):
 				temp = [self._computeAlphas_timed(seq,times) for seq,times in zip(traces.sequences,traces.times)]
 			return sum(temp)/sum(traces.times)
 
-	def toMC(self, name: str="unknown_MC") -> MC:
-		"""
-		Returns the equivalent untimed MC.
-
-		Parameters
-		----------
-		name : str, optional
-			Name of the output model. By default "unknown_MC"
-
-		Returns
-		-------
-		MC
-			An equivalent untimed model.
-		"""
-		new_matrix = self.matrix
-		for i in range(self.nb_states):
-			new_matrix[i] /= self.e(i)
-
-		return MC(new_matrix,self.labeling,name)
-
 	def save(self,file_path:str) -> None:
 		"""Save the model into a text file.
 
@@ -270,12 +261,12 @@ class CTMC(Base_MC):
 		>>> model.save("my_model.txt")
 		"""
 		f = open(file_path, 'w')
-		f.write("CTMC\n")
+		f.write("PCTMC\n")
 		super()._save(f)
 
-def loadCTMC(file_path: str) -> CTMC:
+def loadPCTMC(file_path: str) -> PCTMC:
 	"""
-	Load an CTMC saved into a text file.
+	Load an PCTMC saved into a text file.
 
 	Parameters
 	----------
@@ -284,174 +275,143 @@ def loadCTMC(file_path: str) -> CTMC:
 	
 	Returns
 	-------
-	output : CTMC
-		The CTMC saved in `file_path`.
+	output : PCTMC
+		The PCTMC saved in `file_path`.
+	
+	Examples
+	--------
+	>>> model = loadPCTMC("my_model.txt")
 	"""
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
-	if l != "CTMC":
-		print("ERROR: this file doesn't describe an CTMC: it describes a "+l)
-	labeling = literal_eval(f.readline()[:-1])
-	name = f.readline()[:-1]
-	initial_state = array(literal_eval(f.readline()[:-1]))
-	matrix = literal_eval(f.readline()[:-1])
-	matrix = array(matrix)
+	if l != " PCTMC":
+		msg = "This file doesn't describe a PCTMC: it describes a "+l
+		raise ValueError(msg)
+	matrix,labeling,parameter_values,parameter_indexes,name,parameter_str = loadParametricModel(f)
 	f.close()
-	return CTMC(matrix, labeling, name)
+	return PCTMC(matrix,labeling,parameter_values,parameter_indexes,parameter_str,name)
 
-def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
-				max_exit_rate_time: int, self_loop: bool = True,
-				random_initial_state: bool=True) -> CTMC:
+def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict,
+			  initial_state, name: str ="unknown_PCTMC") -> PCTMC:
 	"""
-	Generates a random CTMC. All the rates will be between 0 and 1.
-	All the exit rates will be integers.
+	An user-friendly way to create a PCTMC.
 
 	Parameters
 	----------
-	nb_states : int
-		Number of states.
-	alphabet : list of str
-		List of observations.
-	min_exit_rate_time: int
-		Minimum exit rate for the states (included).
-	max_exit_rate_time: int
-		Maximum exit rate for the states (included).
-	self_loop: bool, optional
-		Wether or not there will be self loop in the output model.
-		Default is True.
-	random_initial_state: bool, optional
-		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
-		Default is True.
-	
-	Returns
-	-------
-	CTMC
-		A pseudo-randomly generated CTMC.
-
-	Examples
-	--------
-	>>> model = CTMC_random(2,['a','b'],1,5)
-	>>> print(model)
-	Name: CTMC_random_2_states
-	Initial state: s2
-	----STATE 0--a----
-	Exepected waiting time: 2.0
-	s0 -> s0 : lambda = 0.38461538461538464
-	s0 -> s1 : lambda = 0.11538461538461539
-	----STATE 1--b----
-	Exepected waiting time: 4.0
-	s1 -> s0 : lambda = 0.13636363636363635
-	s1 -> s1 : lambda = 0.11363636363636363
-	----STATE 2--init----
-	Exepected waiting time: 1.0
-	s2 -> s0 : lambda = 0.2
-	s2 -> s1 : lambda = 0.8
-	"""
-	matrix = []
-	for i in range(nb_states):
-		if self_loop:
-			random_probs = array(randomProbabilities(nb_states))
-		else:
-			p = randomProbabilities(nb_states-1)
-			random_probs.insert(i,0.0)
-		p = randomProbabilities(nb_states)
-		av_waiting_time = randint(min_exit_rate_time,max_exit_rate_time)
-		p = random_probs/av_waiting_time
-		matrix.append(p)
-
-	if random_initial_state:
-		matrix.append(append(randomProbabilities(nb_states),0.0))
-	else:
-		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
-	matrix = array(matrix)
-
-	labeling = labelsForRandomModel(nb_states,labeling)
-	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
-
-def createCTMC(transitions: list, labeling: list, initial_state,
-			   name: str ="unknown_CTMC",synchronous_transitions: list =[]) -> CTMC:
-	"""
-	An user-friendly way to create a CTMC.
-
-	Parameters
-	----------
-	transitions : [ list of tuples (int, int, float)]
+	transitions : [ list of tuples (int, int, float or str)]
 		Each tuple represents a transition as follow: 
-		(source state ID, destination state ID, rate).
+		(source state ID, destination state ID, probability).
+		The probability can be explicitly given (then it's a float),
+		or a parameter (then it's the name of the parameter).
 	labeling: list of str
 		A list of N observations (with N the nb of states).
 		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 		Each state has exactly one label.
+	parameter_instantiation: dict
+		An instantion for some (or all) parameters.
+		`parameter_instantiation == {'p':0.5}` means that parameter `p`
+		should be instantiated to 0.5. The other parameters are not
+		instantiated.
 	initial_state : int or list of float
 		Determine which state is the initial one (then it's the id of the
 		state), or what are the probability to start in each state (then it's
 		a list of probabilities).
 	name : str, optional
 		Name of the model.
-		Default is "unknow_CTMC"
+		Default is "unknow_PCTMC"
 	
 	Returns
 	-------
-	CTMC
-		the CTMC describes by `transitions`, `labeling`, and `initial_state`.
-	
-	Examples
-	--------
-	>>> model = createCTMC([(0,1,1.0),(1,0,0.3),(1,1,0.2)],['b','a'],0,"My_MC")
-	>>> print(model)
-	Name: My_MC
-	Initial state: s0
-	----STATE 0--b----
-	Exepected waiting time: 1.0
-	s0 -> s1 : lambda = 1.0
-	----STATE 1--a----
-	Exepected waiting time: 2.0
-	s1 -> s0 : lambda = 0.3
-	s1 -> s1 : lambda = 0.2
+	PCTMC
+		the PCTMC describes by `transitions`, `labeling`, and `initial_state`.
 	"""
 	if 'init' in labeling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 	
-	states = [i[0] for i in transitions]+[i[1] for i in transitions]
-	states +=[i[0] for i in synchronous_transitions]+[i[2] for i in synchronous_transitions]
-	states = list(set(states))
+	labeling.append('init')
+	
+	
+	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
 	states.sort()
 	nb_states = len(states)
+	if type(initial_state) == int:
+		transitions.append((nb_states,initial_state,1.0))
+	else:
+		for i,j in enumerate(initial_state):
+			transitions.append((nb_states,i,j))
 	
+	nb_states += 1
 	if nb_states > len(labeling):
 		raise ValueError("All states are not labelled (the labeling list is too small).")
 	elif nb_states < len(labeling):
 		print("WARNING: the labeling list is bigger than the number of states")
 
-	res = zeros((nb_states,nb_states))
+
+	parameter_str = [None]
+	parameter_values = [0.0]
+	parameter_indexes = [[]]
+
+	res = zeros((nb_states,nb_states),dtype='uint8')
 	for t in transitions:
-		res[states.index(t[0])][states.index(t[1])] = t[2]
-	
-	labeling.append('init')
-	res = vstack((res,zeros(len(res))))
-	res = hstack((res,zeros(len(res))[:,newaxis]))
-	if type(initial_state) == int:
-		res[-1][initial_state] = 1.0
-	else:
-		if type(initial_state) == ndarray:
-			initial_state = initial_state.tolist()
-		res[-1] = array(initial_state+[0.0])
-	return CTMC(res, labeling, name,synchronous_transitions)
+		if type(t[2]) == str and t[2] != '?':
+			val = t[2]
+			while '$' in val:
+				s = val.index('$')
+				e = val.index('$',s+1)
+				p = val[s:e+1]
+				if not p in parameter_str:
+					parameter_str.append(p)
+					parameter_values.append(nan)
+					parameter_indexes.append([[t[0],t[1]]])
+				else:
+					parameter_indexes[parameter_str.index(p)].append([t[0],t[1]])
+				val = val[:s] + "parameter_values["+str(parameter_str.index(p))+']'+ val[e+1:]
+			temp = t[2].replace(' ','')
+			if not temp in parameter_str:
+				parameter_str.append(temp)
+				parameter_values.append(val)
+				parameter_indexes.append([])
+			res[t[0],t[1]] = parameter_str.index(temp)
+
+		else:
+			parameter_str.append(None)
+			parameter_indexes.append([[t[0],t[1]]])
+			if type(t[2]) == float:
+				parameter_values.append(t[2])
+				res[t[0],t[1]] = len(parameter_values)-1
+			else:
+				raise SyntaxError("ERROR")
+	for p in parameter_instantiation:
+		if not '$'+p+'$' in parameter_str:
+			print("WARNING: no parameter "+p+", instantiation ignored.")
+		else:
+			parameter_values[parameter_str.index('$'+p+'$')] = parameter_instantiation[p]
+
+	val = []
+	for i in parameter_values:
+		if type(i) != str:
+			val.append(i)
+		else:
+			while '[' in i:
+				s = i.index('[')
+				e = i.index(']')
+				i = i[:s-len("parameter_values")]+ str(parameter_values[int(i[s+1:e])]) +i[e+1:]
+			val.append(eval(i))
+	val = array(val)
+	return PCTMC(res, labeling, val, parameter_indexes,parameter_str,name)
 
 
-def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composition") -> PCTMC:
+def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition") -> PCTMC:
 	"""
 	Returns the synchornous compotision of `m1` and `m2`.
-	The output model is a PCTMC since some parameters are shared
-	by multiple transitions.
 
 	Parameters
 	----------
-	m1 : CTMC
-		First CTMC to compose with.
-	m2 : CTMC
-		Second CTMC to compose with.
+	m1 : PCTMC
+		First PCTMC to compose with.
+	m2 : PCTMC
+		Second PCTMC to compose with.
 
 	Returns
 	-------
@@ -471,6 +431,18 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 	p_v = [0.0]
 	p_str = [None]
 	p_i = [[]]
+
+	def get_param_str(s,model):
+		symbol = ['p','q'][model-1]
+		last = 0
+		try:
+			start = s.index('$',last)
+			end   = s.index('$',start+1)
+			last  = end+2
+			s = s[:start+1]+symbol+s[start+1:]
+		except ValueError:
+			pass
+		return s
 
 	def get_state_index(s1,s2):
 		s2 = m2_sids.index(s2)
@@ -495,50 +467,68 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 
 	for i in m1_sids: # m1 transitions
 		for j in m1_sids:
-			if m1.matrix[i,j] == 0.0:
+			if m1.transitionValue(i,j) == 0.0:
 				add_in_matrix(param=0,s1=i,s2=j,model=1)
+			elif m1.transitionStr(i,j) != None:
+				t_str = get_param_str(m1.transitionStr(i,j),1)
+				if t_str not in p_str:
+					p_str.append(t_str)
+					p_v.append(m1.transitionValue(i,j))
+					p_i.append([])
+					add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=1)
 			else:
-				p_v.append(m1.matrix[i,j])
-				p_str.append('$p'+str(i)+'_'+str(j)+'$')
+				p_str.append("$p_unamed_"+str(i)+'_'+str(j)+'$')
+				p_v.append(m1.transitionValue(i,j))
 				p_i.append([])
 				add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=1)
 	
 	for i in m2_sids: # m2 transitions
 		for j in m2_sids:
-			if m2.matrix[i,j] == 0.0:
+			if m2.transitionValue(i,j) == 0.0:
 				add_in_matrix(param=0,s1=i,s2=j,model=2)
+			elif m2.transitionStr(i,j) != None:
+				t_str = get_param_str(m1.transitionStr(i,j),2)
+				if t_str not in p_str:
+					p_str.append(t_str)
+					p_v.append(m2.transitionValue(i,j))
+					p_i.append([])
+					add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=2)
 			else:
-				p_v.append(m2.matrix[i,j])
-				p_str.append('$q'+str(i)+'_'+str(j)+'$')
+				p_str.append("$q_unamed_"+str(i)+'_'+str(j)+'$')
+				p_v.append(m2.transitionValue(i,j))
 				p_i.append([])
 				add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=2)
 
 	for i in m1_sids: # self loops
-		if m1.matrix[i,i] != 0.0:
+		if m1.transitionValue(i,i) != 0.0:
 			for j in m2_sids:
-				if m2.matrix[j,j] != 0.0:
-					matrix[get_state_index(i,j),get_state_index(i,j)] = len(p_v)
-					p_str.append("$p"+str(i)+'_'+str(i)+'$*$q'+str(j)+'_'+str(j)+'$')
-					p_v.append(m2.matrix[j,j]*m1.matrix[i,i])
+				if m2.transitionValue(j,j) != 0.0:
+					if m1.transitionStr(i,i) == None:
+						t_str = "$p_unamed_"+str(i)+'_'+str(i)+'$*'
+					else:
+						t_str = '('+get_param_str(m1.transitionStr(i,i),1)+')*'
+					if m2.transitionStr(j,j) == None:
+						t_str += "$q_unamed_"+str(j)+'_'+str(j)+'$'
+					else:
+						t_str += '('+get_param_str(m2.transitionStr(j,j),2)+')'
+					p_str.append(t_str)
+					p_v.append(m2.transitionValue(j,j)*m1.transitionValue(i,i))
 					p_i.append([])
-					p_i[p_str.index("$p"+str(i)+'_'+str(i)+'$')].append([get_state_index(i,j),get_state_index(i,j)])
-					p_i[p_str.index("$q"+str(j)+'_'+str(j)+'$')].append([get_state_index(i,j),get_state_index(i,j)])
 
 	for si,ai,di,pi in m1.synchronous_transitions: # synchronous transitions
 		for sj,aj,dj,pj in m2.synchronous_transitions:
 			if ai == aj:
 				matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
-				#p_str.append("$sync["+str(ai)+']_'+str(si)+','+str(di)+'_'+str(sj)+','+str(dj)+'$')
 				p_str.append(None)
-				p_v.append(pi*pj)
 				p_i.append([])
+				p_v.append(pi*pj)
 	
 	labeling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
 	matrix = hstack((matrix,zeros(nb_states+1,dtype='uint8')[:,newaxis]))
 	m1_init_trans = zeros(m1_nb_states)
 	for i in m1_init:
-		tmp = [m1.matrix[i][j] for j in m1_sids]
+		tmp = [m1.parameter_values(i,j) for j in m1_sids]
 		for j in range(m1_nb_states):
 			if m1_init_trans[j]*tmp[j]>0.0:
 				m1_init_trans[j] *= tmp[j]
@@ -546,7 +536,7 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 				m1_init_trans[j] += tmp[j]
 	m2_init_trans = zeros(m2_nb_states)
 	for i in m2_init:
-		tmp = [m2.matrix[i][j] for j in m2_sids]
+		tmp = [m2.parameter_values(i,j) for j in m2_sids]
 		for j in range(m2_nb_states):
 			if m2_init_trans[j]*tmp[j]>0.0:
 				m2_init_trans[j] *= tmp[j]
@@ -563,7 +553,7 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 				p_i.append([[len(matrix)-1,get_state_index(si,sj)]])
 
 	i = 0
-	while i < len(matrix): # removing unreachable states
+	while i < len(matrix): # removing unreachable state
 		if (matrix.T[i] == 0).all() == True and labeling[i] != 'init':
 			nb_states -= 1
 			matrix = delete(matrix,i,0)
@@ -578,4 +568,3 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 	p_i[0] = []
 
 	return PCTMC(matrix,labeling,p_v,p_i,p_str,name)
-

@@ -62,8 +62,8 @@ class Parametric_Model:
 				if min(i) < 0:
 					raise ValueError("State "+str(min(p.flatten()))+" found in parameter_indexes")
 				if max(i) >= self.nb_states:
-					msg = "State "+str(max(matrix.flatten()))+" found in parameter_indexes while there "
-					msg+= "are only "+str(self.nb_parameters)+" states."
+					msg = "State "+str(max(i))+" found in parameter_indexes while there "
+					msg+= "are only "+str(self.nb_states)+" states."
 					raise ValueError(msg)
 
 		if type(initial_state) == int:
@@ -87,17 +87,29 @@ class Parametric_Model:
 		self.parameter_str = parameter_str
 		self.matrix = matrix
 	
-	def isInstantiated(self) -> bool:
+	def isInstantiated(self,state:int = None) -> bool:
 		"""
 		Checks if all the parameters are instantiated.
+		If `state` is set, checks if all the transitions leaving this state
+		are instantiated.
 
 		Returns
 		-------
 		bool
 			True if all the parameters are intantiated.
 		"""
-		return not (isnan(self.parameter_values)==True).any()
-	
+		if type(state) != type(None):
+			return not (isnan(self.parameter_values)==True).any()
+		else:
+			self._checkStateIndex(state)
+			return not (isnan(array([self.parameter_values[i] for i in self.matrix[state]]))==True).any()
+
+	def transitionValue(self,i:int,j:int):
+		return self.parameter_values[self.matrix[i,j]]
+
+	def transitionStr(self,i:int,j:int):
+		return self.parameter_str[self.matrix[i,j]]
+
 	def instantiate(self,parameters: list, values: list) -> ndarray: 
 		"""
 		Set all the parameters in `parameters` to the values `values`.
@@ -205,6 +217,14 @@ class Parametric_Model:
 			The same model in stormpy format.
 		"""
 		#TODO
+
+	def _checkStateIndex(self,s:int) -> None:
+		if type(s) != int:
+			raise TypeError('The parameter must be a valid state ID')
+		elif s < 0:
+			raise IndexError('The parameter must be a valid state ID')
+		elif s >= self.nb_states:
+			raise IndexError('This model contains only '+str(self.nb_states)+' states')
 
 def loadParametricModel(f):
 	name = literal_eval(f.readline()[:-1])

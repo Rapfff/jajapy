@@ -131,9 +131,9 @@ class PMC(Parametric_Model):
 		>>> model.a(0,2)
 		0.4
 		"""
-		p = array([self.parameter_values[self.matrix[state][s2]] for s2 in range(self.nb_states)])
-		if not (isnan(p) == True).any():
+		if not self.isInstantiated(state):
 			raise ValueError("At least one of the parameter is not instantiated.")
+		p = array([self.parameter_values[self.matrix[state][s2]] for s2 in range(self.nb_states)])
 		c = resolveRandom(p)
 		return (c, self.labeling[state])
 
