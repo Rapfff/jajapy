@@ -47,8 +47,6 @@ class PCTMC(Parametric_Model):
 		super().__init__(matrix,labeling,parameter_values,parameter_indexes,parameter_str,name)
 		for s in range(self.nb_states):
 			synchronous_transitions_source = [i[0] for i in synchronous_transitions]
-			if self.e(s) == 0.0 and s not in synchronous_transitions_source:
-				print("WARNING: State "+str(s)+" doesn't have any leaving transition.")
 
 	def e(self,s: int) -> float:
 		"""
@@ -292,7 +290,7 @@ def loadPCTMC(file_path: str) -> PCTMC:
 	return PCTMC(matrix,labeling,parameter_values,parameter_indexes,parameter_str,name)
 
 def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict,
-			  initial_state, name: str ="unknown_PCTMC") -> PCTMC:
+			  initial_state, synchronous_transitions=[], name: str ="unknown_PCTMC") -> PCTMC:
 	"""
 	An user-friendly way to create a PCTMC.
 
@@ -316,6 +314,11 @@ def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict
 		Determine which state is the initial one (then it's the id of the
 		state), or what are the probability to start in each state (then it's
 		a list of probabilities).
+	synchronous_transitions: list, optional.
+		This is useful only for synchronously composing this PCTMC with
+		another one.
+		List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
+		Default is an empty list.
 	name : str, optional
 		Name of the model.
 		Default is "unknow_PCTMC"
@@ -331,8 +334,9 @@ def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict
 	
 	labeling.append('init')
 	
-	
-	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
+	states = [i[0] for i in transitions]+[i[1] for i in transitions]
+	states += [i[0] for i in synchronous_transitions]+[i[2] for i in synchronous_transitions]
+	states = list(set(states))
 	states.sort()
 	nb_states = len(states)
 	if type(initial_state) == int:
@@ -340,7 +344,6 @@ def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict
 	else:
 		for i,j in enumerate(initial_state):
 			transitions.append((nb_states,i,j))
-	
 	nb_states += 1
 	if nb_states > len(labeling):
 		raise ValueError("All states are not labelled (the labeling list is too small).")
@@ -399,7 +402,7 @@ def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict
 				i = i[:s-len("parameter_values")]+ str(parameter_values[int(i[s+1:e])]) +i[e+1:]
 			val.append(eval(i))
 	val = array(val)
-	return PCTMC(res, labeling, val, parameter_indexes,parameter_str,name)
+	return PCTMC(res, labeling, val, parameter_indexes,parameter_str,name,synchronous_transitions)
 
 
 def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition") -> PCTMC:
@@ -453,7 +456,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 		while '$' in pstr[i:]:
 			s = pstr.index('$',i)
 			i = pstr.index('$',s+1)
-			p.append(pstr[s+1:i])
+			p.append(pstr[s:i+1])
 			i += 1
 		p.append(pstr)
 		return p
@@ -483,7 +486,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			p_v.append(m1.transitionValue(s1,s2))
 		else:
 			p_str.append("$q_unamed_"+str(s1)+'_'+str(s2)+'$')
-			p_v.append(m1.transitionValue(s1,s2))
+			p_v.append(m2.transitionValue(s1,s2))
 		p_i.append([])
 		add_in_matrix(param=len(p_v)-1,s1=s1,s2=s2,model=model)
 
@@ -499,10 +502,12 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			if not k in p_str:
 				p_str.append(k)
 				p_v.append(nan)
+				p_i.append([])
 			add_in_matrix(len(p_str)-1,s1,s2,model)
 		if not pstr in p_str:
 			p_str.append(pstr)
 			p_v.append(m.transitionValue(s1,s2))
+			p_i.append([])
 		add_in_matrix(len(p_str)-1,s1,s2,model)
 
 	for s1 in m1_sids: # labeling
@@ -517,7 +522,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 				add_named_parameter(i,j,1)
 			else:
 				add_unamed_param(i,j,1)
-	
+
 	for i in m2_sids: # m2 transitions
 		for j in m2_sids:
 			if m2.transitionValue(i,j) == 0.0:
@@ -543,13 +548,15 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 					p_v.append(m2.transitionValue(j,j)*m1.transitionValue(i,i))
 					p_i.append([])
 
-	for si,ai,di,pi in m1.synchronous_transitions: # synchronous transitions
-		for sj,aj,dj,pj in m2.synchronous_transitions:
+	for sync_1 in m1.synchronous_transitions: # synchronous transitions
+		si,ai,di,pi = sync_1
+		for sync_2 in m2.synchronous_transitions:
+			sj,aj,dj,pj = sync_2
 			if ai == aj:
 				if type(pi) != float or type(pj) != float:
 					ps = []
 					if type(pi) != float:
-						ps += get_params(pi,2)[:-1]
+						ps += get_params(pi,1)[:-1]
 					if type(pj) != float:
 						ps += get_params(pj,2)[:-1]
 					for i in ps:
@@ -557,7 +564,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 							p_str.append(i)
 							p_v.append(nan)
 							p_i.append([[get_state_index(si,sj),get_state_index(di,dj)]])
-
+					matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
 					p_str.append('('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
 					p_i.append([])
 					p_v.append(nan)
@@ -567,13 +574,13 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 					p_str.append(None)
 					p_i.append([])
 					p_v.append(pi*pj)
-					
+				
 	labeling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
 	matrix = hstack((matrix,zeros(nb_states+1,dtype='uint8')[:,newaxis]))
 	m1_init_trans = zeros(m1_nb_states)
 	for i in m1_init:
-		tmp = [m1.parameter_values(i,j) for j in m1_sids]
+		tmp = [m1.transitionValue(i,j) for j in m1_sids]
 		for j in range(m1_nb_states):
 			if m1_init_trans[j]*tmp[j]>0.0:
 				m1_init_trans[j] *= tmp[j]
@@ -581,7 +588,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 				m1_init_trans[j] += tmp[j]
 	m2_init_trans = zeros(m2_nb_states)
 	for i in m2_init:
-		tmp = [m2.parameter_values(i,j) for j in m2_sids]
+		tmp = [m2.transitionValue(i,j) for j in m2_sids]
 		for j in range(m2_nb_states):
 			if m2_init_trans[j]*tmp[j]>0.0:
 				m2_init_trans[j] *= tmp[j]
@@ -594,7 +601,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			else:
 				matrix[-1][get_state_index(i,j)] = len(p_v)
 				p_v.append(si*sj)
-				p_str.append("$init_"+str(si)+'_'+str(sj)+'$')
+				p_str.append("$init_"+str(i)+'_'+str(j)+'$')
 				p_i.append([[len(matrix)-1,get_state_index(si,sj)]])
 
 	i = 0
@@ -604,12 +611,24 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			matrix = delete(matrix,i,0)
 			matrix = delete(matrix,i,1)
 			labeling = labeling[:i]+labeling[i+1:]
-			for ij,j in enumerate(p_i):
-				for k in j:
-					if k[0] == i:
-						p_i[ij].remove(k) 
+			for j in range(len(p_i)):
+				k = 0
+				while k < len(p_i[j]): 
+					if p_i[j][k][0] == i:
+						p_i[j].remove(p_i[j][k])
+					else:
+						if p_i[j][k][0] > i:
+							p_i[j][k][0] -= 1
+						if p_i[j][k][1] > i:
+							p_i[j][k][1] -= 1
+						k += 1
 			i = -1
 		i += 1
 	p_i[0] = []
 
+	print(matrix)
+	print(labeling)
+	print(p_str)
+	print(p_v)
+	print(p_i)
 	return PCTMC(matrix,labeling,p_v,p_i,p_str,name)
