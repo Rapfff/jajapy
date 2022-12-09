@@ -289,8 +289,9 @@ def loadPCTMC(file_path: str) -> PCTMC:
 	f.close()
 	return PCTMC(matrix,labeling,parameter_values,parameter_indexes,parameter_str,name)
 
-def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict,
-			  initial_state, synchronous_transitions=[], name: str ="unknown_PCTMC") -> PCTMC:
+def createPCTMC(transitions: list, labeling: list, initial_state,
+				parameter_instantiation: dict={}, synchronous_transitions=[],
+				name: str ="unknown_PCTMC") -> PCTMC:
 	"""
 	An user-friendly way to create a PCTMC.
 
@@ -404,21 +405,37 @@ def createPCTMC(transitions: list, labeling: list, parameter_instantiation: dict
 	val = array(val)
 	return PCTMC(res, labeling, val, parameter_indexes,parameter_str,name,synchronous_transitions)
 
-
-def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition") -> PCTMC:
+def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") -> PCTMC:
 	"""
-	Returns the synchornous compotision of `m1` and `m2`.
+	Returns the synchornous compotision of the PCTMCs in `ms`.
 	Parameters
 	----------
-	m1 : PCTMC
-		First PCTMC to compose with.
-	m2 : PCTMC
-		Second PCTMC to compose with.
+	ms : list of PCTMCs
+		List of PCTMCs to compose.
+	name : str, optional.
+		Name of the output model.
+		Default is 
 	Returns
 	-------
 	PCTMC
 		Synchronous composition of `m1` and `m2`.
 	"""
+	if len(ms) == 0:
+		raise ValueError("ms must contain at least 2 models.")
+	elif len(ms) == 1:
+		return ms[0]
+	m1 = ms[0]
+	sync_trans = []
+	for i in range(1,len(ms)):
+		print(m1)
+		for t in sync_trans:
+			m1.synchronous_transitions.append((t[0],t[2],t[1],t[3]))
+			m1.matrix[t[0],t[1]] = 0
+		print(m1.synchronous_transitions)
+		m1, sync_trans = synchronousComposition2PCTMCs(m1, ms[i], name)
+	return m1
+
+def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition"):
 	m1_init = [i for i,li in enumerate(m1.labeling) if li == 'init']
 	m2_init = [i for i,li in enumerate(m2.labeling) if li == 'init']
 	m1_nb_states = m1.nb_states - len(m1_init)
@@ -434,6 +451,7 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 	p_i = [[]]
 
 	def get_param_str(s,model):
+		"""
 		symbol = ['p','q'][model-1]
 		last = 0
 		try:
@@ -443,13 +461,10 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 			s = s[:start+1]+symbol+s[start+1:]
 		except ValueError:
 			pass
+		"""
 		return s
 
 	def get_params(string,model):
-		if model == 1:
-			m = m1
-		else:
-			m = m2
 		p = []
 		pstr = get_param_str(string,model)
 		i = 0
@@ -548,6 +563,8 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 					p_v.append(m2.transitionValue(j,j)*m1.transitionValue(i,i))
 					p_i.append([])
 
+
+	sync_trans = []
 	for sync_1 in m1.synchronous_transitions: # synchronous transitions
 		si,ai,di,pi = sync_1
 		for sync_2 in m2.synchronous_transitions:
@@ -564,16 +581,36 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 							p_str.append(i)
 							p_v.append(nan)
 							p_i.append([[get_state_index(si,sj),get_state_index(di,dj)]])
-					matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
-					p_str.append('('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
-					p_i.append([])
-					p_v.append(nan)
-
+						else:
+							p_i[p_str.index(i)].append([get_state_index(si,sj),get_state_index(di,dj)])
+					prev_val = matrix[get_state_index(si,sj),get_state_index(di,dj)]
+					trans_str = ''
+					if prev_val == 0:
+						matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
+						p_str.append('('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
+						p_i.append([])
+						p_v.append(nan)
+						trans_str = p_str[-1]
+					elif p_str[prev_val] == None:
+						p_str[prev_val] = str(p_v[prev_val])+'+ ('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')'
+						p_v[prev_val] = nan
+						trans_str = p_str[prev_val]
+					elif p_str[prev_val].count('$') == 2 and p_str[prev_val][0]+p_str[prev_val][-1] == '$$':
+						matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
+						p_str.append(p_str[prev_val] + '('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
+						p_i.append([])
+						p_v.append(nan)
+						trans_str = p_str[-1]
+					else:
+						p_str[prev_val] += '+ ('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')'
+						trans_str = p_str[prev_val]
+					sync_trans.append((get_state_index(si,sj),get_state_index(di,dj),ai,trans_str))
 				else:
 					matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
 					p_str.append(None)
 					p_i.append([])
 					p_v.append(pi*pj)
+					sync_trans.append((get_state_index(si,sj),get_state_index(di,dj),ai,pi*pj))
 				
 	labeling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
@@ -622,13 +659,33 @@ def synchronousCompositionPCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_comp
 						if p_i[j][k][1] > i:
 							p_i[j][k][1] -= 1
 						k += 1
+			j = 0
+			while j <len(sync_trans):
+				if sync_trans[j][0] == i or sync_trans[j][1] == i:
+					sync_trans = sync_trans[:j]+sync_trans[j+1:]
+					j -= 1
+				j += 1
 			i = -1
 		i += 1
 	p_i[0] = []
 
-	print(matrix)
-	print(labeling)
-	print(p_str)
-	print(p_v)
-	print(p_i)
-	return PCTMC(matrix,labeling,p_v,p_i,p_str,name)
+	to_remove = list(set(range(len(p_str))) - set(matrix.flatten()) )
+	for i in to_remove:
+		remove = False
+		if p_str[i] == None:
+			remove = True
+		elif not (p_str[i][0]+p_str[i][-1] == '$$' and p_str[i].count("$") == 2):
+			remove = True
+		if remove:
+			p_str = p_str[:i]+p_str[i+1:]
+			p_v = p_v[:i]+p_v[i+1:]
+			p_i = p_i[:i]+p_i[i+1:]
+			for j in range(len(matrix)):
+				for k in range(len(matrix)):
+					if matrix[j][k] > i:
+						matrix[j][k] -= 1
+			for j in range(len(to_remove)):
+				if to_remove[j] > i:
+					to_remove[j] -= 1
+
+	return PCTMC(matrix,labeling,p_v,p_i,p_str,name), sync_trans

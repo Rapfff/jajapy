@@ -559,8 +559,8 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 			else:
 				matrix[-1][get_state_index(i,j)] = len(p_v)
 				p_v.append(si*sj)
-				p_str.append("$init_"+str(si)+'_'+str(sj)+'$')
-				p_i.append([[len(matrix)-1,get_state_index(si,sj)]])
+				p_str.append("$init_"+str(i)+'_'+str(j)+'$')
+				p_i.append([[len(matrix)-1,get_state_index(i,j)]])
 
 	i = 0
 	while i < len(matrix): # removing unreachable states
@@ -569,10 +569,17 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 			matrix = delete(matrix,i,0)
 			matrix = delete(matrix,i,1)
 			labeling = labeling[:i]+labeling[i+1:]
-			for ij,j in enumerate(p_i):
-				for k in j:
-					if k[0] == i:
-						p_i[ij].remove(k) 
+			for j in range(len(p_i)):
+				k = 0
+				while k < len(p_i[j]): 
+					if p_i[j][k][0] == i:
+						p_i[j].remove(p_i[j][k])
+					else:
+						if p_i[j][k][0] > i:
+							p_i[j][k][0] -= 1
+						if p_i[j][k][1] > i:
+							p_i[j][k][1] -= 1
+						k += 1
 			i = -1
 		i += 1
 	p_i[0] = []
