@@ -450,23 +450,8 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 	p_str = [None]
 	p_i = [[]]
 
-	def get_param_str(s,model):
-		"""
-		symbol = ['p','q'][model-1]
-		last = 0
-		try:
-			start = s.index('$',last)
-			end   = s.index('$',start+1)
-			last  = end+2
-			s = s[:start+1]+symbol+s[start+1:]
-		except ValueError:
-			pass
-		"""
-		return s
-
-	def get_params(string,model):
+	def get_params(pstr):
 		p = []
-		pstr = get_param_str(string,model)
 		i = 0
 		while '$' in pstr[i:]:
 			s = pstr.index('$',i)
@@ -554,11 +539,11 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 					if m1.transitionStr(i,i) == None:
 						t_str = "$p_unamed_"+str(i)+'_'+str(i)+'$*'
 					else:
-						t_str = '('+get_param_str(m1.transitionStr(i,i),1)+')*'
+						t_str = '('+m1.transitionStr(i,i)+')*'
 					if m2.transitionStr(j,j) == None:
 						t_str += "$q_unamed_"+str(j)+'_'+str(j)+'$'
 					else:
-						t_str += '('+get_param_str(m2.transitionStr(j,j),2)+')'
+						t_str += '('+m2.transitionStr(j,j)+')'
 					p_str.append(t_str)
 					p_v.append(m2.transitionValue(j,j)*m1.transitionValue(i,i))
 					p_i.append([])
@@ -587,22 +572,22 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 					trans_str = ''
 					if prev_val == 0:
 						matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
-						p_str.append('('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
+						p_str.append('('+str(pi)+')*('+str(pj)+')')
 						p_i.append([])
 						p_v.append(nan)
 						trans_str = p_str[-1]
 					elif p_str[prev_val] == None:
-						p_str[prev_val] = str(p_v[prev_val])+'+ ('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')'
+						p_str[prev_val] = str(p_v[prev_val])+'+ ('+str(pi)+')*('+str(pj)+')'
 						p_v[prev_val] = nan
 						trans_str = p_str[prev_val]
 					elif p_str[prev_val].count('$') == 2 and p_str[prev_val][0]+p_str[prev_val][-1] == '$$':
 						matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
-						p_str.append(p_str[prev_val] + '('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')')
+						p_str.append(p_str[prev_val] + '('+str(pi)+')*('+str(pj)+')')
 						p_i.append([])
 						p_v.append(nan)
 						trans_str = p_str[-1]
 					else:
-						p_str[prev_val] += '+ ('+get_param_str(str(pi),1)+')*('+get_param_str(str(pj),2)+')'
+						p_str[prev_val] += '+ ('+str(pi)+')*('+str(pj)+')'
 						trans_str = p_str[prev_val]
 					sync_trans.append((get_state_index(si,sj),get_state_index(di,dj),ai,trans_str))
 				else:

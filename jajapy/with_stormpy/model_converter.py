@@ -1,11 +1,13 @@
 import stormpy as st
-from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, newaxis
+from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, newaxis, nan
 from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
+from ..pmc import PMC
+from ..pctmc import PCTMC
 from copy import deepcopy
 from io import StringIO
-from contextlib import redirect_stderr
+from contextlib import redirect_stderr, redirect_stdout
 
 def stormpyModeltoJajapy(h,actions_name:list = []):
 	"""
@@ -29,12 +31,37 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	jajapy.MC, jajapy.CTMC or jajapy.MDP
 		The same model in jajapy format.
 	"""
+	def renameParameters(string,ps):
+		string = str(string)
+		print(string)
+		s = string.replace('(',' ')
+		s = s.replace(')',' ')
+		for i in list("*-+/"):
+			s = s.replace(i,' ')
+		s = s.split(' ')
+		i = 0
+		while i < len(s):
+			if not '$'+s[i]+'$' in ps:
+				s.remove(s[i])
+			else:
+				i += 1
+		last = 0
+		for i in s:
+			start = string.index(i,last)
+			l = len(i)
+			string = string[:start] + '$' + i +'$'+string[start+l:]
+		print(string)
+		return string
 	if type(h) == st.SparseDtmc:
 		ty = 0
 	elif type(h) == st.SparseCtmc:
 		ty = 1
 	elif type(h) == st.SparseMdp:
 		ty = 2
+	elif type(h) == st.SparseParametricDtmc:
+		ty = 3
+	elif type(h) == st.SparseParametricCtmc:
+		ty = 4
 	else:
 		raise TypeError(str(type(h))+' cannot be translated to Jajapy model.')
 	
@@ -50,9 +77,13 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	
 		actions = list(set(actions))
 		matrix = zeros((len(h.states),len(actions),len(h.states)))
-	else:
+	elif ty == 0 or ty == 1:
 		matrix = zeros((len(h.states),len(h.states)))
-
+	elif ty == 3 or ty == 4:
+		matrix = zeros((len(h.states),len(h.states)),dtype='uint8')
+		p_str = [None]
+		p_v = [0.0]
+		p_i = [[]]
 
 	add_init_state = None
 	for si,s in enumerate(h.states):
@@ -71,10 +102,34 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		for a in s.actions:
 			for t in a.transitions:
 				dest = t.column
+				t_val = t.value()
 				if ty == 2:
-					matrix[c][int(str(a))][dest] = t.value()
+					matrix[c][int(str(a))][dest] = t_val
+				elif ty == 1 or ty == 2:
+					matrix[c][dest] = t_val
 				else:
-					matrix[c][dest] = t.value()
+					if t_val.is_constant():
+						matrix[c][dest] = len(p_str)
+						p_str.append(None)
+						p_v.append(eval(str(t_val)))
+						p_i.append([])
+					else:
+						for v in ['$'+i.name+'$' for i in list(t_val.gather_variables())]:
+							if not v in p_str:
+								p_str.append(v)
+								p_v.append(nan)
+								p_i.append([])
+							p_i[p_str.index(v)].append([c,dest])
+						t_val = renameParameters(t_val,p_str)
+						if not t_val in p_str:
+								matrix[c][dest] = len(p_str)
+								p_str.append(str(t_val))
+								p_v.append(nan)
+								p_i.append([])
+						else:
+							matrix[c][dest] = p_str.index(t_val)
+						
+
 		#if ty == 1:
 		#	matrix[c] *= h.exit_rates[si]
 	
@@ -82,15 +137,22 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		matrix = vstack((matrix,matrix[add_init_state]))
 		if ty == 2:
 			matrix = concatenate((matrix,zeros((matrix.shape[0],matrix.shape[1],1))),axis=2)
-		else:
+		elif ty == 1 or ty == 0:
 			matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
+		else:
+			matrix = hstack((matrix,zeros(len(matrix),dtype=('uint8'))[:,newaxis]))
+
 	
 	if ty == 0:
 		return MC(matrix, labeling)
 	elif ty == 1:
 		return CTMC(matrix, labeling)
-	else:
+	elif ty == 2:
 		return MDP(matrix,labeling,actions)
+	elif ty == 3:
+		return PMC(matrix,labeling,p_v,p_i,p_str)
+	elif ty == 4:
+		return PCTMC(matrix,labeling,p_v,p_i,p_str)
 
 def jajapyModeltoStormpy(h):
 	"""
@@ -225,12 +287,16 @@ def loadPrism(path: str):
 	jajapy.MC or jajapy.CTMC or jajapy.MDP
 		A jajapy model equivalent to the model described in `path`.
 	"""
-	text_trap = StringIO()
-	with redirect_stderr(text_trap):
+	text_trap1 = StringIO()
+	with redirect_stderr(text_trap1):
 		try:
 			prism_program = st.parse_prism_program(path,False)
 		except RuntimeError:
 			prism_program = st.parse_prism_program(path,True)
-	stormpy_model = st.build_model(prism_program)	
+		try:
+			stormpy_model = st.build_model(prism_program)
+		except RuntimeError:
+			stormpy_model = st.build_parametric_model(prism_program)
+
 	jajapy_model = stormpyModeltoJajapy(stormpy_model)
 	return jajapy_model
