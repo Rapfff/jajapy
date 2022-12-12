@@ -2,7 +2,7 @@ from ..base.tools import resolveRandom
 from ..base.Parametric_Model import *
 from ..base.Set import Set
 from numpy import ndarray, array, zeros, dot, nan, newaxis, hstack, vstack, delete
-from numpy.random import exponential
+from numpy.random import exponential, rand
 from math import exp, log
 from multiprocessing import cpu_count, Pool
 from sys import platform
@@ -147,6 +147,30 @@ class PCTMC(Parametric_Model):
 		"""
 		return 1/self.e(s)
 	
+	def _checkRates(self,values=None) -> bool:
+		if type(values) == type(None):
+			values = self.parameter_values
+		for p in self.parameter_values:
+			if not isnan(p):
+				if p < 0.0:
+					return False
+		return True
+	
+	def instantiate(self, parameters: list, values: list) -> bool:
+		new_values =  super().instantiate(parameters, values)
+		if self._checkRates(new_values):
+			self.parameter_values = new_values
+			return True
+		print("WARN: invalid values. Instantiation ignored.")
+		return False
+
+	def randomInstantiation(self, parameters: list,min_val:float,max_val:float) -> None:
+		val = rand((max_val-min_val)*len(parameters)+min_val)
+		while not self.instantiate(parameters,val):
+			val = rand((max_val-min_val)*len(parameters)+min_val)
+		
+
+	
 	def _stateToString(self,state:int) -> str:
 		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
 		if self.isInstantiated(state):
@@ -261,6 +285,15 @@ class PCTMC(Parametric_Model):
 		f = open(file_path, 'w')
 		f.write("PCTMC\n")
 		super()._save(f)
+	
+	#def toCTMC(self,name='unknow_CTMC') -> CTMC:
+	#	if not self._isInstantiated():
+	#		raise ValueError("The model must be instantiated before being translated to a CTMC.")
+	#	matrix = zeros(len(self.matrix),len(self.matrix))
+	#	for i in self.matrix:
+	#		for j in self.matrix:
+	#			matrix[i,j] = self.transitionValue(i,j)
+	#	return CTMC(matrix, self.labeling, name)
 
 def loadPCTMC(file_path: str) -> PCTMC:
 	"""

@@ -55,7 +55,6 @@ class PMC(Parametric_Model):
 					return False
 		return True
 
-
 	def tau(self,s1: int, s2: int, obs: str) -> float:
 		"""
 		Returns the probability of moving from state `s1` to `s2` seeing label `obs`.

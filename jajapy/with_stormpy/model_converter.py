@@ -33,7 +33,6 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	"""
 	def renameParameters(string,ps):
 		string = str(string)
-		print(string)
 		s = string.replace('(',' ')
 		s = s.replace(')',' ')
 		for i in list("*-+/"):
@@ -50,7 +49,6 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 			start = string.index(i,last)
 			l = len(i)
 			string = string[:start] + '$' + i +'$'+string[start+l:]
-		print(string)
 		return string
 	if type(h) == st.SparseDtmc:
 		ty = 0
