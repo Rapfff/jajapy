@@ -4,7 +4,7 @@ from .mc import *
 from .mdp import *
 from .ctmc import *
 from .gohmm import *
-from .pmc import *
+#from .pmc import *
 from .pctmc import *
 try:
 	from .with_stormpy import *

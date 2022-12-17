@@ -1,12 +1,87 @@
-from .CTMC import *
+from .PCTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
 from numpy import array, zeros, dot, append, ones, log, inf, newaxis, full
 
 
-class BW_CTMC(BW):
+class BW_PCTMC(BW):
 	def __init__(self) -> None:
 		super().__init__()
+
+	def fit(self, traces, initial_model: PCTMC, output_file: str=None,
+			epsilon: float=0.01, max_it: int= inf, pp: str='',
+			verbose: bool = True, return_data: bool = False,
+			stormpy_output: bool = True, fixed_parameters: ndarray = False) -> PCTMC:
+		"""
+		Fits the model according to ``traces``.
+
+		Parameters
+		----------
+		traces : Set or list or numpy.ndarray
+			training set.
+		initial_model : PCTMC
+			first hypothesis.
+		output_file : str, optional
+			if set path file of the output model. Otherwise the output model
+			will not be saved into a text file.
+		epsilon : float, optional
+			the learning process stops when the difference between the
+			loglikelihood of the training set under the two last hypothesis is
+			lower than ``epsilon``. The lower this value the better the output,
+			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
+		pp : str, optional
+			Will be printed at each iteration. By default ''.
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
+		fixed_parameters: ndarray of bool, optional
+			ndarray of bool with the same shape as the transition matrix (i.e
+			nb_states x nb_states). If `fixed_parameters[s1,s2] == True`, the
+			transition parameter from s1 to s2 will not be changed during the
+			learning (it's a fixed parameter).
+			By default no parameters will be fixed.
+
+		Returns
+		-------
+		PCTMC or stormpy.SparseParametricCtmc
+			The fitted PCTMC.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.PCTMC`, otherwise it returns a `stormpy.SparseParametricCtmc`
+		"""
+		if type(traces) != Set:
+			traces = Set(traces)
+		
+		alphabet = traces.getAlphabet()
+		if not 'init' in alphabet:
+			alphabet.append('init')
+			timed = type(traces.sequences[0][1]) != str
+			for s in range(len(traces.sequences)):
+				if timed:
+					traces.sequences[s].insert(0,0.5)
+				traces.sequences[s].insert(0,'init')
+		self.h = initial_model
+		if not self.h.isInstantiated():
+			for i,s in enumerate(self.h.parameter_str):
+				
+
+		#if type(fixed_parameters) == bool:
+		#	self.fixed_parameters = full(initial_model.matrix.shape,False)
+		#else:
+		#	self.fixed_parameters = fixed_parameters
+
+		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
 	def h_e(self,s: int) -> float:
 		"""
@@ -145,110 +220,7 @@ class BW_CTMC(BW):
 		"""
 		return super().computeBetas(sequence)
 
-
-	def fit(self, traces, initial_model = None, nb_states: int=None,
-			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
-			max_exit_rate_time: int=10.0, self_loop: bool = True,
-			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
-			verbose: bool = True, return_data: bool = False, stormpy_output: bool = True,
-			fixed_parameters: ndarray = False) -> CTMC:
-		"""
-		Fits the model according to ``traces``.
-
-		Parameters
-		----------
-		traces : Set or list or numpy.ndarray
-			training set.
-		initial_model : CTMC or stormpy.SparseCtmc, optional.
-			first hypothesis. If not set it will create a random CTMC with
-			``nb_states`` states. Should be set if ``nb_states`` is not set.
-		nb_states: int
-			If ``initial_model`` is not set it will create a random CTMC with
-			``nb_states`` states. Should be set if ``initial_model`` is not set.
-			Default is None.
-		random_initial_state: bool
-			If ``initial_model`` is not set it will create a random CTMC with
-			random initial state according to this sequence of probabilities.
-			Should be set if ``initial_model`` is not set.
-			Default is False.
-		min_exit_rate_time: int, optional
-			Minimum exit rate for the states in the first hypothesis.
-			Default is 1.0.
-		max_exit_rate_time: int, optional
-			Minimum exit rate for the states in the first hypothesis.
-			Default is 10.0.
-		self_loop: bool, optional
-			Wether or not there will be self loop in the first hypothesis.
-			Default is True.
-		output_file : str, optional
-			if set path file of the output model. Otherwise the output model
-			will not be saved into a text file.
-		epsilon : float, optional
-			the learning process stops when the difference between the
-			loglikelihood of the training set under the two last hypothesis is
-			lower than ``epsilon``. The lower this value the better the output,
-			but the longer the running time. By default 0.01.
-		max_it: int
-			Maximal number of iterations. The algorithm will stop after `max_it`
-			iterations.
-			Default is infinity.
-		pp : str, optional
-			Will be printed at each iteration. By default ''
-		verbose: bool, optional
-			Print or not a small recap at the end of the learning.
-			Default is True.
-		return_data: bool, optional
-			If set to True, a dictionary containing following values will be
-			returned alongside the hypothesis once the learning is done.
-			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
-			Default is False.
-		stormpy_output: bool, optional
-			If set to True the output model will be a Stormpy sparse model.
-			Default is True.
-		fixed_parameters: ndarray of bool, optional
-			ndarray of bool with the same shape as the transition matrix (i.e
-			nb_states x nb_states). If `fixed_parameters[s1,s2] == True`, the
-			transition parameter from s1 to s2 will not be changed during the
-			learning (it's a fixed parameter).
-			By default no parameters will be fixed.
-
-		Returns
-		-------
-		CTMC or stormpy.SparseCtmc
-			The fitted CTMC.
-			If `stormpy_output` is set to `False` or if stormpy is not available on
-			the machine it returns a `jajapy.CTMC`, otherwise it returns a `stormpy.SparseCtmc`
-		"""
-		if type(traces) != Set:
-			traces = Set(traces)
-		
-		alphabet = traces.getAlphabet()
-		if not 'init' in alphabet:
-			if nb_states != None:
-				nb_states += 1
-			alphabet.append('init')
-			timed = type(traces.sequences[0][1]) != str
-			for s in range(len(traces.sequences)):
-				if timed:
-					traces.sequences[s].insert(0,0.5)
-				traces.sequences[s].insert(0,'init')
-		
-		if not initial_model:
-			if not nb_states:
-				raise ValueError("Either nb_states or initial_model should be set")
-
-			initial_model = CTMC_random(nb_states,
-										alphabet,
-										min_exit_rate_time, max_exit_rate_time,
-										self_loop, random_initial_state)
-		if type(fixed_parameters) == bool:
-			self.fixed_parameters = full(initial_model.matrix.shape,False)
-		else:
-			self.fixed_parameters = fixed_parameters
-
-		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
-
-
+	
 	def splitTime(self,sequence: list) -> tuple:
 		"""
 		Given a trace it returns a sequence of observation and a sequence of

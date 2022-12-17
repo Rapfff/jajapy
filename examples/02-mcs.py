@@ -15,7 +15,7 @@ def example_2():
 				   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
 
 	original_model = ja.createMC(transitions,labeling,initial_state,name)
-
+	
 	# SETS GENERATION
 	#------------------------
 	# We generate 1000 sequences of 10 observations for each set
