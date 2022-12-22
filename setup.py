@@ -11,7 +11,7 @@ setup(
     name='jajapy',
     long_description=long_description,
     packages=find_packages(),
-    install_requires=['numpy', 'scipy', 'alive-progress'],
+    install_requires=['numpy', 'scipy', 'alive-progress','sympy'],
     long_description_content_type="text/markdown",
     version='0.9',
     url="",

@@ -3,6 +3,7 @@ from numpy.random import geometric
 from ast import literal_eval
 from copy import deepcopy
 from ..base.Set import Set
+from sympy import *
 
 class Parametric_Model:
 	"""
@@ -11,7 +12,7 @@ class Parametric_Model:
 	Should not be instantiated itself!
 	"""
 	def __init__(self, matrix: ndarray, labeling: list,
-				 transition_str: list, parameter_values: list,
+				 transition_expr: list, parameter_values: dict,
 				 parameter_indexes: list, parameter_str: list,
 				 name: str) -> None:
 		"""
@@ -21,13 +22,13 @@ class Parametric_Model:
 		----------
 		matrix : ndarray
 			Represents the transition matrix.
-			matrix[i,j] is the index, in `transition_str`, of the symbolic
+			matrix[i,j] is the index, in `transition_expr`, of the symbolic
 			value of the transition from `i` to `j`.
 		labeling: list of str
 			A list of N observations (with N the nb of states).
 			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
-		transition_str: list of str
+		transition_expr: list of str
 			Contains the symbolic value for each transition.
 		parameter_values: list of float
 			Contains the value for each parameter.
@@ -54,12 +55,12 @@ class Parametric_Model:
 			raise ValueError(msg)
 		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
 
-		if len(parameter_indexes) != len(parameter_values) or len(parameter_values) != len(parameter_str):
+		if len(parameter_indexes) != len(parameter_str):
 			raise ValueError("Length of parameter_indexes, parameter_values and parameter_str must be equal.")
 		self.nb_parameters = len(parameter_indexes)
-		if max(matrix.flatten()) >= len(transition_str):
+		if max(matrix.flatten()) >= len(transition_expr):
 			msg = "Transition "+str(max(matrix.flatten()))+" found in matrix while length "
-			msg+= "of transition_str is "+str(len(transition_str))
+			msg+= "of transition_expr is "+str(len(transition_expr))
 			raise ValueError(msg)
 		if min(matrix.flatten()) < 0:
 			raise ValueError("Transition "+str(min(matrix.flatten()))+" found in matrix")
@@ -89,14 +90,11 @@ class Parametric_Model:
 			raise ValueError(msg)
 		
 		self.name = name
-		self.transition_str = transition_str
+		self.transition_expr = transition_expr
 		self.parameter_values = parameter_values
 		self.parameter_indexes= parameter_indexes
 		self.parameter_str = parameter_str
 		self.matrix = matrix
-		self.transition_values = zeros(len(transition_str))
-		self._evaluateAll()
-		
 
 	def isInstantiated(self,state:int = None) -> bool:
 		"""
@@ -110,26 +108,24 @@ class Parametric_Model:
 			True if all the parameters are intantiated.
 		"""
 		if type(state) == type(None):
-			return not (isnan(self.parameter_values)==True).any()
+			return len(set(self.parameter_str) - set(self.parameter_values.keys())) == 0
 		else:
 			self._checkStateIndex(state)
-			return not (isnan(array([self.parameter_values[i] for i in self.involvedParameters(state)]))==True).any()
+			for i in self.involvedParameters(state):
+				if not i in self.parameter_values:
+					return False
+			return True
 
 	def transitionValue(self,i:int,j:int):
-		return self.transition_values[self.matrix[i,j]]
+		return self.transition_expr[self.matrix[i,j]].evalf(subs=self.parameter_values)
 
-	def transitionStr(self,i:int,j:int):
-		val = self.transition_str[self.matrix[i,j]]
-		while '$' in val:
-			s = val.index('$')
-			e = val.index('$',s+1)
-			val = val[:s]+self.parameter_str[int(val[s+1:e])]+val[e+1:]
-		return val
+	def transitionExpression(self,i:int,j:int):
+		return self.transition_expr[self.matrix[i,j]]
 	
 	def parameterValue(self, p:str)-> float:
-		if not p in self.parameter_str:
+		if not p in self.parameter_values:
 			return nan
-		return self.parameter_values[self.parameter_str.index(p)]
+		return self.parameter_values[p]
 
 	def instantiate(self,parameters: list, values: list) -> ndarray: 
 		"""
@@ -144,38 +140,29 @@ class Parametric_Model:
 			List of values. `parameters[i]` will be set to `values[i]`.
 		"""
 		new_values = deepcopy(self.parameter_values)
-		for s,v in zip(parameters,values):
-			if s in self.parameter_str:
-				new_values[self.parameter_str.index(s)] = v
+		if type(parameters[0]) == str:
+			if len(parameters)>1:
+				parameters = symbols(" ".join(parameters))
 			else:
-				raise ValueError("parameter "+s+" doesn't exist in this model.")
+				parameters = symbols(parameters)
+		for s,v in zip(parameters,values):
+			new_values[s] = v
 		return new_values
 
-	def evaluateExpression(self,string:str,parameter_values=None) -> float:
+	def evaluateString(self,string:str,parameter_values=None):
 		if parameter_values == None:
 			parameter_values = self.parameter_values
-		while '$' in string:
-			start = string.index('$')
-			end = string.index('$',start+1)
-			string = string[:start]+ str(parameter_values[int(string[start+1:end])])+string[end+1:]
-		return eval(string)
+		return sympify(string).evalf(subs=parameter_values)
 
-	def evaluateTransition(self,i:int,j:int,parameter_values=None) -> float:
-		return self.evaluateExpression(self.transition_str[self.matrix[i,j]],parameter_values)
-	
-	def _evaluateAll(self,params_id=None) -> None:
-		done = [0]
-		for i in range(self.nb_states):
-			for j in range(self.nb_states):
-				to_do = self.matrix[i,j]
-				if not to_do in done:
-					if params_id == None:
-						self.transition_values[to_do] = self.evaluateTransition(i,j)
-						done.append(to_do)
-					elif params_id & set(self.involvedParameters(i,j)):
-						self.transition_values[to_do] = self.evaluateTransition(i,j)
-						done.append(to_do)
-
+	def evaluateTransition(self,i:int,j:int,parameter_values=None):
+		if parameter_values == None:
+			parameter_values = self.parameter_values
+		v =  self.transitionExpression(i,j).evalf(subs=parameter_values)
+		try:
+			v = float(v)
+		except TypeError:
+			pass
+		return v
 
 	def involvedParameters(self,i: int,j: int = -1) -> list:
 		"""
@@ -199,15 +186,10 @@ class Parametric_Model:
 			j = range(self.nb_states)
 		else:
 			j =  [j]
-		res = []
+		res = set()
 		for jj in j:
-			string = self.transition_str[self.matrix[i,jj]]
-			while '$' in string:
-				start = string.index('$')
-				end = string.index('$',start+1)
-				res.append(int(string[start+1:end]))
-				string = string[end+1:]
-		return list((set(res)))
+			res.union(self.transitionExpression(i,jj).free_symbols)
+		return list(res)
 
 	def getLabel(self,state: int) -> str:
 		"""
@@ -337,7 +319,7 @@ class Parametric_Model:
 		f.write('\n')
 		f.write(str(self.parameter_str))
 		f.write('\n')
-		f.write(str(self.transition_str))
+		f.write(str(self.transition_expr))
 		f.write('\n')
 		f.close()
 
@@ -368,5 +350,5 @@ def loadParametricModel(f):
 	parameter_values = literal_eval(f.readline()[:-1])
 	parameter_indexes = literal_eval(f.readline()[:-1])
 	parameter_str = literal_eval(f.readline()[:-1])
-	transition_str = literal_eval(f.readline()[:-1])
-	return matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_str,name
+	transition_expr = literal_eval(f.readline()[:-1])
+	return matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_expr,name

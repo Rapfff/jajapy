@@ -12,7 +12,7 @@ class PCTMC(Parametric_Model):
 	Class representing a PCTMC.
 	"""
 	def __init__(self, matrix: ndarray, labeling: list,
-				 transition_str: list, parameter_values: ndarray,
+				 transition_expr: list, parameter_values: ndarray,
 				 parameter_indexes: list, parameter_str: list,
 				 name: str="unknow_PCTMC",
 				 synchronous_transitions: list = []) -> None:
@@ -53,7 +53,7 @@ class PCTMC(Parametric_Model):
 			Default is an empty list.
 		"""
 		self.synchronous_transitions = synchronous_transitions
-		super().__init__(matrix,labeling,transition_str,parameter_values,parameter_indexes,parameter_str,name)
+		super().__init__(matrix,labeling,transition_expr,parameter_values,parameter_indexes,parameter_str,name)
 
 	def e(self,s: int) -> float:
 		"""
@@ -69,7 +69,7 @@ class PCTMC(Parametric_Model):
 		"""
 		if self.isInstantiated(s):
 			return sum([self.evaluateTransition(s,i) for i in range(self.nb_states)])
-		print("WARN: cannot compute the exit rate of non-instantiated state "+str(s))
+		raise ValueError("cannot compute the exit rate of non-instantiated state "+str(s))
 
 	def l(self, s1:int, s2:int, obs:str) -> float:
 		"""
@@ -114,8 +114,11 @@ class PCTMC(Parametric_Model):
 		"""
 		if t < 0.0:
 			return 0.0
-		return self.e(s)*exp(-self.e(s)*t)
-	
+		try:
+			return self.e(s)*exp(-self.e(s)*t)
+		except ValueError:
+			print("WARN: cannot compute the lkl of non-instantiated state "+str(s))
+
 	def tau(self, s1:int, s2: int, obs: str) -> float:
 		"""
 		Returns the probability to move from `s1` to `s2` generating
@@ -135,10 +138,13 @@ class PCTMC(Parametric_Model):
 		float
 			A probability.
 		"""
-		e = self.e(s1)
-		if e == 0.0:
-			return inf
-		return self.l(s1,s2, obs)/e
+		try:
+			e = self.e(s1)
+			if e == 0.0:
+				return inf
+			return self.l(s1,s2, obs)/e
+		except ValueError:
+			print("WARN: cannot compute the exit-rate of non-instantiated state "+str(s1))
 	
 	def expected_time(self, s:int) -> float:
 		"""
@@ -155,20 +161,26 @@ class PCTMC(Parametric_Model):
 		float
 			expected waiting time in this state.
 		"""
-		
-		e = self.e(s)
-		if e == 0.0:
-			return inf
-		return 1/e
-	
+		try:
+			e = self.e(s)
+			if e == 0.0:
+				return inf
+			return 1/e
+		except ValueError:
+			print("WARN: cannot compute the expected time of non-instantiated state "+str(s))
+
+
 	def _checkRates(self,values=None) -> bool:
 		if type(values) == type(None):
 			values = self.parameter_values
-		for p in self.parameter_values:
-			if not isnan(p):
-				if p < 0.0:
+		xs,ys = where(self.matrix != 0)
+		for x,y in zip(xs,ys):
+			v = self.evaluateTransition(x,y)
+			if type(v) == float:
+				if v < 0.0:
 					return False
 		return True
+		
 	
 	def instantiate(self, parameters: list, values: list) -> bool:
 		"""
@@ -183,21 +195,28 @@ class PCTMC(Parametric_Model):
 			List of values. `parameters[i]` will be set to `values[i]`.
 		"""
 		new_values =  super().instantiate(parameters, values)
-		params_id = set([self.parameter_str(i) for i in parameters])
-		for i in range(self.nb_states):
-			for j in range(self.nb_states):
-				if params_id & set(self.involvedParameters(i,j)):
-					if self.evaluateTransition(i,j,new_values) < 0.0:
-						print("WARN: invalid values. Instantiation ignored.")
-						return False
-		self.parameter_values = new_values
-		self._evaluateAll(params_id)
-		return True
+		if self._checkRates(new_values):
+			self.parameter_values = new_values
+			return True
+		return False
 
-	def randomInstantiation(self, parameters: list,min_val:float,max_val:float) -> None:
-		val = rand((max_val-min_val)*len(parameters)+min_val)
+	def randomInstantiation(self, parameters: list = [],min_val:float = None,max_val:float = None) -> None:
+		if len(parameters) == 0.0:
+			parameters = list(set(self.parameter_str) - set(self.parameter_values.keys()))
+		if min_val == None:
+			if len(list(self.parameter_values.values())) > 1:
+				min_val = min(self.parameter_values.values())
+			else:
+				min_val = 0.1
+		if max_val == None:
+			if len(list(self.parameter_values.values())) > 1:
+				max_val = max(self.parameter_values.values())
+			else:
+				max_val = 5.0
+		val = rand(len(parameters))*(max_val-min_val)+min_val
+		print(parameters, val)
 		while not self.instantiate(parameters,val):
-			val = rand((max_val-min_val)*len(parameters)+min_val)
+			val = rand(len(parameters))*(max_val-min_val)+min_val
 	
 	def _stateToString(self,state:int) -> str:
 		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
@@ -205,12 +224,10 @@ class PCTMC(Parametric_Model):
 			res += "Exepected waiting time: "+str(self.expected_time(state))+'\n'
 		for j in range(len(self.matrix[state])):
 			if self.matrix[state][j] != 0:
-				val = self.transitionStr(state,j)
-				try:
-					float(val)
-				except ValueError:
-					if not isnan(self.transitionValue(state,j)):
-						val+=' (='+str(self.transitionValue(state,j))+')'
+				val = str(self.transitionExpression(state,j))
+				v = self.transitionValue(state,j)
+				if type(v) == float:
+					val += ' (='+str(v)+')'
 				res += "s"+str(state)+" -> s"+str(j)+" : lambda = "+val+'\n'
 		return res
 	
@@ -343,14 +360,14 @@ def loadPCTMC(file_path: str) -> PCTMC:
 	if l != " PCTMC":
 		msg = "This file doesn't describe a PCTMC: it describes a "+l
 		raise ValueError(msg)
-	matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_str,name = loadParametricModel(f)
+	matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_expr,name = loadParametricModel(f)
 	f.close()
-	return PCTMC(matrix,labeling,transition_str,parameter_values,
+	return PCTMC(matrix,labeling,transition_expr,parameter_values,
 				 parameter_indexes,parameter_str,name)
 
-def createPCTMC(transitions: list, labeling: list, initial_state,
-				parameter_instantiation: dict={}, synchronous_transitions=[],
-				name: str ="unknown_PCTMC") -> PCTMC:
+def createPCTMC(transitions: list, labeling: list, parameters: list,
+				initial_state, parameter_instantiation: dict={},
+				synchronous_transitions=[], name: str ="unknown_PCTMC") -> PCTMC:
 	"""
 	An user-friendly way to create a PCTMC.
 
@@ -365,15 +382,17 @@ def createPCTMC(transitions: list, labeling: list, initial_state,
 		A list of N observations (with N the nb of states).
 		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 		Each state has exactly one label.
+	parameters: list of str.
+		A list containing all the parameters name.
+	initial_state : int or list of float
+		Determine which state is the initial one (then it's the id of the
+		state), or what are the probability to start in each state (then it's
+		a list of probabilities).
 	parameter_instantiation: dict
 		An instantion for some (or all) parameters.
 		`parameter_instantiation == {'p':0.5}` means that parameter `p`
 		should be instantiated to 0.5. The other parameters are not
 		instantiated.
-	initial_state : int or list of float
-		Determine which state is the initial one (then it's the id of the
-		state), or what are the probability to start in each state (then it's
-		a list of probabilities).
 	synchronous_transitions: list, optional.
 		This is useful only for synchronously composing this PCTMC with
 		another one.
@@ -409,46 +428,28 @@ def createPCTMC(transitions: list, labeling: list, initial_state,
 		raise ValueError("All states are not labelled (the labeling list is too small).")
 	elif nb_states < len(labeling):
 		print("WARNING: the labeling list is bigger than the number of states")
-
-	parameter_str = []
-	parameter_values = []
-	parameter_indexes = []
-	transition_str = ['0.0']
-
+	
+	parameter_str = list(symbols(" ".join(parameters)))
+	parameter_values = {}
+	parameter_indexes = [[] for _ in parameter_str]
+	transition_expr = [sympify('0.0')]
 
 	matrix = zeros((nb_states,nb_states),dtype='uint8')
 	for t in transitions:
-		if type(t[2]) == str:
-			val = t[2]
-			while '$' in val:
-				s = val.index('$')
-				e = val.index('$',s+1)
-				p = val[s+1:e]
-				if not p in parameter_str:
-					parameter_str.append(p)
-					parameter_values.append(nan)
-					parameter_indexes.append([[t[0],t[1]]])
-				else:
-					parameter_indexes[parameter_str.index(p)].append([t[0],t[1]])
-				p_index = parameter_str.index(p)
-				val = val[e+1:]
-				t[2] = t[2][:s]+'$'+str(p_index)+'$'+t[2][e+1:]
-			temp = t[2].replace(' ','')
-			if not temp in transition_str:
-				transition_str.append(temp)
-			matrix[t[0],t[1]] = parameter_str.index(temp)
-		elif type(t[2]) == float:
-			transition_str.append(str(t[2]))
-			matrix[t[0],t[1]] = len(transition_str)-1
-		else:
-			raise SyntaxError("ERROR")
+		val = str(t[2])
+		expr = sympify(val)
+		if not expr in transition_expr:
+			transition_expr.append(expr)
+		matrix[t[0],t[1]] = transition_expr.index(expr)
+		for p in expr.free_symbols:
+			parameter_indexes[parameter_str.index(p)].append([t[0],t[1]])
+
 	for p in parameter_instantiation:
 		if not p in parameter_str:
 			print("WARNING: no parameter "+p+", instantiation ignored.")
 		else:
-			parameter_values[parameter_str.index(p)] = parameter_instantiation[p]
-	
-	return PCTMC(matrix,labeling,transition_str,parameter_values,
+			parameter_values[p] = parameter_instantiation[p]
+	return PCTMC(matrix,labeling,transition_expr,parameter_values,
 				parameter_indexes,parameter_str,name,synchronous_transitions)
 
 def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") -> PCTMC:
@@ -466,6 +467,41 @@ def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") ->
 	PCTMC
 		Synchronous composition of `m1` and `m2`.
 	"""
+	def removeUnreachableState(m):
+		i = 0
+		while i < len(m.matrix): # removing unreachable state
+			if (m.matrix.T[i] == 0).all() == True and m.labeling[i] != 'init':
+				m.nb_states -= 1
+				m.matrix = delete(m.matrix,i,0)
+				m.matrix = delete(m.matrix,i,1)
+				m.initial_state = delete(m.initial_state,i)
+				m.labeling = m.labeling[:i]+m.labeling[i+1:]
+				for j in range(len(m.parameter_indexes)):
+					k = 0
+					while k < len(m.parameter_indexes[j]): 
+						if m.parameter_indexes[j][k][0] == i:
+							m.parameter_indexes[j].remove(m.parameter_indexes[j][k])
+						else:
+							if m.parameter_indexes[j][k][0] > i:
+								m.parameter_indexes[j][k][0] -= 1
+							if m.parameter_indexes[j][k][1] > i:
+								m.parameter_indexes[j][k][1] -= 1
+							k += 1
+				i = -1
+			i += 1
+
+	def removeUnusedTrans(m):
+		to_remove = list(set(range(len(m.transition_expr))) - set(m.matrix.flatten()) )
+		for i in to_remove:
+			m.transition_expr = m.transition_expr[:i]+m.transition_expr[i+1:]
+			for j in range(len(m.matrix)):
+				for k in range(len(m.matrix)):
+					if m.matrix[j][k] > i:
+						m.matrix[j][k] -= 1
+			for j in range(len(to_remove)):
+				if to_remove[j] > i:
+					to_remove[j] -= 1
+
 	if len(ms) == 0:
 		raise ValueError("ms must contain at least 2 models.")
 	elif len(ms) == 1:
@@ -474,11 +510,22 @@ def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") ->
 	sync_trans = []
 	for i in range(1,len(ms)):
 		for t in sync_trans:
-			m1.synchronous_transitions.append((t[0],t[2],t[1],t[3]))
-			m1.matrix[t[0],t[1]] = 0
-		print(m1.synchronous_transitions)
+			m1.synchronous_transitions.append(t)
 		print(m1)
+		print(sync_trans)
 		m1, sync_trans = synchronousComposition2PCTMCs(m1, ms[i], name)
+	# add sync trans
+	for t in sync_trans:
+		s, _, d, expr = t
+		if m1.matrix[s,d] != 0.0:
+			expr = expr + m1.transitionExpression(s,d)
+		if not expr in m1.transition_expr:
+			m1.transition_expr.append(expr)
+		m1.matrix[s,d] = m1.transition_expr.index(expr)
+		for p in expr.free_symbols:
+			m1.parameter_indexes[m1.parameter_str.index(p)].append([s,d])
+	removeUnreachableState(m1)
+	removeUnusedTrans(m1)
 	return m1
 
 def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition"):
@@ -492,69 +539,15 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 
 	matrix= zeros((nb_states,nb_states),dtype='uint8')
 	labeling = []
-	p_v = []
-	p_str = []
-	p_i = []
-	trans_str = ['0.0']
-
-	def get_params(s1,s2,model):
-		if model == 1:
-			m = m1
-		else:
-			m = m2
-		p = []
-		ids = m.involvedParameters(s1,s2)
-		for i in ids:
-			p.append(m.parameter_str[i])
-		return p # ['p','q',...]
-	
-	def get_params_sync_trans(s,model):
-		if model == 1:
-			m = m1
-		else:
-			m = m2
-		p = []
-		while '$' in s:
-			start = s.index('$')
-			end = s.index('$',start+1)
-			p.append(s[start+1:end])
-			s = s[end+1:]
-		return p
+	p_v = m1.parameter_values #TODO m2.parameter_values
+	p_str = list(set(m1.parameter_str+m2.parameter_str))
+	p_i = [[] for _ in p_str]
+	trans_expr = [sympify('0.0')]
 
 	def get_state_index(s1,s2):
 		s2 = m2_sids.index(s2)
 		s1 = m1_sids.index(s1)
 		return s1*m2_nb_states+s2
-
-	def get_new_trans_string(old_string,model):
-		if type(old_string) == float:
-			return str(old_string)
-		if model == 1:
-			m = m1
-		else:
-			m = m2
-		new_string = ''
-		while '$' in old_string:
-			s = old_string.index("$")
-			e = old_string.index('$',s+1)
-			new_string += old_string[:s]
-			new_string += '$'+str(p_str.index(m.parameter_str[int(old_string[s+1:e])]))+'$'
-			old_string = old_string[e+1:]
-		new_string += old_string
-		return new_string
-	
-	def get_new_sync_trans_string(old_string):
-		if type(old_string) == float:
-			return str(old_string)
-		new_string = ''
-		while '$' in old_string:
-			s = old_string.index("$")
-			e = old_string.index('$',s+1)
-			new_string += old_string[:s]
-			new_string += '$'+str(p_str.index(old_string[s+1:e]))+'$'
-			old_string = old_string[e+1:]
-		new_string += old_string
-		return new_string
 
 	def add_in_matrix(trans,s1,s2,model,add_index=[]):
 		if model == 1:
@@ -569,112 +562,57 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 				matrix[x,y] = trans
 				for ind in add_index:
 					p_i[ind].append([x,y])
-
-	def add_float_transition(s1,s2,model):
-		trans_str.append('$'+str(len(p_str))+'$')
-		if model == 1:
-			p_str.append("p_unamed_"+str(s1)+'_'+str(s2))
-			p_v.append(m1.transitionValue(s1,s2))
-		else:
-			p_str.append("q_unamed_"+str(s1)+'_'+str(s2))
-			p_v.append(m2.transitionValue(s1,s2))
-		p_i.append([])
-		add_in_matrix(trans=len(trans_str)-1,s1=s1,s2=s2,model=model,add_index=[len(p_i)-1])
-
-	def add_named_parameter(s1,s2,model):
+	
+	def add_transition(i,j,model):
 		if model == 1:
 			m = m1
 		else:
 			m = m2
-		p = get_params(s1,s2,model)
-		add_index=[]
-		for k in p:
-			if not k in p_str:
-				p_str.append(k)
-				p_v.append(m.parameterValue(k))
+		expr = m.transitionExpression(i,j)
+		if not expr in trans_expr:
+			trans_expr.append(expr)
+		add_index = []
+		for p in m.involvedParameters(i,j):
+			if not p in p_str:
+				p_str.append(p)
+			add_index.append(p_str.index(p))
+		add_in_matrix(trans_expr.index(expr),i,j,model,add_index)
+	
+	def add_sync_transition(a,s1, d1, expr1, s2, d2, expr2):
+		expr1 = sympify(expr1)
+		expr2 = sympify(expr2)
+		expr = expr1*expr2
+		for p in expr.free_symbols:
+			if not p in p_str:
+				p_str.append(p)
 				p_i.append([])
-			add_index.append(p_str.index(k))
-		old_string = m.transition_str(s1,s2)
-		new_string = get_new_trans_string(old_string,model)
-		if not new_string in trans_str:
-			trans_str.append(new_string)
-		add_in_matrix(trans_str.index(new_string),s1,s2,model,add_index)
+		x, y = get_state_index(s1,s2), get_state_index(d1, d2)
+		return [x,a,y,expr]
 
 	for s1 in m1_sids: # labeling
 		for s2 in m2_sids:
 			labeling.append(m1.labeling[s1]+','+m2.labeling[s2])
-
 	for i in m1_sids: # m1 transitions
 		for j in m1_sids:
-			if m1.matrix[i,j] == 0:
-				add_in_matrix(trans=0,s1=i,s2=j,model=1)
-			elif '$' in m1.transitionStr(i,j):
-				add_named_parameter(i,j,1)
-			else:
-				add_float_transition(i,j,1)
-
+			add_transition(i,j,1)
 	for i in m2_sids: # m2 transitions
 		for j in m2_sids:
-			if m2.matrix[i,j] == 0.0:
-				add_in_matrix(trans=0,s1=i,s2=j,model=2)
-			elif '$' in m2.transitionStr(i,j):
-				add_named_parameter(i,j,2)
-			else:
-				add_float_transition(i,j,2)
-
+			add_transition(i,j,2)
 	for i in m1_sids: # self loops
 		if m1.matrix[i,i] != 0:
 			for j in m2_sids:
 				if m2.matrix[j,j] != 0:
-					if not '$' in m1.transitionStr(i,i):
-						t_str = '$'+str(p_str.index("p_unamed_"+str(i)+'_'+str(i)))+'$*'
-					else:
-						t_str = '('+get_new_trans_string(m1.transition_str(i,i),1)+')*'
-					if not '$' in m2.transitionStr(j,j):
-						t_str = '$'+str(p_str.index("q_unamed_"+str(j)+'_'+str(j)))+'$*'
-					else:
-						t_str += '('+get_new_trans_string(m2.transition_str(j,j),2)+')'
-					if not t_str in trans_str:
-						trans_str.append(t_str)
-
+					expr = m1.transitionExpression(i,i)+m2.transitionExpression(j,j)
+					if not expr in trans_expr:
+						trans_expr.append(expr)
+					matrix[get_state_index(i,j),get_state_index(i,j)] = trans_expr.index(expr)
 	sync_trans = []
 	for sync_1 in m1.synchronous_transitions: # synchronous transitions
 		si,ai,di,pi = sync_1
 		for sync_2 in m2.synchronous_transitions:
 			sj,aj,dj,pj = sync_2
 			if ai == aj:
-				if type(pi) != float or type(pj) != float:
-					ps = []
-					if type(pi) != float:
-						ps += get_params_sync_trans(pi,1)
-					for i in ps:
-						if not i in p_str:
-							p_str.append(i)
-							p_v.append(m1.parameterValue(i))
-							p_i.append([])
-					if type(pj) != float:
-						ps += get_params_sync_trans(pj,2)
-					for i in ps:
-						if not i in p_str:
-							p_str.append(i)
-							p_v.append(m2.parameterValue(i))
-							p_i.append([])
-					for i in ps:
-						indexes = [get_state_index(si,sj),get_state_index(di,dj)]
-						if not indexes in p_i[p_str.index(i)]:
-							p_i[p_str.index(i)].append(indexes)
-					prev_val = matrix[get_state_index(si,sj),get_state_index(di,dj)]
-					if prev_val == 0:
-						matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(trans_str)
-						trans_str.append('('+get_new_sync_trans_string(pi)+')*('+get_new_sync_trans_string(pj)+')')
-						prev_val = -1
-					else:
-						trans_str[prev_val]+= '+ ('+get_new_sync_trans_string(pi)+')*('+get_new_sync_trans_string(pj)+')'
-					sync_trans.append((get_state_index(si,sj),get_state_index(di,dj),ai,'('+str(pi)+')*('+str(pj)+')'))
-				else:
-					matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(trans_str)
-					trans_str.append(str(pi*pj))
-					sync_trans.append((get_state_index(si,sj),get_state_index(di,dj),ai,pi*pj))
+				sync_trans.append(add_sync_transition(ai,si,di,pi,sj,dj,pj))
 				
 	labeling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
@@ -700,46 +638,7 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 			if si*sj == 0.0:
 				matrix[-1][get_state_index(i,j)] = 0
 			else:
-				matrix[-1][get_state_index(i,j)] = len(trans_str)
-				trans_str.append(str(si*sj))
+				matrix[-1][get_state_index(i,j)] = len(trans_expr)
+				trans_expr.append(sympify(str(si*sj)))
 
-	i = 0
-	while i < len(matrix): # removing unreachable state
-		if (matrix.T[i] == 0).all() == True and labeling[i] != 'init':
-			nb_states -= 1
-			matrix = delete(matrix,i,0)
-			matrix = delete(matrix,i,1)
-			labeling = labeling[:i]+labeling[i+1:]
-			for j in range(len(p_i)):
-				k = 0
-				while k < len(p_i[j]): 
-					if p_i[j][k][0] == i:
-						p_i[j].remove(p_i[j][k])
-					else:
-						if p_i[j][k][0] > i:
-							p_i[j][k][0] -= 1
-						if p_i[j][k][1] > i:
-							p_i[j][k][1] -= 1
-						k += 1
-			j = 0
-			while j <len(sync_trans):
-				if sync_trans[j][0] == i or sync_trans[j][1] == i:
-					sync_trans = sync_trans[:j]+sync_trans[j+1:]
-					j -= 1
-				j += 1
-			i = -1
-		i += 1
-	p_i[0] = []
-
-	to_remove = list(set(range(len(trans_str))) - set(matrix.flatten()) )
-	for i in to_remove:
-		trans_str = trans_str[:i]+trans_str[i+1:]
-		for j in range(len(matrix)):
-			for k in range(len(matrix)):
-				if matrix[j][k] > i:
-					matrix[j][k] -= 1
-		for j in range(len(to_remove)):
-			if to_remove[j] > i:
-				to_remove[j] -= 1
-
-	return PCTMC(matrix,labeling,trans_str,p_v,p_i,p_str,name), sync_trans
+	return PCTMC(matrix,labeling,trans_expr,p_v,p_i,p_str,name), sync_trans
