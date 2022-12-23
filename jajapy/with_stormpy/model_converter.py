@@ -7,7 +7,8 @@ from ..pmc import PMC
 from ..pctmc import PCTMC
 from copy import deepcopy
 from io import StringIO
-from contextlib import redirect_stderr, redirect_stdout
+from contextlib import redirect_stderr
+from sympy import symbols, sympify
 
 def stormpyModeltoJajapy(h,actions_name:list = []):
 	"""
@@ -56,8 +57,8 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		ty = 1
 	elif type(h) == st.SparseMdp:
 		ty = 2
-	elif type(h) == st.SparseParametricDtmc:
-		ty = 3
+	#elif type(h) == st.SparseParametricDtmc:
+	#	ty = 3
 	elif type(h) == st.SparseParametricCtmc:
 		ty = 4
 	else:
@@ -79,9 +80,10 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		matrix = zeros((len(h.states),len(h.states)))
 	elif ty == 3 or ty == 4:
 		matrix = zeros((len(h.states),len(h.states)),dtype='uint8')
-		p_str = [None]
-		p_v = [0.0]
-		p_i = [[]]
+		p_str = []
+		p_v = {}
+		p_i = []
+		t_expr = ['0.0']
 
 	add_init_state = None
 	for si,s in enumerate(h.states):
@@ -103,31 +105,28 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 				t_val = t.value()
 				if ty == 2:
 					matrix[c][int(str(a))][dest] = t_val
-				elif ty == 1 or ty == 2:
+				elif ty == 1 or ty == 0:
 					matrix[c][dest] = t_val
 				else:
-					if t_val.is_constant():
-						matrix[c][dest] = len(p_str)
-						p_str.append(None)
-						p_v.append(eval(str(t_val)))
+					ps = [i.name for i in list(t_val.gather_variables())]
+					if len(ps) == 1:
+						ps = [symbols(ps[0])]
+					elif len(ps) > 1:
+						ps = list(symbols(" ".join(ps)))
+					for v in ps:
+						if not v in p_str:
+							p_str.append(v)
+							p_i.append([])
+						p_i[p_str.index(v)].append([c,dest])
+					#t_val = renameParameters(t_val,p_str)
+					t_val = sympify(t_val)
+					if not t_val in t_expr:
+						matrix[c][dest] = len(t_expr)
+						t_expr.append(str(t_val))
+						p_v.append(nan)
 						p_i.append([])
 					else:
-						for v in ['$'+i.name+'$' for i in list(t_val.gather_variables())]:
-							if not v in p_str:
-								p_str.append(v)
-								p_v.append(nan)
-								p_i.append([])
-							p_i[p_str.index(v)].append([c,dest])
-						t_val = renameParameters(t_val,p_str)
-						if not t_val in p_str:
-								matrix[c][dest] = len(p_str)
-								p_str.append(str(t_val))
-								p_v.append(nan)
-								p_i.append([])
-						else:
-							matrix[c][dest] = p_str.index(t_val)
-						
-
+						matrix[c][dest] = t_expr.index(t_val)
 		#if ty == 1:
 		#	matrix[c] *= h.exit_rates[si]
 	
@@ -147,10 +146,10 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		return CTMC(matrix, labeling)
 	elif ty == 2:
 		return MDP(matrix,labeling,actions)
-	elif ty == 3:
-		return PMC(matrix,labeling,p_v,p_i,p_str)
+	#elif ty == 3:
+	#	return PMC(matrix,labeling,p_v,p_i,p_str)
 	elif ty == 4:
-		return PCTMC(matrix,labeling,p_v,p_i,p_str)
+		return PCTMC(matrix,labeling,t_expr,p_v,p_i,p_str)
 
 def jajapyModeltoStormpy(h):
 	"""
