@@ -6,6 +6,7 @@ from numpy.random import exponential, rand
 from math import exp, log
 from multiprocessing import cpu_count, Pool
 from sys import platform
+from sympy import sympify, symbols
 
 class PCTMC(Parametric_Model):
 	"""
@@ -201,6 +202,28 @@ class PCTMC(Parametric_Model):
 		return False
 
 	def randomInstantiation(self, parameters: list = [],min_val:float = None,max_val:float = None) -> None:
+		"""
+		Randomly instantiated the parameters given in `parameters`.
+		If `parameters` is not set it instantiates all the non-instantiated
+		parameters in the model.
+
+		Parameters
+		----------
+		parameters : list of string, optional.
+			List of parameters names.
+		min_val : float, optional
+			Minimal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the smallest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 0.1.
+		max_val : float, optional
+			Maximal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the highest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 5.0.
+		"""
 		if len(parameters) == 0.0:
 			parameters = list(set(self.parameter_str) - set(self.parameter_values.keys()))
 		if min_val == None:

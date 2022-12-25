@@ -72,10 +72,25 @@ class BW_PCTMC(BW):
 					traces.sequences[s].insert(0,0.5)
 				traces.sequences[s].insert(0,'init')
 		self.h = initial_model
-		if not self.h.isInstantiated():
-			for i,s in enumerate(self.h.parameter_str):
-				
 
+		try:
+			from ..with_stormpy import stormpyModeltoJajapy
+			stormpy_installed = True
+		except ModuleNotFoundError:
+			stormpy_installed = False
+
+		try:
+			initial_model.name
+		except AttributeError: # then initial_model is a stormpy sparse model
+			if not stormpy_installed:
+				print("ERROR: the initial model is a Storm model and Storm is not installed on the machine")
+				return False
+			initial_model = stormpyModeltoJajapy(initial_model)	
+
+		if not initial_model.isInstantiated():
+			initial_model.randomInstantiation()
+		
+		self.nb_parameters = initial_model.nb_parameters
 		#if type(fixed_parameters) == bool:
 		#	self.fixed_parameters = full(initial_model.matrix.shape,False)
 		#else:
@@ -262,17 +277,12 @@ class BW_PCTMC(BW):
 		else:
 			den = (alpha_matrix[:,:-1]*beta_matrix[:,:-1]*times/proba_seq).sum(axis=1)
 
-		num = zeros(shape=(self.nb_states,self.nb_states))	
-		for s in range(self.nb_states):
-			for ss in range(self.nb_states):
-				if not self.fixed_parameters[s,ss]:
-					if timed:
-						p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-					else:
-						p = array([self.h_l(s,ss,o) for o in obs_seq])
-					num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-				else:
-					num[s,ss] = 0.0
+		num_p = zeros(self.nb_parameters)
+		den_p = zeros(self.nb_parameters)
+		for p in range(self.nb_parameters):
+			for s,ss in self.h.parameter_indexes[p]:
+				if timed:
+					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 		####################
 		return [den, num, proba_seq, times]
 
@@ -291,4 +301,4 @@ class BW_PCTMC(BW):
 
 		matrix = num/den[:, newaxis]
 		matrix = self.h.matrix*self.fixed_parameters + matrix
-		return [CTMC(matrix,self.h.labeling),currentloglikelihood]
+		return [PCTMC(matrix,self.h.labeling),currentloglikelihood]
