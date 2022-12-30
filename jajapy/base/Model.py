@@ -184,9 +184,9 @@ class Model:
 
 			if not trace in seq:
 				seq.append(trace)
-				val.append(0)
-
-			val[seq.index(trace)] += 1
+				val.append(1)
+			else:
+				val[seq.index(trace)] += 1
 
 		return Set(seq,val)
 

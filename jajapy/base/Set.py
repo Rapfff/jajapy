@@ -38,7 +38,7 @@ class Set:
 		else:
 			if type(sequences[0][0])  == float64 or type(sequences[0][0])  == float:
 				self.type = 2 # GOHMM
-			elif type(sequences[0][1])  == float64 or type(sequences[0][1])  == float:
+			elif (type(sequences[0][1])  == float64 or type(sequences[0][1])  == float) and type(sequences[0][0])  == str:
 				self.type = 4 # timed CTMC
 			elif type(sequences[0][0])  == list:
 				self.type = 3 # MGOHMM
@@ -131,7 +131,7 @@ class Set:
 		observations = []
 		if self.type == 4: # timed self.sequences
 			for sequence_obs in self.sequences:
-				for x in range(1,len(sequence_obs),2):
+				for x in range(0,len(sequence_obs),2):
 					if sequence_obs[x] not in observations:
 						observations.append(sequence_obs[x])	
 		elif self.type == 0:

@@ -147,8 +147,8 @@ class BW_CTMC(BW):
 
 
 	def fit(self, traces, initial_model = None, nb_states: int=None,
-			random_initial_state: bool=False, min_exit_rate_time : int=1.0,
-			max_exit_rate_time: int=10.0, self_loop: bool = True,
+			random_initial_state: bool=False, min_exit_rate_time : int=1,
+			max_exit_rate_time: int=10, self_loop: bool = True,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
 			verbose: bool = True, return_data: bool = False, stormpy_output: bool = True,
 			fixed_parameters: ndarray = False) -> CTMC:
@@ -226,12 +226,13 @@ class BW_CTMC(BW):
 		if not 'init' in alphabet:
 			if nb_states != None:
 				nb_states += 1
-			alphabet.append('init')
 			timed = type(traces.sequences[0][1]) != str
 			for s in range(len(traces.sequences)):
 				if timed:
 					traces.sequences[s].insert(0,0.5)
 				traces.sequences[s].insert(0,'init')
+		else:
+			alphabet.remove('init')
 		
 		if not initial_model:
 			if not nb_states:

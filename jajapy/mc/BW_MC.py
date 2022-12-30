@@ -11,7 +11,7 @@ class BW_MC(BW):
 		super().__init__()
 	
 	def fit(self, traces, initial_model=None, nb_states: int=None,
-			random_initial_state: bool=False, output_file: str=None,
+			random_initial_state: bool=True, output_file: str=None,
 			epsilon: float=0.01, max_it: int = inf, pp: str='',
 			verbose: bool = True, return_data: bool= False,
 			stormpy_output: bool = True):
@@ -32,8 +32,7 @@ class BW_MC(BW):
 		random_initial_state: bool
 			If ``initial_model`` is not set it will create a random MC with
 			random initial state according to this sequence of probabilities.
-			Should be set if ``initial_model`` is not set.
-			Default is False.
+			Default is True.
 		output_file : str, optional
 			if set path file of the output model. Otherwise the output model
 			will not be saved into a text file.

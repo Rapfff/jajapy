@@ -429,25 +429,26 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	
 	labeling = alphabet[:min(len(alphabet),nb_states)] + choices(alphabet,k=nb_states-len(alphabet))
 	
-	matrix = []
+	matrix = zeros((nb_states,nb_states))
 	for i in range(nb_states):
 		if self_loop:
-			random_probs = array(randomProbabilities(nb_states))
+			matrix[i] = randomProbabilities(nb_states)
 		else:
-			p = randomProbabilities(nb_states-1)
-			random_probs.insert(i,0.0)
-		p = randomProbabilities(nb_states)
+			p = randomProbabilities(nb_states-1).tolist()
+			p.insert(i,0.0)
+			matrix[i] = array(p)
 		av_waiting_time = randint(min_exit_rate_time,max_exit_rate_time)
-		p = random_probs/av_waiting_time
-		matrix.append(p)
+		matrix[i] /= av_waiting_time
 	
-	labeling.append("init")
-	if random_initial_state:
-		matrix.append(append(randomProbabilities(nb_states),0.0))
+	labeling.append('init')
+	
+	if not random_initial_state:
+		matrix = vstack((matrix,zeros(len(matrix))))
+		matrix[-1][0] = 1.0
 	else:
-		matrix.append([1.0]+[0.0 for i in range(nb_states)])
-	
-	matrix = array(matrix)
+		matrix = vstack((matrix,randomProbabilities(nb_states)))
+
+	matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
 	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
 
 def createCTMC(transitions: list, labeling: list, initial_state,
