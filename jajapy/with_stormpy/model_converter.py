@@ -32,25 +32,6 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	jajapy.MC, jajapy.CTMC or jajapy.MDP
 		The same model in jajapy format.
 	"""
-	def renameParameters(string,ps):
-		string = str(string)
-		s = string.replace('(',' ')
-		s = s.replace(')',' ')
-		for i in list("*-+/"):
-			s = s.replace(i,' ')
-		s = s.split(' ')
-		i = 0
-		while i < len(s):
-			if not '$'+s[i]+'$' in ps:
-				s.remove(s[i])
-			else:
-				i += 1
-		last = 0
-		for i in s:
-			start = string.index(i,last)
-			l = len(i)
-			string = string[:start] + '$' + i +'$'+string[start+l:]
-		return string
 	if type(h) == st.SparseDtmc:
 		ty = 0
 	elif type(h) == st.SparseCtmc:
@@ -83,21 +64,22 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		p_str = []
 		p_v = {}
 		p_i = []
-		t_expr = ['0.0']
+		t_expr = [sympify(0.0)]
 
 	add_init_state = None
 	for si,s in enumerate(h.states):
 		c = si
-		if len(s.labels) == 0:
+		temp = list(s.labels)
+		temp.sort()
+		if len(temp) == 0:
 			labeling[si] = "empty"
-		elif 'init' in s.labels and len(s.labels) > 1:
-			temp = list(s.labels)
+		elif 'init' in temp and len(temp) > 1:
 			temp.remove("init")
 			labeling.append("init")
 			labeling[si] = ','.join(list(temp))
 			add_init_state = c
 		else:
-			labeling[si] = ','.join(list(s.labels))
+			labeling[si] = ','.join(list(temp))
 
 		for a in s.actions:
 			for t in a.transitions:
@@ -114,17 +96,16 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 					elif len(ps) > 1:
 						ps = list(symbols(" ".join(ps)))
 					for v in ps:
+						v = v.name
 						if not v in p_str:
 							p_str.append(v)
 							p_i.append([])
+							p_v[v] = nan
 						p_i[p_str.index(v)].append([c,dest])
-					#t_val = renameParameters(t_val,p_str)
 					t_val = sympify(t_val)
 					if not t_val in t_expr:
 						matrix[c][dest] = len(t_expr)
-						t_expr.append(str(t_val))
-						p_v.append(nan)
-						p_i.append([])
+						t_expr.append(t_val)
 					else:
 						matrix[c][dest] = t_expr.index(t_val)
 		#if ty == 1:

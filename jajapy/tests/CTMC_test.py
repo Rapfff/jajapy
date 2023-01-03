@@ -123,7 +123,7 @@ class CTMCTestclass(unittest.TestCase):
 							  output_gotten.logLikelihood(test_set))
 	
 	def test_sync_composition(var):
-		output_gotten = synchronousComposition(modelCTMC_car_tl(),modelCTMC_ped_tl())
+		output_gotten = synchronousCompositionCTMCs(modelCTMC_car_tl(),modelCTMC_ped_tl())
 		output_expected = loadCTMC("jajapy/tests/materials/ctmc/composition.txt")
 		var.assertEqual(str(output_expected),str(output_gotten))
 

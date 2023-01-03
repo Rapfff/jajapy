@@ -3,9 +3,10 @@ from numpy.random import geometric
 from ast import literal_eval
 from copy import deepcopy
 from ..base.Set import Set
-from sympy import *
+from ..base.Model import Model
+from sympy import sympify
 
-class Parametric_Model:
+class Parametric_Model(Model):
 	"""
 	Abstract class that represents parametric MC/CTMC/MDP.
 	Is inherited by PMC, PCTMC and PMDP.
@@ -56,7 +57,7 @@ class Parametric_Model:
 		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
 
 		if len(parameter_indexes) != len(parameter_str):
-			raise ValueError("Length of parameter_indexes, parameter_values and parameter_str must be equal.")
+			raise ValueError("Length of parameter_indexes and parameter_str must be equal.")
 		self.nb_parameters = len(parameter_indexes)
 		if max(matrix.flatten()) >= len(transition_expr):
 			msg = "Transition "+str(max(matrix.flatten()))+" found in matrix while length "
@@ -74,33 +75,40 @@ class Parametric_Model:
 		#			msg+= "are only "+str(self.nb_states)+" states."
 		#			raise ValueError(msg)
 
-		if type(initial_state) == int:
-			self.initial_state = array([0.0 for i in range(self.nb_states)])
-			self.initial_state[initial_state] = 1.0
-		else:
-			if round(sum(initial_state)) != 1.0:
-				msg = "Error: the sum of initial_state should be 1.0, here it's"
-				msg+= str(sum(initial_state))
-				raise ValueError(msg)
-			self.initial_state = array(initial_state)
 		
 		if len(self.labeling) != self.nb_states:
 			msg = "The length of labeling ("+str(len(labeling))+") is not equal "
 			msg+= "to the number of states("+str(self.nb_states)+")"
 			raise ValueError(msg)
 		
-		self.name = name
 		self.transition_expr = transition_expr
+		k = list(parameter_values.keys())
+		for i in k:
+			if isnan(parameter_values[i]):
+				del parameter_values[i]
 		self.parameter_values = parameter_values
 		self.parameter_indexes= parameter_indexes
 		self.parameter_str = parameter_str
-		self.matrix = matrix
 
-	def isInstantiated(self,state:int = None) -> bool:
+		super().__init__(matrix,initial_state,name)
+
+	def isInstantiated(self,state:int = None, state2:int = None) -> bool:
 		"""
 		Checks if all the parameters are instantiated.
 		If `state` is set, checks if all the transitions leaving this state
 		are instantiated.
+
+		Parameters
+		----------
+		state : int, optional.
+			state ID.
+			If `state` is set, checks if all the transitions leaving this state
+			are instantiated.
+		
+		state2 : int, optional.
+			state ID.
+			If `state` and `state2` are set, checks if the transitions from
+			`state` to `state2` is instantiated.
 
 		Returns
 		-------
@@ -108,11 +116,17 @@ class Parametric_Model:
 			True if all the parameters are intantiated.
 		"""
 		if type(state) == type(None):
-			return len(set(self.parameter_str) - set(self.parameter_values.keys())) == 0
+			return len(set(self.parameter_str) - set([i for i in self.parameter_values.keys() if not isnan(self.parameter_values[i])])) == 0
 		else:
 			self._checkStateIndex(state)
-			for i in self.involvedParameters(state):
+			if type(state2) == type(None):
+				parameters = self.involvedParameters(state)
+			else:
+				parameters = self.involvedParameters(state,state2)
+			for i in parameters:
 				if not i in self.parameter_values:
+					return False
+				if isnan(self.parameter_values[i]):
 					return False
 			return True
 
@@ -140,11 +154,6 @@ class Parametric_Model:
 			List of values. `parameters[i]` will be set to `values[i]`.
 		"""
 		new_values = deepcopy(self.parameter_values)
-		if type(parameters[0]) == str:
-			if len(parameters)>1:
-				parameters = symbols(" ".join(parameters))
-			else:
-				parameters = symbols(parameters)
 		for s,v in zip(parameters,values):
 			new_values[s] = v
 		return new_values
@@ -188,8 +197,10 @@ class Parametric_Model:
 			j =  [j]
 		res = set()
 		for jj in j:
-			res.union(self.transitionExpression(i,jj).free_symbols)
-		return list(res)
+			res = res.union(self.transitionExpression(i,jj).free_symbols)
+		res = list(res)
+		res = [i.name for i in res]
+		return res
 
 	def getLabel(self,state: int) -> str:
 		"""
@@ -231,6 +242,10 @@ class Parametric_Model:
 	
 	def __str__(self) -> str:
 		res = "Name: "+self.name+'\n'
+		for i in self.parameter_values.keys():
+			if not isnan(self.parameter_values[i]):
+				res += i+' = '+str(round(self.parameter_values[i],5))+'\n'
+		res += '\n'
 		if 1.0 in self.initial_state:
 			res += "Initial state: s"+str(where(self.initial_state==1.0)[0][0])+'\n'
 		else:
@@ -309,7 +324,7 @@ class Parametric_Model:
 	def _save(self, f) -> None:
 		f.write(self.name)
 		f.write('\n')
-		f.write(str(self.matrix))
+		f.write(str(self.matrix.tolist()))
 		f.write('\n')
 		f.write(str(self.labeling))
 		f.write('\n')
@@ -319,7 +334,7 @@ class Parametric_Model:
 		f.write('\n')
 		f.write(str(self.parameter_str))
 		f.write('\n')
-		f.write(str(self.transition_expr))
+		f.write(str([str(i) for i in self.transition_expr]))
 		f.write('\n')
 		f.close()
 
@@ -336,19 +351,22 @@ class Parametric_Model:
 		#TODO
 
 	def _checkStateIndex(self,s:int) -> None:
-		if type(s) != int:
+		try:
+			s = int(s)
+		except TypeError:
 			raise TypeError('The parameter must be a valid state ID')
-		elif s < 0:
+		if s < 0:
 			raise IndexError('The parameter must be a valid state ID')
 		elif s >= self.nb_states:
 			raise IndexError('This model contains only '+str(self.nb_states)+' states')
 
 def loadParametricModel(f):
-	name = literal_eval(f.readline()[:-1])
-	matrix = literal_eval(f.readline()[:-1])
+	name = f.readline()[:-1]
+	matrix = array(literal_eval(f.readline()[:-1]))
 	labeling = literal_eval(f.readline()[:-1])
 	parameter_values = literal_eval(f.readline()[:-1])
 	parameter_indexes = literal_eval(f.readline()[:-1])
 	parameter_str = literal_eval(f.readline()[:-1])
 	transition_expr = literal_eval(f.readline()[:-1])
+	transition_expr = [sympify(i) for i in transition_expr]
 	return matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_expr,name

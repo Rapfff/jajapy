@@ -39,7 +39,7 @@ class Set:
 			if type(sequences[0][0])  == float64 or type(sequences[0][0])  == float:
 				self.type = 2 # GOHMM
 			elif type(sequences[0][1])  == float64 or type(sequences[0][1])  == float:
-				self.type = 4 # timed CTMC
+				self.type = 4 # timed CTMC or PCTMC
 			elif type(sequences[0][0])  == list:
 				self.type = 3 # MGOHMM
 			else:

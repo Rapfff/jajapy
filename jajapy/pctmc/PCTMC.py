@@ -224,8 +224,13 @@ class PCTMC(Parametric_Model):
 			If not set and if the model has less than two instantiated parameters,
 			this value is equal to 5.0.
 		"""
-		if len(parameters) == 0.0:
-			parameters = list(set(self.parameter_str) - set(self.parameter_values.keys()))
+		if len(parameters) == 0:
+			for i in self.parameter_str:
+				if not i in self.parameter_values:
+					parameters.append(i)
+				elif isnan(self.parameter_values[i]):
+					parameters.append(i)
+
 		if min_val == None:
 			if len(list(self.parameter_values.values())) > 1:
 				min_val = min(self.parameter_values.values())
@@ -244,13 +249,12 @@ class PCTMC(Parametric_Model):
 	def _stateToString(self,state:int) -> str:
 		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
 		if self.isInstantiated(state):
-			res += "Exepected waiting time: "+str(self.expected_time(state))+'\n'
+			res += "Exepected waiting time: "+str(round(self.expected_time(state),5))+'\n'
 		for j in range(len(self.matrix[state])):
 			if self.matrix[state][j] != 0:
 				val = str(self.transitionExpression(state,j))
-				v = self.transitionValue(state,j)
-				if type(v) == float:
-					val += ' (='+str(v)+')'
+				if self.isInstantiated(state,j) and len(self.involvedParameters(state,j)) > 0:
+					val += ' (='+str(round(self.transitionValue(state,j),5))+')'
 				res += "s"+str(state)+" -> s"+str(j)+" : lambda = "+val+'\n'
 		return res
 	
@@ -322,6 +326,9 @@ class PCTMC(Parametric_Model):
 		return log(last_arr.sum())*times
 
 	def logLikelihood(self,traces: Set) -> float:
+		if not self.isInstantiated():
+			raise ValueError("Cannot compute the loglikelihood of a set under a non-instantiated model.")
+			
 		if traces.type == 0: # non-timed traces
 			return super().logLikelihood(traces)
 		else: # timed traces
@@ -380,7 +387,7 @@ def loadPCTMC(file_path: str) -> PCTMC:
 	"""
 	f = open(file_path,'r')
 	l = f.readline()[:-1] 
-	if l != " PCTMC":
+	if l != "PCTMC":
 		msg = "This file doesn't describe a PCTMC: it describes a "+l
 		raise ValueError(msg)
 	matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_expr,name = loadParametricModel(f)
