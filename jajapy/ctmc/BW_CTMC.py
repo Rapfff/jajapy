@@ -147,7 +147,7 @@ class BW_CTMC(BW):
 
 
 	def fit(self, traces, initial_model = None, nb_states: int=None,
-			random_initial_state: bool=False, min_exit_rate_time : int=1,
+			random_initial_state: bool=True, min_exit_rate_time : int=1,
 			max_exit_rate_time: int=10, self_loop: bool = True,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf, pp: str='',
 			verbose: bool = True, return_data: bool = False, stormpy_output: bool = True,
@@ -170,7 +170,7 @@ class BW_CTMC(BW):
 			If ``initial_model`` is not set it will create a random CTMC with
 			random initial state according to this sequence of probabilities.
 			Should be set if ``initial_model`` is not set.
-			Default is False.
+			Default is True.
 		min_exit_rate_time: int, optional
 			Minimum exit rate for the states in the first hypothesis.
 			Default is 1.0.
