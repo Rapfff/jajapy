@@ -131,7 +131,7 @@ class Set:
 		observations = []
 		if self.type == 4: # timed self.sequences
 			for sequence_obs in self.sequences:
-				for x in range(1,len(sequence_obs),2):
+				for x in range(0,len(sequence_obs),2):
 					if sequence_obs[x] not in observations:
 						observations.append(sequence_obs[x])	
 		elif self.type == 0:

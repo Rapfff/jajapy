@@ -140,6 +140,12 @@ class Parametric_Model(Model):
 		if not p in self.parameter_values:
 			return nan
 		return self.parameter_values[p]
+	
+	def parameterIndexes(self, p:str) -> list:
+		if not p in self.parameter_str:
+			return []
+		return self.parameter_indexes[self.parameter_str.index(p)]
+
 
 	def instantiate(self,parameters: list, values: list) -> ndarray: 
 		"""

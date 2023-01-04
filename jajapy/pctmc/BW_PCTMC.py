@@ -2,6 +2,7 @@ from .PCTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
 from numpy import array, zeros, dot, append, ones, log, inf, newaxis, full
+from numpy.polynomial.polynomial import polyroots
 
 
 class BW_PCTMC(BW):
@@ -83,21 +84,62 @@ class BW_PCTMC(BW):
 			initial_model.name
 		except AttributeError: # then initial_model is a stormpy sparse model
 			if not stormpy_installed:
-				print("ERROR: the initial model is a Storm model and Storm is not installed on the machine")
-				return False
+				raise RuntimeError("the initial model is a Storm model and Storm is not installed on the machine")
 			initial_model = stormpyModeltoJajapy(initial_model)	
 
-		if not initial_model.isInstantiated():
-			initial_model.randomInstantiation()
-		
+		initial_model.randomInstantiation()
 		self.nb_parameters = initial_model.nb_parameters
-		#if type(fixed_parameters) == bool:
-		#	self.fixed_parameters = full(initial_model.matrix.shape,False)
-		#else:
-		#	self.fixed_parameters = fixed_parameters
+
+		self.sortParameters()
 
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
+
+	def sortParameters(self):
+		self.parameters_cat = [[],[],[]]
+
+		for p in self.h.parameter_str:
+			apis = [self.a_pi(x,y,p) for x,y in self.h.parameterIndexes(p)]
+			cs = [self.C(x,y) for x,y in self.h.parameterIndexes(p)]
+			if min(apis) == 1 and max(apis) == 1 and min(cs) == 1 and max(cs) == 1:
+				self.parameters_cat[0].append(p)
+			elif min(cs) == max(cs):
+				self.parameters_cat[1].append(p)
+			else:
+				self.parameters_cat[2].append(p)
+
+	def a_pi(self,s1,s2,p):
+		t = self.h.transitionExpression(s1,s2)
+		while not t.is_Pow and not t.is_Symbol:
+			for a in t.args:
+				if p in [x.name for x in a.free_symbols]:
+					t = a
+					break
+		if t.is_Pow:
+			return t.args[1]
+		else:
+			return 1
+
+	def c_pi(self,s1,s2,p):
+		t = self.h.transitionExpression(s1,s2)
+		while not t.is_Mul and not t.is_Symbol:
+			print(t, type(t))
+			input()
+			for a in t.args:
+				if p in [x.name for x in a.free_symbols]:
+					t = a
+					break
+		if t.is_Mul:
+			return t.args[0]
+		else:
+			return 1
+
+	def C(self,s1,s2):
+		r = 0
+		for p in self.h.involvedParameters(s1,s2):
+			r += self.a_pi(s1,s2,p)
+		return r
+		
 	def h_e(self,s: int) -> float:
 		"""
 		Returns the exit rate, in the current hypothesis, of state ``s``, i.e.
@@ -270,35 +312,95 @@ class BW_PCTMC(BW):
 		beta_matrix  = self.computeBetas( obs_seq, times_seq)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
+			print(sequence)
+			print("has prob 0")
 			return False
 		####################
-		if timed:
-			den = (alpha_matrix[:,:-1]*beta_matrix[:,:-1]*times_seq*times/proba_seq).sum(axis=1)	
-		else:
-			den = (alpha_matrix[:,:-1]*beta_matrix[:,:-1]*times/proba_seq).sum(axis=1)
+		num_cste = array(self.h.transition_expr)
+		den_cste = ones(len(num_cste))
+		for itrans,trans in enumerate(self.h.transition_expr[1:]):
+			if trans.is_real:
+				s,ss = where(self.h.matrix == itrans+1)
+				s,ss = s[0],ss[0]
+				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				num_cste[itrans+1] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+				den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
+		
+		num_cat1 = zeros(len(self.parameters_cat[0]))
+		den_cat1 = zeros(len(self.parameters_cat[0]))
+		for iparam,param in enumerate(self.parameters_cat[0]):
+			for s,ss in self.h.parameterIndexes(param):
+				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pi(s,ss,param)*times/proba_seq).sum()
 
-		num_p = zeros(self.nb_parameters)
-		den_p = zeros(self.nb_parameters)
-		for p in range(self.nb_parameters):
-			for s,ss in self.h.parameter_indexes[p]:
-				if timed:
-					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-		####################
-		return [den, num, proba_seq, times]
+		num_cat2 = zeros(len(self.parameters_cat[1]))
+		den_cat2 = zeros(len(self.parameters_cat[1]))
+		for iparam,param in enumerate(self.parameters_cat[1]):
+			for s,ss in self.h.parameterIndexes(param):
+				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pi(s,ss,param)*times/proba_seq).sum()
+				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pi(s,ss,param)*self.h.transitionValue(s,ss)*times/proba_seq).sum()
+		
+		terms_cat3 = []
+		for iparam,param in enumerate(self.parameters_cat[2]):
+			temp = [0.0]
+			for s,ss in self.h.parameterIndexes(param):
+				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pi(s,ss,param)*times/proba_seq).sum()
+				c = self.C(s,ss)
+				for _ in range(1+c-len(temp)):
+					temp.append(0.0)
+				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pi(s,ss,param)*self.h.transitionValue(s,ss)*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
+			terms_cat3.append(array(temp))
+
+		return [den_cste, num_cste, den_cat1, num_cat1, den_cat2, num_cat2, terms_cat3, proba_seq, times]
+			
 
 	def _generateHhat(self,temp):
-		den = array([i[0] for i in temp]).sum(axis=0)
-		num = array([i[1] for i in temp]).sum(axis=0)
-		lst_proba=array([i[2] for i in temp])
-		lst_times=array([i[3] for i in temp])
+		den_cste = array([i[0] for i in temp]).sum(axis=0)
+		num_cste = array([i[1] for i in temp]).sum(axis=0)
+		den_cat1 = array([i[2] for i in temp]).sum(axis=0)
+		num_cat1 = array([i[3] for i in temp]).sum(axis=0)
+		den_cat2 = array([i[4] for i in temp]).sum(axis=0)
+		num_cat2 = array([i[5] for i in temp]).sum(axis=0)
+		terms_cat3 = [i[6] for i in temp]
+		lst_proba=array([i[7] for i in temp])
+		lst_times=array([i[8] for i in temp])
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
-		for s in range(len(den)):
-			if den[s] == 0.0:
-				den[s] = 1.0
-				num[s] = self.h.matrix[s]
+		parameters = self.parameters_cat[0]+self.parameters_cat[1]+self.parameters_cat[2]
+		values = []
 
-		matrix = num/den[:, newaxis]
-		matrix = self.h.matrix*self.fixed_parameters + matrix
-		return [PCTMC(matrix,self.h.labeling),currentloglikelihood]
+		for p in range(len(den_cste)):
+			if den_cste[p] == 0.0:
+				den_cste[p] = 1.0
+				num_cste[p] = self.h.transition_expr[p]
+
+		self.h.transition_expr = [sympify(i) for i in (num_cste/den_cste).tolist()]
+	
+		for p in range(len(den_cat1)):
+			if den_cat1[p] == 0.0:
+				den_cat1[p] = 1.0
+				num_cat1[p] = self.h.parameter_values[self.parameters_cat[0][p]]
+		values += (num_cat1/den_cat1).tolist()
+
+		for ip,p in enumerate(self.parameters_cat[1]):
+			if den_cat2[ip] == 0.0:
+				den_cat2[ip] = 1.0
+				num_cat2[ip] = self.h.parameter_values[p]
+			else:
+				s,ss = self.h.parameterIndexes(p)[0]
+				c = self.C(s,ss)
+				den_cat2[ip] = den_cat2[ip]**(1/c)
+				num_cat2[ip] = self.h.parameter_values[p]*num_cat2[ip]**(1/c)
+		values += (num_cat2/den_cat2).tolist()
+
+		for p in range(len(terms_cat3[0])):
+			temp = array([i[p] for i in terms_cat3], dtype=float).sum(axis=0)
+			values.append(max(polyroots(temp)))
+
+
+		self.h.instantiate(parameters,values)
+		return self.h, currentloglikelihood

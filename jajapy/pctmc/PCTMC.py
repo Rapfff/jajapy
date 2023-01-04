@@ -201,7 +201,7 @@ class PCTMC(Parametric_Model):
 			return True
 		return False
 
-	def randomInstantiation(self, parameters: list = [],min_val:float = None,max_val:float = None) -> None:
+	def randomInstantiation(self, parameters: list = None,min_val:float = None,max_val:float = None) -> None:
 		"""
 		Randomly instantiated the parameters given in `parameters`.
 		If `parameters` is not set it instantiates all the non-instantiated
@@ -224,13 +224,13 @@ class PCTMC(Parametric_Model):
 			If not set and if the model has less than two instantiated parameters,
 			this value is equal to 5.0.
 		"""
-		if len(parameters) == 0:
+		if parameters == None:
+			parameters = []
 			for i in self.parameter_str:
 				if not i in self.parameter_values:
 					parameters.append(i)
 				elif isnan(self.parameter_values[i]):
 					parameters.append(i)
-
 		if min_val == None:
 			if len(list(self.parameter_values.values())) > 1:
 				min_val = min(self.parameter_values.values())
@@ -242,7 +242,6 @@ class PCTMC(Parametric_Model):
 			else:
 				max_val = 5.0
 		val = rand(len(parameters))*(max_val-min_val)+min_val
-		print(parameters, val)
 		while not self.instantiate(parameters,val):
 			val = rand(len(parameters))*(max_val-min_val)+min_val
 	
@@ -459,7 +458,7 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 	elif nb_states < len(labeling):
 		print("WARNING: the labeling list is bigger than the number of states")
 	
-	parameter_str = list(symbols(" ".join(parameters)))
+	parameter_str = parameters
 	parameter_values = {}
 	parameter_indexes = [[] for _ in parameter_str]
 	transition_expr = [sympify('0.0')]
@@ -468,7 +467,7 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 	for t in transitions:
 		val = str(t[2])
 		expr = sympify(val)
-		if not expr in transition_expr:
+		if expr.is_real or not expr in transition_expr:
 			transition_expr.append(expr)
 		matrix[t[0],t[1]] = transition_expr.index(expr)
 		for p in expr.free_symbols:
@@ -541,8 +540,6 @@ def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") ->
 	for i in range(1,len(ms)):
 		for t in sync_trans:
 			m1.synchronous_transitions.append(t)
-		print(m1)
-		print(sync_trans)
 		m1, sync_trans = synchronousComposition2PCTMCs(m1, ms[i], name)
 	# add sync trans
 	for t in sync_trans:

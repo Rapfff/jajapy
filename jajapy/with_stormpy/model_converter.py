@@ -102,8 +102,8 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 							p_i.append([])
 							p_v[v] = nan
 						p_i[p_str.index(v)].append([c,dest])
-					t_val = sympify(t_val)
-					if not t_val in t_expr:
+					t_val = sympify(str(t_val))
+					if t_val.is_real or not t_val in t_expr:
 						matrix[c][dest] = len(t_expr)
 						t_expr.append(t_val)
 					else:
