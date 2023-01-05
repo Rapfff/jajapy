@@ -3,7 +3,6 @@ from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, n
 from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
-from ..pmc import PMC
 from ..pctmc import PCTMC
 from copy import deepcopy
 from io import StringIO
@@ -134,14 +133,14 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 
 def jajapyModeltoStormpy(h):
 	"""
-	Given a jajapy.MC, a jajapy.CTMC or a jajapy.MDP,
-	it returns the equivalent stormpy sparse model.
+	Given a jajapy.MC, a jajapy.CTMC, a jajapy.MDP or an instantiated
+	jajapy.PCTMC, it returns the equivalent stormpy sparse model.
 	The output object will be a stormpy.SparseCtmc, stormpy.SparseDtmc,
 	or a stormpy.SparseMdp depending on the input.
 
 	Parameters
 	----------
-	h : jajapy.MC, jajapy.CTMC or jajapy.MDP
+	h : jajapy.MC, jajapy.CTMC, jajapy.MDP or instantiated jajapy.PCTMC
 		The model to convert.
 
 	Returns
@@ -155,8 +154,14 @@ def jajapyModeltoStormpy(h):
 		return CTMCtoStormpy(h)
 	elif type(h) == MC:
 		return MCtoStormpy(h)
+	elif type(h) == PCTMC:
+		try:
+			h = PCTMCtoCTMC(h)
+		except ValueError:
+			raise ValueError("Cannot convert non-instantiated PCTMC.")
+		return CTMCtoStormpy(h)
 	else:
-		raise TypeError(str(type(h))+' cannot be embedded to a stormpy sparse model.')
+		raise TypeError(str(type(h))+' cannot be translated to a stormpy sparse model.')
 
 def _buildStateLabeling(h):
 	state_labeling = st.storage.StateLabeling(h.nb_states)
@@ -249,6 +254,33 @@ def CTMCtoStormpy(h):
 	components.exit_rates = e
 	ctmc = st.storage.SparseCtmc(components)
 	return ctmc
+
+def PCTMCtoCTMC(h: PCTMC) -> CTMC:
+	"""
+	Translates a given instantiated PCTMC to an equivalent CTMC.
+
+	Parameters
+	----------
+	h : PCTMC
+		An instantiated PCTMC.
+
+	Returns
+	-------
+	CTMC
+		The equivalent CTMC.
+
+	Raises
+	------
+	ValueError
+		If `h` is a non-instantiated PCTMC.
+	"""
+	if not h.isInstantiated():
+		raise ValueError("Cannot convert non-instantiated PCTMC to CTMC.")
+	res = zeros(h.matrix.shape)
+	for s in range(h.nb_states):
+		for ss in range(h.nb_states):
+			res[s,ss] = h.transitionValue(s,ss)
+	return CTMC(res, h.labeling, h.name)
 
 def loadPrism(path: str):
 	"""

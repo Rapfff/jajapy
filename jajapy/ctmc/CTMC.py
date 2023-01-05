@@ -10,6 +10,7 @@ from random import randint
 from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete
 from sys import platform
 from multiprocessing import cpu_count, Pool
+from sympy import sympify
 
 class CTMC(Base_MC):
 	"""
@@ -468,26 +469,29 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 
 	matrix= zeros((nb_states,nb_states),dtype='uint8')
 	labeling = []
-	p_v = [0.0]
-	p_str = [None]
-	p_i = [[]]
+	p_v = {}
+	p_str = []
+	p_i = []
+	t_e = [sympify('0.0')]
 
 	def get_state_index(s1,s2):
 		s2 = m2_sids.index(s2)
 		s1 = m1_sids.index(s1)
 		return s1*m2_nb_states+s2
 
-	def add_in_matrix(param,s1,s2,model):
+	def add_in_matrix(trans,s1,s2,model,add_index=[]):
 		if model == 1:
 			for i in m2_sids:
 				x,y = get_state_index(s1,i),get_state_index(s2,i)
-				matrix[x,y] = param
-				p_i[param].append([x,y])
+				matrix[x,y] = trans
+				for ind in add_index:
+					p_i[ind].append([x,y])
 		elif model == 2:
 			for i in m1_sids:
 				x,y = get_state_index(i,s1),get_state_index(i,s2)
-				matrix[x,y] = param
-				p_i[param].append([x,y])
+				matrix[x,y] = trans
+				for ind in add_index:
+					p_i[ind].append([x,y])
 
 	for s1 in m1_sids: # labeling
 		for s2 in m2_sids:
@@ -495,43 +499,33 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 
 	for i in m1_sids: # m1 transitions
 		for j in m1_sids:
-			if m1.matrix[i,j] == 0.0:
-				add_in_matrix(param=0,s1=i,s2=j,model=1)
-			else:
-				p_v.append(m1.matrix[i,j])
-				p_str.append('$p'+str(i)+'_'+str(j)+'$')
+			if m1.matrix[i,j] != 0.0:
+				p_str.append("p_"+str(i)+'_'+str(j))
+				p_v["p_"+str(i)+'_'+str(j)] = m1.matrix[i,j]
 				p_i.append([])
-				add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=1)
-	
+				t_e.append(sympify(p_str[-1]))
+				add_in_matrix(len(t_e)-1,s1=i,s2=j,model=1,add_index=[len(p_i)-1])
 	for i in m2_sids: # m2 transitions
 		for j in m2_sids:
-			if m2.matrix[i,j] == 0.0:
-				add_in_matrix(param=0,s1=i,s2=j,model=2)
-			else:
-				p_v.append(m2.matrix[i,j])
-				p_str.append('$q'+str(i)+'_'+str(j)+'$')
+			if m2.matrix[i,j] != 0.0:
+				p_str.append("q_"+str(i)+'_'+str(j))
+				p_v["q_"+str(i)+'_'+str(j)] = m2.matrix[i,j]
 				p_i.append([])
-				add_in_matrix(param=len(p_v)-1,s1=i,s2=j,model=2)
+				t_e.append(sympify(p_str[-1]))
+				add_in_matrix(len(t_e)-1,s1=i,s2=j,model=2,add_index=[len(p_i)-1])
 
 	for i in m1_sids: # self loops
 		if m1.matrix[i,i] != 0.0:
 			for j in m2_sids:
 				if m2.matrix[j,j] != 0.0:
-					matrix[get_state_index(i,j),get_state_index(i,j)] = len(p_v)
-					p_str.append("$p"+str(i)+'_'+str(i)+'$*$q'+str(j)+'_'+str(j)+'$')
-					p_v.append(m2.matrix[j,j]*m1.matrix[i,i])
-					p_i.append([])
-					p_i[p_str.index("$p"+str(i)+'_'+str(i)+'$')].append([get_state_index(i,j),get_state_index(i,j)])
-					p_i[p_str.index("$q"+str(j)+'_'+str(j)+'$')].append([get_state_index(i,j),get_state_index(i,j)])
+					matrix[get_state_index(i,j),get_state_index(i,j)] = len(t_e)
+					t_e.append(sympify("p"+str(i)+'_'+str(i)+'+q'+str(j)+'_'+str(j)))
 
 	for si,ai,di,pi in m1.synchronous_transitions: # synchronous transitions
 		for sj,aj,dj,pj in m2.synchronous_transitions:
 			if ai == aj:
-				matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(p_v)
-				#p_str.append("$sync["+str(ai)+']_'+str(si)+','+str(di)+'_'+str(sj)+','+str(dj)+'$')
-				p_str.append(None)
-				p_v.append(pi*pj)
-				p_i.append([])
+				t_e.append(t_e[matrix[get_state_index(si,sj),get_state_index(di,dj)]]+sympify(pi*pj))
+				matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(t_e)-1
 	
 	labeling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
@@ -553,15 +547,25 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 			else:
 				m2_init_trans[j] += tmp[j]
 	for i,si in enumerate(m1_init_trans):
+		if si > 0.0:
+			p_str.append("initp_"+str(i))
+			p_v["initp_"+str(i)] = si
+			p_i.append([])
+	for i,si in enumerate(m2_init_trans):
+		if si > 0.0:
+			p_str.append("initq_"+str(i))
+			p_v["initq_"+str(i)] = si
+			p_i.append([])
+	for i,si in enumerate(m1_init_trans):
 		for j,sj in enumerate(m2_init_trans):
-			if si*sj == 0.0:
+			if si*sj <= 0.0:
 				matrix[-1][get_state_index(i,j)] = 0
 			else:
-				matrix[-1][get_state_index(i,j)] = len(p_v)
-				p_v.append(si*sj)
-				p_str.append("$init_"+str(i)+'_'+str(j)+'$')
-				p_i.append([[len(matrix)-1,get_state_index(i,j)]])
-
+				matrix[-1][get_state_index(i,j)] = len(t_e)
+				t_e.append(sympify('initp_'+str(i)+'*initq_'+str(j)))
+				p_i[p_str.index('initp_'+str(i))].append([len(matrix)-1,get_state_index(i,j)])
+				p_i[p_str.index('initq_'+str(j))].append([len(matrix)-1,get_state_index(i,j)])
+	
 	i = 0
 	while i < len(matrix): # removing unreachable states
 		if (matrix.T[i] == 0).all() == True and labeling[i] != 'init':
@@ -571,8 +575,8 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 			labeling = labeling[:i]+labeling[i+1:]
 			for j in range(len(p_i)):
 				k = 0
-				while k < len(p_i[j]): 
-					if p_i[j][k][0] == i:
+				while k < len(p_i[j]):
+					if p_i[j][k][0] == i or p_i[j][k][1] == i:
 						p_i[j].remove(p_i[j][k])
 					else:
 						if p_i[j][k][0] > i:
@@ -582,7 +586,6 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 						k += 1
 			i = -1
 		i += 1
-	p_i[0] = []
-
-	return PCTMC(matrix,labeling,p_v,p_i,p_str,name)
+	
+	return PCTMC(matrix, labeling, t_e, p_v, p_i, p_str, name)
 

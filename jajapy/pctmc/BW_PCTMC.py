@@ -1,7 +1,7 @@
 from .PCTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log, inf, newaxis, full
+from numpy import array, zeros, dot, append, ones, log, inf, uint8
 from numpy.polynomial.polynomial import polyroots
 
 
@@ -84,7 +84,7 @@ class BW_PCTMC(BW):
 			initial_model.name
 		except AttributeError: # then initial_model is a stormpy sparse model
 			if not stormpy_installed:
-				raise RuntimeError("the initial model is a Storm model and Storm is not installed on the machine")
+				raise RuntimeError("the initial model is a Storm model but Storm is not installed on the machine")
 			initial_model = stormpyModeltoJajapy(initial_model)	
 
 		initial_model.randomInstantiation()
@@ -94,12 +94,15 @@ class BW_PCTMC(BW):
 
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 
-
 	def sortParameters(self):
-		self.parameters_cat = [[],[],[]]
+		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=uint8)
+		for iparam,param in enumerate(self.h.parameter_str):
+			for s,ss in self.h.parameterIndexes(param):
+				self.a_pis[s,ss,iparam] = self.a_pi(s,ss,param)
 
-		for p in self.h.parameter_str:
-			apis = [self.a_pi(x,y,p) for x,y in self.h.parameterIndexes(p)]
+		self.parameters_cat = [[],[],[]]
+		for ip,p in enumerate(self.h.parameter_str):
+			apis = [self.a_pis[x,y,ip] for x,y in self.h.parameterIndexes(p)]
 			cs = [self.C(x,y) for x,y in self.h.parameterIndexes(p)]
 			if min(apis) == 1 and max(apis) == 1 and min(cs) == 1 and max(cs) == 1:
 				self.parameters_cat[0].append(p)
@@ -107,7 +110,13 @@ class BW_PCTMC(BW):
 				self.parameters_cat[1].append(p)
 			else:
 				self.parameters_cat[2].append(p)
-
+		
+		self.c_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.parameters_cat[0])),dtype=uint8)
+		for iparam,param in enumerate(self.parameters_cat[0]):
+			for s,ss in self.h.parameterIndexes(param):
+				self.c_pis[s,ss,iparam] = self.c_pi(s,ss,param)
+	
+				
 	def a_pi(self,s1,s2,p):
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Pow and not t.is_Symbol:
@@ -137,7 +146,7 @@ class BW_PCTMC(BW):
 	def C(self,s1,s2):
 		r = 0
 		for p in self.h.involvedParameters(s1,s2):
-			r += self.a_pi(s1,s2,p)
+			r += self.a_pis[s1,s2,self.h.parameter_str.index(p)]
 		return r
 		
 	def h_e(self,s: int) -> float:
@@ -332,26 +341,26 @@ class BW_PCTMC(BW):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pi(s,ss,param)*times/proba_seq).sum()
+				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pi[s,ss,iparam]*times/proba_seq).sum()
 
 		num_cat2 = zeros(len(self.parameters_cat[1]))
 		den_cat2 = zeros(len(self.parameters_cat[1]))
 		for iparam,param in enumerate(self.parameters_cat[1]):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pi(s,ss,param)*times/proba_seq).sum()
-				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pi(s,ss,param)*self.h.transitionValue(s,ss)*times/proba_seq).sum()
+				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,iparam]*times/proba_seq).sum()
+				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.h.transitionValue(s,ss)*times/proba_seq).sum()
 		
 		terms_cat3 = []
 		for iparam,param in enumerate(self.parameters_cat[2]):
 			temp = [0.0]
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pi(s,ss,param)*times/proba_seq).sum()
+				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,self.h.parameter_str.index(param)]*times/proba_seq).sum()
 				c = self.C(s,ss)
 				for _ in range(1+c-len(temp)):
 					temp.append(0.0)
-				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pi(s,ss,param)*self.h.transitionValue(s,ss)*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
+				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.h.transitionValue(s,ss)*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
 			terms_cat3.append(array(temp))
 
 		return [den_cste, num_cste, den_cat1, num_cat1, den_cat2, num_cat2, terms_cat3, proba_seq, times]
@@ -400,7 +409,6 @@ class BW_PCTMC(BW):
 		for p in range(len(terms_cat3[0])):
 			temp = array([i[p] for i in terms_cat3], dtype=float).sum(axis=0)
 			values.append(max(polyroots(temp)))
-
 
 		self.h.instantiate(parameters,values)
 		return self.h, currentloglikelihood

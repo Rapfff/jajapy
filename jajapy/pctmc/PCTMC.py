@@ -13,7 +13,7 @@ class PCTMC(Parametric_Model):
 	Class representing a PCTMC.
 	"""
 	def __init__(self, matrix: ndarray, labeling: list,
-				 transition_expr: list, parameter_values: ndarray,
+				 transition_expr: list, parameter_values: dict,
 				 parameter_indexes: list, parameter_str: list,
 				 name: str="unknow_PCTMC",
 				 synchronous_transitions: list = []) -> None:
@@ -32,8 +32,8 @@ class PCTMC(Parametric_Model):
 			Each state has exactly one label.
 		transition_str: list of str
 			Contains the symbolic value for each transition.
-		parameter_values: list of float
-			Contains the value for each parameter.
+		parameter_values: dict
+			Contains the value for each instantiated parameter.
 			`parameter_values[i]` is the instantiation for parameter `i`.
 			If the ith parameter is not instantiated, `parameter_values[i] == nan`.
 		parameter_indexes: list of ndarray
@@ -357,15 +357,6 @@ class PCTMC(Parametric_Model):
 		f.write("PCTMC\n")
 		super()._save(f)
 	
-	#def toCTMC(self,name='unknow_CTMC') -> CTMC:
-	#	if not self._isInstantiated():
-	#		raise ValueError("The model must be instantiated before being translated to a CTMC.")
-	#	matrix = zeros(len(self.matrix),len(self.matrix))
-	#	for i in self.matrix:
-	#		for j in self.matrix:
-	#			matrix[i,j] = self.transitionValue(i,j)
-	#	return CTMC(matrix, self.labeling, name)
-
 def loadPCTMC(file_path: str) -> PCTMC:
 	"""
 	Load an PCTMC saved into a text file.

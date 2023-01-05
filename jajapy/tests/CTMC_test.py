@@ -1,5 +1,6 @@
 import unittest
 from ..ctmc import *
+from ..pctmc import loadPCTMC
 from os import remove
 from ..base.Set import *
 from math import exp
@@ -124,7 +125,7 @@ class CTMCTestclass(unittest.TestCase):
 	
 	def test_sync_composition(var):
 		output_gotten = synchronousCompositionCTMCs(modelCTMC_car_tl(),modelCTMC_ped_tl())
-		output_expected = loadCTMC("jajapy/tests/materials/ctmc/composition.txt")
+		output_expected = loadPCTMC("jajapy/tests/materials/ctmc/composition.txt")
 		var.assertEqual(str(output_expected),str(output_gotten))
 
 if __name__ == "__main__":

@@ -65,16 +65,6 @@ class Parametric_Model(Model):
 			raise ValueError(msg)
 		if min(matrix.flatten()) < 0:
 			raise ValueError("Transition "+str(min(matrix.flatten()))+" found in matrix")
-
-		#for p in parameter_indexes:
-		#	for i in p:
-		#		if min(i) < 0:
-		#			raise ValueError("State "+str(min(p.flatten()))+" found in parameter_indexes")
-		#		if max(i) >= self.nb_states:
-		#			msg = "State "+str(max(i))+" found in parameter_indexes while there "
-		#			msg+= "are only "+str(self.nb_states)+" states."
-		#			raise ValueError(msg)
-
 		
 		if len(self.labeling) != self.nb_states:
 			msg = "The length of labeling ("+str(len(labeling))+") is not equal "
@@ -92,41 +82,43 @@ class Parametric_Model(Model):
 
 		super().__init__(matrix,initial_state,name)
 
-	def isInstantiated(self,state:int = None, state2:int = None) -> bool:
+	def isInstantiated(self,state1:int = None, state2:int = None, param:str =None) -> bool:
 		"""
-		Checks if all the parameters are instantiated.
-		If `state` is set, checks if all the transitions leaving this state
+		If nothing is set, checks if all the parameters are instantiated.
+		If `state1` is set, checks if all the transitions leaving this state
 		are instantiated.
+		If `state1` and `state2` are set, checks if the transitions from `state1` to `state2`
+		is instantiated.
+		If `param` is set, checks if `param` is instantiated.
 
 		Parameters
 		----------
-		state : int, optional.
+		state1 : int, optional.
 			state ID.
-			If `state` is set, checks if all the transitions leaving this state
-			are instantiated.
 		
 		state2 : int, optional.
 			state ID.
-			If `state` and `state2` are set, checks if the transitions from
-			`state` to `state2` is instantiated.
-
+		
+		param : str, optional
+			Parameter name.
+			
 		Returns
 		-------
 		bool
 			True if all the parameters are intantiated.
 		"""
-		if type(state) == type(None):
-			return len(set(self.parameter_str) - set([i for i in self.parameter_values.keys() if not isnan(self.parameter_values[i])])) == 0
+		if type(param) == str:
+			return param in self.parameter_values
+		elif type(state1) == type(None):
+			return len(set(self.parameter_str)-set(self.parameter_values.keys())) == 0
 		else:
-			self._checkStateIndex(state)
+			self._checkStateIndex(state1)
 			if type(state2) == type(None):
-				parameters = self.involvedParameters(state)
+				parameters = self.involvedParameters(state1)
 			else:
-				parameters = self.involvedParameters(state,state2)
+				parameters = self.involvedParameters(state1,state2)
 			for i in parameters:
-				if not i in self.parameter_values:
-					return False
-				if isnan(self.parameter_values[i]):
+				if not self.isInstantiated(param=i):
 					return False
 			return True
 
@@ -145,7 +137,6 @@ class Parametric_Model(Model):
 		if not p in self.parameter_str:
 			return []
 		return self.parameter_indexes[self.parameter_str.index(p)]
-
 
 	def instantiate(self,parameters: list, values: list) -> ndarray: 
 		"""
@@ -343,18 +334,6 @@ class Parametric_Model(Model):
 		f.write(str([str(i) for i in self.transition_expr]))
 		f.write('\n')
 		f.close()
-
-	def toStormpy(self):
-		"""
-		Returns the equivalent stormpy sparse model.
-		The output object will be a stormpy.SparseDtmc.
-
-		Returns
-		-------
-		stormpy.SparseDtmc
-			The same model in stormpy format.
-		"""
-		#TODO
 
 	def _checkStateIndex(self,s:int) -> None:
 		try:
