@@ -8,11 +8,12 @@ from numpy.polynomial.polynomial import polyroots
 class BW_PCTMC(BW):
 	def __init__(self) -> None:
 		super().__init__()
-
+	
 	def fit(self, traces, initial_model: PCTMC, output_file: str=None,
 			epsilon: float=0.01, max_it: int= inf, pp: str='',
 			verbose: bool = True, return_data: bool = False,
-			stormpy_output: bool = True, fixed_parameters: ndarray = False) -> PCTMC:
+			stormpy_output: bool = True, fixed_parameters: list = [],
+			update_constant :bool = True) -> PCTMC:
 		"""
 		Fits the model according to ``traces``.
 
@@ -47,12 +48,13 @@ class BW_PCTMC(BW):
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
-		fixed_parameters: ndarray of bool, optional
-			ndarray of bool with the same shape as the transition matrix (i.e
-			nb_states x nb_states). If `fixed_parameters[s1,s2] == True`, the
-			transition parameter from s1 to s2 will not be changed during the
-			learning (it's a fixed parameter).
-			By default no parameters will be fixed.
+		fixed_parameters: list of str, optional
+			list of parameter names. These parameters will not be updated.
+			By default no parameters will be fixed (i.e. the list is empty).
+		update_constant: bool, optional
+			If set to False, the constant transitions (i.e. tha transition
+			that doesn't depend on any parameter) will no be updated.
+			Default is True.
 
 		Returns
 		-------
@@ -90,15 +92,123 @@ class BW_PCTMC(BW):
 		initial_model.randomInstantiation()
 		self.nb_parameters = initial_model.nb_parameters
 
-		self.sortParameters()
+		self.update_constant = update_constant
+
+		self.sortParameters(fixed_parameters)
 
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
+	
+	def fit_nonInstantiatedParameters(self, traces, initial_model: PCTMC,
+			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
+			pp: str='', verbose: bool = True, return_data: bool = False,
+			stormpy_output: bool = True) -> PCTMC:
+		"""
+		Fits only the non-instantiated parameters in the initial model
+		according to ``traces``.
 
-	def sortParameters(self):
+		Parameters
+		----------
+		traces : Set or list or numpy.ndarray
+			training set.
+		initial_model : PCTMC
+			first hypothesis.
+		output_file : str, optional
+			if set path file of the output model. Otherwise the output model
+			will not be saved into a text file.
+		epsilon : float, optional
+			the learning process stops when the difference between the
+			loglikelihood of the training set under the two last hypothesis is
+			lower than ``epsilon``. The lower this value the better the output,
+			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
+		pp : str, optional
+			Will be printed at each iteration. By default ''.
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
+
+		Returns
+		-------
+		PCTMC or stormpy.SparseParametricCtmc
+			The fitted PCTMC.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.PCTMC`, otherwise it returns a `stormpy.SparseParametricCtmc`
+		"""
+		update_constant = False
+		fixed_parameters = []
+		for p in initial_model.parameter_str:
+			if initial_model.isInstantiated(param=p):
+				fixed_parameters.append(p)
+		return self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
+			verbose, return_data,stormpy_output,fixed_parameters,update_constant)
+	
+	def fit_component(self, traces, m1: PCTMC, m2: PCTMC,
+			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
+			pp: str='', verbose: bool = True, return_data: bool = False,
+			stormpy_output: bool = True) -> PCTMC:
+		"""
+		Given a instantiated model `m1` and a model `m2`, updates `m2` to
+		maximise the loglikelihood of `traces` under the composition of
+		`m1` and `m2`. 
+		
+		Parameters
+		----------
+		traces : Set or list or numpy.ndarray
+			training set.
+		initial_model : PCTMC
+			first hypothesis.
+		output_file : str, optional
+			if set path file of the output model. Otherwise the output model
+			will not be saved into a text file.
+		epsilon : float, optional
+			the learning process stops when the difference between the
+			loglikelihood of the training set under the two last hypothesis is
+			lower than ``epsilon``. The lower this value the better the output,
+			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
+		pp : str, optional
+			Will be printed at each iteration. By default ''.
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
+		stormpy_output: bool, optional
+			If set to True the output model will be a Stormpy sparse model.
+			Default is True.
+
+		Returns
+		-------
+		PCTMC or stormpy.SparseParametricCtmc
+			The fitted PCTMC.
+			If `stormpy_output` is set to `False` or if stormpy is not available on
+			the machine it returns a `jajapy.PCTMC`, otherwise it returns a `stormpy.SparseParametricCtmc`
+		"""
+		pass
+
+	def sortParameters(self,fixed_parameters):
 		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=uint8)
 		for iparam,param in enumerate(self.h.parameter_str):
-			for s,ss in self.h.parameterIndexes(param):
-				self.a_pis[s,ss,iparam] = self.a_pi(s,ss,param)
+			if not param in fixed_parameters:
+				for s,ss in self.h.parameterIndexes(param):
+					self.a_pis[s,ss,iparam] = self.a_pi(s,ss,param)
 
 		self.parameters_cat = [[],[],[]]
 		for ip,p in enumerate(self.h.parameter_str):
@@ -325,23 +435,27 @@ class BW_PCTMC(BW):
 			print("has prob 0")
 			return False
 		####################
-		num_cste = array(self.h.transition_expr)
-		den_cste = ones(len(num_cste))
-		for itrans,trans in enumerate(self.h.transition_expr[1:]):
-			if trans.is_real:
-				s,ss = where(self.h.matrix == itrans+1)
-				s,ss = s[0],ss[0]
-				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-				num_cste[itrans+1] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-				den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
-		
+		if self.update_constant:
+			num_cste = array(self.h.transition_expr)
+			den_cste = ones(len(num_cste))
+			for itrans,trans in enumerate(self.h.transition_expr[1:]):
+				if trans.is_real:
+					s,ss = where(self.h.matrix == itrans+1)
+					s,ss = s[0],ss[0]
+					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+					num_cste[itrans+1] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+					den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
+		else:
+			num_cste = None
+			den_cste = None
+			
 		num_cat1 = zeros(len(self.parameters_cat[0]))
 		den_cat1 = zeros(len(self.parameters_cat[0]))
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pi[s,ss,iparam]*times/proba_seq).sum()
+				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss,iparam]*times/proba_seq).sum()
 
 		num_cat2 = zeros(len(self.parameters_cat[1]))
 		den_cat2 = zeros(len(self.parameters_cat[1]))
@@ -367,8 +481,6 @@ class BW_PCTMC(BW):
 			
 
 	def _generateHhat(self,temp):
-		den_cste = array([i[0] for i in temp]).sum(axis=0)
-		num_cste = array([i[1] for i in temp]).sum(axis=0)
 		den_cat1 = array([i[2] for i in temp]).sum(axis=0)
 		num_cat1 = array([i[3] for i in temp]).sum(axis=0)
 		den_cat2 = array([i[4] for i in temp]).sum(axis=0)
@@ -382,12 +494,14 @@ class BW_PCTMC(BW):
 		parameters = self.parameters_cat[0]+self.parameters_cat[1]+self.parameters_cat[2]
 		values = []
 
-		for p in range(len(den_cste)):
-			if den_cste[p] == 0.0:
-				den_cste[p] = 1.0
-				num_cste[p] = self.h.transition_expr[p]
-
-		self.h.transition_expr = [sympify(i) for i in (num_cste/den_cste).tolist()]
+		if self.update_constant:
+			den_cste = array([i[0] for i in temp]).sum(axis=0)
+			num_cste = array([i[1] for i in temp]).sum(axis=0)
+			for p in range(len(den_cste)):
+				if den_cste[p] == 0.0:
+					den_cste[p] = 1.0
+					num_cste[p] = self.h.transition_expr[p]
+			self.h.transition_expr = [sympify(i) for i in (num_cste/den_cste).tolist()]
 	
 		for p in range(len(den_cat1)):
 			if den_cat1[p] == 0.0:

@@ -276,7 +276,7 @@ class PCTMC(Parametric_Model):
 			else:
 				exps.append(exponential(1/exp_lambda))
 		next_state= exps.index(min(exps))
-		next_obs = self.labeling[state]
+		next_obs  = self.labeling[state]
 		return (next_obs, next_state, min(exps))
 
 	def run(self,number_steps: int, timed: bool = False) -> list:

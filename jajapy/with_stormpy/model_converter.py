@@ -69,6 +69,8 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	for si,s in enumerate(h.states):
 		c = si
 		temp = list(s.labels)
+		if "deadlock" in temp:
+			temp.remove("deadlock")
 		temp.sort()
 		if len(temp) == 0:
 			labeling[si] = "empty"
@@ -307,6 +309,7 @@ def loadPrism(path: str):
 			stormpy_model = st.build_model(prism_program)
 		except RuntimeError:
 			stormpy_model = st.build_parametric_model(prism_program)
+	#print(stormpy_model)
 
 	jajapy_model = stormpyModeltoJajapy(stormpy_model)
 	return jajapy_model
