@@ -147,9 +147,15 @@ class BW_PCTMC(BW):
 		"""
 		update_constant = False
 		fixed_parameters = []
+		print("Fitting only the non-instantiated parameters, i.e: ",end='')
+		
 		for p in initial_model.parameter_str:
 			if initial_model.isInstantiated(param=p):
 				fixed_parameters.append(p)
+			else:
+				print(p,end=' ')
+		print()
+
 		return self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
 			verbose, return_data,stormpy_output,fixed_parameters,update_constant)
 	
@@ -226,7 +232,12 @@ class BW_PCTMC(BW):
 			for s,ss in self.h.parameterIndexes(param):
 				self.c_pis[s,ss,iparam] = self.c_pi(s,ss,param)
 	
-				
+	def _computeTaus(self):
+		self.hval = zeros((self.nb_states,self.nb_states))
+		for s in range(self.nb_states):
+			for ss in range(self.nb_states):
+				self.hval[s,ss] =  self.h.evaluateTransition(s,ss)
+
 	def a_pi(self,s1,s2,p):
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Pow and not t.is_Symbol:
@@ -271,7 +282,7 @@ class BW_PCTMC(BW):
 		float
 			An exit rate.
 		"""
-		return self.h.e(s)
+		return self.hval[s].sum()
 	
 	def h_l(self, s1: int, s2: int, obs: str) -> float:
 		"""
@@ -292,7 +303,36 @@ class BW_PCTMC(BW):
 		float
 			A rate.
 		"""
-		return self.h.l(s1,s2,obs)
+		if self.h.labeling[s1] != obs:
+			return 0.0
+		return self.hval[s1,s2]
+
+	def h_tau(self,s1: int,s2: int,obs: str) -> float:
+		"""
+		Probability of moving from ``s1`` to ``s2`` generating ``obs`` under
+		the current hypothesis.
+
+		Parameters
+		----------
+		s1 : int
+			source state ID.
+		s2 : int
+			destination state ID.
+		obs : str
+			observation.
+
+		Returns
+		-------
+		float:
+			probability of moving from ``s1`` to ``s2`` generating ``obs``.
+		"""
+		if self.h.labeling[s1] != obs:
+			return 0.0
+		e = self.h_e(s1)
+		if e == 0.0:
+			return inf
+		return self.hval[s1,s2]/e
+
 
 	def computeAlphas(self,obs_seq: list, times_seq: list = None) -> array:
 		if times_seq:

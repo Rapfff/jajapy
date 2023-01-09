@@ -107,6 +107,10 @@ class BW:
 		#overrided
 		pass
 
+	def _computeTaus(self):
+		#overrided PCTMC learning only
+		pass
+
 	def _runProcesses(self,training_set):
 		if platform != "win32" and platform != "darwin" and NB_PROCESS > 1:
 			p = Pool(processes = NB_PROCESS)
@@ -199,6 +203,7 @@ class BW:
 		
 		with alive_bar(alive_parameter, dual_line=True, title=str(pp)) as bar:
 			while counter < max_it:
+				self._computeTaus()
 				temp = self._runProcesses(training_set)
 				self.hhat, currentloglikelihood = self._generateHhat(temp)
 				counter += 1
