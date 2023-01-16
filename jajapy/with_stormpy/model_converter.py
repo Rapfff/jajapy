@@ -59,7 +59,7 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 	elif ty == 0 or ty == 1:
 		matrix = zeros((len(h.states),len(h.states)))
 	elif ty == 3 or ty == 4:
-		matrix = zeros((len(h.states),len(h.states)),dtype='uint8')
+		matrix = zeros((len(h.states),len(h.states)),dtype='uint16')
 		p_str = []
 		p_v = {}
 		p_i = []
@@ -119,7 +119,7 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		elif ty == 1 or ty == 0:
 			matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
 		else:
-			matrix = hstack((matrix,zeros(len(matrix),dtype=('uint8'))[:,newaxis]))
+			matrix = hstack((matrix,zeros(len(matrix),dtype=('uint16'))[:,newaxis]))
 
 	
 	if ty == 0:

@@ -1,7 +1,7 @@
 from .PCTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log, inf, uint8
+from numpy import array, zeros, dot, append, ones, log, inf, uint16, max
 from numpy.polynomial.polynomial import polyroots
 
 
@@ -149,15 +149,61 @@ class BW_PCTMC(BW):
 		fixed_parameters = []
 		print("Fitting only the non-instantiated parameters, i.e: ",end='')
 		
+		to_update = []
 		for p in initial_model.parameter_str:
 			if initial_model.isInstantiated(param=p):
 				fixed_parameters.append(p)
 			else:
-				print(p,end=' ')
-		print()
+				to_update.append(p)
+		print(', '.join(to_update))
 
-		return self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
-			verbose, return_data,stormpy_output,fixed_parameters,update_constant)
+		# remove all the states never used in the training set:
+		# we only care here about the values of some parameters,
+		# the structure of the model is out of scope.
+		if type(traces) != Set:
+			traces = Set(traces)
+		alphabet = traces.getAlphabet()
+		print("Removing unused states...")
+		print('From',initial_model.nb_states,'states to',end=' ')
+		s = 0
+		while s < initial_model.nb_states:
+			if initial_model.getLabel(s) not in alphabet:
+				initial_model.nb_states -= 1
+				initial_model.labeling = initial_model.labeling[:s]+initial_model.labeling[s+1:]
+				initial_model.initial_state = delete(initial_model.initial_state,s)
+				initial_model.matrix = delete(initial_model.matrix,s,0)
+				initial_model.matrix = delete(initial_model.matrix,s,1)
+				for j in range(len(initial_model.parameter_indexes)):
+					k = 0
+					while k < len(initial_model.parameter_indexes[j]): 
+						if s in initial_model.parameter_indexes[j][k]:
+							initial_model.parameter_indexes[j] = initial_model.parameter_indexes[j][:k]+initial_model.parameter_indexes[j][k+1:]
+						else:
+							if initial_model.parameter_indexes[j][k][0] > s:
+								initial_model.parameter_indexes[j][k][0] -= 1
+							if initial_model.parameter_indexes[j][k][1] > s:
+								initial_model.parameter_indexes[j][k][1] -= 1
+							k += 1
+				s = -1
+			s += 1
+		t = 1
+		l = len(initial_model.transition_expr)
+		while t < l:
+			if not (initial_model.matrix == t).any():
+				initial_model.transition_expr = initial_model.transition_expr[:t]+initial_model.transition_expr[t+1:]
+				initial_model.matrix -= (initial_model.matrix > t)
+				l -= 1
+			else:
+				t += 1
+		initial_model.alphabet = alphabet
+		print(initial_model.nb_states)
+		self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
+				verbose, return_data,stormpy_output,fixed_parameters,update_constant)
+		
+		res = {}
+		for p in to_update:
+			res[p] = self.h.parameterValue(p)
+		return res
 	
 	def fit_component(self, traces, m1: PCTMC, m2: PCTMC,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
@@ -210,7 +256,7 @@ class BW_PCTMC(BW):
 		pass
 
 	def sortParameters(self,fixed_parameters):
-		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=uint8)
+		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=uint16)
 		for iparam,param in enumerate(self.h.parameter_str):
 			if not param in fixed_parameters:
 				for s,ss in self.h.parameterIndexes(param):
@@ -227,7 +273,7 @@ class BW_PCTMC(BW):
 			else:
 				self.parameters_cat[2].append(p)
 		
-		self.c_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.parameters_cat[0])),dtype=uint8)
+		self.c_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.parameters_cat[0])),dtype=uint16)
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
 				self.c_pis[s,ss,iparam] = self.c_pi(s,ss,param)
@@ -241,10 +287,15 @@ class BW_PCTMC(BW):
 	def a_pi(self,s1,s2,p):
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Pow and not t.is_Symbol:
+			flag = False
 			for a in t.args:
 				if p in [x.name for x in a.free_symbols]:
 					t = a
+					flag = True
 					break
+			if not flag:
+				print(p,'not in transition',s1,s2)
+				input()
 		if t.is_Pow:
 			return t.args[1]
 		else:
@@ -253,12 +304,15 @@ class BW_PCTMC(BW):
 	def c_pi(self,s1,s2,p):
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Mul and not t.is_Symbol:
-			print(t, type(t))
-			input()
+			flag = False
 			for a in t.args:
 				if p in [x.name for x in a.free_symbols]:
 					t = a
+					flag = True
 					break
+			if not flag:
+				print(p,'not in transition',s1,s2)
+				input()
 		if t.is_Mul:
 			return t.args[0]
 		else:
@@ -366,12 +420,14 @@ class BW_PCTMC(BW):
 		len_seq = len(obs_seq)-1
 		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
-		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states)
+		alpha_matrix = append(init_arr,zero_arr)
+		alpha_matrix = alpha_matrix.reshape(len_seq+1,self.nb_states)
 		for k in range(len_seq):
 			for s in range(self.nb_states):
 				p = array([self.h_l(ss,s,obs_seq[k])*exp(-self.h_e(ss)*times_seq[k]) for ss in range(self.nb_states)])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		alpha_matrix[-1] *= (array(self.h.labeling) == obs_seq[-1])
+		print(alpha_matrix)
 		return alpha_matrix.T
 
 	def computeBetas_timed(self,obs_seq: list, times_seq: list) -> array:
@@ -503,7 +559,7 @@ class BW_PCTMC(BW):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,iparam]*times/proba_seq).sum()
-				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.h.transitionValue(s,ss)*times/proba_seq).sum()
+				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()
 		
 		terms_cat3 = []
 		for iparam,param in enumerate(self.parameters_cat[2]):
@@ -514,7 +570,7 @@ class BW_PCTMC(BW):
 				c = self.C(s,ss)
 				for _ in range(1+c-len(temp)):
 					temp.append(0.0)
-				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.h.transitionValue(s,ss)*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
+				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
 			terms_cat3.append(array(temp))
 
 		return [den_cste, num_cste, den_cat1, num_cat1, den_cat2, num_cat2, terms_cat3, proba_seq, times]

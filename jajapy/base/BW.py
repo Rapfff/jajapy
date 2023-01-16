@@ -205,9 +205,8 @@ class BW:
 			while counter < max_it:
 				self._computeTaus()
 				temp = self._runProcesses(training_set)
-				self.hhat, currentloglikelihood = self._generateHhat(temp)
+				self.h, currentloglikelihood = self._generateHhat(temp)
 				counter += 1
-				self.h = self.hhat
 				bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
 				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
 				bar.text = bar_text
