@@ -1,7 +1,7 @@
 from .PCTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log, inf, uint16, max
+from numpy import array, zeros, dot, append, ones, log, inf, uint16, max, longdouble
 from numpy.polynomial.polynomial import polyroots
 
 
@@ -13,7 +13,7 @@ class BW_PCTMC(BW):
 			epsilon: float=0.01, max_it: int= inf, pp: str='',
 			verbose: bool = True, return_data: bool = False,
 			stormpy_output: bool = True, fixed_parameters: list = [],
-			update_constant :bool = True) -> PCTMC:
+			update_constant :bool = True, min_val: float = None, max_val: float = None) -> PCTMC:
 		"""
 		Fits the model according to ``traces``.
 
@@ -55,6 +55,18 @@ class BW_PCTMC(BW):
 			If set to False, the constant transitions (i.e. tha transition
 			that doesn't depend on any parameter) will no be updated.
 			Default is True.
+		min_val: float, optional
+			Minimal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the smallest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 0.1.
+		max_val : float, optional
+			Maximal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the highest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 5.0.	
 
 		Returns
 		-------
@@ -89,19 +101,32 @@ class BW_PCTMC(BW):
 				raise RuntimeError("the initial model is a Storm model but Storm is not installed on the machine")
 			initial_model = stormpyModeltoJajapy(initial_model)	
 
-		initial_model.randomInstantiation()
+		if min_val != None:
+			if max_val != None:
+				initial_model.randomInstantiation(min_val=min_val, max_val=max_val)
+			else:
+				initial_model.randomInstantiation(min_val=min_val)
+		elif max_val != None:
+			initial_model.randomInstantiation(max_val=max_val)
+
+		print(initial_model.parameter_str)
+		print(initial_model.parameter_values)
+
 		self.nb_parameters = initial_model.nb_parameters
 
 		self.update_constant = update_constant
 
 		self.sortParameters(fixed_parameters)
 
+		print(self.parameters_cat)
+		input()
+
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 	
 	def fit_nonInstantiatedParameters(self, traces, initial_model: PCTMC,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool = False,
-			stormpy_output: bool = True) -> PCTMC:
+			stormpy_output: bool = True, min_val: float = None, max_val: float = None) -> PCTMC:
 		"""
 		Fits only the non-instantiated parameters in the initial model
 		according to ``traces``.
@@ -137,6 +162,18 @@ class BW_PCTMC(BW):
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
+		min_val: float, optional
+			Minimal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the smallest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 0.1.
+		max_val : float, optional
+			Maximal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the highest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 5.0.		
 
 		Returns
 		-------
@@ -197,14 +234,20 @@ class BW_PCTMC(BW):
 				t += 1
 		initial_model.alphabet = alphabet
 		print(initial_model.nb_states)
-		self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
-				verbose, return_data,stormpy_output,fixed_parameters,update_constant)
+
+		#print(initial_model)
+
+		returned = self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
+				verbose, return_data,stormpy_output,fixed_parameters,
+				update_constant, min_val, max_val)
 		
 		res = {}
 		for p in to_update:
 			res[p] = self.h.parameterValue(p)
-		return res
-	
+		if return_data:
+			return res, returned[1]
+		else:
+			return res
 	def fit_component(self, traces, m1: PCTMC, m2: PCTMC,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool = False,
@@ -269,6 +312,7 @@ class BW_PCTMC(BW):
 			if min(apis) == 1 and max(apis) == 1 and min(cs) == 1 and max(cs) == 1:
 				self.parameters_cat[0].append(p)
 			elif min(cs) == max(cs):
+				print(p, min(cs), min(apis), max(apis))
 				self.parameters_cat[1].append(p)
 			else:
 				self.parameters_cat[2].append(p)
@@ -420,14 +464,12 @@ class BW_PCTMC(BW):
 		len_seq = len(obs_seq)-1
 		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
-		alpha_matrix = append(init_arr,zero_arr)
-		alpha_matrix = alpha_matrix.reshape(len_seq+1,self.nb_states)
+		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states).astype(longdouble)
 		for k in range(len_seq):
 			for s in range(self.nb_states):
 				p = array([self.h_l(ss,s,obs_seq[k])*exp(-self.h_e(ss)*times_seq[k]) for ss in range(self.nb_states)])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		alpha_matrix[-1] *= (array(self.h.labeling) == obs_seq[-1])
-		print(alpha_matrix)
 		return alpha_matrix.T
 
 	def computeBetas_timed(self,obs_seq: list, times_seq: list) -> array:
@@ -450,7 +492,7 @@ class BW_PCTMC(BW):
 		len_seq = len(obs_seq)-1
 		init_arr = ones(self.nb_states)*(array(self.h.labeling) == obs_seq[-1])
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
-		beta_matrix = append(zero_arr,init_arr).reshape(len_seq+1,self.nb_states)
+		beta_matrix = append(zero_arr,init_arr).reshape(len_seq+1,self.nb_states).astype(longdouble)
 		for k in range(len_seq-1,-1,-1):
 			for s in range(self.nb_states):
 				p = array([self.h_l(s,ss,obs_seq[k]) for ss in range(self.nb_states)])
@@ -527,8 +569,6 @@ class BW_PCTMC(BW):
 		beta_matrix  = self.computeBetas( obs_seq, times_seq)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
-			print(sequence)
-			print("has prob 0")
 			return False
 		####################
 		if self.update_constant:
@@ -551,7 +591,8 @@ class BW_PCTMC(BW):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss,iparam]*times/proba_seq).sum()
+				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.c_pis[s,ss,iparam]*times/proba_seq).sum()
+				#den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss,iparam]*times/proba_seq).sum()
 
 		num_cat2 = zeros(len(self.parameters_cat[1]))
 		den_cat2 = zeros(len(self.parameters_cat[1]))
@@ -559,7 +600,8 @@ class BW_PCTMC(BW):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,iparam]*times/proba_seq).sum()
-				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()
+				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()
+				#den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()
 		
 		terms_cat3 = []
 		for iparam,param in enumerate(self.parameters_cat[2]):
@@ -620,5 +662,6 @@ class BW_PCTMC(BW):
 			temp = array([i[p] for i in terms_cat3], dtype=float).sum(axis=0)
 			values.append(max(polyroots(temp)))
 
+		print(parameters, values)
 		self.h.instantiate(parameters,values)
 		return self.h, currentloglikelihood
