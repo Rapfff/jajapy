@@ -1,7 +1,7 @@
 from .PCTMC import *
 from ..base.BW import BW
 from ..base.Set import Set
-from numpy import array, zeros, dot, append, ones, log, inf, uint16, max, longdouble
+from numpy import array, zeros, dot, append, ones, log, inf, max, longdouble,float16
 from numpy.polynomial.polynomial import polyroots
 
 
@@ -101,6 +101,7 @@ class BW_PCTMC(BW):
 				raise RuntimeError("the initial model is a Storm model but Storm is not installed on the machine")
 			initial_model = stormpyModeltoJajapy(initial_model)	
 
+
 		if min_val != None:
 			if max_val != None:
 				initial_model.randomInstantiation(min_val=min_val, max_val=max_val)
@@ -109,7 +110,6 @@ class BW_PCTMC(BW):
 		elif max_val != None:
 			initial_model.randomInstantiation(max_val=max_val)
 
-		print(initial_model.parameter_str)
 		print(initial_model.parameter_values)
 
 		self.nb_parameters = initial_model.nb_parameters
@@ -119,7 +119,6 @@ class BW_PCTMC(BW):
 		self.sortParameters(fixed_parameters)
 
 		print(self.parameters_cat)
-		input()
 
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 	
@@ -235,8 +234,6 @@ class BW_PCTMC(BW):
 		initial_model.alphabet = alphabet
 		print(initial_model.nb_states)
 
-		#print(initial_model)
-
 		returned = self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
 				verbose, return_data,stormpy_output,fixed_parameters,
 				update_constant, min_val, max_val)
@@ -299,7 +296,7 @@ class BW_PCTMC(BW):
 		pass
 
 	def sortParameters(self,fixed_parameters):
-		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=uint16)
+		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=float16)
 		for iparam,param in enumerate(self.h.parameter_str):
 			if not param in fixed_parameters:
 				for s,ss in self.h.parameterIndexes(param):
@@ -307,26 +304,28 @@ class BW_PCTMC(BW):
 
 		self.parameters_cat = [[],[],[]]
 		for ip,p in enumerate(self.h.parameter_str):
-			apis = [self.a_pis[x,y,ip] for x,y in self.h.parameterIndexes(p)]
-			cs = [self.C(x,y) for x,y in self.h.parameterIndexes(p)]
-			if min(apis) == 1 and max(apis) == 1 and min(cs) == 1 and max(cs) == 1:
-				self.parameters_cat[0].append(p)
-			elif min(cs) == max(cs):
-				print(p, min(cs), min(apis), max(apis))
-				self.parameters_cat[1].append(p)
-			else:
-				self.parameters_cat[2].append(p)
+			if not p in fixed_parameters:
+				apis = [self.a_pis[x,y,ip] for x,y in self.h.parameterIndexes(p)]
+				cs = [self.C(x,y) for x,y in self.h.parameterIndexes(p)]
+				if min(apis) == 1 and max(apis) == 1 and min(cs) == 1 and max(cs) == 1:
+					self.parameters_cat[0].append(p)
+				elif min(cs) == max(cs):
+					self.parameters_cat[1].append(p)
+				else:
+					self.parameters_cat[2].append(p)
 		
-		self.c_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.parameters_cat[0])),dtype=uint16)
+		self.c_pis = zeros((self.h.nb_states,self.h.nb_states))
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
-				self.c_pis[s,ss,iparam] = self.c_pi(s,ss,param)
+				self.c_pis[s,ss] = self.c_pi(s,ss,param)
+
+		
 	
 	def _computeTaus(self):
 		self.hval = zeros((self.nb_states,self.nb_states))
 		for s in range(self.nb_states):
 			for ss in range(self.nb_states):
-				self.hval[s,ss] =  self.h.evaluateTransition(s,ss)
+				self.hval[s,ss] =  self.h.transitionValue(s,ss)
 
 	def a_pi(self,s1,s2,p):
 		t = self.h.transitionExpression(s1,s2)
@@ -346,6 +345,7 @@ class BW_PCTMC(BW):
 			return 1
 
 	def c_pi(self,s1,s2,p):
+		#used only if p is the only non-fixed parameter
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Mul and not t.is_Symbol:
 			flag = False
@@ -358,7 +358,14 @@ class BW_PCTMC(BW):
 				print(p,'not in transition',s1,s2)
 				input()
 		if t.is_Mul:
-			return t.args[0]
+			res = 1.0
+			for a in t.args:
+				if a.is_Symbol:
+					if not a.name == p:
+						res *= self.h.parameterValue(a.name)
+				else:
+					res *= a
+			return float(res)
 		else:
 			return 1
 
@@ -461,6 +468,7 @@ class BW_PCTMC(BW):
 		2-D narray
 			array containing the beta values.
 		"""
+
 		len_seq = len(obs_seq)-1
 		init_arr = self.h.initial_state
 		zero_arr = zeros(shape=(len_seq*self.nb_states,))
@@ -590,29 +598,30 @@ class BW_PCTMC(BW):
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-				num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-				den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.c_pis[s,ss,iparam]*times/proba_seq).sum()
-				#den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss,iparam]*times/proba_seq).sum()
-
+				if p.sum()>0.0:
+					num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
+					den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss]*times/proba_seq).sum()
+					
 		num_cat2 = zeros(len(self.parameters_cat[1]))
 		den_cat2 = zeros(len(self.parameters_cat[1]))
 		for iparam,param in enumerate(self.parameters_cat[1]):
+			p_index = self.h.parameter_str.index(param)
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,iparam]*times/proba_seq).sum()
-				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()
-				#den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()
+				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
+				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()
 		
 		terms_cat3 = []
 		for iparam,param in enumerate(self.parameters_cat[2]):
+			p_index = self.h.parameter_str.index(param)
 			temp = [0.0]
 			for s,ss in self.h.parameterIndexes(param):
 				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
-				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,self.h.parameter_str.index(param)]*times/proba_seq).sum()
+				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
 				c = self.C(s,ss)
 				for _ in range(1+c-len(temp)):
 					temp.append(0.0)
-				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,self.h.parameter_str.index(param)]*self.hval[s,ss]*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
+				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
 			terms_cat3.append(array(temp))
 
 		return [den_cste, num_cste, den_cat1, num_cat1, den_cat2, num_cat2, terms_cat3, proba_seq, times]
