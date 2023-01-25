@@ -5,8 +5,7 @@ from ..mdp import MDP
 from ..ctmc import CTMC
 from ..pctmc import PCTMC
 from copy import deepcopy
-from io import StringIO
-from contextlib import redirect_stderr
+import os, sys
 from sympy import symbols, sympify
 
 def stormpyModeltoJajapy(h,actions_name:list = []):
@@ -299,17 +298,20 @@ def loadPrism(path: str):
 	jajapy.MC or jajapy.CTMC or jajapy.MDP
 		A jajapy model equivalent to the model described in `path`.
 	"""
-	text_trap1 = StringIO()
-	with redirect_stderr(text_trap1):
-		try:
-			prism_program = st.parse_prism_program(path,False)
-		except RuntimeError:
-			prism_program = st.parse_prism_program(path,True)
-		try:
-			stormpy_model = st.build_model(prism_program)
-		except RuntimeError:
-			stormpy_model = st.build_parametric_model(prism_program)
-	#print(stormpy_model)
+
+	try:
+		prism_program = st.parse_prism_program(path,False)
+	except RuntimeError:
+		prism_program = st.parse_prism_program(path,True)
+	try:
+		stormpy_model = st.build_model(prism_program)
+	except RuntimeError:
+		stormpy_model = st.build_parametric_model(prism_program)
+
+	if os.name != "nt":
+		os.system('clear')
+	else:
+		os.system('cls')
 
 	jajapy_model = stormpyModeltoJajapy(stormpy_model)
 	return jajapy_model

@@ -110,15 +110,9 @@ class BW_PCTMC(BW):
 		elif max_val != None:
 			initial_model.randomInstantiation(max_val=max_val)
 
-		print(initial_model.parameter_values)
-
 		self.nb_parameters = initial_model.nb_parameters
-
 		self.update_constant = update_constant
-
 		self.sortParameters(fixed_parameters)
-
-		print(self.parameters_cat)
 
 		return super().fit(traces, initial_model, output_file, epsilon, max_it, pp, verbose,return_data,stormpy_output)
 	
@@ -199,8 +193,8 @@ class BW_PCTMC(BW):
 		if type(traces) != Set:
 			traces = Set(traces)
 		alphabet = traces.getAlphabet()
-		print("Removing unused states...")
-		print('From',initial_model.nb_states,'states to',end=' ')
+		print("Removing unused states: ", end='')
+		print('from',initial_model.nb_states,'states to',end=' ')
 		s = 0
 		while s < initial_model.nb_states:
 			if initial_model.getLabel(s) not in alphabet:
@@ -231,7 +225,7 @@ class BW_PCTMC(BW):
 				l -= 1
 			else:
 				t += 1
-		initial_model.alphabet = alphabet
+		#initial_model.alphabet = alphabet
 		print(initial_model.nb_states)
 
 		returned = self.fit(traces,initial_model,output_file,epsilon,max_it,pp,
@@ -593,6 +587,7 @@ class BW_PCTMC(BW):
 			num_cste = None
 			den_cste = None
 			
+		#print(sequence, proba_seq)
 		num_cat1 = zeros(len(self.parameters_cat[0]))
 		den_cat1 = zeros(len(self.parameters_cat[0]))
 		for iparam,param in enumerate(self.parameters_cat[0]):
@@ -601,7 +596,8 @@ class BW_PCTMC(BW):
 				if p.sum()>0.0:
 					num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 					den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss]*times/proba_seq).sum()
-					
+			#print(param,num_cat1[iparam], den_cat1[iparam])
+			#input()
 		num_cat2 = zeros(len(self.parameters_cat[1]))
 		den_cat2 = zeros(len(self.parameters_cat[1]))
 		for iparam,param in enumerate(self.parameters_cat[1]):
@@ -671,6 +667,5 @@ class BW_PCTMC(BW):
 			temp = array([i[p] for i in terms_cat3], dtype=float).sum(axis=0)
 			values.append(max(polyroots(temp)))
 
-		print(parameters, values)
 		self.h.instantiate(parameters,values)
 		return self.h, currentloglikelihood
