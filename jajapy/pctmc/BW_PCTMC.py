@@ -73,7 +73,8 @@ class BW_PCTMC(BW):
 		PCTMC or stormpy.SparseParametricCtmc
 			The fitted PCTMC.
 			If `stormpy_output` is set to `False` or if stormpy is not available on
-			the machine it returns a `jajapy.PCTMC`, otherwise it returns a `stormpy.SparseParametricCtmc`
+			the machine it returns a `jajapy.PCTMC`, otherwise it returns a
+			`stormpy.SparseParametricCtmc`
 		"""
 		if type(traces) != Set:
 			traces = Set(traces)
@@ -119,7 +120,7 @@ class BW_PCTMC(BW):
 	def fit_nonInstantiatedParameters(self, traces, initial_model: PCTMC,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool = False,
-			stormpy_output: bool = True, min_val: float = None, max_val: float = None) -> PCTMC:
+			stormpy_output: bool = True, min_val: float = None, max_val: float = None) -> dict:
 		"""
 		Fits only the non-instantiated parameters in the initial model
 		according to ``traces``.
@@ -170,10 +171,12 @@ class BW_PCTMC(BW):
 
 		Returns
 		-------
-		PCTMC or stormpy.SparseParametricCtmc
-			The fitted PCTMC.
-			If `stormpy_output` is set to `False` or if stormpy is not available on
-			the machine it returns a `jajapy.PCTMC`, otherwise it returns a `stormpy.SparseParametricCtmc`
+		dict or list
+			Dictionary containing the estimated values for the non-indtantiated
+			parameters.
+			If `return_data` is set to True, returns a list containing:
+			- the dictionary described above,
+			- the `returned_data` (see parameter description).
 		"""
 		update_constant = False
 		fixed_parameters = []
@@ -239,6 +242,7 @@ class BW_PCTMC(BW):
 			return res, returned[1]
 		else:
 			return res
+
 	def fit_component(self, traces, m1: PCTMC, m2: PCTMC,
 			output_file: str=None, epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool = False,
@@ -287,9 +291,20 @@ class BW_PCTMC(BW):
 			If `stormpy_output` is set to `False` or if stormpy is not available on
 			the machine it returns a `jajapy.PCTMC`, otherwise it returns a `stormpy.SparseParametricCtmc`
 		"""
+		#TODO!!!!!!
 		pass
 
-	def sortParameters(self,fixed_parameters):
+	def sortParameters(self,fixed_parameters: list):
+		"""
+		Sort the parameters into the three categories.
+		Depending on the category, the parameters are estimated differently:
+		in some cases some optimizations are possible (see the paper).
+		
+		Parameters
+		----------
+		fixed_parameters : list
+			list of all fixed parameters (the one we are not estimating).
+		"""
 		self.a_pis = zeros((self.h.nb_states,self.h.nb_states,len(self.h.parameter_str)),dtype=float16)
 		for iparam,param in enumerate(self.h.parameter_str):
 			if not param in fixed_parameters:
@@ -313,15 +328,30 @@ class BW_PCTMC(BW):
 			for s,ss in self.h.parameterIndexes(param):
 				self.c_pis[s,ss] = self.c_pi(s,ss,param)
 
-		
-	
 	def _computeTaus(self):
 		self.hval = zeros((self.nb_states,self.nb_states))
 		for s in range(self.nb_states):
 			for ss in range(self.nb_states):
 				self.hval[s,ss] =  self.h.transitionValue(s,ss)
 
-	def a_pi(self,s1,s2,p):
+	def a_pi(self,s1: int,s2: int, p: str) -> int:
+		"""
+		Return the power of parameter `p` in the transition from `s1` to `s2`.
+
+		Parameters
+		----------
+		s1 : int
+			source state ID.
+		s2 : int
+			destination state ID.
+		p : str
+			parameter name.
+
+		Returns
+		-------
+		int
+			Return the power of parameter `p` in the transition from `s1` to `s2`.
+		"""
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Pow and not t.is_Symbol:
 			flag = False
@@ -338,7 +368,26 @@ class BW_PCTMC(BW):
 		else:
 			return 1
 
-	def c_pi(self,s1,s2,p):
+	def c_pi(self,s1: int,s2: int, p:str) -> float:
+		"""
+		Return the coefficient of parameter `p` in the transition from
+		`s1` to `s2`.
+
+		Parameters
+		----------
+		s1 : int
+			source state ID.
+		s2 : int
+			destination state ID.
+		p : str
+			parameter name.
+
+		Returns
+		-------
+		float
+			the coefficient of parameter `p` in the transition from
+			`s1` to `s2`.
+		"""
 		#used only if p is the only non-fixed parameter
 		t = self.h.transitionExpression(s1,s2)
 		while not t.is_Mul and not t.is_Symbol:
@@ -363,7 +412,23 @@ class BW_PCTMC(BW):
 		else:
 			return 1
 
-	def C(self,s1,s2):
+	def C(self,s1:int ,s2:int) -> int:
+		"""
+		Returns the sum of the power of all parameter in the transition
+		from `s1` to `s2`.
+
+		Parameters
+		----------
+		s1 : int
+			source state ID.
+		s2 : int
+			destination state ID.
+
+		Returns
+		-------
+		int
+			the sum of the power of all parameter in the transition
+		"""
 		r = 0
 		for p in self.h.involvedParameters(s1,s2):
 			r += self.a_pis[s1,s2,self.h.parameter_str.index(p)]
@@ -374,10 +439,13 @@ class BW_PCTMC(BW):
 		Returns the exit rate, in the current hypothesis, of state ``s``, i.e.
 		the sum of all the rates in this state.
 
-		Returns
-		-------
+		Parameters
+		----------
 		s : int
 			A state ID.
+
+		Returns
+		-------
 		float
 			An exit rate.
 		"""
@@ -434,6 +502,22 @@ class BW_PCTMC(BW):
 
 
 	def computeAlphas(self,obs_seq: list, times_seq: list = None) -> array:
+		"""
+		Compute the alpha values for ``obs_seq`` (and ``times_seq`` if the
+		sequence is timed) under the current BW hypothesis.
+
+		Parameters
+		----------
+		obs_seq : list of str
+			Sequence of observations.
+		times_seq : list of float
+			Sequence of waiting times.
+
+		Returns
+		-------
+		2-D narray
+			array containing the beta values.
+		"""
 		if times_seq:
 			return self.computeAlphas_timed(obs_seq,times_seq)
 		else:

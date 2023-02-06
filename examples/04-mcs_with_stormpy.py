@@ -52,8 +52,10 @@ def example_4():
 				quality_best = current_quality
 				best_model = current_model
 	
-	print(quality_best)
+	print("Best model:")
 	print(best_model)
+	print('loglikelihood of the test set under the best model:')
+	print(quality_best)
 
 	# MODEL CHECKING
 	#---------------
@@ -61,7 +63,8 @@ def example_4():
 	formula_str = 'P=? [F "five"]'
 	properties = stormpy.parse_properties(formula_str)
 	result = stormpy.check_model_sparse(model_storm,properties[0])
-	print(result.at(model_storm.initial_states[0]))
+	print("Model checking result for "+formula_str+':',result.at(model_storm.initial_states[0]))
+	print("Expected result:",1/6)
 
 
 if __name__ == '__main__':

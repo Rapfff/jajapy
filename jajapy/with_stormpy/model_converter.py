@@ -5,19 +5,19 @@ from ..mdp import MDP
 from ..ctmc import CTMC
 from ..pctmc import PCTMC
 from copy import deepcopy
-import os, sys
+import os
 from sympy import symbols, sympify
 
 def stormpyModeltoJajapy(h,actions_name:list = []):
 	"""
-	Given a tormpy.SparseCtmc, stormpy.SparseDtmc,
-	or a stormpy.SparseMdp, it returns the equivalent jajapy model.
-	The output object will be a jajapy.MC, jajapy.MDP or a jajapy.CTMC,
-	depending on the input.
+	Given a stormpy.SparseCtmc, stormpy.SparseDtmc, stormpy.SparseMdp, or
+	stormpy.SparseParametricCtmc, it returns the equivalent jajapy model.
+	The output object will be a jajapy.MC, jajapy.CTMC, jajapy.MDP or
+	jajapy.PCTMC depending on the input.
 
 	Parameters
 	----------
-	h : stormpy.SparseCtmc, stormpy.SparseDtmc or stormpy.SparseMdp
+	h : stormpy.SparseCtmc, stormpy.SparseDtmc, stormpy.SparseMdp or stormpy.SparseParametricCtmc
 		The model to convert.
 	
 	actions_name : list of str, optional.
@@ -27,7 +27,7 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 
 	Returns
 	-------
-	jajapy.MC, jajapy.CTMC or jajapy.MDP
+	jajapy.MC, jajapy.CTMC, jajapy.MDP or jajapy.PCTMC
 		The same model in jajapy format.
 	"""
 	if type(h) == st.SparseDtmc:
@@ -137,7 +137,7 @@ def jajapyModeltoStormpy(h):
 	Given a jajapy.MC, a jajapy.CTMC, a jajapy.MDP or an instantiated
 	jajapy.PCTMC, it returns the equivalent stormpy sparse model.
 	The output object will be a stormpy.SparseCtmc, stormpy.SparseDtmc,
-	or a stormpy.SparseMdp depending on the input.
+	stormpy.SparseMdp, or stormpy.SparseParametricCtmc depending on the input.
 
 	Parameters
 	----------
@@ -146,7 +146,7 @@ def jajapyModeltoStormpy(h):
 
 	Returns
 	-------
-	stormpy.SparseCtmc, stormpy.SparseDtmc or stormpy.SparseMdp
+	stormpy.SparseCtmc, stormpy.SparseDtmc, stormpy.SparseMdp or stormpy.SparseParametricCtmc
 		The same model in stormpy format.
 	"""
 	if type(h) == MDP:
@@ -288,6 +288,10 @@ def loadPrism(path: str):
 	Load the model described in file `path` under Prism format.
 	Remark: this function uses the stormpy parser for Prism file.
 
+	Remarks
+	-------
+	For technical reason, this function clear the terminal on usage.
+
 	Parameters
 	----------
 	path : str
@@ -295,8 +299,10 @@ def loadPrism(path: str):
 
 	Returns
 	-------
-	jajapy.MC or jajapy.CTMC or jajapy.MDP
+	jajapy.MC, jajapy.CTMC, jajapy.MDP or jajapy.PCTMC
 		A jajapy model equivalent to the model described in `path`.
+	
+
 	"""
 
 	try:

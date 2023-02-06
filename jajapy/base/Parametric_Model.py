@@ -1,4 +1,4 @@
-from numpy import ndarray, array, isnan, where, zeros, nan
+from numpy import ndarray, array, isnan, where, nan
 from numpy.random import geometric
 from ast import literal_eval
 from copy import deepcopy
@@ -8,8 +8,8 @@ from sympy import sympify
 
 class Parametric_Model(Model):
 	"""
-	Abstract class that represents parametric MC/CTMC/MDP.
-	Is inherited by PMC, PCTMC and PMDP.
+	Abstract class that represents parametric models.
+	Is inherited by PCTMC.
 	Should not be instantiated itself!
 	"""
 	def __init__(self, matrix: ndarray, labeling: list,
@@ -24,17 +24,17 @@ class Parametric_Model(Model):
 		matrix : ndarray
 			Represents the transition matrix.
 			matrix[i,j] is the index, in `transition_expr`, of the symbolic
-			value of the transition from `i` to `j`.
+			representation of the transition from `i` to `j`.
 		labeling: list of str
 			A list of N observations (with N the nb of states).
 			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		transition_expr: list of str
-			Contains the symbolic value for each transition.
+			Contains the symbolic representation for each transition.
 		parameter_values: list of float
 			Contains the value for each parameter.
 			`parameter_values[i]` is the instantiation for parameter `i`.
-			If the ith parameter is not instantiated, `parameter_values[i] == nan`.
+			If the ith parameter is not instantiated, `parameter_values[i] == numpy.nan`.
 		parameter_indexes: list of ndarray
 			Contains the indexes of each transition using each parameter.
 			`parameter_indexes[i] = array([[0,1],[2,1]])` means that parameter `i`
@@ -87,9 +87,9 @@ class Parametric_Model(Model):
 		If nothing is set, checks if all the parameters are instantiated.
 		If `state1` is set, checks if all the transitions leaving this state
 		are instantiated.
-		If `state1` and `state2` are set, checks if the transitions from `state1` to `state2`
-		is instantiated.
-		If `param` is set, checks if `param` is instantiated.
+		If `state1` and `state2` are set, checks if the transitions from
+		`state1` to `state2` is instantiated.
+		If `param` is set, checks if the parameter `param` is instantiated.
 
 		Parameters
 		----------
@@ -105,7 +105,8 @@ class Parametric_Model(Model):
 		Returns
 		-------
 		bool
-			True if all the parameters are intantiated.
+			True if all the requested entity(ies) is/are instantiated.
+			See above.
 		"""
 		if type(param) == str:
 			return param in self.parameter_values
@@ -123,25 +124,100 @@ class Parametric_Model(Model):
 			return True
 
 	def transitionValue(self,i:int,j:int):
+		"""
+		Returns the value of the transition from state `i` to `j`.
+		If at least one of the paramater in this transition is not
+		instantiated, returns the symbolic representation of the transition.
+
+		Parameters
+		----------
+		i : int
+			source state ID.
+		j : int
+			destination state ID.
+
+		Returns
+		-------
+		float or symbolic representation
+			The value of the transition from state `i` to `j`.
+			If at least one of the paramater in this transition is not
+			instantiated, returns the symbolic representation of the
+			transition.
+		"""
 		return self.transition_expr[self.matrix[i,j]].evalf(subs=self.parameter_values)
 
 	def transitionExpression(self,i:int,j:int):
+		"""
+		Returns the symbolic representation of the transition.
+
+		Parameters
+		----------
+		i : int
+			source state ID.
+		j : int
+			destination state ID.
+
+		Returns
+		-------
+		symbolic representation
+			The symbolic representation of the transition.
+		"""
 		return self.transition_expr[self.matrix[i,j]]
 	
 	def parameterValue(self, p:str)-> float:
+		"""
+		Returns the value of the parameter `p`.
+		If `p` is not instantiated, returns numpy.nan.
+		If the model doesn't have any parameter `p`, returns numpy.nan.
+
+		Parameters
+		----------
+		p : str
+			parameter name.
+
+		Returns
+		-------
+		float
+			The value of `p` if `p` is instantiated, numpy.nan otherwise.
+			If the model doesn't have any parameter `p`, returns numpy.nan.
+		"""
 		if not p in self.parameter_values:
 			return nan
 		return self.parameter_values[p]
 	
 	def parameterIndexes(self, p:str) -> list:
+		"""
+		Returns the list of all transitions involving `p`.
+		If the model doesn't have any parameter `p`, returns an empty list.
+
+		Parameters
+		----------
+		p : str
+			parameter name.
+
+		Returns
+		-------
+		list
+			The list of all transitions involving `p`.
+			If the model doesn't have any parameter `p`, returns an empty list.
+		
+		Examples
+		--------
+		>>> m.parameterIndexes('x')
+		[[4,0],[2,3]]
+		>>> # the transitions from state 4 to 0 and from 2 to 3 involve 'x'.
+		>>> m.transitionExpression(4,0)
+		3*x
+		"""
 		if not p in self.parameter_str:
 			return []
 		return self.parameter_indexes[self.parameter_str.index(p)]
 
 	def instantiate(self,parameters: list, values: list) -> ndarray: 
 		"""
-		Set all the parameters in `parameters` to the values `values`.
-
+		Returns a copy of the `self.parameter_values` dict, where all the
+		parameters in `parameters` to the values `values`.
+		
 		Parameters
 		----------
 		parameters : list of string
@@ -149,18 +225,55 @@ class Parametric_Model(Model):
 			names.
 		values : list of float
 			List of values. `parameters[i]` will be set to `values[i]`.
+
+		Returns
+		-------
+		numpy.ndarray
+			A copy of the `self.parameter_values` dict, where all the
+			parameters in `parameters` to the values `values`.
+		
+		Remark
+		------
+		The output numpy.ndarray will be used by the inherited class to check
+		if this instantiation is valid. If so, the `self.parameter_values` dict
+		is updated.
 		"""
 		new_values = deepcopy(self.parameter_values)
 		for s,v in zip(parameters,values):
 			new_values[s] = v
 		return new_values
 
-	def evaluateString(self,string:str,parameter_values=None):
-		if parameter_values == None:
-			parameter_values = self.parameter_values
-		return sympify(string).evalf(subs=parameter_values)
+	#def evaluateString(self,string:str,parameter_values=None):
+	#	if parameter_values == None:
+	#		parameter_values = self.parameter_values
+	#	return sympify(string).evalf(subs=parameter_values)
 
-	def evaluateTransition(self,i:int,j:int,parameter_values=None):
+	def evaluateTransition(self,i:int,j:int, parameter_values: dict = None):
+		"""
+		Returns the value of the transition from state `i` to `j`.
+		If `parameter_values` is given, the parameters are instantiated by
+		`parameter_values`, otherwise by `self.parameter_values`.
+		If at least one of the paramater in this transition is not
+		instantiated, returns the symbolic representation of the transition.
+
+		Parameters
+		----------
+		i : int
+			source state ID.
+		j : int
+			destination state ID.
+		parameter_values: dict, optional
+			dictionary with the instantiation of the parameters.
+			The keys are the parameter names (str).
+
+		Returns
+		-------
+		float or symbolic representation
+			The value of the transition from state `i` to `j`.
+			If at least one of the paramater this transition is not
+			instantiated, returns the symbolic representation of the
+			transition.
+		"""
 		if parameter_values == None:
 			parameter_values = self.parameter_values
 		v =  self.transitionExpression(i,j).evalf(subs=parameter_values)
@@ -172,21 +285,21 @@ class Parametric_Model(Model):
 
 	def involvedParameters(self,i: int,j: int = -1) -> list:
 		"""
-		Returns the parameters involved in the transition from i to j.
+		Returns the parameters involved in the transition from `i` to `j`.
 		If `j` is not set, it returns the parameters involved in all the 
 		transitions leaving `i`.
 
 		Parameters
 		----------
 		i : int
-			source state.
+			source state ID.
 		j : int, optional
-			destination state
+			destination state ID.
 
 		Returns
 		-------
-		list of int
-			list of parameter IDs.
+		list of str
+			list of parameter names.
 		"""
 		if j == -1:
 			j = range(self.nb_states)
@@ -346,6 +459,10 @@ class Parametric_Model(Model):
 			raise IndexError('This model contains only '+str(self.nb_states)+' states')
 
 def loadParametricModel(f):
+	"""
+	Used by the inherited classes.
+	Should not be used directly!
+	"""
 	name = f.readline()[:-1]
 	matrix = array(literal_eval(f.readline()[:-1]))
 	labeling = literal_eval(f.readline()[:-1])

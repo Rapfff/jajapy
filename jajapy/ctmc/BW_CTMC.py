@@ -13,10 +13,13 @@ class BW_CTMC(BW):
 		Returns the exit rate, in the current hypothesis, of state ``s``, i.e.
 		the sum of all the rates in this state.
 
-		Returns
-		-------
+		Parameters
+		----------
 		s : int
 			A state ID.
+		
+		Returns
+		-------
 		float
 			An exit rate.
 		"""
@@ -258,12 +261,13 @@ class BW_CTMC(BW):
 		Parameters
 		----------
 		sequence : list
-			_description_
+			the trace to split.
 
 		Returns
 		-------
 		tuple
-			_description_
+			a tuple containing a sequence of observations and a sequence of
+			waiting times.
 		"""
 		if type(sequence[1]) == float and type(sequence[0]) == str:
 			times_seq = [sequence[i] for i in range(1,len(sequence),2)]

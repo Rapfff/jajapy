@@ -8,9 +8,8 @@ def example_1():
 
 	# MODEL CREATION
 	#----------------
-	# in the next state we generate 'x' with probability 0.4, and 'y' with probability 0.6
-	# once an observation generated, we move to state 1 or 2 with probability 0.5
-	# the id of this state is 0.
+	# in the next state (s0) we generate 'x' with probability 0.4, and 'y' with probability 0.6
+	# once an observation is generated, we move to state 1 or 2 with probability 0.5
 	s0 = ja.HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
 	s1 = ja.HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
 	s2 = ja.HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
@@ -19,6 +18,7 @@ def example_1():
 	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
 	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
 	original_model = ja.HMM(transitions,output,alphabet,initial_state=0,name="My HMM")
+	print("SUL:")
 	print(original_model)
 	#original_model.save("my_model.txt")
 	#original_model = ja.loadHMM("my_model.txt")
@@ -33,6 +33,7 @@ def example_1():
 	# LEARNING
 	#---------
 	output_model = ja.BW_HMM().fit(training_set, nb_states=5, stormpy_output=False)
+	print("Output model:")
 	print(output_model)
 
 	# OUTPUT EVALUATION
@@ -41,9 +42,8 @@ def example_1():
 	test_set = original_model.generateSet(set_size=1000, param=10)
 	ll_original = original_model.logLikelihood(test_set)
 	ll_output   =   output_model.logLikelihood(test_set)
-	quality = ll_original - ll_output
-	print(quality)
+	quality = abs(ll_original - ll_output)
+	print("loglikelihood distance:",quality)
 
 if __name__ == "__main__":
-
 	example_1()

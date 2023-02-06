@@ -8,7 +8,7 @@ def example_2():
 	initial_state = 0
 	name = "MC_REBER"
 	# From state 0 we move to state 1 with probability 0.5
-	# and to state 5 with probability 0.5
+	# and to state 5 with probability 0.5, and so on...
 	transitions = [(0,1,0.5),(0,5,0.5),(1,2,0.6),(1,3,0.4),(2,2,0.6),(2,3,0.4),
 				   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
 				   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
@@ -24,7 +24,7 @@ def example_2():
 
 	# LEARNING
 	#---------
-	nb_trials = 10 # we will repeat learn this model 10 times
+	nb_trials = 10 # we will learn this model 10 times
 	best_model = None
 	quality_best = -1024
 	for n in range(1,nb_trials+1):
@@ -34,8 +34,10 @@ def example_2():
 				quality_best = current_quality
 				best_model = current_model
 	
-	print(quality_best)
+	print("Best model:")
 	print(best_model)
+	print('loglikelihood of the test set under the best model:')
+	print(quality_best)
 
 
 if __name__ == '__main__':

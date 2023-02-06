@@ -1,12 +1,12 @@
 from ..base.tools import resolveRandom
 from ..base.Parametric_Model import *
 from ..base.Set import Set
-from numpy import ndarray, array, zeros, dot, nan, newaxis, hstack, inf, vstack, delete
+from numpy import ndarray, array, zeros, dot, newaxis, hstack, inf, vstack, delete
 from numpy.random import exponential, rand
 from math import exp, log
 from multiprocessing import cpu_count, Pool
 from sys import platform
-from sympy import sympify, symbols
+from sympy import sympify
 
 class PCTMC(Parametric_Model):
 	"""
@@ -170,7 +170,6 @@ class PCTMC(Parametric_Model):
 		except ValueError:
 			print("WARN: cannot compute the expected time of non-instantiated state "+str(s))
 
-
 	def _checkRates(self,values=None) -> bool:
 		if type(values) == type(None):
 			values = self.parameter_values
@@ -182,7 +181,6 @@ class PCTMC(Parametric_Model):
 					return False
 		return True
 		
-	
 	def instantiate(self, parameters: list, values: list) -> bool:
 		"""
 		Set all the parameters in `parameters` to the values `values`.
@@ -194,6 +192,13 @@ class PCTMC(Parametric_Model):
 			names.
 		values : list of float
 			List of values. `parameters[i]` will be set to `values[i]`.
+		
+		Returns
+		-------
+		bool
+			True if the instantiation is valid (no transition has a negative
+			evaluation) and then applied, False if the instantiation is not 
+			valid (and then ignored).
 		"""
 		new_values =  super().instantiate(parameters, values)
 		if self._checkRates(new_values):
@@ -325,6 +330,19 @@ class PCTMC(Parametric_Model):
 		return log(last_arr.sum())*times
 
 	def logLikelihood(self,traces: Set) -> float:
+		"""
+		Computes the loglikelihood of `traces` under this model.
+
+		Parameters
+		----------
+		traces : Set
+			a set of traces.
+
+		Returns
+		-------
+		float
+			the loglikelihood of `traces` under this model.
+		"""
 		if not self.isInstantiated():
 			raise ValueError("Cannot compute the loglikelihood of a set under a non-instantiated model.")
 			
@@ -546,7 +564,22 @@ def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") ->
 	removeUnusedTrans(m1)
 	return m1
 
-def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition"):
+def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_composition") -> PCTMC:
+	"""
+	Returns the synchronous composition of `m1` and `m2`.
+
+	Parameters
+	----------
+	m1 : CTMC
+		First CTMC to compose with.
+	m2 : CTMC
+		Second CTMC to compose with.
+
+	Returns
+	-------
+	PCTMC
+		Synchronous composition of `m1` and `m2`.
+	"""
 	m1_init = [i for i,li in enumerate(m1.labeling) if li == 'init']
 	m2_init = [i for i,li in enumerate(m2.labeling) if li == 'init']
 	m1_nb_states = m1.nb_states - len(m1_init)

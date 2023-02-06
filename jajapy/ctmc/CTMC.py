@@ -225,6 +225,19 @@ class CTMC(Base_MC):
 
 
 	def logLikelihood(self,traces: Set) -> float:
+		"""
+		Computes the loglikelihood of `traces` under this model.
+
+		Parameters
+		----------
+		traces : Set
+			a set of traces.
+
+		Returns
+		-------
+		float
+			the loglikelihood of `traces` under this model.
+		"""
 		if traces.type == 0: # non-timed traces
 			return super().logLikelihood(traces)
 		else: # timed traces
@@ -300,7 +313,7 @@ def loadCTMC(file_path: str) -> CTMC:
 	f.close()
 	return CTMC(matrix, labeling, name)
 
-def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
+def CTMC_random(nb_states: int, labeling: list, min_exit_rate_time : int,
 				max_exit_rate_time: int, self_loop: bool = True,
 				random_initial_state: bool=True) -> CTMC:
 	"""
@@ -311,7 +324,7 @@ def CTMC_random(nb_states: int, alphabet: list, min_exit_rate_time : int,
 	----------
 	nb_states : int
 		Number of states.
-	alphabet : list of str
+	labeling : list of str
 		List of observations.
 	min_exit_rate_time: int
 		Minimum exit rate for the states (included).

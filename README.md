@@ -26,9 +26,10 @@
 | HMM    | Baum-Welch for HMMs  ([ref](https://web.ece.ucsb.edu/Faculty/Rabiner/ece259/Reprints/tutorial%20on%20hmm%20and%20applications.pdf)) |
 | MC     | Baum-Welch for MCs <br /> Alergia ([ref](https://www.researchgate.net/publication/2543721_Learning_Stochastic_Regular_Grammars_by_Means_of_a_State_Merging_Method/stats)) |
 | MDP    | Baum-Welch for MDPs ([ref](https://arxiv.org/abs/2110.03014))<br /> Active Baum-Welch ([ref](https://arxiv.org/abs/2110.03014))<br /> IOAlergia ([ref](https://link.springer.com/content/pdf/10.1007/s10994-016-5565-9.pdf))|
-| CTMC   | Baum-Welch for CTMCs|
+| CTMC   | Baum-Welch for CTMCs <br /> Baum-Welch for synchronous compositions of CTMCs|
 | GoHMM  | Baum-Welch for GoHMMs ([ref](http://www.inass.org/2020/2020022920.pdf)) |
 | MGoHMM | Baum-Welch for MGoHMMs |
+| PCTMC  | Baum-Welch for PCTMCs|
 
 </div>
 
@@ -41,6 +42,7 @@
 - [numpy](https://numpy.org/)
 - [scipy](https://scipy.org/)
 - [alive-progress](https://github.com/rsalmei/alive-progress) 
+- [sympy](https://www.sympy.org/en/index.html)
 - [stormpy](https://github.com/moves-rwth/stormpy) (recommended: if stormpy is not installed, `jajapy` will generate models in jajapy format).
 
 ## Documentation
