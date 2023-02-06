@@ -301,7 +301,7 @@ class BW_CTMC(BW):
 					if timed:
 						p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 					else:
-						p = array([self.h_l(s,ss,o) for o in obs_seq]) #TODO
+						p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq]) # not sure
 					num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 				else:
 					num[s,ss] = 0.0

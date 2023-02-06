@@ -664,9 +664,14 @@ class BW_PCTMC(BW):
 				if trans.is_real:
 					s,ss = where(self.h.matrix == itrans+1)
 					s,ss = s[0],ss[0]
-					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+					if timed:
+						p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+						den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
+					else:
+						p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq])
+						den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
 					num_cste[itrans+1] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-					den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
+			
 		else:
 			num_cste = None
 			den_cste = None
@@ -676,20 +681,30 @@ class BW_PCTMC(BW):
 		den_cat1 = zeros(len(self.parameters_cat[0]))
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
-				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				if timed:
+					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				else:
+					p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq])
+
 				if p.sum()>0.0:
+					if timed:
+						den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss]*times/proba_seq).sum()
+					else:
+						den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.c_pis[s,ss]*times/(self.h_e(s)*proba_seq)).sum()
 					num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-					den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss]*times/proba_seq).sum()
-			#print(param,num_cat1[iparam], den_cat1[iparam])
-			#input()
+
 		num_cat2 = zeros(len(self.parameters_cat[1]))
 		den_cat2 = zeros(len(self.parameters_cat[1]))
 		for iparam,param in enumerate(self.parameters_cat[1]):
 			p_index = self.h.parameter_str.index(param)
 			for s,ss in self.h.parameterIndexes(param):
-				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				if timed:
+					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+					den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()
+				else:
+					p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq])
+					den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/(proba_seq*self.h_e(s))).sum()
 				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
-				den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()
 		
 		terms_cat3 = []
 		for iparam,param in enumerate(self.parameters_cat[2]):
@@ -701,7 +716,11 @@ class BW_PCTMC(BW):
 				c = self.C(s,ss)
 				for _ in range(1+c-len(temp)):
 					temp.append(0.0)
-				temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
+				if timed:
+					temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
+				else:
+					temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self.h_e(s)*self.h.parameter_values[param]**c)
+
 			terms_cat3.append(array(temp))
 
 		return [den_cste, num_cste, den_cat1, num_cat1, den_cat2, num_cat2, terms_cat3, proba_seq, times]
