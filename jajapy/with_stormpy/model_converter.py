@@ -1,5 +1,5 @@
 import stormpy as st
-from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, newaxis, nan
+from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, newaxis, nan, full
 from ..mc import MC
 from ..mdp import MDP
 from ..ctmc import CTMC
@@ -8,7 +8,7 @@ from copy import deepcopy
 import os
 from sympy import symbols, sympify
 
-def stormpyModeltoJajapy(h,actions_name:list = []):
+def stormpyModeltoJajapy(h,actions_name:list = [],from_prism=False):
 	"""
 	Given a stormpy.SparseCtmc, stormpy.SparseDtmc, stormpy.SparseMdp, or
 	stormpy.SparseParametricCtmc, it returns the equivalent jajapy model.
@@ -52,7 +52,6 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 					actions.append('a'+str(a))
 				else:
 					actions.append(actions_name[int(str(a))])
-	
 		actions = list(set(actions))
 		matrix = zeros((len(h.states),len(actions),len(h.states)))
 	elif ty == 0 or ty == 1:
@@ -76,10 +75,10 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 		elif 'init' in temp and len(temp) > 1:
 			temp.remove("init")
 			labeling.append("init")
-			labeling[si] = ','.join(list(temp))
+			labeling[si] = '_'.join(list(temp))
 			add_init_state = c
 		else:
-			labeling[si] = ','.join(list(temp))
+			labeling[si] = '_'.join(list(temp))
 
 		for a in s.actions:
 			for t in a.transitions:
@@ -108,19 +107,26 @@ def stormpyModeltoJajapy(h,actions_name:list = []):
 						t_expr.append(t_val)
 					else:
 						matrix[c][dest] = t_expr.index(t_val)
-		#if ty == 1:
-		#	matrix[c] *= h.exit_rates[si]
+		if ty == 1 and not from_prism:
+			matrix[c] *= h.exit_rates[si]
 	
 	if add_init_state != None:
-		matrix = vstack((matrix,matrix[add_init_state]))
+		#matrix = vstack((matrix,matrix[add_init_state]))
 		if ty == 2:
+			matrix = vstack((matrix,zeros((1,matrix.shape[1],matrix.shape[2]))))
+			matrix[-1].T[add_init_state] = full(matrix.shape[1],1.0)
 			matrix = concatenate((matrix,zeros((matrix.shape[0],matrix.shape[1],1))),axis=2)
 		elif ty == 1 or ty == 0:
+			matrix = vstack((matrix,zeros((matrix.shape[0]))))
+			matrix[-1][add_init_state] = 1.0
 			matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
 		else:
+			matrix = vstack((matrix,zeros((matrix.shape[0]),dtype='uint16')))
+			t_val = sympify('1.0')
+			matrix[-1][add_init_state] = len(t_expr)
+			t_expr.append(t_val)
 			matrix = hstack((matrix,zeros(len(matrix),dtype=('uint16'))[:,newaxis]))
 
-	
 	if ty == 0:
 		return MC(matrix, labeling)
 	elif ty == 1:
@@ -159,7 +165,7 @@ def jajapyModeltoStormpy(h):
 		try:
 			h = PCTMCtoCTMC(h)
 		except ValueError:
-			raise ValueError("Cannot convert non-instantiated PCTMC.")
+			raise ValueError("Cannot convert non-instantiated PCTMC to Stormpy.")
 		return CTMCtoStormpy(h)
 	else:
 		raise TypeError(str(type(h))+' cannot be translated to a stormpy sparse model.')
@@ -301,10 +307,7 @@ def loadPrism(path: str):
 	-------
 	jajapy.MC, jajapy.CTMC, jajapy.MDP or jajapy.PCTMC
 		A jajapy model equivalent to the model described in `path`.
-	
-
 	"""
-
 	try:
 		prism_program = st.parse_prism_program(path,False)
 	except RuntimeError:
@@ -319,5 +322,5 @@ def loadPrism(path: str):
 	else:
 		os.system('cls')
 
-	jajapy_model = stormpyModeltoJajapy(stormpy_model)
+	jajapy_model = stormpyModeltoJajapy(stormpy_model,from_prism=True)
 	return jajapy_model

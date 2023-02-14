@@ -8,5 +8,6 @@
 	],
 	"python.testing.pytestEnabled": false,
 	"python.testing.unittestEnabled": true,
-	"python.analysis.typeCheckingMode": "off"
+	"python.analysis.typeCheckingMode": "off",
+	"esbonio.sphinx.confDir": ""
 }

@@ -2,7 +2,7 @@ import jajapy as ja
 from numpy import array
 
 
-def example_1():
+def example_8():
 	alphabet = ['a','b','x','y']
 	nb_states = 5
 
@@ -46,4 +46,4 @@ def example_1():
 	print("loglikelihood distance:",quality)
 
 if __name__ == "__main__":
-	example_1()
+	example_8()

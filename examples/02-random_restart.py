@@ -13,7 +13,6 @@ def example_2():
 				   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
 				   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
 				   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
-
 	original_model = ja.createMC(transitions,labeling,initial_state,name)
 	
 	# SETS GENERATION

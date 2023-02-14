@@ -19,8 +19,7 @@ HMM                 Discrete           Yes              No
 MC                  Discrete           Yes              No
 MDP                 Discrete            No              No
 CTMC                Discrete           Yes             Yes
-GOHMM             Continuous           Yes              No
-MGOHMM  Vector of Continuous           Yes              No
+GoHMM   Vector of Continuous           Yes              No
 ======  ==================== ============= ===============
 
 One can wander what is the difference between MC and HMM: each MC state is labelled with exactly one
@@ -35,8 +34,7 @@ an observation is generated according to the probability distribution associated
    MC
    MDP
    CTMC
-   GOHMM
-   MGOHMM
+   GoHMM
 
 
 Learning Algorithms
@@ -44,10 +42,11 @@ Learning Algorithms
 Classic Baum-Welch algorithms:
 
 .. toctree::
+   :maxdepth: 1
+
    BW_HMM
    BW_MC
-   BW_GOHMM
-   BW_MGOHMM
+   BW_GoHMM
    BW_MDP
    BW_CTMC
 
@@ -55,11 +54,15 @@ Classic Baum-Welch algorithms:
 Advanced extensions:
 
 .. toctree::
+   :maxdepth: 1
+
    Active_BW_MDP
 
 Alergia (state-merging) methods:
 
 .. toctree::
+   :maxdepth: 1
+   
    Alergia
    IOAlergia
 

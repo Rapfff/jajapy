@@ -1,7 +1,7 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Base_MC import *
 from ast import literal_eval
-from numpy import ndarray, array, zeros, vstack, hstack, newaxis, append
+from numpy import ndarray, array, zeros, vstack, hstack, newaxis, append, where
 
 class MC(Base_MC):
 	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_MC") -> None:
@@ -167,8 +167,31 @@ class MC(Base_MC):
 		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
 		for j in range(len(self.matrix[state])):
 			if self.matrix[state][j] > 0.0001:
-				res += "s"+str(state)+" -> s"+str(j)+" : "+str(self.matrix[state][j])+'\n'
+				res += "s"+str(state)+" -> s"+str(j)+" : "+str(round(self.matrix[state][j],5))+'\n'
 		return res
+	
+	def savePrism(self,file_path:str) -> None:
+		"""
+		Save this model into `file_path` in the Prism format.
+
+		Parameters
+		----------
+		file_path : str
+			Path of the output file.
+		"""
+		f = open(file_path,'w')
+		f.write("dtmc\n\n")
+		super()._savePrism(f)
+	
+	def _savePrismMatrix(self,f) -> None:
+		for s1 in range(self.nb_states):
+			if (self.matrix[s1]!=0).any():
+				res = '\t[] s='+str(s1)+' ->'
+				for s2 in where(self.matrix[s1] != 0.0)[0]:
+					res += ' '+str(self.matrix[s1,s2])+":(s'="+str(s2)+") +"
+				res = res[:-2]+';\n'
+				f.write(res)
+				
 
 def loadMC(file_path: str) -> MC:
 	"""

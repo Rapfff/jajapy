@@ -1,5 +1,5 @@
 from .Model import Model
-from numpy import ndarray
+from numpy import ndarray, where
 from random import choices
 
 class Base_MC(Model):
@@ -74,6 +74,28 @@ class Base_MC(Model):
 		['a','b','c','d','done']
 		"""
 		return self.alphabet
+
+	def _savePrism(self,f) -> None:
+		f.write("module "+self.name+'\n')
+		f.write("\ts: [0.."+str(self.nb_states)+"] init "+str(where(self.initial_state==1.0)[0][0])+";\n\n")
+		self._savePrismMatrix(f)
+		f.write('endmodule\n\n')
+
+		labels = {}
+		for s,l in enumerate(self.labeling):
+			if l != 'init':
+				if not l in labels:
+					labels[l] = [str(s)]
+				else:
+					labels[l].append(str(s))
+		for l in labels:
+			res = 'label "'+l+'" ='
+			for s in labels[l]:
+				res += ' s='+s+' |'
+			res = res[:-1]+';\n'
+			f.write(res)
+		f.close()
+
 
 	def _save(self, f) -> None:
 		f.write(str(self.labeling))

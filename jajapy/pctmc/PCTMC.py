@@ -375,6 +375,54 @@ class PCTMC(Parametric_Model):
 		f.write("PCTMC\n")
 		super()._save(f)
 	
+	def savePrism(self,file_path:str) -> None:
+		"""
+		Save this model into `file_path` in the Prism format.
+
+		Parameters
+		----------
+		file_path : str
+			Path of the output file.
+		"""
+		f = open(file_path,'w')
+		f.write("ctmc\n\n")
+
+		for p in self.parameter_str:
+			f.write("const double "+p)
+			if self.isInstantiated(param=p):
+				f.write(' = '+str(self.parameterValue(p)))
+			f.write(';\n')
+
+		f.write("\nmodule "+self.name+'\n')
+		f.write("\ts: [0.."+str(self.nb_states)+"] init "+str(where(self.initial_state==1.0)[0][0])+";\n\n")
+		
+		for s1 in range(self.nb_states):
+			if (self.matrix[s1]!=0).any():
+				res = '\t[] s='+str(s1)+' ->'
+				for s2 in where(self.matrix[s1] != 0)[0]:
+					t = str(self.transition_expr[self.matrix[s1,s2]])
+					t = t.replace('**','^')
+					res += ' '+t+" : (s'="+str(s2)+") +"
+				res = res[:-2]+';\n'
+				f.write(res)
+		f.write('endmodule\n\n')
+
+		labels = {}
+		for s,l in enumerate(self.labeling):
+			if l != 'init':
+				if not l in labels:
+					labels[l] = [str(s)]
+				else:
+					labels[l].append(str(s))
+		for l in labels:
+			res = 'label "'+l+'" ='
+			for s in labels[l]:
+				res += ' s='+s+' |'
+			res = res[:-1]+';\n'
+			f.write(res)
+		f.close()
+		
+	
 def loadPCTMC(file_path: str) -> PCTMC:
 	"""
 	Load an PCTMC saved into a text file.
@@ -480,7 +528,7 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 			transition_expr.append(expr)
 		matrix[t[0],t[1]] = transition_expr.index(expr)
 		for p in expr.free_symbols:
-			parameter_indexes[parameter_str.index(p)].append([t[0],t[1]])
+			parameter_indexes[parameter_str.index(str(p))].append([t[0],t[1]])
 
 	for p in parameter_instantiation:
 		if not p in parameter_str:

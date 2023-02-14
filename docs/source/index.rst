@@ -6,7 +6,6 @@
 Welcome to Jajapy's documentation!
 ==================================
 
-
 .. image:: pictures/logo.png
    :width: 75 %
    :align: center
@@ -30,7 +29,15 @@ To use **jajapy**, first install it using pip:
 
 .. note::
    **jajapy** runs on Windows, Linux and MacOS. However, it is **not** multithreaded 
-   on Windows and MacOS: hence, we trully recommend to use it on Linux! 
+   on Windows and MacOS: hence, we trully recommend to use it on Linux!
+
+
+Selected Features
+-----------------
+
+- Learning HMMs, MCs, MDPs, CTMCs and GoHMMs from traces.
+- Parameter estimation for synchronous composition of CTMCs.
+- Compatibility with **Prism** and **Storm**.
 
 Content
 -------

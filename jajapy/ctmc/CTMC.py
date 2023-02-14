@@ -7,7 +7,7 @@ from ..pctmc.PCTMC import PCTMC
 from ..base.Base_MC import *
 from math import exp, log
 from random import randint
-from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete
+from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete, where
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from sympy import sympify
@@ -286,6 +286,28 @@ class CTMC(Base_MC):
 		f = open(file_path, 'w')
 		f.write("CTMC\n")
 		super()._save(f)
+	
+	def savePrism(self,file_path:str) -> None:
+		"""
+		Save this model into `file_path` in the Prism format.
+
+		Parameters
+		----------
+		file_path : str
+			Path of the output file.
+		"""
+		f = open(file_path,'w')
+		f.write("ctmc\n\n")
+		super()._savePrism(f)
+	
+	def _savePrismMatrix(self,f) -> None:
+		for s1 in range(self.nb_states):
+			if (self.matrix[s1]!=0).any():
+				res = '\t[] s='+str(s1)+' ->'
+				for s2 in where(self.matrix[s1] != 0.0)[0]:
+					res += ' '+str(self.matrix[s1,s2])+":(s'="+str(s2)+") +"
+				res = res[:-2]+';\n'
+				f.write(res)
 
 def loadCTMC(file_path: str) -> CTMC:
 	"""

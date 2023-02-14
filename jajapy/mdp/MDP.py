@@ -295,6 +295,29 @@ class MDP(Base_MC):
 					res += "s"+str(state)+" - ("+a+") -> s"+str(s)+" : "+str(self.matrix[state][ai][s])+'\n'
 		return res
 	
+	def savePrism(self,file_path:str) -> None:
+		"""
+		Save this model into `file_path` in the Prism format.
+
+		Parameters
+		----------
+		file_path : str
+			Path of the output file.
+		"""
+		f = open(file_path,'w')
+		f.write("mdp\n\n")
+		super()._savePrism(f)
+	
+	def _savePrismMatrix(self,f) -> None:
+		for s1 in range(self.nb_states):
+			for ai,a in enumerate(self.actions):
+				if (self.matrix[s1,ai]!=0).any():
+					res = '\t['+a+'] s='+str(s1)+' ->'
+					for s2 in where(self.matrix[s1,ai] != 0.0)[0]:
+						res += ' '+str(self.matrix[s1,ai,s2])+":(s'="+str(s2)+") +"
+					res = res[:-2]+';\n'
+					f.write(res)
+		
 	def _logLikelihood_oneproc(self,sequences: Set) -> float:
 		"""
 		Compute the average loglikelihood of a set of sequences.

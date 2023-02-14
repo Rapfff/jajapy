@@ -1,0 +1,96 @@
+mdp
+const double success_m = 0.6;
+const double success_s = 0.75;
+const double success_g = 0.8;
+const double success_c = 1.0;
+
+module grid_3x3
+    x : [0..15] init 0;
+
+	[n] x=0 -> 1.0: (x'=9);
+	[s] x=0 -> success_m: (x'=3) + 1-success_m: (x'=4);
+	[e] x=0 -> success_m: (x'=1) + 1-success_m: (x'=4);
+	[w] x=0 -> 1.0: (x'=9);
+
+	[n] x=1 -> 1.0: (x'=10);
+	[s] x=1 -> success_g: (x'=4) + (1-success_g)/2: (x'=3) + (1-success_g)/2: (x'=5);
+	[e] x=1 -> success_g: (x'=2) + 1-success_g: (x'=5);
+	[w] x=1 -> success_s: (x'=0) + 1-success_s: (x'=3);
+
+	[n] x=2 -> 1.0: (x'=11);
+	[s] x=2 -> success_c: (x'=5) + 1-success_c: (x'=4);
+	[e] x=2 -> 1.0: (x'=11);
+	[w] x=2 -> success_m: (x'=1) + 1-success_m: (x'=4);
+
+	[n] x=3 -> success_s: (x'=0) + 1-success_s: (x'=1);
+	[s] x=3 -> success_g: (x'=6) + 1-success_g: (x'=7);
+	[e] x=3 -> success_g: (x'=4) + (1-success_g)/2: (x'=1) + (1-success_g)/2: (x'=7);
+	[w] x=3 -> 1.0: (x'=12);
+
+	[n] x=4 -> success_m: (x'=1) + (1-success_m)/2: (x'=0) + (1-success_m)/2: (x'=2);
+	[s] x=4 -> success_s: (x'=7) + (1-success_s)/2: (x'=6) + (1-success_s)/2: (x'=8);
+	[e] x=4 -> success_c: (x'=5) + (1-success_c)/2: (x'=2) + (1-success_c)/2: (x'=8);
+	[w] x=4 -> success_m: (x'=3) + (1-success_m)/2: (x'=0) + (1-success_m)/2: (x'=6);
+
+	[n] x=5 -> success_g: (x'=2) + 1-success_g: (x'=1);
+	[s] x=5 -> success_m: (x'=8) + 1-success_m: (x'=7);
+	[e] x=5 -> 1.0: (x'=13);
+	[w] x=5 -> success_g: (x'=4) + (1-success_g)/2: (x'=1) + (1-success_g)/2: (x'=7);
+
+	[n] x=6 -> success_m: (x'=3) + 1-success_m: (x'=4);
+	[s] x=6 -> 1.0: (x'=14);
+	[e] x=6 -> success_s: (x'=7) + 1-success_s: (x'=4);
+	[w] x=6 -> 1.0: (x'=14);
+
+	[n] x=7 -> success_g: (x'=4) + (1-success_g)/2: (x'=3) + (1-success_g)/2: (x'=5);
+	[s] x=7 -> 1.0: (x'=15);
+	[e] x=7 -> success_m: (x'=8) + 1-success_m: (x'=5);
+	[w] x=7 -> success_g: (x'=6) + 1-success_g: (x'=3);
+
+	[n] x=8 -> 1.0: (x'=8);
+	[s] x=8 -> 1.0: (x'=8);
+	[e] x=8 -> 1.0: (x'=8);
+	[w] x=8 -> 1.0: (x'=8);
+
+	[n] x=9 -> 1.0: (x'=9);
+	[s] x=9 -> success_m: (x'=3) + 1-success_m: (x'=4);
+	[e] x=9 -> success_m: (x'=1) + 1-success_m: (x'=4);
+	[w] x=9 -> 1.0: (x'=9);
+
+	[n] x=10 -> 1.0: (x'=10);
+	[s] x=10 -> success_g: (x'=4) + (1-success_g)/2: (x'=3) + (1-success_g)/2: (x'=5);
+	[e] x=10 -> success_g: (x'=2) + 1-success_g: (x'=5);
+	[w] x=10 -> success_s: (x'=0) + 1-success_s: (x'=3);
+
+	[n] x=11 -> 1.0: (x'=11);
+	[s] x=11 -> success_c: (x'=5) + 1-success_c: (x'=4);
+	[e] x=11 -> 1.0: (x'=11);
+	[w] x=11 -> success_m: (x'=1) + 1-success_m: (x'=4);
+
+	[n] x=12 -> success_s: (x'=0) + 1-success_s: (x'=1);
+	[s] x=12 -> success_g: (x'=6) + 1-success_g: (x'=7);
+	[e] x=12 -> success_g: (x'=4) + (1-success_g)/2: (x'=1) + (1-success_g)/2: (x'=7);
+	[w] x=12 -> 1.0: (x'=12);
+
+	[n] x=13 -> success_g: (x'=2) + 1-success_g: (x'=1);
+	[s] x=13 -> success_m: (x'=8) + 1-success_m: (x'=7);
+	[e] x=13 -> 1.0: (x'=13);
+	[w] x=13 -> success_g: (x'=4) + (1-success_g)/2: (x'=1) + (1-success_g)/2: (x'=7);
+
+	[n] x=14 -> success_m: (x'=3) + 1-success_m: (x'=4);
+	[s] x=14 -> 1.0: (x'=14);
+	[e] x=14 -> success_s: (x'=7) + 1-success_s: (x'=4);
+	[w] x=14 -> 1.0: (x'=14);
+
+	[n] x=15 -> success_g: (x'=4) + (1-success_g)/2: (x'=3) + (1-success_g)/2: (x'=5);
+	[s] x=15 -> 1.0: (x'=15);
+	[e] x=15 -> success_m: (x'=8) + 1-success_m: (x'=5);
+	[w] x=15 -> success_g: (x'=6) + 1-success_g: (x'=3);
+endmodule
+
+label "S" = x=0 | x=7;
+label "M" = x=1 | x=3;
+label "G" = x=2 | x=4 | x=6;
+label "C" = x=5;
+label "W" = x=9 | x=10 | x=11 | x=12 | x=13 | x=14 | x=15;
+label "GOAL" = x=8;

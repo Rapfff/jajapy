@@ -1,6 +1,6 @@
-Gaussian Observations Hidden Markov Model (GOHMM)
+Gaussian observations Hidden Markov Model (GoHMM)
 =================================================
-A GOHMM is similar to a HMM, but this time the observations are real values generated according
+A GoHMM is similar to a HMM, but this time the observations are real values generated according
 to gaussian distribution. Instead of having a discrete probability ditribution over all the possible
 observations, each state has here the two parameters *mu* and *sigma* of a gaussian distribution.
 
@@ -21,21 +21,21 @@ Creation
 	>>> import jajapy as ja
 	>>> from numpy import array
 	>>> nb_states = 5
-	>>> s0 = GOHMM_state(list(zip([0,1],[0.9,0.1])),[3.0,5.0],nb_states)
-	>>> s1 = GOHMM_state(list(zip([0,1,2,4],[0.05,0.9,0.04,0.01])),[0.5,1.5],nb_states)
-	>>> s2 = GOHMM_state(list(zip([1,2,3,4],[0.05,0.8,0.14,0.01])),[0.2,0.7],nb_states)
-	>>> s3 = GOHMM_state(list(zip([2,3],[0.05,0.95])),[0.0,0.3],nb_states)
-	>>> s4 = GOHMM_state(list(zip([1,4],[0.1,0.9])),[2.0,4.0],nb_states)
+	>>> s0 = GoHMM_state(list(zip([0,1],[0.9,0.1])),[3.0,5.0],nb_states)
+	>>> s1 = GoHMM_state(list(zip([0,1,2,4],[0.05,0.9,0.04,0.01])),[0.5,1.5],nb_states)
+	>>> s2 = GoHMM_state(list(zip([1,2,3,4],[0.05,0.8,0.14,0.01])),[0.2,0.7],nb_states)
+	>>> s3 = GoHMM_state(list(zip([2,3],[0.05,0.95])),[0.0,0.3],nb_states)
+	>>> s4 = GoHMM_state(list(zip([1,4],[0.1,0.9])),[2.0,4.0],nb_states)
 	>>> matrix = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
 	>>> output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
-	>>> model =  GOHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],"My GOHMM")
+	>>> model =  GoHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],"My GoHMM")
 	>>> #print(model)
 
-We can also generate a random GOHMM
+We can also generate a random GoHMM
 
 .. code-block:: python
 
-	>>> random_model = GOHMM_random(nb_states=5,
+	>>> random_model = GoHMM_random(nb_states=5,
 					random_initial_state=True,
 					min_mu = 0.0,
 					max_mu = 5.0,
@@ -94,21 +94,21 @@ Saving/Loading
 .. code-block:: python
 
 	>>> model.save("my_gohmm.txt")
-	>>> another_model = ja.loadGOHMM("my_gohmm.txt")
+	>>> another_model = ja.loadGoHMM("my_gohmm.txt")
 
 
 Model
 -----
 
-.. autoclass:: jajapy.GOHMM
+.. autoclass:: jajapy.GoHMM
    :members:
    :inherited-members:
 
 Other Functions
 ---------------
 
-.. autofunction:: jajapy.GOHMM_state
+.. autofunction:: jajapy.GoHMM_state
 
-.. autofunction:: jajapy.loadGOHMM
+.. autofunction:: jajapy.loadGoHMM
 
-.. autofunction:: jajapy.GOHMM_random
+.. autofunction:: jajapy.GoHMM_random
