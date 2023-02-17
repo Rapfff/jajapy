@@ -77,7 +77,7 @@ class Base_MC(Model):
 
 	def _savePrism(self,f) -> None:
 		f.write("module "+self.name+'\n')
-		f.write("\ts: [0.."+str(self.nb_states)+"] init "+str(where(self.initial_state==1.0)[0][0])+";\n\n")
+		f.write("\ts: [0.."+str(self.nb_states-1)+"] init "+str(where(self.initial_state==1.0)[0][0])+";\n\n")
 		self._savePrismMatrix(f)
 		f.write('endmodule\n\n')
 

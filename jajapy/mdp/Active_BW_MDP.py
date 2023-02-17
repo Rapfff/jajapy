@@ -89,7 +89,7 @@ class Active_BW_MDP(BW_MDP):
 			initial_model: MDP=None, nb_states: int=None,
 			random_initial_state: bool=True, output_file: str=None,
 			epsilon: float=0.01, max_it: int=inf,pp: str='',
-			verbose: bool = True, return_data: bool= False, stormpy_output: bool = False):
+			verbose: bool = True, return_data: bool= False, stormpy_output: bool = True):
 		"""
 		Fits the model according to ``traces``.
 

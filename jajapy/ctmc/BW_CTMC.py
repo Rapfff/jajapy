@@ -227,14 +227,13 @@ class BW_CTMC(BW):
 		
 		alphabet = traces.getAlphabet()
 		if not 'init' in alphabet:
-			if nb_states != None:
-				nb_states += 1
-			alphabet.append('init')
 			timed = type(traces.sequences[0][1]) != str
 			for s in range(len(traces.sequences)):
 				if timed:
-					traces.sequences[s].insert(0,0.5)
+					traces.sequences[s].insert(0,1.0)
 				traces.sequences[s].insert(0,'init')
+		else:
+			alphabet.remove("init")
 		
 		if not initial_model:
 			if not nb_states:

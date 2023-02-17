@@ -82,9 +82,9 @@ def normalize(ll):
 	else:
 		return array([i/ll.sum() for i in nditer(ll)])
 
-def randomProbabilities(size: int) -> list:
+def randomProbabilities(size: int) -> ndarray:
 	"""
-	Return of list l of length ``size`` of probabilities.
+	Return of ndarray of length ``size`` of probabilities.
 
 	Parameters
 	----------
@@ -108,7 +108,7 @@ def randomProbabilities(size: int) -> list:
 	>>> import jajapy as ja
 	>>> p = ja.randomProbabilities(4)
 	>>> print(p)
-	[0.3155861636575178, 0.11453783121165262, 0.5686125794652406, 0.001263425665589013]
+	array([0.3155861636575178, 0.11453783121165262, 0.5686125794652406, 0.001263425665589013])
 	"""
 	if size <= 0:
 		raise ValueError("The size parameter should be higher than 0.")

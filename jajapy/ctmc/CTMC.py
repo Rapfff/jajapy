@@ -7,7 +7,7 @@ from ..pctmc.PCTMC import PCTMC
 from ..base.Base_MC import *
 from math import exp, log
 from random import randint
-from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete, where
+from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete, where, insert
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from sympy import sympify
@@ -221,8 +221,11 @@ class CTMC(Base_MC):
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
 		last_arr = prev_arr * (array(self.labeling) == obs_seq[-1])
-		return log(last_arr.sum())*times
-
+		try:
+			res = log(last_arr.sum())*times
+		except ValueError:
+			return False
+		return res
 
 	def logLikelihood(self,traces: Set) -> float:
 		"""
@@ -249,6 +252,10 @@ class CTMC(Base_MC):
 				temp = [res.get() for res in tasks if res.get() != False]
 			else:
 				temp = [self._computeAlphas_timed(seq,times) for seq,times in zip(traces.sequences,traces.times)]
+				while False in temp:
+					temp.remove(False)
+			if len(temp) == 0:
+				return -9999
 			return sum(temp)/sum(traces.times)
 
 	def toMC(self, name: str="unknown_MC") -> MC:
@@ -383,24 +390,24 @@ def CTMC_random(nb_states: int, labeling: list, min_exit_rate_time : int,
 	s2 -> s0 : lambda = 0.2
 	s2 -> s1 : lambda = 0.8
 	"""
-	matrix = []
+	matrix = zeros((nb_states+1,nb_states))
 	for i in range(nb_states):
 		if self_loop:
-			random_probs = array(randomProbabilities(nb_states))
+			matrix[i] = array(randomProbabilities(nb_states))
 		else:
-			p = randomProbabilities(nb_states-1)
-			random_probs.insert(i,0.0)
-		p = randomProbabilities(nb_states)
+			p = randomProbabilities(nb_states-1).tolist()
+			p = insert(p,i,0.0)
+			matrix[i] = array(p)
 		av_waiting_time = randint(min_exit_rate_time,max_exit_rate_time)
-		p = random_probs/av_waiting_time
-		matrix.append(p)
+		matrix[i] /= av_waiting_time
 
 	if random_initial_state:
-		matrix.append(append(randomProbabilities(nb_states),0.0))
+		matrix[-1] = randomProbabilities(nb_states)
 	else:
-		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
-	matrix = array(matrix)
-
+		matrix[-1] = array([1.0]+[0.0 for i in range(nb_states-1)])
+	
+	matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
+	
 	labeling = labelsForRandomModel(nb_states,labeling)
 	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
 
