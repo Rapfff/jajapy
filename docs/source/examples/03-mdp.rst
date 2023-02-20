@@ -58,21 +58,21 @@ a random MDP with 26 states for the training set, the first 6 states will be lab
 and *GOAL*, and the 20 remaining will be labeled randomly. Hence, we could possibly have 21 states labeled
 with *GOAL* and only one with *W*, which is far away from what we have in the system under learning.
 
-Here, we will first randomly generate our initial hypothesis, and then modify its labeling to have an initial
+Here, we will first randomly generate our initial hypothesis, and then modify its labelling to have an initial
 hypothesis closer to the system under learning.
 
 One to overcome this problem is presented in :ref:`example-ctmc`.
 
 .. code-block:: python
 
-	>>> initial_hypothesis = ja.MDP_random(nb_states=26,labeling=labels,actions=actions,random_initial_state=False)
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly.
-	>>> initial_hypothesis.labeling = original_model.labeling
+	>>> initial_hypothesis = ja.MDP_random(nb_states=26,labelling=labels,actions=actions,random_initial_state=False)
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
+	>>> initial_hypothesis.labelling = original_model.labelling
 
 .. note::
 	
-	Before doing that, we must be sure that the *init* label is at the same index in both ``initial_hypothesis.labeling`` and
-	``original_model.labeling``, and that they both have the same length. Here, we now that our initial hypothesis has as many
+	Before doing that, we must be sure that the *init* label is at the same index in both ``initial_hypothesis.labelling`` and
+	``original_model.labelling``, and that they both have the same length. Here, we now that our initial hypothesis has as many
 	state as the original model, thus the two list have the same length. And we know that the *init* label is the last one in
 	these two lists.
 
@@ -82,7 +82,7 @@ Now, we can learn the model as follows:
 
 .. code-block:: python
 
-	>>> output_model = ja.BW_MDP().fit(training_set,initial_model=initial_hypothesis)
+	>>> output_model = ja.BW().fit(training_set,initial_model=initial_hypothesis)
 	|████████████████████████████████████████| (!) 34 in 50.4s (0.67/s) 
 
 	---------------------------------------------

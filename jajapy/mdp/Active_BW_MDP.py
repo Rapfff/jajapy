@@ -1,8 +1,6 @@
 from .Scheduler import UniformScheduler, MemorylessScheduler
-from .BW_MDP import BW_MDP
-from ..base.BW import NB_PROCESS
+from ..base.BW import BW, NB_PROCESS
 from ..base.Set import Set
-from .MDP import MDP
 from ..base.tools import resolveRandom
 from multiprocessing import Pool
 from random import random
@@ -14,7 +12,7 @@ class ActiveLearningScheduler:
 	"""
 	Class for a scheduler used during the active learning sampling.
 	"""
-	def __init__(self,memoryless_scheduler: MemorylessScheduler,m: MDP) -> None:
+	def __init__(self,memoryless_scheduler: MemorylessScheduler,m) -> None:
 		"""
 		Create an ActiveLearningScheduler.
 
@@ -75,7 +73,7 @@ class ActiveLearningScheduler:
 		"""
 		self.last_obs = obs
 
-class Active_BW_MDP(BW_MDP):
+class Active_BW_MDP(BW):
 	"""
 	Class for general Active Baum-Welch algorithm on MDP.
 	This algorithm is described here:
@@ -84,9 +82,9 @@ class Active_BW_MDP(BW_MDP):
 	def __init__(self):
 		super().__init__()
 
-	def fit(self,traces: Set, lr, nb_iterations: int, nb_sequences: int,
+	def fit(self,traces: Set, sul, lr, nb_iterations: int, nb_sequences: int,
 			sequence_length: int = None, epsilon_greedy: float = 0.9,
-			initial_model: MDP=None, nb_states: int=None,
+			initial_model=None, nb_states: int=None,
 			random_initial_state: bool=True, output_file: str=None,
 			epsilon: float=0.01, max_it: int=inf,pp: str='',
 			verbose: bool = True, return_data: bool= False, stormpy_output: bool = True):
@@ -97,6 +95,9 @@ class Active_BW_MDP(BW_MDP):
 		----------
 		traces : Set
 			Training set.
+		sul : MDP
+			The system under learning.
+			Used to generate new sequences.
 		lr : float, or ``0``, or ``"dynamic"``
 			Learning rate. If ``lr=0`` the current hypothesis will be updated
 			on ``traces`` plus all the active samples. If `lr` is a float, the
@@ -169,6 +170,7 @@ class Active_BW_MDP(BW_MDP):
 				stormpy_output = False
 
 		counter = 0
+		self.sul = sul
 		start_time = datetime.now()
 		_, info = super().fit(traces, initial_model,nb_states,
 					random_initial_state, output_file,epsilon,
@@ -224,7 +226,7 @@ class Active_BW_MDP(BW_MDP):
 
 		return self.h
 
-	def _mergeModels(self,old_h: MDP,lr: float) -> None:
+	def _mergeModels(self,old_h,lr: float) -> None:
 		"""
 		Merges the model ``self.h`` with model ``old_h`` using the learning
 		rate ``lr``.
@@ -270,9 +272,9 @@ class Active_BW_MDP(BW_MDP):
 		traces = Set([],t=1)
 		for n in range(nb_sequence):			
 			if random() > epsilon_greedy:
-				seq = self.h.run(sequence_length,scheduler_explore)
+				seq = self.sul.run(sequence_length,scheduler_explore)
 			else:
-				seq = self.h.run(sequence_length,scheduler_exploit)
+				seq = self.sul.run(sequence_length,scheduler_exploit)
 
 			if not seq in traces.sequences:
 				traces.sequences.append(seq)

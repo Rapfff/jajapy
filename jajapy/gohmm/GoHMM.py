@@ -2,7 +2,7 @@ from numpy.random import normal
 from numpy import array, zeros, ndarray
 from ast import literal_eval
 from ..base.tools import randomProbabilities
-from ..base.Base_HMM import Base_HMM
+from ..base.Base_HMM import Base_HMM, GOHMM_ID
 from math import sqrt, exp, pi
 from random import uniform
 	
@@ -30,6 +30,7 @@ class GoHMM(Base_HMM):
 		Default is "unknown_GoHMM"
 	"""
 	def __init__(self,matrix,output,initial_state,name="unknown_GoHMM"):
+		self.model_type = GOHMM_ID
 		self.nb_distributions = len(output[0])
 		for i in range(len(output)):
 			if len(output[i]) != self.nb_distributions:

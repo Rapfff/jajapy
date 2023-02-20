@@ -12,7 +12,7 @@ class PCTMC(Parametric_Model):
 	"""
 	Class representing a PCTMC.
 	"""
-	def __init__(self, matrix: ndarray, labeling: list,
+	def __init__(self, matrix: ndarray, labelling: list,
 				 transition_expr: list, parameter_values: dict,
 				 parameter_indexes: list, parameter_str: list,
 				 name: str="unknow_PCTMC",
@@ -26,9 +26,9 @@ class PCTMC(Parametric_Model):
 			Represents the transition matrix.
 			matrix[i,j] is the index, in `transition_str`, of the symbolic
 			value of the transition from `i` to `j`.
-		labeling: list of str
+		labelling: list of str
 			A list of N observations (with N the nb of states).
-			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		transition_str: list of str
 			Contains the symbolic value for each transition.
@@ -53,8 +53,9 @@ class PCTMC(Parametric_Model):
 			List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
 			Default is an empty list.
 		"""
+		self.model_type = PCTMC_ID
 		self.synchronous_transitions = synchronous_transitions
-		super().__init__(matrix,labeling,transition_expr,parameter_values,parameter_indexes,parameter_str,name)
+		super().__init__(matrix,labelling,transition_expr,parameter_values,parameter_indexes,parameter_str,name)
 
 	def e(self,s: int) -> float:
 		"""
@@ -93,7 +94,7 @@ class PCTMC(Parametric_Model):
 		"""
 		self._checkStateIndex(s1)
 		self._checkStateIndex(s2)
-		if self.labeling[s1] != obs:
+		if self.labelling[s1] != obs:
 			return 0.0
 		return self.evaluateTransition(s1,s2)
 	
@@ -251,7 +252,7 @@ class PCTMC(Parametric_Model):
 			val = rand(len(parameters))*(max_val-min_val)+min_val
 	
 	def _stateToString(self,state:int) -> str:
-		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
+		res = "----STATE "+str(state)+"--"+self.labelling[state]+"----\n"
 		if self.isInstantiated(state):
 			res += "Exepected waiting time: "+str(round(self.expected_time(state),5))+'\n'
 		for j in range(len(self.matrix[state])):
@@ -281,7 +282,7 @@ class PCTMC(Parametric_Model):
 			else:
 				exps.append(exponential(1/exp_lambda))
 		next_state= exps.index(min(exps))
-		next_obs  = self.labeling[state]
+		next_obs  = self.labelling[state]
 		return (next_obs, next_state, min(exps))
 
 	def run(self,number_steps: int, timed: bool = False) -> list:
@@ -312,7 +313,7 @@ class PCTMC(Parametric_Model):
 				output.append(time_spent)
 			current = next_state
 			c += 1
-		output.append(self.labeling[current])
+		output.append(self.labelling[current])
 		return output
 	
 	def _computeAlphas_timed(self, sequence: list, times: int) -> float:
@@ -326,7 +327,7 @@ class PCTMC(Parametric_Model):
 				p = array([self.l(ss,s,obs_seq[k])*exp(-self.e(ss)*times_seq[k]) for ss in range(self.nb_states)])
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
-		last_arr = prev_arr * (array(self.labeling) == obs_seq[-1])
+		last_arr = prev_arr * (array(self.labelling) == obs_seq[-1])
 		return log(last_arr.sum())*times
 
 	def logLikelihood(self,traces: Set) -> float:
@@ -408,7 +409,7 @@ class PCTMC(Parametric_Model):
 		f.write('endmodule\n\n')
 
 		labels = {}
-		for s,l in enumerate(self.labeling):
+		for s,l in enumerate(self.labelling):
 			if l != 'init':
 				if not l in labels:
 					labels[l] = [str(s)]
@@ -446,12 +447,12 @@ def loadPCTMC(file_path: str) -> PCTMC:
 	if l != "PCTMC":
 		msg = "This file doesn't describe a PCTMC: it describes a "+l
 		raise ValueError(msg)
-	matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_expr,name = loadParametricModel(f)
+	matrix,labelling,parameter_values,parameter_indexes,parameter_str,transition_expr,name = loadParametricModel(f)
 	f.close()
-	return PCTMC(matrix,labeling,transition_expr,parameter_values,
+	return PCTMC(matrix,labelling,transition_expr,parameter_values,
 				 parameter_indexes,parameter_str,name)
 
-def createPCTMC(transitions: list, labeling: list, parameters: list,
+def createPCTMC(transitions: list, labelling: list, parameters: list,
 				initial_state, parameter_instantiation: dict={},
 				synchronous_transitions=[], name: str ="unknown_PCTMC") -> PCTMC:
 	"""
@@ -464,9 +465,9 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 		(source state ID, destination state ID, probability).
 		The probability can be explicitly given (then it's a float),
 		or a parameter (then it's the name of the parameter).
-	labeling: list of str
+	labelling: list of str
 		A list of N observations (with N the nb of states).
-		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+		If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 		Each state has exactly one label.
 	parameters: list of str.
 		A list containing all the parameters name.
@@ -491,13 +492,13 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 	Returns
 	-------
 	PCTMC
-		the PCTMC describes by `transitions`, `labeling`, and `initial_state`.
+		the PCTMC describes by `transitions`, `labelling`, and `initial_state`.
 	"""
-	if 'init' in labeling:
+	if 'init' in labelling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 	
-	labeling.append('init')
+	labelling.append('init')
 	
 	states = [i[0] for i in transitions]+[i[1] for i in transitions]
 	states += [i[0] for i in synchronous_transitions]+[i[2] for i in synchronous_transitions]
@@ -510,10 +511,10 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 		for i,j in enumerate(initial_state):
 			transitions.append((nb_states,i,j))
 	nb_states += 1
-	if nb_states > len(labeling):
-		raise ValueError("All states are not labelled (the labeling list is too small).")
-	elif nb_states < len(labeling):
-		print("WARNING: the labeling list is bigger than the number of states")
+	if nb_states > len(labelling):
+		raise ValueError("All states are not labelled (the labelling list is too small).")
+	elif nb_states < len(labelling):
+		print("WARNING: the labelling list is bigger than the number of states")
 	
 	parameter_str = parameters
 	parameter_values = {}
@@ -535,7 +536,7 @@ def createPCTMC(transitions: list, labeling: list, parameters: list,
 			print("WARNING: no parameter "+p+", instantiation ignored.")
 		else:
 			parameter_values[p] = parameter_instantiation[p]
-	return PCTMC(matrix,labeling,transition_expr,parameter_values,
+	return PCTMC(matrix,labelling,transition_expr,parameter_values,
 				parameter_indexes,parameter_str,name,synchronous_transitions)
 
 def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") -> PCTMC:
@@ -556,12 +557,12 @@ def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") ->
 	def removeUnreachableState(m):
 		i = 0
 		while i < len(m.matrix): # removing unreachable state
-			if (m.matrix.T[i] == 0).all() == True and m.labeling[i] != 'init':
+			if (m.matrix.T[i] == 0).all() == True and m.labelling[i] != 'init':
 				m.nb_states -= 1
 				m.matrix = delete(m.matrix,i,0)
 				m.matrix = delete(m.matrix,i,1)
 				m.initial_state = delete(m.initial_state,i)
-				m.labeling = m.labeling[:i]+m.labeling[i+1:]
+				m.labelling = m.labelling[:i]+m.labelling[i+1:]
 				for j in range(len(m.parameter_indexes)):
 					k = 0
 					while k < len(m.parameter_indexes[j]): 
@@ -628,16 +629,16 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 	PCTMC
 		Synchronous composition of `m1` and `m2`.
 	"""
-	m1_init = [i for i,li in enumerate(m1.labeling) if li == 'init']
-	m2_init = [i for i,li in enumerate(m2.labeling) if li == 'init']
+	m1_init = [i for i,li in enumerate(m1.labelling) if li == 'init']
+	m2_init = [i for i,li in enumerate(m2.labelling) if li == 'init']
 	m1_nb_states = m1.nb_states - len(m1_init)
 	m2_nb_states = m2.nb_states - len(m2_init)
 	nb_states = m1_nb_states * m2_nb_states	
-	m1_sids = [i-m1.labeling[:i].count("init") for i,li in enumerate(m1.labeling) if li != 'init']
-	m2_sids = [i-m1.labeling[:i].count("init") for i,li in enumerate(m2.labeling) if li != 'init']
+	m1_sids = [i-m1.labelling[:i].count("init") for i,li in enumerate(m1.labelling) if li != 'init']
+	m2_sids = [i-m1.labelling[:i].count("init") for i,li in enumerate(m2.labelling) if li != 'init']
 
 	matrix= zeros((nb_states,nb_states),dtype='uint16')
-	labeling = []
+	labelling = []
 	p_v = m1.parameter_values #TODO m2.parameter_values
 	p_str = list(set(m1.parameter_str+m2.parameter_str))
 	p_i = [[] for _ in p_str]
@@ -688,9 +689,9 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 		x, y = get_state_index(s1,s2), get_state_index(d1, d2)
 		return [x,a,y,expr]
 
-	for s1 in m1_sids: # labeling
+	for s1 in m1_sids: # labelling
 		for s2 in m2_sids:
-			labeling.append(m1.labeling[s1]+','+m2.labeling[s2])
+			labelling.append(m1.labelling[s1]+','+m2.labelling[s2])
 	for i in m1_sids: # m1 transitions
 		for j in m1_sids:
 			add_transition(i,j,1)
@@ -713,7 +714,7 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 			if ai == aj:
 				sync_trans.append(add_sync_transition(ai,si,di,pi,sj,dj,pj))
 				
-	labeling.append('init')
+	labelling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint16')))
 	matrix = hstack((matrix,zeros(nb_states+1,dtype='uint16')[:,newaxis]))
 	m1_init_trans = zeros(m1_nb_states)
@@ -740,4 +741,4 @@ def synchronousComposition2PCTMCs(m1: PCTMC, m2: PCTMC, name: str = "unknown_com
 				matrix[-1][get_state_index(i,j)] = len(trans_expr)
 				trans_expr.append(sympify(str(si*sj)))
 
-	return PCTMC(matrix,labeling,trans_expr,p_v,p_i,p_str,name), sync_trans
+	return PCTMC(matrix,labelling,trans_expr,p_v,p_i,p_str,name), sync_trans

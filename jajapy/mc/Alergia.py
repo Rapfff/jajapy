@@ -1,4 +1,4 @@
-from .MC import *
+from .MC import createMC
 from math import sqrt, log
 from ..base.Set import Set
 from ..base.tools import normalize
@@ -33,7 +33,7 @@ class Alergia:
 			self.alphabet = alphabet
 		self.createPTA(traces)
 	
-	def createPTA(self,traces: Set) -> MC:
+	def createPTA(self,traces: Set):
 		"""
 		Create a PTA from ``traces``.
 
@@ -237,7 +237,7 @@ class Alergia:
 		states = [j for j in range(len(self.states_transitions)) if self.states_lbl[j] != None]
 		nb_init= len(states)
 		# states[x] = y : y->index alergia x->index jajapy
-		labeling = [None for s in states]
+		labelling = [None for s in states]
 		transitions = []
 
 		for s in range(nb_init):
@@ -247,25 +247,25 @@ class Alergia:
 			o = self.states_transitions[ai][2]
 			d = [states.index(dest) for dest in self.states_transitions[ai][1]]
 			for obs, dest, i in zip(o,d,range(len(d))):
-				if labeling[dest] == None:
-					labeling[dest] = obs
-				elif labeling[dest] != obs:
+				if labelling[dest] == None:
+					labelling[dest] = obs
+				elif labelling[dest] != obs:
 					d[i] = len(states)
-					labeling.append(obs)
+					labelling.append(obs)
 					states.append(states[dest])
 			transitions.append([(s,d[i],p[i]) for i in range(len(p))])
 				
 		for s in range(nb_init,len(states)):
 			transitions.append([(s,i[1],i[2]) for i in transitions[states.index(states[s])]])
 		
-		for i,j in enumerate(labeling):
+		for i,j in enumerate(labelling):
 			if j == None:
-				labeling[i] = ''
+				labelling[i] = ''
 				initial_state = i
 		
 		trans = []
 		for i in transitions:
 			trans += i
 
-		return createMC(trans,labeling,initial_state)
+		return createMC(trans,labelling,initial_state)
 		

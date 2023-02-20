@@ -3,7 +3,7 @@ from numpy.random import geometric
 from ast import literal_eval
 from copy import deepcopy
 from ..base.Set import Set
-from ..base.Model import Model
+from ..base.Model import Model, PCTMC_ID
 from sympy import sympify
 
 class Parametric_Model(Model):
@@ -12,7 +12,7 @@ class Parametric_Model(Model):
 	Is inherited by PCTMC.
 	Should not be instantiated itself!
 	"""
-	def __init__(self, matrix: ndarray, labeling: list,
+	def __init__(self, matrix: ndarray, labelling: list,
 				 transition_expr: list, parameter_values: dict,
 				 parameter_indexes: list, parameter_str: list,
 				 name: str) -> None:
@@ -25,9 +25,9 @@ class Parametric_Model(Model):
 			Represents the transition matrix.
 			matrix[i,j] is the index, in `transition_expr`, of the symbolic
 			representation of the transition from `i` to `j`.
-		labeling: list of str
+		labelling: list of str
 			A list of N observations (with N the nb of states).
-			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		transition_expr: list of str
 			Contains the symbolic representation for each transition.
@@ -46,15 +46,15 @@ class Parametric_Model(Model):
 		name : str, optional
 			Name of the model.
 		"""
-		self.labeling = labeling
-		self.alphabet = list(set(labeling))
+		self.labelling = labelling
+		self.alphabet = list(set(labelling))
 		self.nb_states = len(matrix)
 		
-		if not 'init' in self.labeling:
+		if not 'init' in self.labelling:
 			msg = "No initial state given: at least one"
 			msg += " state should be labelled by 'init'."
 			raise ValueError(msg)
-		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
+		initial_state = [1.0/self.labelling.count("init") if i=='init' else 0.0 for i in self.labelling]
 
 		if len(parameter_indexes) != len(parameter_str):
 			raise ValueError("Length of parameter_indexes and parameter_str must be equal.")
@@ -66,8 +66,8 @@ class Parametric_Model(Model):
 		if min(matrix.flatten()) < 0:
 			raise ValueError("Transition "+str(min(matrix.flatten()))+" found in matrix")
 		
-		if len(self.labeling) != self.nb_states:
-			msg = "The length of labeling ("+str(len(labeling))+") is not equal "
+		if len(self.labelling) != self.nb_states:
+			msg = "The length of labelling ("+str(len(labelling))+") is not equal "
 			msg+= "to the number of states("+str(self.nb_states)+")"
 			raise ValueError(msg)
 		
@@ -332,7 +332,7 @@ class Parametric_Model(Model):
 		'Label-of-state-2'
 		"""
 		self._checkStateIndex(state)
-		return self.labeling[state]
+		return self.labelling[state]
 	
 	def getAlphabet(self) -> list:
 		"""
@@ -436,7 +436,7 @@ class Parametric_Model(Model):
 		f.write('\n')
 		f.write(str(self.matrix.tolist()))
 		f.write('\n')
-		f.write(str(self.labeling))
+		f.write(str(self.labelling))
 		f.write('\n')
 		f.write(str(self.parameter_values))
 		f.write('\n')
@@ -465,10 +465,10 @@ def loadParametricModel(f):
 	"""
 	name = f.readline()[:-1]
 	matrix = array(literal_eval(f.readline()[:-1]))
-	labeling = literal_eval(f.readline()[:-1])
+	labelling = literal_eval(f.readline()[:-1])
 	parameter_values = literal_eval(f.readline()[:-1])
 	parameter_indexes = literal_eval(f.readline()[:-1])
 	parameter_str = literal_eval(f.readline()[:-1])
 	transition_expr = literal_eval(f.readline()[:-1])
 	transition_expr = [sympify(i) for i in transition_expr]
-	return matrix,labeling,parameter_values,parameter_indexes,parameter_str,transition_expr,name
+	return matrix,labelling,parameter_values,parameter_indexes,parameter_str,transition_expr,name

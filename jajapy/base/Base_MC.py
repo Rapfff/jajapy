@@ -1,4 +1,4 @@
-from .Model import Model
+from .Model import Model, MC_ID, MDP_ID, CTMC_ID
 from numpy import ndarray, where
 from random import choices
 
@@ -8,7 +8,7 @@ class Base_MC(Model):
 	Is inherited by MC, CTMC and MDP.
 	Should not be instantiated itself!
 	"""
-	def __init__(self, matrix: ndarray, labeling: list, name: str) -> None:
+	def __init__(self, matrix: ndarray, labelling: list, name: str) -> None:
 		"""
 		Creates an abstract model for MC, CTMC and MDP.
 
@@ -16,26 +16,26 @@ class Base_MC(Model):
 		----------
 		matrix : ndarray
 			Represents the transition matrix.
-		labeling: list of str
+		labelling: list of str
 			A list of N observations (with N the nb of states).
-			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		name : str, optional
 			Name of the model.
 			Default is "unknow_MC"
 		"""
-		self.labeling = labeling
-		self.alphabet = list(set(labeling))
+		self.labelling = labelling
+		self.alphabet = list(set(labelling))
 		
-		if not 'init' in self.labeling:
+		if not 'init' in self.labelling:
 			msg = "No initial state given: at least one"
 			msg += " state should be labelled by 'init'."
 			raise ValueError(msg)
-		initial_state = [1.0/self.labeling.count("init") if i=='init' else 0.0 for i in self.labeling]
+		initial_state = [1.0/self.labelling.count("init") if i=='init' else 0.0 for i in self.labelling]
 
 		super().__init__(matrix,initial_state,name)
-		if len(self.labeling) != self.nb_states:
-			raise ValueError("The length of labeling ("+str(len(labeling))+") is not equal to the number of states("+str(self.nb_states)+")")
+		if len(self.labelling) != self.nb_states:
+			raise ValueError("The length of labelling ("+str(len(labelling))+") is not equal to the number of states("+str(self.nb_states)+")")
 	
 	def getLabel(self,state: int) -> str:
 		"""
@@ -57,7 +57,7 @@ class Base_MC(Model):
 		'Label-of-state-2'
 		"""
 		self._checkStateIndex(state)
-		return self.labeling[state]
+		return self.labelling[state]
 	
 	def getAlphabet(self) -> list:
 		"""
@@ -82,7 +82,7 @@ class Base_MC(Model):
 		f.write('endmodule\n\n')
 
 		labels = {}
-		for s,l in enumerate(self.labeling):
+		for s,l in enumerate(self.labelling):
 			if l != 'init':
 				if not l in labels:
 					labels[l] = [str(s)]
@@ -98,7 +98,7 @@ class Base_MC(Model):
 
 
 	def _save(self, f) -> None:
-		f.write(str(self.labeling))
+		f.write(str(self.labelling))
 		f.write('\n')
 		super()._save(f)
 
@@ -118,22 +118,22 @@ class Base_MC(Model):
 		except ModuleNotFoundError:
 			raise RuntimeError("Stormpy is not installed on this machine.")
 
-def labelsForRandomModel(nb_states: int, labeling: list) -> list:
-	if 'init' in labeling:
+def labelsForRandomModel(nb_states: int, labelling: list) -> list:
+	if 'init' in labelling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 
-	if nb_states < len(labeling):
-		print("WARNING: the size of the labeling is greater than the",end=" ")
+	if nb_states < len(labelling):
+		print("WARNING: the size of the labelling is greater than the",end=" ")
 		print("number of states. The last labels will not be assigned to",end=" ")
 		print("any states.")
 	
 
-	if nb_states > len(labeling):
-		print("WARNING: the size of the labeling is lower than the",end=" ")
+	if nb_states > len(labelling):
+		print("WARNING: the size of the labelling is lower than the",end=" ")
 		print("number of states. The labels for the last states will",end=" ")
 		print("be chosen randomly.")
 
-	labeling = labeling[:min(len(labeling),nb_states)] + choices(labeling,k=nb_states-len(labeling))
-	labeling.append("init")
-	return labeling
+	labelling = labelling[:min(len(labelling),nb_states)] + choices(labelling,k=nb_states-len(labelling))
+	labelling.append("init")
+	return labelling

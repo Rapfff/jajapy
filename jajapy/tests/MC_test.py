@@ -2,46 +2,47 @@ import unittest
 from ..mc import *
 from os import remove
 from ..base.Set import *
+from ..base.BW import BW
 from math import log
 from numpy import where, array
 
 def modelMC_REBER():
-	labeling = list("BTSXSPTXPVVE")
+	labelling = list("BTSXSPTXPVVE")
 	initial_state = 0
 	name = "MC_REBER"
 	transitions = [(0,1,0.5),(0,5,0.5),(1,2,0.6),(1,3,0.4),(2,2,0.6),(2,3,0.4),
 				   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
 				   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
 				   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
-	return createMC(transitions,labeling,initial_state,name)
+	return createMC(transitions,labelling,initial_state,name)
 
 m = modelMC_REBER()
 
 class MCTestclass(unittest.TestCase):
 
 	def test_MC_initial_state(var):
-		labeling=['a','b','c','d','a']
+		labelling=['a','b','c','d','a']
 		transitions = [(0,1,0.8),(0,2,0.2),
 				   (1,3,0.6),(1,2,0.4),
 				   (2,0,0.5),(2,4,0.5),
 				   (3,2,0.3),(3,3,0.7),
 				   (4,2,0.2),(4,3,0.1),(4,4,0.7)]
-		mc = createMC(transitions,labeling,0)
+		mc = createMC(transitions,labelling,0)
 		var.assertEqual(mc.nb_states,6)
-		var.assertEqual(mc.labeling.count('init'),1)
+		var.assertEqual(mc.labelling.count('init'),1)
 		var.assertEqual(mc.getLabel(int(where(mc.initial_state == 1.0)[0][0])),'init')
 		
-		labeling=['a','b','c','d','a']
-		mc = createMC(transitions,labeling,[0.3,0.0,0.0,0.2,0.5])
+		labelling=['a','b','c','d','a']
+		mc = createMC(transitions,labelling,[0.3,0.0,0.0,0.2,0.5])
 		var.assertEqual(mc.nb_states,6)
-		var.assertEqual(mc.labeling.count('init'),1)
+		var.assertEqual(mc.labelling.count('init'),1)
 		var.assertEqual(mc.pi(5),1.0)
 		var.assertTrue((mc.matrix[-1]==array([0.3,0.0,0.0,0.2,0.5,0.0])).all())
 		
-		labeling=['a','b','c','d','a']
-		mc = createMC(transitions,labeling,array([0.3,0.0,0.0,0.2,0.5]))
+		labelling=['a','b','c','d','a']
+		mc = createMC(transitions,labelling,array([0.3,0.0,0.0,0.2,0.5]))
 		var.assertEqual(mc.nb_states,6)
-		var.assertEqual(mc.labeling.count('init'),1)
+		var.assertEqual(mc.labelling.count('init'),1)
 		var.assertEqual(mc.pi(5),1.0)
 		var.assertTrue((mc.matrix[-1]==array([0.3,0.0,0.0,0.2,0.5,0.0])).all())
 		
@@ -92,13 +93,13 @@ class MCTestclass(unittest.TestCase):
 		alphabet = list("BTSXPVE")
 		random_model = MC_random(11, alphabet, False)
 		for i in alphabet:
-			var.assertGreaterEqual(random_model.labeling.count(i),1)
+			var.assertGreaterEqual(random_model.labelling.count(i),1)
 
 	def test_BW_MC(var):
 		initial_model   = loadMC("jajapy/tests/materials/mc/random_MC.txt")
 		training_set    = loadSet("jajapy/tests/materials/mc/training_set_MC.txt")
 		output_expected = loadMC("jajapy/tests/materials/mc/output_MC.txt")
-		output_gotten   = BW_MC().fit( training_set, initial_model, stormpy_output=False)
+		output_gotten   = BW().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

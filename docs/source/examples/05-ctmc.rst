@@ -30,12 +30,12 @@ We can create the model depicted above like this:
 .. code-block:: python
 
 	import jajapy as ja
-	>>> labeling = ['red','red','yellow','blue','blue']
+	>>> labelling = ['red','red','yellow','blue','blue']
 	>>> # We move from state 0 to state 1 with a rate of 0.08, and so on...
 	>>> transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
 			   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),
 			   (3,1,0.1),(3,4,0.1),(4,2,0.25)]
-	>>> original_model = ja.createCTMC(transitions,labeling,initial_state=0,name="My_CTMC")
+	>>> original_model = ja.createCTMC(transitions,labelling,initial_state=0,name="My_CTMC")
 
 Generating a training set
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -73,7 +73,7 @@ hypothesis.
 	>>> quality_best = -1024
 	>>> for n in range(1,nb_trials+1):
 	>>>		current_model = ja.CTMC_random(nb_states=5,
-	>>>					labeling=['red','yellow','blue'],
+	>>>					labelling=['red','yellow','blue'],
 	>>>					self_loop=False,
 	>>>					random_initial_state=True,
 	>>>					min_exit_rate_time=0.5,
@@ -82,13 +82,13 @@ hypothesis.
 	>>>		if quality_best < current_quality: #we keep the best model only
 	>>>				quality_best = current_quality
 	>>>				best_model = current_model
-	>>> print(best_model.labeling)
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly.
+	>>> print(best_model.labelling)
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
 	[...]
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly
 	['red', 'yellow', 'blue', 'blue', 'blue', 'init']
 
-The best model labeling is very close to the original model one. In fact, we can even argue that we 
+The best model labelling is very close to the original model one. In fact, we can even argue that we 
 can build a model equivalent to the original one by merging properly the two *red* states.
 
 Learning a CTMC using BW
@@ -97,7 +97,7 @@ Let now use our training set and initial hypothesis to learn ``original_model`` 
 
 .. code-block:: python
 
-	>>> output_model = ja.BW_CTMC().fit(training_set,initial_model=best_model)
+	>>> output_model = ja.BW().fit(training_set,initial_model=best_model)
 	|████████████████████████████████████████| (!) 73 in 16.5s (4.43/s) 
 
 	---------------------------------------------

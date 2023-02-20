@@ -17,11 +17,11 @@ Creation
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> labeling = ['a','a','a','c','b','d']
+	>>> labelling = ['a','a','a','c','b','d']
 	>>> transitions = [(0,'red',1,0.5),(0,'red',2,0.5),(0,'blue',2,1.0),
 	... 		   (1,'blue',3,1.0),(1,'red',4,1.0),(3,'blue',3,1.0),(3,'red',4,1.0),
 	...		   (2,'blue',5,1.0),(4,'blue',5,1.0),(5,'blue',5,1.0)]
-	>>> model = ja.createMDP(transitions,labeling,initial_state=0,name="My MDP")
+	>>> model = ja.createMDP(transitions,labelling,initial_state=0,name="My MDP")
 
 
 We can also generate a random MDP

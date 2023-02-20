@@ -1,201 +1,1609 @@
-True
-['R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT']
 1
-['R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+3
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+3
+['init', 'm', 'R', 's', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+3
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+3
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+3
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'R', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+3
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+3
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
 1
-['R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+3
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+3
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+4
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
 1
-['R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 'm', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
 1
-['R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+3
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
 1
-['R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
 1
-['R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+3
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+3
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+3
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+3
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+4
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+3
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'L', 's', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+3
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+4
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+3
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+3
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+3
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+3
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+3
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+3
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+4
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+3
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+2
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+2
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+2
+['init', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+2
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+3
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+2
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'L', 's', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 's', 'L', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 'm', 'R', 's', 'L', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 's', 'R', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'R', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 's', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 'm', 'L', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 's', 'L', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
+1
+['init', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 's', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 's', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'R', 'm', 'L', 'm', 'L', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 'm', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 'm', 'L', 's', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 'm', 'HIT']
+1
+['init', 'm', 'R', 'm', 'R', 's', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK', 's', 'OK', 'm', 'OK']
+1
+['init', 's', 'R', 'm', 'L', 'm', 'R', 'm', 'R', 'm', 'HIT', 's', 'HIT', 's', 'HIT', 'm', 'HIT', 's', 'HIT', 's', 'HIT']
+1
+['init', 'm', 'R', 's', 'L', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 's', 'OK', 'm', 'OK', 'm', 'OK', 's', 'OK']
 1

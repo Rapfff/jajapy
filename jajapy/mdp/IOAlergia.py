@@ -403,7 +403,7 @@ class IOFPTA:
 
 		actions = self.actions
 		states = red
-		labeling = [self.states[i].observation for i in states]+['init']
+		labelling = [self.states[i].observation for i in states]+['init']
 		transitions = zeros((len(states)+1,len(actions),len(states)+1))
 		
 		for si,s in enumerate([self.states[i] for i in states]):
@@ -412,7 +412,7 @@ class IOFPTA:
 				for p,s2 in zip(s.transitions[a][0],s.transitions[a][1]):
 					transitions[si][ai][states.index(s2)] = p/tot
 		transitions[-1][0][0] = 1.0
-		return MDP(transitions, labeling, actions)
+		return MDP(transitions, labelling, actions)
 
 
 

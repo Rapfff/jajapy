@@ -9,12 +9,12 @@ def example_5():
 	# MODEL CREATION
 	#----------------
 	# The first state is labeled with red, etc...
-	labeling = ['red','red','yellow','blue','blue']
+	labelling = ['red','red','yellow','blue','blue']
 	# We move from state 0 to state 1 with a rate of 0.08, and so on...
 	transitions = [(0,1,0.08),(0,2,0.12),(1,2,1.0),
 				(2,0,0.2),(2,3,0.1),(2,4,0.2),
 				(3,1,0.5),(3,4,0.5),(4,2,0.25)]
-	original_model = ja.createCTMC(transitions,labeling,initial_state=0,name="My_CTMC")
+	original_model = ja.createCTMC(transitions,labelling,initial_state=0,name="My_CTMC")
 
 	# SETS GENERATION
 	#----------------
@@ -23,7 +23,7 @@ def example_5():
 	training_set = original_model.generateSet(1000,10,timed=True)
 	test_set = original_model.generateSet(1000,10,timed=True)
 
-	# ESTIMATING THE LABELING
+	# ESTIMATING THE labelling
 	#------------------------
 
 	nb_trials = 10
@@ -31,7 +31,7 @@ def example_5():
 	quality_best = -1024
 	for n in range(1,nb_trials+1):
 		current_model = ja.CTMC_random(nb_states=5,
-						labeling=['red','yellow','blue'],
+						labelling=['red','yellow','blue'],
 						self_loop=False,
 						random_initial_state=True,
 						min_exit_rate_time=1.0,
@@ -41,9 +41,9 @@ def example_5():
 				quality_best = current_quality
 				best_model = current_model
 
-	print(best_model.labeling)
+	print(best_model.labelling)
 	
-	output_model = ja.BW_CTMC().fit(training_set,initial_model=best_model)
+	output_model = ja.BW().fit(training_set,initial_model=best_model)
 	
 	# EVALUATION
 	#-----------

@@ -9,35 +9,35 @@ import stormpy
 from os import remove
 
 def modelMDP(p=0.75):
-	labeling = ['R','L','R','L','OK','HIT']
+	labelling = ['R','L','R','L','OK','HIT']
 	transitions = [(0,'m',1,p),(0,'m',2,1-p),(0,'s',3,p),(0,'s',0,1-p),
 				   (1,'m',0,p),(1,'m',3,1-p),(1,'s',2,p),(1,'s',1,1-p),
 				   (2,'m',5,1.0),(2,'s',4,1.0),(3,'m',5,1.0),(3,'s',4,1.0),
 				   (4,'m',4,1.0),(4,'s',4,1.0),(5,'m',5,1.0),(5,'s',5,1.0)]
-	return createMDP(transitions,labeling,0,"bigstreet")
+	return createMDP(transitions,labelling,0,"bigstreet")
 
 def modelMC():
-	labeling = list("BTSXSPTXPVVE")
+	labelling = list("BTSXSPTXPVVE")
 	initial_state = 0
 	name = "MC_REBER"
 	transitions = [(0,1,0.5),(0,5,0.5),(1,2,0.6),(1,3,0.4),(2,2,0.6),(2,3,0.4),
 				   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
 				   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
 				   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
-	return createMC(transitions,labeling,initial_state,name)
+	return createMC(transitions,labelling,initial_state,name)
 
 def modelCTMC():
-	labeling = ['red','red','yellow','blue','blue']
+	labelling = ['red','red','yellow','blue','blue']
 	transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
 				   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),
 				   (3,1,0.1),(3,4,0.1),(4,2,0.25)]
-	return createCTMC(transitions,labeling,0,"My_CTMC")
+	return createCTMC(transitions,labelling,0,"My_CTMC")
 
 def modelPCTMC():
-	labeling = ['c_red_p_red','c_green_p_red','c_orange_p_green','c_red_p_green','c_orange_p_red']
+	labelling = ['c_red_p_red','c_green_p_red','c_orange_p_green','c_red_p_green','c_orange_p_red']
 	transitions = [(0,1,5.0),(1,2,'p*p/2'),(2,3,2.0),(2,4,0.1),(3,0,0.1),(4,0,2.0)]
 	parameters = ['p']
-	return createPCTMC(transitions,labeling,parameters,0)
+	return createPCTMC(transitions,labelling,parameters,0)
 
 
 class ModelConverterTestclass(unittest.TestCase):

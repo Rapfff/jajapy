@@ -26,14 +26,14 @@ We can create the model depicted above like this:
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> labeling = list('HELOWRD')
+	>>> labelling = list('HELOWRD')
 	>>> initial_state = 0 # we always start in state 0.
 	>>> name = "MC_Helloworld"
 	>>> # From state 0 we move to state 1 with probability 1.0,
 	>>> # from state 2 we move to state 3 with probability 1/3, etc...
 	>>> transitions = [(0,1,1.0),(1,2,1.0),(2,2,1/3),(2,3,1/3),(2,6,1/3),
 	>>> 			   (3,4,0.5),(3,5,0.5),(4,3,1.0),(5,6,1.0),(6,6,1.0)]
-	>>> original_model = ja.createMC(transitions,labeling,initial_state,name)
+	>>> original_model = ja.createMC(transitions,labelling,initial_state,name)
 	>>> #print(original_model)
 
 *(optional)* This model can be saved into a text file and then loaded as follow:
@@ -68,7 +68,7 @@ Let now use our training set to learn ``original_model`` with the Baum-Welch alg
 .. code-block:: python
 
 	>>> # We want our output model to have 7 states, as the original one
-	>>> output_model = ja.BW_MC().fit(training_set,nb_states=7)
+	>>> output_model = ja.BW().fit(training_set,nb_states=7)
 	|████████████████████████████████████████| (!) 10 in 0.4s (23.14/s) 
 
 	---------------------------------------------

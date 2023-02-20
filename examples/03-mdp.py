@@ -20,12 +20,12 @@ def example_3():
 
 	# INITIAL HYPOTHESIS GENERATION
 	#------------------------------
-	initial_hypothesis = ja.MDP_random(nb_states=26,labeling=labels,actions=actions,random_initial_state=False)
-	initial_hypothesis.labeling = original_model.labeling
+	initial_hypothesis = ja.MDP_random(nb_states=26,labelling=labels,actions=actions,random_initial_state=False)
+	initial_hypothesis.labelling = original_model.labelling
 
 	# LEARNING
 	#---------
-	output_model = ja.BW_MDP().fit(training_set,initial_model=initial_hypothesis)
+	output_model = ja.BW().fit(training_set,initial_model=initial_hypothesis)
 
 	formulas = ["Pmax=? [ F<=5 \"GOAL\"  ]","Pmax=? [ !(\"C\"|\"W\") U<=8\"GOAL\" ]", "Pmax=? [ F<=12 \"GOAL\"  ]"]
 	original_model = ja.jajapyModeltoStormpy(original_model)

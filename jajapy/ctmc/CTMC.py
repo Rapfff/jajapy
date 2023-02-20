@@ -16,7 +16,7 @@ class CTMC(Base_MC):
 	"""
 	Class representing a CTMC.
 	"""
-	def __init__(self, matrix: ndarray, labeling: list,
+	def __init__(self, matrix: ndarray, labelling: list,
 				 name: str ="unknown_CTMC",
 				 synchronous_transitions: list =[]) -> None:
 		"""
@@ -29,9 +29,9 @@ class CTMC(Base_MC):
 			Represents the transition matrix.
 			`matrix[s1][s2]` is the rate associated to the transition 
 			from `s1` to `s2`.
-		labeling: list of str
+		labelling: list of str
 			A list of N observations (with N the nb of states).
-			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		name : str, optional
 			Name of the model.
@@ -42,9 +42,10 @@ class CTMC(Base_MC):
 			List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
 			Default is an empty list.
 		"""
+		self.model_type = CTMC_ID
 		self.synchronous_transitions = synchronous_transitions
 
-		super().__init__(matrix,labeling,name)
+		super().__init__(matrix,labelling,name)
 		for s in range(self.nb_states):
 			synchronous_transitions_source = [i[0] for i in synchronous_transitions]
 			if self.e(s) == 0.0 and s not in synchronous_transitions_source:
@@ -86,7 +87,7 @@ class CTMC(Base_MC):
 		"""
 		self._checkStateIndex(s1)
 		self._checkStateIndex(s2)
-		if self.labeling[s1] != obs:
+		if self.labelling[s1] != obs:
 			return 0.0
 		return self.matrix[s1][s2]
 	
@@ -149,7 +150,7 @@ class CTMC(Base_MC):
 		return 1/self.e(s)
 
 	def _stateToString(self,state:int) -> str:
-		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
+		res = "----STATE "+str(state)+"--"+self.labelling[state]+"----\n"
 		res += "Exepected waiting time: "+str(self.expected_time(state))+'\n'
 		den = self.e(state)
 		for j in range(len(self.matrix[state])):
@@ -175,7 +176,7 @@ class CTMC(Base_MC):
 			else:
 				exps.append(exponential(1/exp_lambda))
 		next_state= exps.index(min(exps))
-		next_obs = self.labeling[state]
+		next_obs = self.labelling[state]
 		return (next_obs, next_state, min(exps))
 
 	def run(self,number_steps: int, timed: bool = False) -> list:
@@ -206,7 +207,7 @@ class CTMC(Base_MC):
 				output.append(time_spent)
 			current = next_state
 			c += 1
-		output.append(self.labeling[current])
+		output.append(self.labelling[current])
 		return output
 	
 	def _computeAlphas_timed(self, sequence: list, times: int) -> float:
@@ -220,7 +221,7 @@ class CTMC(Base_MC):
 				p = array([self.l(ss,s,obs_seq[k])*exp(-self.e(ss)*times_seq[k]) for ss in range(self.nb_states) ])
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
-		last_arr = prev_arr * (array(self.labeling) == obs_seq[-1])
+		last_arr = prev_arr * (array(self.labelling) == obs_seq[-1])
 		try:
 			res = log(last_arr.sum())*times
 		except ValueError:
@@ -276,7 +277,7 @@ class CTMC(Base_MC):
 		for i in range(self.nb_states):
 			new_matrix[i] /= self.e(i)
 
-		return MC(new_matrix,self.labeling,name)
+		return MC(new_matrix,self.labelling,name)
 
 	def save(self,file_path:str) -> None:
 		"""Save the model into a text file.
@@ -334,15 +335,15 @@ def loadCTMC(file_path: str) -> CTMC:
 	l = f.readline()[:-1] 
 	if l != "CTMC":
 		print("ERROR: this file doesn't describe an CTMC: it describes a "+l)
-	labeling = literal_eval(f.readline()[:-1])
+	labelling = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return CTMC(matrix, labeling, name)
+	return CTMC(matrix, labelling, name)
 
-def CTMC_random(nb_states: int, labeling: list, min_exit_rate_time : int,
+def CTMC_random(nb_states: int, labelling: list, min_exit_rate_time : int,
 				max_exit_rate_time: int, self_loop: bool = True,
 				random_initial_state: bool=True) -> CTMC:
 	"""
@@ -353,7 +354,7 @@ def CTMC_random(nb_states: int, labeling: list, min_exit_rate_time : int,
 	----------
 	nb_states : int
 		Number of states.
-	labeling : list of str
+	labelling : list of str
 		List of observations.
 	min_exit_rate_time: int
 		Minimum exit rate for the states (included).
@@ -408,10 +409,10 @@ def CTMC_random(nb_states: int, labeling: list, min_exit_rate_time : int,
 	
 	matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
 	
-	labeling = labelsForRandomModel(nb_states,labeling)
-	return CTMC(matrix, labeling,"CTMC_random_"+str(nb_states)+"_states")
+	labelling = labelsForRandomModel(nb_states,labelling)
+	return CTMC(matrix, labelling,"CTMC_random_"+str(nb_states)+"_states")
 
-def createCTMC(transitions: list, labeling: list, initial_state,
+def createCTMC(transitions: list, labelling: list, initial_state,
 			   name: str ="unknown_CTMC",synchronous_transitions: list =[]) -> CTMC:
 	"""
 	An user-friendly way to create a CTMC.
@@ -421,9 +422,9 @@ def createCTMC(transitions: list, labeling: list, initial_state,
 	transitions : [ list of tuples (int, int, float)]
 		Each tuple represents a transition as follow: 
 		(source state ID, destination state ID, rate).
-	labeling: list of str
+	labelling: list of str
 		A list of N observations (with N the nb of states).
-		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+		If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 		Each state has exactly one label.
 	initial_state : int or list of float
 		Determine which state is the initial one (then it's the id of the
@@ -436,7 +437,7 @@ def createCTMC(transitions: list, labeling: list, initial_state,
 	Returns
 	-------
 	CTMC
-		the CTMC describes by `transitions`, `labeling`, and `initial_state`.
+		the CTMC describes by `transitions`, `labelling`, and `initial_state`.
 	
 	Examples
 	--------
@@ -452,7 +453,7 @@ def createCTMC(transitions: list, labeling: list, initial_state,
 	s1 -> s0 : lambda = 0.3
 	s1 -> s1 : lambda = 0.2
 	"""
-	if 'init' in labeling:
+	if 'init' in labelling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 	
@@ -462,16 +463,16 @@ def createCTMC(transitions: list, labeling: list, initial_state,
 	states.sort()
 	nb_states = len(states)
 	
-	if nb_states > len(labeling):
-		raise ValueError("All states are not labelled (the labeling list is too small).")
-	elif nb_states < len(labeling):
-		print("WARNING: the labeling list is bigger than the number of states")
+	if nb_states > len(labelling):
+		raise ValueError("All states are not labelled (the labelling list is too small).")
+	elif nb_states < len(labelling):
+		print("WARNING: the labelling list is bigger than the number of states")
 
 	res = zeros((nb_states,nb_states))
 	for t in transitions:
 		res[states.index(t[0])][states.index(t[1])] = t[2]
 	
-	labeling.append('init')
+	labelling.append('init')
 	res = vstack((res,zeros(len(res))))
 	res = hstack((res,zeros(len(res))[:,newaxis]))
 	if type(initial_state) == int:
@@ -480,7 +481,7 @@ def createCTMC(transitions: list, labeling: list, initial_state,
 		if type(initial_state) == ndarray:
 			initial_state = initial_state.tolist()
 		res[-1] = array(initial_state+[0.0])
-	return CTMC(res, labeling, name,synchronous_transitions)
+	return CTMC(res, labelling, name,synchronous_transitions)
 
 
 def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composition") -> PCTMC:
@@ -501,16 +502,16 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 	PCTMC
 		Synchronous composition of `m1` and `m2`.
 	"""
-	m1_init = [i for i,li in enumerate(m1.labeling) if li == 'init']
-	m2_init = [i for i,li in enumerate(m2.labeling) if li == 'init']
+	m1_init = [i for i,li in enumerate(m1.labelling) if li == 'init']
+	m2_init = [i for i,li in enumerate(m2.labelling) if li == 'init']
 	m1_nb_states = m1.nb_states - len(m1_init)
 	m2_nb_states = m2.nb_states - len(m2_init)
 	nb_states = m1_nb_states * m2_nb_states	
-	m1_sids = [i-m1.labeling[:i].count("init") for i,li in enumerate(m1.labeling) if li != 'init']
-	m2_sids = [i-m1.labeling[:i].count("init") for i,li in enumerate(m2.labeling) if li != 'init']
+	m1_sids = [i-m1.labelling[:i].count("init") for i,li in enumerate(m1.labelling) if li != 'init']
+	m2_sids = [i-m1.labelling[:i].count("init") for i,li in enumerate(m2.labelling) if li != 'init']
 
 	matrix= zeros((nb_states,nb_states),dtype='uint8')
-	labeling = []
+	labelling = []
 	p_v = {}
 	p_str = []
 	p_i = []
@@ -535,9 +536,9 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 				for ind in add_index:
 					p_i[ind].append([x,y])
 
-	for s1 in m1_sids: # labeling
+	for s1 in m1_sids: # labelling
 		for s2 in m2_sids:
-			labeling.append(m1.labeling[s1]+','+m2.labeling[s2])
+			labelling.append(m1.labelling[s1]+','+m2.labelling[s2])
 
 	for i in m1_sids: # m1 transitions
 		for j in m1_sids:
@@ -569,7 +570,7 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 				t_e.append(t_e[matrix[get_state_index(si,sj),get_state_index(di,dj)]]+sympify(pi*pj))
 				matrix[get_state_index(si,sj),get_state_index(di,dj)] = len(t_e)-1
 	
-	labeling.append('init')
+	labelling.append('init')
 	matrix = vstack((matrix,zeros(nb_states,dtype='uint8')))
 	matrix = hstack((matrix,zeros(nb_states+1,dtype='uint8')[:,newaxis]))
 	m1_init_trans = zeros(m1_nb_states)
@@ -610,11 +611,11 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 	
 	i = 0
 	while i < len(matrix): # removing unreachable states
-		if (matrix.T[i] == 0).all() == True and labeling[i] != 'init':
+		if (matrix.T[i] == 0).all() == True and labelling[i] != 'init':
 			nb_states -= 1
 			matrix = delete(matrix,i,0)
 			matrix = delete(matrix,i,1)
-			labeling = labeling[:i]+labeling[i+1:]
+			labelling = labelling[:i]+labelling[i+1:]
 			for j in range(len(p_i)):
 				k = 0
 				while k < len(p_i[j]):
@@ -629,5 +630,5 @@ def synchronousCompositionCTMCs(m1: CTMC, m2: CTMC, name: str = "unknown_composi
 			i = -1
 		i += 1
 	
-	return PCTMC(matrix, labeling, t_e, p_v, p_i, p_str, name)
+	return PCTMC(matrix, labelling, t_e, p_v, p_i, p_str, name)
 

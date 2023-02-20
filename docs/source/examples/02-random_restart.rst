@@ -25,7 +25,7 @@ This step is similar to the first steps in :ref:`example-helloworld`.
 	
 	>>> import jajapy as ja
 	>>> # State 0 is labelled with B, state 1 with T, etc...
-	>>> labeling = list("BTSXSPTXPVVE")
+	>>> labelling = list("BTSXSPTXPVVE")
 	>>> initial_state = 0
 	>>> name = "MC_REBER"
 	>>> # From state 0 we move to state 1 with probability 0.5
@@ -34,7 +34,7 @@ This step is similar to the first steps in :ref:`example-helloworld`.
 	>>> 			   (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
 	>>> 			   (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
 	>>> 			   (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
-	>>> original_model = ja.createMC(transitions,labeling,initial_state,name)
+	>>> original_model = ja.createMC(transitions,labelling,initial_state,name)
 	>>> 
 	>>> # We generate 1000 sequences of 10 observations for each set
 	>>> training_set = original_model.generateSet(1000,10)
@@ -59,13 +59,13 @@ be labeled by the 7 labels, and the 5 remaining states will be labelled uniforml
 	>>> best_model = None
 	>>> quality_best = -1024
 	>>> for n in range(1,nb_trials+1):
-	...		current_model = ja.BW_MC().fit(training_set,nb_states=12,pp=n, stormpy_output=False)
+	...		current_model = ja.BW().fit(training_set,nb_states=12,pp=n, stormpy_output=False)
 	...		current_quality = current_model.logLikelihood(test_set)
 	...		if quality_best < current_quality: #we keep the best model only
 	...			quality_best = current_quality
 	...			best_model = current_model
 
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly.
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
 	1 |████████████████████████████████████████| (!) 70 in 6.0s (11.76/s) 
 
 	---------------------------------------------
@@ -74,7 +74,7 @@ be labeled by the 7 labels, and the 5 remaining states will be labelled uniforml
 	Running time:  5.988786
 	---------------------------------------------
 
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly.
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
 	2 |████████████████████████████████████████| (!) 15 in 1.3s (11.19/s) 
 
 	---------------------------------------------
@@ -83,7 +83,7 @@ be labeled by the 7 labels, and the 5 remaining states will be labelled uniforml
 	Running time:  1.342325
 	---------------------------------------------
 	[...]
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly.
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
 	10 |████████████████████████████████████████| (!) 43 in 3.7s (11.71/s) 
 
 	---------------------------------------------

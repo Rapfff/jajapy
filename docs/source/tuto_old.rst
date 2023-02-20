@@ -128,7 +128,7 @@ This step is similar to what we did before.
 	>>> import jajapy as ja
 	>>> def modelMC_REBER():
 	...		# State 0 is labelled with B, state 1 with T, etc...
-	...		labeling = list("BTSXSPTXPVVE")
+	...		labelling = list("BTSXSPTXPVVE")
 	...		initial_state = 0
 	...		name = "MC_REBER"
 	...		# From state 0 we move to state 1 with probability 0.5
@@ -137,7 +137,7 @@ This step is similar to what we did before.
 	...			       (3,7,0.5),(3,4,0.5),(4,11,1.0),(5,6,0.7),(5,9,0.3),
 	...			       (6,6,0.7),(6,9,0.3),(7,6,0.7),(7,9,0.3),(8,7,0.5),(8,4,0.5),
 	...			       (9,8,0.5),(9,10,0.5),(10,11,1.0),(11,11,1.0)]
-	...		return ja.createMC(transitions,labeling,initial_state,name)
+	...		return ja.createMC(transitions,labelling,initial_state,name)
 	>>> original_model = modelMC_REBER()
 	>>> training_set = original_model.generateSet(1000,10)
 	>>> test_set = original_model.generateSet(1000,10)
@@ -338,7 +338,7 @@ First we create the original model.
 	from numpy import array
 
 	def modelMDP_gridworld():
-		labeling = ['S','M','G',
+		labelling = ['S','M','G',
 					'M','G','C',
 					'G','S',"done",
 					'W','W','W','W','W','W','W']
@@ -360,7 +360,7 @@ First we create the original model.
 			(7,'n',4,0.8),(7,'n',3,0.1),(7,'n',5,0.1),(7,'s',15,1.0),(7,'e',8,0.6),(7,'e',4,0.4),(7,'w',6,0.8),(7,'w',3,0.2),
 			(15,'n',4,0.8),(15,'n',3,0.1),(15,'n',5,0.1),(15,'s',15,1.0),(15,'e',8,0.6),(15,'e',4,0.4),(15,'w',6,0.8),(15,'w',3,0.2),
 			(8,'n',8,1.0),(8,'s',8,1.0),(8,'e',8,1.0),(8,'w',8,1.0)]
-	return ja.createMDP(transitions,labeling,initial_state=0,name="grid world")
+	return ja.createMDP(transitions,labelling,initial_state=0,name="grid world")
 
 Then we generate our training set and test set. Since MDPs are non-deterministic, we need to specify to
 jajapy which scheduler we want it to use to generate training/test sets. Here we will
@@ -434,14 +434,14 @@ As usual, we start by creating the training and test set.
 	import jajapy as ja
 
 	def modelMC_KnuthDie(p=0.5):
-		labeling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
+		labelling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
 		initial_state = 0
 		name="Knuth's Die"
 		transitions = [(0,1,p),(0,2,1-p),(1,3,p),(1,4,1-p),(2,5,p),(2,6,1-p),
 			       (3,1,p),(3,7,1-p),(4,8,p),(4,9,1-p),(5,10,p),(5,11,1-p),
 			       (6,12,p),(6,2,1-p),(7,13,1.0),(8,14,1.0),(9,15,1.0),
 			       (10,16,1.0),(11,17,1.0),(12,18,1.0)]
-		return ja.createMC(transitions,labeling,initial_state,name)
+		return ja.createMC(transitions,labelling,initial_state,name)
 	
 	original_model = modelMC_KnuthDie()
 	# SETS GENERATION
@@ -469,7 +469,7 @@ to keep only the best model we get.
 .. code-block:: python
 
 	def firstGuess():
-		labeling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
+		labelling = ['','H','T','H','T','H','T','T','H','T','H','T','H',"one","two","three","four","five","six"]
 		initial_state = 0
 		name="first guess"
 		p = ja.randomProbabilities(2)
@@ -483,7 +483,7 @@ to keep only the best model we get.
 					(10,16,1.0),(11,17,1.0),(12,18,1.0),
 					(13,13,1.0),(14,14,1.0),(15,15,1.0),
 					(16,16,1.0),(17,17,1.0),(18,18,1.0)]
-		return ja.createMC(transitions,labeling,initial_state,name)
+		return ja.createMC(transitions,labelling,initial_state,name)
 	
 	# LEARNING
 	#---------

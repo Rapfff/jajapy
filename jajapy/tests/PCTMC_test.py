@@ -5,39 +5,39 @@ from ..base.Set import *
 from ..with_stormpy.model_converter import loadPrism
 
 def modelPCTMC_ped():
-	labeling = ['red','green']
+	labelling = ['red','green']
 	transitions = [(1,0,5.0)]
 	sync_trans = [(0,'b',1,0.5),(0,'r',0,10.0),(0,'g',0,10.0)]
 	parameters = ['r','g']
-	return createPCTMC(transitions,labeling,parameters,0,{},sync_trans)
+	return createPCTMC(transitions,labelling,parameters,0,{},sync_trans)
 
 def modelPCTMC_car2():
-	labeling = ['red','green']
+	labelling = ['red','green']
 	transitions = []
 	sync_trans = [(0,'g',1,'g'),(1,'r',0,'r'),(0,'b',0,10.0),(1,'b',0,2.0)]
 	parameters = ['r','g']
-	return createPCTMC(transitions,labeling,parameters,1,{},sync_trans)
+	return createPCTMC(transitions,labelling,parameters,1,{},sync_trans)
 
 def modelPCTMC_car1():
-	labeling = ['red','green']
+	labelling = ['red','green']
 	transitions = []
 	sync_trans = [(0,'r',1,'r'),(1,'g',0,'g'),(0,'b',0,10.0),(1,'b',0,2.0)]
 	parameters = ['r','g']
-	return createPCTMC(transitions,labeling,parameters,0,{},sync_trans)
+	return createPCTMC(transitions,labelling,parameters,0,{},sync_trans)
 
 def modelPCTMCCar_tl():
-	labeling = ["c_red","c_orange","c_green"]
+	labelling = ["c_red","c_orange","c_green"]
 	transitions = [(1,0,2.0)]
 	sync_trans = [(0,'nothing',2,0.5),(2,'button',1,'p')]
 	parameters = ['p']
-	return createPCTMC(transitions, labeling, parameters,0,{},sync_trans)
+	return createPCTMC(transitions, labelling, parameters,0,{},sync_trans)
 
 def modelPCTMCPed_tl():
-	labeling = ["p_red","p_green"]
+	labelling = ["p_red","p_green"]
 	transitions = [(1,0,0.1)]
 	sync_trans = [(0,'nothing',0,10.0),(0,'button',1,'p/2')]
 	parameters = ['p']
-	return createPCTMC(transitions, labeling, parameters,0,{},sync_trans)
+	return createPCTMC(transitions, labelling, parameters,0,{},sync_trans)
 
 
 m = loadPrism('jajapy/tests/materials/pctmc/tl.pm')
@@ -99,25 +99,25 @@ class PCTMCTestclass(unittest.TestCase):
 		remove("test_save.txt")
 	
 	def test_PCTMC_logLikelihood(var):
+		#m = loadPrism('jajapy/tests/materials/pctmc/tl.pm')
 		m.instantiate(['p'],[1.0])
-		set1 = Set([['init', 'c_green_p_red', 'c_orange_p_green', 'c_red_p_green', 'c_red_p_red', 'c_green_p_red']],[1])
+		set1 = Set([['init', 'c_red_p_red', 'c_green_p_red', 'c_orange_p_green', 'c_red_p_green', 'c_red_p_red']],[1])
 		l11 = m._logLikelihood_oneproc(set1)
 		l12 = m._logLikelihood_multiproc(set1)
 		var.assertAlmostEqual(l11,l12)
 		var.assertAlmostEqual(l11,-0.048790164169432056)
-		set2 = Set([['init', 0.20149229043430208, 'c_green_p_red',
+		set2 = Set([['init', 0.51245612, 'c_red_p_red',
+					0.20149229043430208, 'c_green_p_red',
 					0.8691033110137091, 'c_orange_p_green',
 					0.40391041817651124, 'c_red_p_green', 
-					17.822666563218853, 'c_red_p_red',
-					0.05498832925297038, 'c_green_p_red'],
-					['init', 0.237901319423925, 'c_green_p_red',
+					17.822666563218853, 'c_red_p_red',],
+					['init', 0.497854, 'c_red_p_red',
+					0.237901319423925, 'c_green_p_red',
 					6.906613946631418, 'c_orange_p_green',
 					0.6742555535289178, 'c_red_p_green',
-					5.788386627774087, 'c_red_p_red',
-					0.019124343634252416, 'c_green_p_red']],[1,1])
+					5.788386627774087, 'c_red_p_red']],[1,1])
 		l21 = m.logLikelihood(set2)
-		var.assertAlmostEqual(l21,-4.624031219241099)
-
+		var.assertAlmostEqual(l21,-6.553342509457142)
 
 if __name__ == "__main__":
 	unittest.main()

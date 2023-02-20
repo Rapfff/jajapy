@@ -17,9 +17,9 @@ def example_4():
 
 	# INITIAL HYPOTHESIS GENERATION
 	#------------------------------
-	initial_hypothesis = ja.MDP_random(nb_states=16,labeling=labels,
+	initial_hypothesis = ja.MDP_random(nb_states=16,labelling=labels,
 									actions=actions,random_initial_state=False)
-	initial_hypothesis.labeling = original_model.labeling
+	initial_hypothesis.labelling = original_model.labelling
 
 	# LEARNING
 	#---------

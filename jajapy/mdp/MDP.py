@@ -13,7 +13,7 @@ class MDP(Base_MC):
 	"""
 	Class representing a MDP.
 	"""
-	def __init__(self,matrix: ndarray, labeling: list, actions:list, name: str="unknown_MDP"):
+	def __init__(self,matrix: ndarray, labelling: list, actions:list, name: str="unknown_MDP"):
 		"""
 		Create a MDP.
 
@@ -24,9 +24,9 @@ class MDP(Base_MC):
 			`matrix[s1][act_ID][s2][obs_ID]` is the probability of moving 
 			from `s1` to `s2` by executing action of ID `act_ID` and seeing 
 			the observation of ID `obs_ID`.
-		labeling: list of str
+		labelling: list of str
 			A list of N observations (with N the nb of states).
-			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		actions: list of str
 			The list of all possible actions, such that:
@@ -34,9 +34,10 @@ class MDP(Base_MC):
 		name : str, optional
 			Name of the model. Default is "unknow_MDP"
 		"""
+		self.model_type = MDP_ID
 		self.actions = actions
 		self.nb_actions = len(self.actions)
-		super().__init__(matrix,labeling,name)
+		super().__init__(matrix,labelling,name)
 		for i in range(self.nb_states):
 			for a in range(self.nb_actions):
 				if not checkProbabilities(matrix[i][a]):
@@ -109,7 +110,7 @@ class MDP(Base_MC):
 		"""
 		self._checkStateIndex(s1)
 		self._checkStateIndex(s2)
-		if obs != self.labeling[s1]:
+		if obs != self.labelling[s1]:
 			return 0.0
 		if action not in self.actions:
 			return 0.0
@@ -179,7 +180,7 @@ class MDP(Base_MC):
 		1.0
 		"""
 		c = resolveRandom(self.matrix[state][self.actions.index(action)])
-		return (c, self.labeling[state])
+		return (c, self.labelling[state])
 			
 	def run(self,number_steps: int,scheduler: Scheduler, current: int = -1) -> list:
 		"""
@@ -216,7 +217,7 @@ class MDP(Base_MC):
 			scheduler.addObservation(observation)
 			current = next_state
 			current_len += 1
-		res.append(self.labeling[current])
+		res.append(self.labelling[current])
 		return res
 
 	def generateSet(self, set_size: int, param, scheduler: Scheduler, distribution=None, min_size=None) -> list:
@@ -288,7 +289,7 @@ class MDP(Base_MC):
 		super()._save(f)
 	
 	def _stateToString(self,state:int) -> str:
-		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
+		res = "----STATE "+str(state)+"--"+self.labelling[state]+"----\n"
 		for ai,a in enumerate(self.actions):
 			for s in range(self.nb_states):
 				if self.matrix[state][ai][s] > 0.0001:
@@ -350,7 +351,7 @@ class MDP(Base_MC):
 			common = int(common/2)
 			alpha_matrix = self._updateAlphaMatrix(sequence_obs,sequence_actions,common,alpha_matrix)
 			
-			last_arr = alpha_matrix[-1] * (array(self.labeling) == sequence[-1])
+			last_arr = alpha_matrix[-1] * (array(self.labelling) == sequence[-1])
 			last_arr = last_arr.sum()
 			if last_arr > 0.0:
 				loglikelihood += log(last_arr) * times
@@ -438,7 +439,7 @@ class MDP(Base_MC):
 				p = array([self.tau(ss,sequence[k+1],s,sequence[k]) for ss in range(self.nb_states)])
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
-		prev_arr = prev_arr*(array(self.labeling) == sequence[-1])
+		prev_arr = prev_arr*(array(self.labelling) == sequence[-1])
 		if prev_arr.sum() == 0.0:
 			return 0.0
 		return log(prev_arr.sum())*times
@@ -463,16 +464,16 @@ def loadMDP(file_path: str) -> MDP:
 		msg = " this file doesn't describe an MC: it describes a "+l
 		raise ValueError(msg)
 	actions = literal_eval(f.readline()[:-1])
-	labeling = literal_eval(f.readline()[:-1])
+	labelling = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MDP(matrix, labeling, actions, name)
+	return MDP(matrix, labelling, actions, name)
 
 
-def MDP_random(nb_states: int,labeling: list, actions: list,random_initial_state: bool = True, deterministic: bool = False) -> MDP:
+def MDP_random(nb_states: int,labelling: list, actions: list,random_initial_state: bool = True, deterministic: bool = False) -> MDP:
 	"""
 	Generate a random MDP.
 
@@ -480,7 +481,7 @@ def MDP_random(nb_states: int,labeling: list, actions: list,random_initial_state
 	----------
 	number_states : int
 		Number of states.
-	labeling : list of str
+	labelling : list of str
 		List of observations.
 	actions : list of str
 		List of actions.	
@@ -496,7 +497,7 @@ def MDP_random(nb_states: int,labeling: list, actions: list,random_initial_state
 	MDP
 		A pseudo-randomly generated MDP.
 	"""
-	alphabet = list(set(labeling))
+	alphabet = list(set(labelling))
 	matrix = []
 	for s in range(nb_states):
 		if not deterministic:
@@ -506,7 +507,7 @@ def MDP_random(nb_states: int,labeling: list, actions: list,random_initial_state
 		else:
 			matrix.append([])
 			for a in actions:
-				dest = [choices(where(array(labeling) == o)[0]) for o in alphabet]
+				dest = [choices(where(array(labelling) == o)[0]) for o in alphabet]
 				p = zeros(nb_states)
 				probs = randomProbabilities(len(alphabet))
 				for i,j in zip(dest,probs):
@@ -520,11 +521,11 @@ def MDP_random(nb_states: int,labeling: list, actions: list,random_initial_state
 	matrix.append(array([init for a in actions]))
 	matrix = array(matrix)
 	
-	labeling = labelsForRandomModel(nb_states,labeling)
-	return MDP(matrix, labeling, actions, "MDP_random_"+str(nb_states)+"_states")
+	labelling = labelsForRandomModel(nb_states,labelling)
+	return MDP(matrix, labelling, actions, "MDP_random_"+str(nb_states)+"_states")
 
 
-def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknown_MDP") -> MDP:
+def createMDP(transitions:list, labelling:list, initial_state, name: str ="unknown_MDP") -> MDP:
 	"""
 	An user-friendly way to create an MDP.
 
@@ -533,9 +534,9 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	transitions : [ list of tuples (int, str, int, float)]
 		Each tuple represents a transition as follow: 
 		(source state ID, action, destination state ID, probability).
-	labeling: list of str
+	labelling: list of str
 		A list of N observations (with N the nb of states).
-		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+		If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 		Each state has exactly one label.
 	initial_state : int or list of float
 		Determine which state is the initial one (then it's the id of the
@@ -548,12 +549,12 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	Returns
 	-------
 	MDP
-		the MDP describes by `transitions`, `labeling`, and `initial_state`.
+		the MDP describes by `transitions`, `labelling`, and `initial_state`.
 	
 	Examples
 	--------
 	"""
-	if 'init' in labeling:
+	if 'init' in labelling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 
@@ -564,16 +565,16 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 	actions.sort()
 	nb_actions = len(actions)
 	
-	if nb_states > len(labeling):
-		raise ValueError("all states are not labelled (the labeling list is too small).")
-	elif nb_states < len(labeling):
-		print("WARNING: the labeling list is bigger than the number of states")
+	if nb_states > len(labelling):
+		raise ValueError("all states are not labelled (the labelling list is too small).")
+	elif nb_states < len(labelling):
+		print("WARNING: the labelling list is bigger than the number of states")
 
 	res = zeros((nb_states,nb_actions,nb_states))
 	for t in transitions:
 		res[states.index(t[0])][actions.index(t[1])][states.index(t[2])] = t[3]
 	
-	labeling.append('init')
+	labelling.append('init')
 	res = vstack((res,zeros((1,nb_actions,nb_states))))
 	res = concatenate((res,zeros((nb_states+1,nb_actions,1))),axis=2)
 	if type(initial_state) == int:
@@ -585,4 +586,4 @@ def createMDP(transitions:list, labeling:list, initial_state, name: str ="unknow
 		for a in range(nb_actions):
 			res[-1][a] = array(initial_state+[0.0])
 	
-	return MDP(res,labeling,actions,name)
+	return MDP(res,labelling,actions,name)

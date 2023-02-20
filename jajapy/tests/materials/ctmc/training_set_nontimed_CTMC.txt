@@ -1,175 +1,797 @@
 0
-['red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'red', 'red', 'yellow', 'blue']
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+11
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+16
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red']
+5
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue']
+6
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow']
 1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue']
 3
-['red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+9
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow']
+5
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+7
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow']
 1
-['red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'red']
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue']
 1
-['red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
-1
-['red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue']
-1
-['red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'yellow', 'blue']
-1
-['red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow']
-1
-['red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
-1
-['red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow']
-1
-['red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red']
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+18
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red']
 2
-['red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue']
-1
-['red', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'red', 'red', 'yellow', 'blue']
-1
-['red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'blue']
-1
-['red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
-1
-['red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
-1
-['red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'red', 'red']
-1
-['red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red']
-1
-['red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
-1
-['red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
-1
-['red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue']
-1
-['red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue']
-2
-['red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue']
+7
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue']
+11
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red']
 3
-['red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
-1
-['red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
-1
-['red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
-2
-['red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'red', 'red', 'red', 'yellow']
-1
-['red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red']
-1
-['red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow']
-1
-['red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow']
-1
-['red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
-2
-['red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow']
-1
-['red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'red']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
-1
-['red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow']
-1
-['red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue']
-1
-['red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'red']
-1
-['red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red']
-1
-['red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+7
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow']
 3
-['red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue']
+7
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red']
 1
-['red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+9
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue']
 2
-['red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+8
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
+3
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+5
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+10
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+6
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'red', 'yellow', 'red', 'yellow', 'blue']
+3
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red']
 2
-['red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
-1
-['red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
-1
-['red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red']
-1
-['red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
-1
-['red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
-1
-['red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
 2
-['red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'red']
+2
+['init', 'red', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
 1
-['red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'blue', 'blue']
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+24
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+5
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue']
+4
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+3
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red']
 1
-['red', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue']
+6
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow', 'red']
 1
-['red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red']
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow']
 1
-['red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow']
 1
-['red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue']
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue']
+2
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue']
+8
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow', 'blue']
+6
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+4
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
+4
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+4
+['init', 'red', 'yellow', 'blue', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
 1
-['red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow', 'blue', 'red']
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'blue', 'red', 'red', 'yellow', 'red', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow', 'red', 'red']
 1
-['red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red']
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+5
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+9
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red']
 1
-['red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red']
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+7
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue', 'blue']
 1
-['red', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow']
 1
-['red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red']
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+10
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+27
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue']
 1
-['red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red']
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue']
+6
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red']
 1
-['red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+3
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'yellow', 'blue']
 1
-['red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red']
 1
-['red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'red']
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red']
 1
-['red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue', 'blue']
+3
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+8
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow']
 1
-['red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
+4
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+5
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'red']
 1
-['red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red', 'red']
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
+6
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'red']
 1
-['red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow', 'red']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue']
 1
-['red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'red']
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue']
+5
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red']
 1
-['red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue']
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
+5
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'red', 'yellow', 'red', 'yellow']
 1
-['red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+12
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue']
+10
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+6
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue']
+4
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue']
+4
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue']
+8
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
+3
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red']
+6
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+5
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow']
+5
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red']
+5
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue']
+3
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
+5
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow']
+4
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+4
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue']
+24
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow']
+5
+['init', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
+4
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+6
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'red', 'yellow']
+4
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow']
+4
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red']
+3
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue']
+8
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'red']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'red', 'red']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
+4
+['init', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+4
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
+6
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red']
+4
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red']
+2
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red']
+5
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue']
+5
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue']
+5
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow']
+3
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red']
+3
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow', 'red']
+3
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow']
+3
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'red', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red']
+3
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue']
+4
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'red']
+2
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+3
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow']
+3
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'red']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue']
+3
+['init', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red']
+2
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+5
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+3
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue']
+2
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow']
+2
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow']
+5
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'red', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue']
+3
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'red', 'yellow']
+2
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow']
+2
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue']
+2
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'red', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'red']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'blue', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'red', 'red', 'red', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'red', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'red', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'red', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'blue', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue']
+2
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red', 'yellow', 'blue']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'red', 'yellow', 'blue', 'red', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'yellow', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'blue', 'red', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'yellow']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'red', 'red', 'yellow', 'blue', 'blue']
+1
+['init', 'red', 'red', 'red', 'yellow', 'red', 'yellow', 'blue', 'yellow', 'blue', 'red']
+1
+['init', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'yellow', 'blue', 'yellow', 'red']
+1
+['init', 'red', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'blue', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'blue', 'yellow', 'red', 'red']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'red', 'yellow', 'red', 'yellow', 'red', 'yellow']
+1
+['init', 'red', 'red', 'yellow', 'blue', 'yellow', 'blue', 'blue', 'blue', 'blue', 'yellow']
+1
+['init', 'red', 'yellow', 'red', 'red', 'yellow', 'blue', 'blue', 'red', 'yellow', 'red']
 1

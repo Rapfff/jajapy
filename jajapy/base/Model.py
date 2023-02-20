@@ -7,6 +7,13 @@ from multiprocessing import cpu_count, Pool
 from sys import platform
 from math import log
 
+MC_ID   = 0
+MDP_ID  = 1
+HMM_ID  = 2
+GOHMM_ID= 3
+CTMC_ID = 4
+PCTMC_ID= 5
+
 class Model:
 	"""
 	Abstract class that represents a model.

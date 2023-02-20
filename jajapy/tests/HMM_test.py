@@ -3,6 +3,7 @@ from ..hmm import *
 from os import remove
 from ..base.Set import *
 from math import log
+from ..base.BW import BW
 
 def modelHMM4():
 	alphabet = list("abxy")
@@ -64,7 +65,7 @@ class HMMTestclass(unittest.TestCase):
 		initial_model   = loadHMM("jajapy/tests/materials/hmm/random_HMM.txt")
 		training_set    = loadSet("jajapy/tests/materials/hmm/training_set_HMM.txt")
 		output_expected = loadHMM("jajapy/tests/materials/hmm/output_HMM.txt")
-		output_gotten   = BW_HMM().fit( training_set, initial_model, stormpy_output=False)
+		output_gotten   = BW().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

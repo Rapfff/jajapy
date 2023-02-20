@@ -1,9 +1,9 @@
 import stormpy as st
 from numpy import zeros, array, newaxis, reshape, vstack, concatenate, hstack, newaxis, nan, full
-from ..mc import MC
-from ..mdp import MDP
-from ..ctmc import CTMC
-from ..pctmc import PCTMC
+from ..mc.MC import MC
+from ..mdp.MDP import MDP
+from ..ctmc.CTMC import CTMC
+from ..pctmc.PCTMC import PCTMC
 from copy import deepcopy
 import os
 from sympy import symbols, sympify
@@ -43,7 +43,7 @@ def stormpyModeltoJajapy(h,actions_name:list = [],from_prism=False):
 	else:
 		raise TypeError(str(type(h))+' cannot be translated to Jajapy model.')
 	
-	labeling = [None for _ in range(len(h.states))]
+	labelling = [None for _ in range(len(h.states))]
 	if ty == 2:
 		actions = []
 		for s in h.states:
@@ -71,14 +71,14 @@ def stormpyModeltoJajapy(h,actions_name:list = [],from_prism=False):
 			temp.remove("deadlock")
 		temp.sort()
 		if len(temp) == 0:
-			labeling[si] = "empty"
+			labelling[si] = "empty"
 		elif 'init' in temp and len(temp) > 1:
 			temp.remove("init")
-			labeling.append("init")
-			labeling[si] = '_'.join(list(temp))
+			labelling.append("init")
+			labelling[si] = '_'.join(list(temp))
 			add_init_state = c
 		else:
-			labeling[si] = '_'.join(list(temp))
+			labelling[si] = '_'.join(list(temp))
 
 		for a in s.actions:
 			for t in a.transitions:
@@ -128,15 +128,15 @@ def stormpyModeltoJajapy(h,actions_name:list = [],from_prism=False):
 			matrix = hstack((matrix,zeros(len(matrix),dtype=('uint16'))[:,newaxis]))
 
 	if ty == 0:
-		return MC(matrix, labeling)
+		return MC(matrix, labelling)
 	elif ty == 1:
-		return CTMC(matrix, labeling)
+		return CTMC(matrix, labelling)
 	elif ty == 2:
-		return MDP(matrix,labeling,actions)
+		return MDP(matrix,labelling,actions)
 	#elif ty == 3:
-	#	return PMC(matrix,labeling,p_v,p_i,p_str)
+	#	return PMC(matrix,labelling,p_v,p_i,p_str)
 	elif ty == 4:
-		return PCTMC(matrix,labeling,t_expr,p_v,p_i,p_str)
+		return PCTMC(matrix,labelling,t_expr,p_v,p_i,p_str)
 
 def jajapyModeltoStormpy(h):
 	"""
@@ -170,13 +170,13 @@ def jajapyModeltoStormpy(h):
 	else:
 		raise TypeError(str(type(h))+' cannot be translated to a stormpy sparse model.')
 
-def _buildStateLabeling(h):
-	state_labeling = st.storage.StateLabeling(h.nb_states)
+def _buildStatelabelling(h):
+	state_labelling = st.storage.Statelabelling(h.nb_states)
 	for o in h.getAlphabet():
-		state_labeling.add_label(o)
+		state_labelling.add_label(o)
 	for s in range(h.nb_states):
-		state_labeling.add_label_to_state(h.labeling[s],s)
-	return state_labeling
+		state_labelling.add_label_to_state(h.labelling[s],s)
+	return state_labelling
 
 def MDPtoStormpy(h):
 	"""
@@ -193,22 +193,22 @@ def MDPtoStormpy(h):
 	stormpy.SparseMdp
 		The same model in stormpy format.
 	"""
-	state_labeling = _buildStateLabeling(h)
+	state_labelling = _buildStatelabelling(h)
 	nb_actions = len(h.getActions())
 	transition_matrix = h.matrix
 	transition_matrix = reshape(transition_matrix.flatten(),(h.nb_states*nb_actions,h.nb_states))
 	transition_matrix =  st.build_sparse_matrix(transition_matrix,[nb_actions*i for i in range(h.nb_states)])
-	choice_labeling = st.storage.ChoiceLabeling(h.nb_states*nb_actions)
+	choice_labelling = st.storage.Choicelabelling(h.nb_states*nb_actions)
 	for ia,a in enumerate(h.getActions()):
-		choice_labeling.add_label(a)
-		choice_labeling.add_label_to_choice(a,ia)
+		choice_labelling.add_label(a)
+		choice_labelling.add_label_to_choice(a,ia)
 	reward_models = {}
 	action_reward = [-1.0 for _ in range(len(transition_matrix))]
 	reward_models["nb_executed_actions"] = st.SparseRewardModel(optional_state_action_reward_vector = action_reward)
 	components = st.SparseModelComponents(transition_matrix=transition_matrix,
-										  state_labeling=state_labeling,
+										  state_labelling=state_labelling,
 										  reward_models=reward_models)
-	components.choice_labeling = choice_labeling
+	components.choice_labelling = choice_labelling
 	mdp = st.storage.SparseMdp(components)
 	return mdp
 
@@ -227,11 +227,11 @@ def MCtoStormpy(h):
 	stormpy.SparseDtmc
 		The same model in stormpy format.
 	"""
-	state_labeling = _buildStateLabeling(h)
+	state_labelling = _buildStatelabelling(h)
 	transition_matrix = h.matrix
 	transition_matrix =  st.build_sparse_matrix(transition_matrix)
 	components = st.SparseModelComponents(transition_matrix=transition_matrix,
-										  state_labeling=state_labeling)
+										  state_labelling=state_labelling)
 	mc = st.storage.SparseDtmc(components)
 	return mc
 
@@ -250,13 +250,13 @@ def CTMCtoStormpy(h):
 	stormpy.SparseCtmc
 		The same model in stormpy format.
 	"""
-	state_labeling = _buildStateLabeling(h)
+	state_labelling = _buildStatelabelling(h)
 	transition_matrix = deepcopy(h.matrix)
 	e = array([h.e(s) for s in range(h.nb_states)])
 	transition_matrix /= e[:,newaxis]
 	transition_matrix =  st.build_sparse_matrix(transition_matrix)
 	components = st.SparseModelComponents(transition_matrix=transition_matrix,
-										  state_labeling=state_labeling,
+										  state_labelling=state_labelling,
 										  rate_transitions=True)
 	components.exit_rates = e
 	ctmc = st.storage.SparseCtmc(components)
@@ -287,7 +287,7 @@ def PCTMCtoCTMC(h: PCTMC) -> CTMC:
 	for s in range(h.nb_states):
 		for ss in range(h.nb_states):
 			res[s,ss] = h.transitionValue(s,ss)
-	return CTMC(res, h.labeling, h.name)
+	return CTMC(res, h.labelling, h.name)
 
 def loadPrism(path: str):
 	"""

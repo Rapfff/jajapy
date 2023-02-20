@@ -24,12 +24,12 @@ Creation
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> labeling = ['red','red','yellow','blue','blue']
+	>>> labelling = ['red','red','yellow','blue','blue']
 	>>> transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
 			   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),
 			   (3,1,0.1),(3,4,0.1),(4,2,0.25)]
 
-	>>> model = ja.createCTMC(transitions,labeling,initial_state=0,name="My_CTMC")
+	>>> model = ja.createCTMC(transitions,labelling,initial_state=0,name="My_CTMC")
 
 We can also generate a random CTMC
 

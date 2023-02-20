@@ -4,7 +4,7 @@ from ast import literal_eval
 from numpy import ndarray, array, zeros, vstack, hstack, newaxis, append, where
 
 class MC(Base_MC):
-	def __init__(self, matrix: ndarray, labeling: list, name: str ="unknown_MC") -> None:
+	def __init__(self, matrix: ndarray, labelling: list, name: str ="unknown_MC") -> None:
 		"""
 		Creates an MC.
 
@@ -14,15 +14,16 @@ class MC(Base_MC):
 			A (N x N) ndarray (with N the nb of states).
 			Represents the transition matrix.
 			`matrix[s1][s2]` is the probability of moving from `s1` to `s2`.
-		labeling: list of str
+		labelling: list of str
 			A list of N observations (with N the nb of states).
-			If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+			If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 			Each state has exactly one label.
 		name : str, optional
 			Name of the model.
 			Default is "unknow_MC"
 		"""	
-		super().__init__(matrix,labeling,name)
+		super().__init__(matrix,labelling,name)
+		self.model_type = MC_ID
 		for i in range(self.nb_states):
 			if not checkProbabilities(matrix[i]):
 				msg = "The probability to take a transition from state "
@@ -61,7 +62,7 @@ class MC(Base_MC):
 		"""
 		self._checkStateIndex(s1)
 		self._checkStateIndex(s2)
-		if obs != self.labeling[s1]:
+		if obs != self.labelling[s1]:
 			return 0.0
 		return self.matrix[s1][s2]
 	
@@ -115,7 +116,7 @@ class MC(Base_MC):
 		0.4
 		"""
 		c = resolveRandom(self.matrix[state])
-		return (c, self.labeling[state])
+		return (c, self.labelling[state])
 
 	def run(self, number_steps: int, current: int = -1) -> list:
 		"""
@@ -144,7 +145,7 @@ class MC(Base_MC):
 			output.append(symbol)
 			current = next_state
 		
-		output.append(self.labeling[current])
+		output.append(self.labelling[current])
 		return output
 
 	def save(self, file_path:str) -> None:
@@ -164,7 +165,7 @@ class MC(Base_MC):
 		super()._save(f)
 
 	def _stateToString(self,state:int) -> str:
-		res = "----STATE "+str(state)+"--"+self.labeling[state]+"----\n"
+		res = "----STATE "+str(state)+"--"+self.labelling[state]+"----\n"
 		for j in range(len(self.matrix[state])):
 			if self.matrix[state][j] > 0.0001:
 				res += "s"+str(state)+" -> s"+str(j)+" : "+str(round(self.matrix[state][j],5))+'\n'
@@ -216,15 +217,15 @@ def loadMC(file_path: str) -> MC:
 	if l != "MC":
 		msg = "ERROR: this file doesn't describe an MC: it describes a "+l
 		raise ValueError(msg)
-	labeling = literal_eval(f.readline()[:-1])
+	labelling = literal_eval(f.readline()[:-1])
 	name = f.readline()[:-1]
 	initial_state = array(literal_eval(f.readline()[:-1]))
 	matrix = literal_eval(f.readline()[:-1])
 	matrix = array(matrix)
 	f.close()
-	return MC(matrix, labeling, name)
+	return MC(matrix, labelling, name)
 
-def MC_random(nb_states: int, labeling: list, random_initial_state: bool=True) -> MC:
+def MC_random(nb_states: int, labelling: list, random_initial_state: bool=True) -> MC:
 	"""
 	Generate a random MC.
 
@@ -232,7 +233,7 @@ def MC_random(nb_states: int, labeling: list, random_initial_state: bool=True) -
 	----------
 	number_states : int
 		Number of states.
-	labeling : list of str
+	labelling : list of str
 		List of observations.
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability,
@@ -268,10 +269,10 @@ def MC_random(nb_states: int, labeling: list, random_initial_state: bool=True) -
 	else:
 		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
 	matrix = array(matrix)
-	labeling = labelsForRandomModel(nb_states,labeling)
-	return MC(matrix, labeling,"MC_random_"+str(nb_states)+"_states")
+	labelling = labelsForRandomModel(nb_states,labelling)
+	return MC(matrix, labelling,"MC_random_"+str(nb_states)+"_states")
 
-def createMC(transitions: list, labeling: list, initial_state, name: str ="unknown_MC") -> MC:
+def createMC(transitions: list, labelling: list, initial_state, name: str ="unknown_MC") -> MC:
 	"""
 	An user-friendly way to create a MC.
 
@@ -280,9 +281,9 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	transitions : [ list of tuples (int, int, float)]
 		Each tuple represents a transition as follow: 
 		(source state ID, destination state ID, probability).
-	labeling: list of str
+	labelling: list of str
 		A list of N observations (with N the nb of states).
-		If `labeling[s] == o` then state of ID `s` is labelled by `o`.
+		If `labelling[s] == o` then state of ID `s` is labelled by `o`.
 		Each state has exactly one label.
 	initial_state : int or list of float
 		Determine which state is the initial one (then it's the id of the
@@ -295,7 +296,7 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	Returns
 	-------
 	MC
-		the MC describes by `transitions`, `labeling`, and `initial_state`.
+		the MC describes by `transitions`, `labelling`, and `initial_state`.
 	
 	Examples
 	--------
@@ -311,7 +312,7 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	----STATE 2--init----
 	s2 -> s0 : 1.0
 	"""
-	if 'init' in labeling:
+	if 'init' in labelling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
 	
@@ -319,16 +320,16 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 	states.sort()
 	nb_states = len(states)
 	
-	if nb_states > len(labeling):
-		raise ValueError("All states are not labelled (the labeling list is too small).")
-	elif nb_states < len(labeling):
-		print("WARNING: the labeling list is bigger than the number of states")
+	if nb_states > len(labelling):
+		raise ValueError("All states are not labelled (the labelling list is too small).")
+	elif nb_states < len(labelling):
+		print("WARNING: the labelling list is bigger than the number of states")
 
 	res = zeros((nb_states,nb_states))
 	for t in transitions:
 		res[states.index(t[0])][states.index(t[1])] = t[2]
 	
-	labeling.append('init')
+	labelling.append('init')
 	res = vstack((res,zeros(len(res))))
 	res = hstack((res,zeros(len(res))[:,newaxis]))
 	if type(initial_state) == int:
@@ -338,4 +339,4 @@ def createMC(transitions: list, labeling: list, initial_state, name: str ="unkno
 			initial_state = initial_state.tolist()
 		res[-1] = array(initial_state+[0.0])
 
-	return MC(res, labeling, name)
+	return MC(res, labelling, name)

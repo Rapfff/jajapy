@@ -18,13 +18,13 @@ We can create the model depicted above as follow:
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> labeling=['a','b','c','d','a']
+	>>> labelling=['a','b','c','d','a']
 	>>> transitions = [(0,1,0.8),(0,2,0.2),
 	>>> 		   (1,3,0.6),(1,2,0.4),
 	>>> 		   (2,0,0.5),(2,4,0.5),
 	>>> 		   (3,2,0.3),(3,3,0.7),
 	>>> 		   (4,2,0.2),(4,3,0.1),(4,4,0.7)]
-	>>> mc = ja.createMC(transitions, labeling, initial_state=0, name='My_MC')
+	>>> mc = ja.createMC(transitions, labelling, initial_state=0, name='My_MC')
 	>>> print(mc)
 	Name: My_MC
 	Initial state: s5

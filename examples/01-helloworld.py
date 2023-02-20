@@ -5,7 +5,7 @@ def example_1():
 	# MODEL CREATION
 	#----------------
 	# State 0 is labelled with H, state 1 with E, etc...
-	labeling = list('HELOWRD')
+	labelling = list('HELOWRD')
 	initial_state = 0 # we always start in state 0.
 	name = "MC_Helloworld"
 	# From state 0 we move to state 1 with probability 1.0,
@@ -13,7 +13,7 @@ def example_1():
 	transitions = [(0,1,1.0),(1,2,1.0),(2,2,1/3),(2,3,1/3),(2,6,1/3),
 				   (3,4,0.5),(3,5,0.5),(4,3,1.0),(5,6,1.0),(6,6,1.0)]
 
-	original_model = ja.createMC(transitions,labeling,initial_state,name)
+	original_model = ja.createMC(transitions,labelling,initial_state,name)
 	print(original_model)
 	# SETS GENERATION
 	#----------------
@@ -22,7 +22,7 @@ def example_1():
 
 	# LEARNING
 	#---------
-	output_model = ja.BW_MC().fit(training_set,nb_states=7)
+	output_model = ja.BW().fit(training_set,nb_states=7)
 	
 	# EVALUATION
 	#-----------

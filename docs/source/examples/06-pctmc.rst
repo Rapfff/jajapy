@@ -77,7 +77,7 @@ hypothesis.
 	>>> quality_best = -1024
 	>>> for n in range(1,nb_trials+1):
 	>>>		current_model = ja.CTMC_random(nb_states=5,
-	>>>					labeling=['red','yellow','blue'],
+	>>>					labelling=['red','yellow','blue'],
 	>>>					self_loop=False,
 	>>>					random_initial_state=True,
 	>>>					min_exit_rate_time=0.5,
@@ -86,13 +86,13 @@ hypothesis.
 	>>>		if quality_best < current_quality: #we keep the best model only
 	>>>				quality_best = current_quality
 	>>>				best_model = current_model
-	>>> print(best_model.labeling)
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly.
+	>>> print(best_model.labelling)
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
 	[...]
-	WARNING: the size of the labeling is lower than the number of states. The labels for the last states will be chosen randomly
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly
 	['red', 'yellow', 'blue', 'blue', 'blue', 'init']
 
-The best model labeling is very close to the original model one. In fact, we can even argue that we 
+The best model labelling is very close to the original model one. In fact, we can even argue that we 
 can build a model equivalent to the original one by merging properly the two *red* states.
 
 Learning a CTMC using BW

@@ -1,5 +1,5 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
-from ..base.Base_HMM import Base_HMM
+from ..base.Base_HMM import Base_HMM,HMM_ID
 from ast import literal_eval
 from numpy import ndarray, array, where, zeros
 
@@ -29,6 +29,7 @@ class HMM(Base_HMM):
 			Name of the model.
 			Default is "unknow_MC"
 		"""
+		self.model_type = HMM_ID
 		self.alphabet = alphabet
 		self.output = array(output)
 		super().__init__(matrix,initial_state,name)

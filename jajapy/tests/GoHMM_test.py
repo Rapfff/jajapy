@@ -2,6 +2,7 @@ import unittest
 from ..gohmm import *
 from os import remove
 from ..base.Set import *
+from ..base.BW import BW
 from math import exp, sqrt, pi
 
 def modelGoHMM():
@@ -55,7 +56,7 @@ class GoHMMTestclass(unittest.TestCase):
 		initial_model   = loadGoHMM("jajapy/tests/materials/gohmm/random_GoHMM.txt")
 		training_set    = loadSet("jajapy/tests/materials/gohmm/training_set_GoHMM.txt")
 		output_expected = loadGoHMM("jajapy/tests/materials/gohmm/output_GoHMM.txt")
-		output_gotten   = BW_GoHMM().fit( training_set, initial_model)
+		output_gotten   = BW().fit( training_set, initial_model)
 		test_set = m.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

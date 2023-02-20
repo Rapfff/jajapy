@@ -5,28 +5,29 @@ from os import remove
 from ..base.Set import *
 from math import exp
 from numpy import where, array
+from ..base.BW import BW
 
 def modelCTMC1():
-	labeling = ['red','red','yellow','blue','blue']
+	labelling = ['red','red','yellow','blue','blue']
 	transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
 				   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),
 				   (3,1,0.1),(3,4,0.1),(4,2,0.25)]
 
-	return createCTMC(transitions,labeling,0,"My_CTMC")
+	return createCTMC(transitions,labelling,0,"My_CTMC")
 
 def modelCTMC_car_tl():
-	labeling = ['red','green','orange']
+	labelling = ['red','green','orange']
 	transitions = [(2,0,2.0)]
 	sync_trans = [(0,'ped_red',1,0.5),
 				  (1,'button',2,1.0)]
-	return createCTMC(transitions,labeling,[0.6,0.4,0.0],"Car_tl",sync_trans)
+	return createCTMC(transitions,labelling,[0.6,0.4,0.0],"Car_tl",sync_trans)
 
 def modelCTMC_ped_tl():
-	labeling = ['red','green']
+	labelling = ['red','green']
 	transitions = [(1,0,0.1)]
 	sync_trans = [(0,'button',1,0.5),
 				  (0,'ped_red',0,10.0)]
-	return createCTMC(transitions,labeling,0,"Pedestrian_tl",sync_trans)
+	return createCTMC(transitions,labelling,0,"Pedestrian_tl",sync_trans)
 
 
 m1 = modelCTMC1()
@@ -34,26 +35,26 @@ m1 = modelCTMC1()
 class CTMCTestclass(unittest.TestCase):
 	
 	def test_CTMC_initial_state(var):
-		labeling = ['red','red','yellow','blue','blue']
+		labelling = ['red','red','yellow','blue','blue']
 		transitions = [(0,1,0.08),(0,2,0.12),(1,1,0.3),(1,2,0.7),
 				   (2,0,0.2),(2,3,0.1),(2,4,0.2),(3,3,0.8),
 				   (3,1,0.1),(3,4,0.1),(4,2,0.25)]
-		ctmc = createCTMC(transitions,labeling,0)
+		ctmc = createCTMC(transitions,labelling,0)
 		var.assertEqual(ctmc.nb_states,6)
-		var.assertEqual(ctmc.labeling.count('init'),1)
+		var.assertEqual(ctmc.labelling.count('init'),1)
 		var.assertEqual(ctmc.getLabel(int(where(ctmc.initial_state == 1.0)[0][0])),'init')
 		
-		labeling=['a','b','c','d','a']
-		ctmc = createCTMC(transitions,labeling,[0.3,0.0,0.0,0.2,0.5])
+		labelling=['a','b','c','d','a']
+		ctmc = createCTMC(transitions,labelling,[0.3,0.0,0.0,0.2,0.5])
 		var.assertEqual(ctmc.nb_states,6)
-		var.assertEqual(ctmc.labeling.count('init'),1)
+		var.assertEqual(ctmc.labelling.count('init'),1)
 		var.assertEqual(ctmc.pi(5),1.0)
 		var.assertTrue((ctmc.matrix[-1]==array([0.3,0.0,0.0,0.2,0.5,0.0])).all())
 		
-		labeling=['a','b','c','d','a']
-		ctmc = createCTMC(transitions,labeling,array([0.3,0.0,0.0,0.2,0.5]))
+		labelling=['a','b','c','d','a']
+		ctmc = createCTMC(transitions,labelling,array([0.3,0.0,0.0,0.2,0.5]))
 		var.assertEqual(ctmc.nb_states,6)
-		var.assertEqual(ctmc.labeling.count('init'),1)
+		var.assertEqual(ctmc.labelling.count('init'),1)
 		var.assertEqual(ctmc.pi(5),1.0)
 		var.assertTrue((ctmc.matrix[-1]==array([0.3,0.0,0.0,0.2,0.5,0.0])).all())
 		
@@ -111,14 +112,14 @@ class CTMCTestclass(unittest.TestCase):
 		
 		training_set    = loadSet("jajapy/tests/materials/ctmc/training_set_timed_CTMC.txt")
 		output_expected = loadCTMC("jajapy/tests/materials/ctmc/output_timed_CTMC.txt")
-		output_gotten   = BW_CTMC().fit( training_set, initial_model, stormpy_output=False)
+		output_gotten   = BW().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m1.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
 		
 		training_set    = loadSet("jajapy/tests/materials/ctmc/training_set_nontimed_CTMC.txt")
 		output_expected = loadCTMC("jajapy/tests/materials/ctmc/output_nontimed_CTMC.txt")
-		output_gotten   = BW_CTMC().fit( training_set, initial_model, stormpy_output=False)
+		output_gotten   = BW().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m1.generateSet(10000,10)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))

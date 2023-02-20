@@ -2,44 +2,47 @@ import unittest
 from ..mdp import *
 from os import remove
 from ..base.Set import *
+from ..base.BW import BW
 from math import log
+from ..mdp.Active_BW_MDP import Active_BW_MDP
+from numpy import where
 
 def modelMDP_bigstreet(p=0.75):
-	labeling = ['R','L','R','L','OK','HIT']
+	labelling = ['R','L','R','L','OK','HIT']
 	transitions = [(0,'m',1,p),(0,'m',2,1-p),(0,'s',3,p),(0,'s',0,1-p),
 				   (1,'m',0,p),(1,'m',3,1-p),(1,'s',2,p),(1,'s',1,1-p),
 				   (2,'m',5,1.0),(2,'s',4,1.0),(3,'m',5,1.0),(3,'s',4,1.0),
 				   (4,'m',4,1.0),(4,'s',4,1.0),(5,'m',5,1.0),(5,'s',5,1.0)]
-	return createMDP(transitions,labeling,0,"bigstreet")
+	return createMDP(transitions,labelling,0,"bigstreet")
 
 m = modelMDP_bigstreet()
 scheduler = UniformScheduler(m.getActions())
 
 class MDPTestclass(unittest.TestCase):
 	
-	def test_MC_initial_state(var):
+	def test_MDP_initial_state(var):
 		p = 0.75
-		labeling = ['R','L','R','L','OK','HIT']
+		labelling = ['R','L','R','L','OK','HIT']
 		transitions = [(0,'m',1,p),(0,'m',2,1-p),(0,'s',3,p),(0,'s',0,1-p),
 				   (1,'m',0,p),(1,'m',3,1-p),(1,'s',2,p),(1,'s',1,1-p),
 				   (2,'m',5,1.0),(2,'s',4,1.0),(3,'m',5,1.0),(3,'s',4,1.0),
 				   (4,'m',4,1.0),(4,'s',4,1.0),(5,'m',5,1.0),(5,'s',5,1.0)]
-		mdp = createMDP(transitions,labeling,0)
+		mdp = createMDP(transitions,labelling,0)
 		var.assertEqual(mdp.nb_states,7)
-		var.assertEqual(mdp.labeling.count('init'),1)
+		var.assertEqual(mdp.labelling.count('init'),1)
 		var.assertEqual(mdp.getLabel(int(where(mdp.initial_state == 1.0)[0][0])),'init')
 		
-		labeling = ['R','L','R','L','OK','HIT']
-		mdp = createMDP(transitions,labeling,[0.3,0.0,0.0,0.2,0.5,0.0])
+		labelling = ['R','L','R','L','OK','HIT']
+		mdp = createMDP(transitions,labelling,[0.3,0.0,0.0,0.2,0.5,0.0])
 		var.assertEqual(mdp.nb_states,7)
-		var.assertEqual(mdp.labeling.count('init'),1)
+		var.assertEqual(mdp.labelling.count('init'),1)
 		var.assertEqual(mdp.pi(6),1.0)
 		var.assertTrue((mdp.matrix[-1][0]==array([0.3,0.0,0.0,0.2,0.5,0.0,0.0])).all())
 		
-		labeling = ['R','L','R','L','OK','HIT']
-		mdp = createMDP(transitions,labeling,array([0.3,0.0,0.0,0.2,0.5,0.0]))
+		labelling = ['R','L','R','L','OK','HIT']
+		mdp = createMDP(transitions,labelling,array([0.3,0.0,0.0,0.2,0.5,0.0]))
 		var.assertEqual(mdp.nb_states,7)
-		var.assertEqual(mdp.labeling.count('init'),1)
+		var.assertEqual(mdp.labelling.count('init'),1)
 		var.assertEqual(mdp.pi(6),1.0)
 		var.assertTrue((mdp.matrix[-1][0]==array([0.3,0.0,0.0,0.2,0.5,0.0,0.0])).all())
 		
@@ -93,10 +96,23 @@ class MDPTestclass(unittest.TestCase):
 		initial_model   = loadMDP("jajapy/tests/materials/mdp/random_MDP.txt")
 		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")
 		output_expected = loadMDP("jajapy/tests/materials/mdp/output_MDP.txt")
-		output_gotten   = BW_MDP().fit( training_set, initial_model, stormpy_output=False)
+		output_gotten   = BW().fit( training_set, initial_model, stormpy_output=False)
 		test_set = m.generateSet(10000,10,scheduler)
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
+	
+	def test_Active_BW_MDP(var):
+		initial_model   = loadMDP("jajapy/tests/materials/mdp/random_MDP.txt")
+		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")
+		output_expected = loadMDP("jajapy/tests/materials/mdp/active_output_MDP.txt")
+		output_gotten   = Active_BW_MDP().fit(training_set, sul=m,initial_model=initial_model, lr=0,
+											  nb_iterations=10,nb_sequences=10,sequence_length=10,
+											  stormpy_output=False)
+		test_set = m.generateSet(10000,10,scheduler)
+		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
+							  output_gotten.logLikelihood(test_set),places=2)
+
+
 	
 	def test_IOAlergia(var):
 		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")

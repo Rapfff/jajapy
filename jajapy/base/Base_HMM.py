@@ -1,5 +1,5 @@
 from .tools import resolveRandom, checkProbabilities
-from .Model import Model
+from .Model import Model, HMM_ID, GOHMM_ID
 
 class Base_HMM(Model):
 	"""
