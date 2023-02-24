@@ -542,13 +542,15 @@ def createPCTMC(transitions: list, labelling: list, parameters: list,
 def synchronousCompositionPCTMCs(ms: list, name: str = "unknown_composition") -> PCTMC:
 	"""
 	Returns the synchornous compotision of the PCTMCs in `ms`.
+
 	Parameters
 	----------
 	ms : list of PCTMCs
 		List of PCTMCs to compose.
 	name : str, optional.
 		Name of the output model.
-		Default is 
+		Default is unknown_composition.
+
 	Returns
 	-------
 	PCTMC

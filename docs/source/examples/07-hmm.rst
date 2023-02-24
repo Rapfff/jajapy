@@ -1,9 +1,9 @@
 .. _example-hmm :
 
-8. A simple example with HMM
+7. A simple example with HMM
 =============================
 
-:download:`python file <https://github.com/Rapfff/jajapy/tree/main/examples/08-hmm.py>`
+:download:`python file <https://github.com/Rapfff/jajapy/tree/main/examples/07-hmm.py>`
 
 In this example, we will:
 

@@ -1,12 +1,7 @@
-import os, sys
-currentdir = os.path.dirname(os.path.realpath(__file__))
-parentdir = os.path.dirname(currentdir)
-sys.path.append(parentdir)
 import jajapy as ja
-from numpy import array
 
 
-def example_8():
+def example_7():
 
 	# MODEL CREATION
 	#----------------
@@ -42,4 +37,4 @@ def example_8():
 	print("loglikelihood distance:",quality)
 
 if __name__ == "__main__":
-	example_8()
+	example_7()

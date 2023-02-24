@@ -30,6 +30,7 @@ We can also generate a random HMM
 	>>> random_model = ja.HMM_random(number_states=5,
 					random_initial_state=False,
 					alphabet=['x','y','a','b'])
+
 Exploration
 ^^^^^^^^^^^
 

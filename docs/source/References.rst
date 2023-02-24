@@ -38,6 +38,7 @@ an observation is generated according to the probability distribution associated
    MC
    MDP
    CTMC
+   PCTMC
    GoHMM
 
 

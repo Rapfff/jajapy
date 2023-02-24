@@ -52,19 +52,19 @@ This page contains many examples illustrating most of *Jajapy* features.
 
    :ref:`example-pctmc`
 
-.. figure:: pictures/REBER_state.png
+.. figure:: pictures/HMM.png
    :figwidth: 45 %
    :alt: More advanced example
    :align: left
 
-   Learning GoHMMs from a csv files
+   :ref:`example-hmm`
 
 .. figure:: pictures/HMM.png
    :figwidth: 45 %
    :alt: More advanced example
    :align: right
 
-   :ref:`example-hmm`
+   :ref:`example-gohmm`
    
 .. figure:: pictures/alergia.png
    :figwidth: 45 %
