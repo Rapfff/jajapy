@@ -489,7 +489,8 @@ def MDP_random(nb_states: int,labelling: list, actions: list,random_initial_stat
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
 		Default is True.
 	deterministic: bool, optional
-		If True, the model will be determinstic: in state `s`, with action `a`, there is only one transition labelled with `o`.
+		If True, the model will be determinstic: in state `s`, with action `a`, for all label `o`,
+		there is at most one transition to a state labelled with `o`.
 		Default is False.
 	
 	Returns
