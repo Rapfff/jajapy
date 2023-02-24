@@ -18,7 +18,7 @@ The Tandem queueing network
 	:width: 60%
 	:align: center
 
-In the model above represents the `tandem queueing network <http://www.prismmodelchecker.org/casestudies/tandem.php>`_
+The model above represents the `tandem queueing network <http://www.prismmodelchecker.org/casestudies/tandem.php>`_
 where *c=3*. The yellow model corresponds to the *serverC*, and the green one the *SeverM*.
 For each yellow state, the first value corresponds to the value of *sc* and the second one the value of *phi*.
 The red transitions are the synchronous transitions (the *route* transitions in the Prism file), while the black

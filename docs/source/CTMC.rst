@@ -133,8 +133,8 @@ Converting from/to Prism
 
 .. code-block:: python
 
-	>>> model.savePrism("my_mc.sm")
-	>>> same_model = ja.loadPrism("my_mc.sm")
+	>>> model.savePrism("my_ctmc.sm")
+	>>> same_model = ja.loadPrism("my_ctmc.sm")
 
 Synchronous composition
 ^^^^^^^^^^^^^^^^^^^^^^^
