@@ -13,7 +13,7 @@ setup(
     packages=find_packages(),
     install_requires=['numpy', 'scipy', 'alive-progress','sympy'],
     long_description_content_type="text/markdown",
-    version='0.9',
+    version='0.10',
     url="",
     description='Baum-Welch for all kind of Markov model',
     author='Raphaël Reynouard',

@@ -107,7 +107,7 @@ Model
 Other Functions
 ---------------
 
-.. autofunction:: jajapy.GoHMM_state
+.. autofunction:: jajapy.createGoHMM
 
 .. autofunction:: jajapy.loadGoHMM
 

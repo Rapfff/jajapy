@@ -28,12 +28,11 @@
 | MDP    | Baum-Welch for MDPs ([ref](https://arxiv.org/abs/2110.03014))<br /> Active Baum-Welch ([ref](https://arxiv.org/abs/2110.03014))<br /> IOAlergia ([ref](https://link.springer.com/content/pdf/10.1007/s10994-016-5565-9.pdf))|
 | CTMC   | Baum-Welch for CTMCs <br /> Baum-Welch for synchronous compositions of CTMCs|
 | GoHMM  | Baum-Welch for GoHMMs ([ref](http://www.inass.org/2020/2020022920.pdf)) |
-| MGoHMM | Baum-Welch for MGoHMMs |
-| PCTMC  | Baum-Welch for PCTMCs|
+| PCTMC  | Baum-Welch for PCTMCs ([ref](https://arxiv.org/abs/2302.08588))|
 
 </div>
 
-`jajapy` generates by default Stormpy models (except for HMMs, GoHMMs and MGoHMMs).
+`jajapy` is compatible with `Prism` and `Storm`.
 
 ## Installation
 ``pip install jajapy``

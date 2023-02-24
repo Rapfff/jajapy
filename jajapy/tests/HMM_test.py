@@ -6,16 +6,12 @@ from math import log
 from ..base.BW import BW
 
 def modelHMM4():
-	alphabet = list("abxy")
-	nb_states = 5
-	s0 = HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
-	s1 = HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
-	s2 = HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
-	s3 = HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
-	s4 = HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
-	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
-	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
-	return HMM(transitions,output,alphabet,0,"HMM4")
+	transitions = [(0,1,0.5),(0,2,0.5),(1,3,1.0),(2,4,1.0),
+				   (3,0,0.8),(3,1,0.1),(3,2,0.1),(4,3,1.0)]
+	emission = [(0,"x",0.4),(0,"y",0.6),(1,"a",0.8),(1,"b",0.2),
+				(2,"a",0.1),(2,"b",0.9),(3,"x",0.5),(3,"y",0.5),
+				(4,"y",1.0)]
+	return createHMM(transitions,emission,0,"HMM4")
 
 m = modelHMM4()
 

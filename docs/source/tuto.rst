@@ -1,8 +1,14 @@
 .. _tutorial-page:
 
-Tutorial
-========
+Tutorial/Examples
+=================
 This page contains many examples illustrating most of *Jajapy* features.
+
+.. toctree::
+	:glob:
+	:maxdepth: 1
+
+	examples/*
 
 .. figure:: pictures/example_helloworld.png
    :figwidth: 45 %
@@ -53,25 +59,23 @@ This page contains many examples illustrating most of *Jajapy* features.
 
    Learning GoHMMs from a csv files
 
-.. figure:: pictures/REBER_state.png
+.. figure:: pictures/HMM.png
    :figwidth: 45 %
    :alt: More advanced example
    :align: right
 
    :ref:`example-hmm`
    
-.. figure:: pictures/REBER_state.png
+.. figure:: pictures/alergia.png
    :figwidth: 45 %
    :alt: More advanced example
    :align: left
 
-   Alergia vs Baum-Welch (MC)
+   :ref:`example-alergia`
 
-.. figure:: pictures/REBER_state.png
+.. figure:: pictures/ioalergia.png
    :figwidth: 45 %
    :alt: More advanced example
    :align: right
 
-   IOAlergia vs Baum-Welch (MDP)
-
-
+   :ref:`example-ioalergia`

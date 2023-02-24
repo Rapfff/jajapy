@@ -433,6 +433,11 @@ def createCTMC(transitions: list, labelling: list, initial_state,
 	name : str, optional
 		Name of the model.
 		Default is "unknow_CTMC"
+	synchronous_transitions: list, optional.
+		This is useful only for synchronously composing this CTMC with
+		another one.
+		List of (source_state <int>, action <str>, dest_state <int>, rate <float>).
+		Default is an empty list.
 	
 	Returns
 	-------

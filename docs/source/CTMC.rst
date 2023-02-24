@@ -119,6 +119,55 @@ Saving/Loading
 	>>> model.save("my_ctmc.txt")
 	>>> the_same_model = ja.loadCTMC("my_ctmc.txt")
 
+Converting from/to Stormpy
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+	>>> stormpy_sparse_model = model.toStormpy() # the next line is equivalent
+	>>> stormpy_sparse_model = ja.jajapyModeltoStormpy(model)
+	>>> same_model == ja.stormpyModeltoJajapy(stormpy_sparse_model) 
+
+Converting from/to Prism
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+	>>> model.savePrism("my_mc.sm")
+	>>> same_model = ja.loadPrism("my_mc.sm")
+
+Synchronous composition
+^^^^^^^^^^^^^^^^^^^^^^^
+Two CTMCs can be composed to create one PCTMC.
+*Jajapy* synchronous composition follows the *Prism* formalism:
+it allows transitions to be labelled with actions.
+These actions can be used to force two or more modules to make transitions
+simultaneously (i.e. to synchronise). The rate of this transition is equal to
+the product of the two individual rates.
+To do so, *Jajapy* uses the ``synchronous_transitions`` attributes of the CTMC
+objects.
+
+In the following example the synchronous transitions are the coloured one, the
+colour being the action.
+
+.. image:: pictures/traffic_lights_composed.png
+   :width: 75 %
+   :align: center
+
+.. code-block:: python
+
+	>>> labelling = ['red','green','orange']
+	>>> transitions = [(2,0,2.0)]
+	>>> sync_trans = [(0,'ped_red',1,0.5), (1,'button',2,1.0)]
+	>>>	model1 = createCTMC(transitions,labelling,[0.6,0.4,0.0],"Car_tl",sync_trans)
+	>>>
+	>>>labelling = ['red','green']
+	>>> transitions = [(1,0,0.1)]
+	>>> sync_trans = [(0,'button',1,0.5), (0,'ped_red',0,10.0)]
+	>>>	model2 = createCTMC(transitions,labelling,0,"Ped_tl",sync_trans)
+	>>>
+	>>> composition = synchronousCompositionCTMCs(model1, model2)
+
 Model
 -----
 
@@ -134,3 +183,4 @@ Other Functions
 
 .. autofunction:: jajapy.CTMC_random
 
+.. autofunction:: jajapy.synchronousCompositionCTMCs

@@ -15,7 +15,7 @@ class GoHMM(Base_HMM):
 	matrix : ndarray
 			Represents the transition matrix.
 			`matrix[s1][s2]` is the probability of moving from `s1` to `s2`.
-	output : ndarray of list
+	output : ndarray
 			Contains the parameters of the guassian distributions.
 			`output[s1][0][0]` is the mu parameter of the first distribution in `s1`,
 			`output[s1][0][1]` is the sigma parameter of the first distribution in `s1`.
@@ -107,6 +107,7 @@ class GoHMM(Base_HMM):
 		"""
 		Returns the likelihood of generating, from the nth distribution of `s`,
 		observation `l`.
+
 		Parameters
 		----------
 		s : int
@@ -115,6 +116,7 @@ class GoHMM(Base_HMM):
 			Index of the distribution.
 		l : str
 			The observation.
+			
 		Returns
 		-------
 		output : float
@@ -265,31 +267,50 @@ def GoHMM_random(nb_states:int,nb_distributions:int,
 	return GoHMM(matrix, output, init,"GoHMM_random_"+str(nb_states)+"_states")
 
 
-def GoHMM_state(transitions:list, output:list, nb_states:int) -> ndarray:
+def createGoHMM(transitions:list, output:list, initial_state:str,name :str = 'unknown_GoHMM') -> GoHMM:
 	"""
-	Given the list of all transition leaving a state `s`, it generates
-	the ndarray describing this state `s` in the GoHMM.matrix.
-	This method is useful while creating a model manually.
+	An user-friendly way to create a GoHMM.
 
 	Parameters
 	----------
-	transitions : [ list of tuples (int, float)]
+	transitions : [ list of tuples (int, int, float)]
 		Each tuple represents a transition as follow: 
-		(destination state ID, observation, probability).
-	output : list of tuples (float, float)]
+		(source state ID, destination state ID, probability).
+	output : list of list of tuples (float, float)]
 		Represents the parameters of the gaussian distributions 
-		[(mu1, sigma1),(mu2, sigma2),...].
-	alphabet : list
-		alphabet of the model in which this state is.
-	nb_states: int
-		number of states in which this state is
-
+		`[(mu1, sigma1),(mu2, sigma2),...]`.
+		`output[0]` contains the parameters of the distributions in state 0
+		`output[0][0]` contains the 2 parameters of the first distribution
+		in state 0.
+		`output[0][0][0]` is the mu parameter of the first distribution in
+		state 0, and `output[0][0][1]` is the sigma parameter of the first
+		distribution in state 0.
+	initial_state : int or list of float
+		Determine which state is the initial one (then it's the id of the
+		state), or what are the probability to start in each state (then it's
+		a list of probabilities).
+	name : str, optional
+		Name of the model.
+		Default is "unknow_GoHMM".
+	
 	Returns
 	-------
-	ndarray
-		ndarray describing this state `s` in the GoHMM.matrix.
+	GoHMM
+		the GoHMM describes by `transitions`, `emission`, and `initial_state`.
+	
+	Examples
+	--------
 	"""
-	res = zeros(nb_states)
+	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
+	states.sort()
+	nb_distributions = len(output[0])
+	nb_states = len(states)
+	matrix = zeros((nb_states,nb_states))
 	for t in transitions:
-		res[t[0]] = t[1]
-	return [res,output]
+		matrix[states.index(t[0])][states.index(t[1])] = t[2]
+	output = array((nb_states,nb_distributions,2))
+	for s,ts in enumerate(output):
+		for i,t in enumerate(ts):
+			output[s,i][0] = t[0]
+			output[s,i][1] = t[1]
+	return GoHMM(matrix, output,initial_state,name)

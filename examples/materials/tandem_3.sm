@@ -3,7 +3,7 @@
 
 ctmc
 
-const int c=5; // queue capacity
+const int c=3; // queue capacity
 
 const double lambda = 4.0*c;
 const double mu1a; // = 0.2;
@@ -39,5 +39,3 @@ label "sc_0" = sc = 0;
 label "sc_1" = sc = 1;
 label "sc_2" = sc = 2;
 label "sc_3" = sc = 3;
-label "sc_4" = sc = 4;
-label "sc_5" = sc = 5;

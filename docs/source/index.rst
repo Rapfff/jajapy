@@ -45,10 +45,10 @@ Content
 .. toctree::
    :maxdepth: 2
 
+   References
    help
    tuto
    formal
-   References
 
 
 Source Code

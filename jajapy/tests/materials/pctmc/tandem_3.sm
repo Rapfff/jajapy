@@ -1,0 +1,41 @@
+// tandem queueing network [HKMKS99]
+// gxn/dxp 25/01/00
+
+ctmc
+
+const int c=3; // queue capacity
+
+const double lambda = 4.0*c;
+const double mu1a; // = 0.2;
+const double mu1b; // = 1.8;
+const double mu2; // = 2.0;
+const double kappa; // = 4.0;
+
+module serverC
+	
+	sc : [0..c] init 0;
+	ph : [1..2] init 1;
+	
+	[] (sc<c) -> lambda: (sc'=sc+1); 
+	[route] (sc>0) & (ph=1) -> mu1b: (sc'=sc-1);
+	[] (sc>0) & (ph=1) -> mu1a: (ph'=2); 
+	[route] (sc>0) & (ph=2) -> mu2: (ph'=1) & (sc'=sc-1);
+	
+endmodule  
+
+module serverM
+	
+	sm : [0..c] init 0;
+	
+	[route]	(sm<c) -> 1: (sm'=sm+1);
+	[] (sm>0) -> kappa: (sm'=sm-1);
+	
+endmodule
+
+label "ph_1" = ph = 1;
+label "ph_2" = ph = 2;
+
+label "sc_0" = sc = 0;
+label "sc_1" = sc = 1;
+label "sc_2" = sc = 2;
+label "sc_3" = sc = 3;

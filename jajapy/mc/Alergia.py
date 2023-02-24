@@ -1,7 +1,10 @@
-from .MC import createMC
+from .MC import MC
 from math import sqrt, log
 from ..base.Set import Set
 from ..base.tools import normalize
+from numpy import zeros
+
+
 class Alergia:
 	"""
 	class for general ALERGIA algorithm on MC.
@@ -260,12 +263,12 @@ class Alergia:
 		
 		for i,j in enumerate(labelling):
 			if j == None:
-				labelling[i] = ''
-				initial_state = i
-		
-		trans = []
-		for i in transitions:
-			trans += i
+				labelling[i] = 'init'
+				
+		trans = zeros((len(states),len(states)))
+		for j in transitions:
+			for i in j:
+				trans[i[0],i[1]] = i[2]
 
-		return createMC(trans,labelling,initial_state)
+		return MC(trans,labelling)
 		

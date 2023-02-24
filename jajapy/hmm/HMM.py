@@ -1,7 +1,7 @@
 from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Base_HMM import Base_HMM,HMM_ID
 from ast import literal_eval
-from numpy import ndarray, array, where, zeros
+from numpy import array, where, zeros
 
 class HMM(Base_HMM):
 
@@ -219,35 +219,58 @@ def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = Fals
 		init = 0
 	return HMM(matrix, output, alphabet, init,"HMM_random_"+str(nb_states)+"_states")
 
-def HMM_state(output:list, transitions:list, alphabet:list, nb_states:int) -> ndarray:
+
+def createHMM(transitions: list, emission: list, initial_state, name: str ="unknown_HMM") -> HMM:
 	"""
-	Given the list of all transition leaving a state `s`, it generates
-	the ndarray describing this state `s` in the HMM.matrix.
-	This method is useful while creating a model manually.
+	An user-friendly way to create a HMM.
 
 	Parameters
 	----------
-	transitions : [ list of tuples (int, float)]
+	transitions : [ list of tuples (int, int, float)]
 		Each tuple represents a transition as follow: 
-		(destination state ID, probability).
-	output : [ list of tuples (str, float)]
-		Each tuple represents an output as follow: 
-		(observation, probability).
-	alphabet : list
-		alphabet of the model in which this state is.
-	nb_states: int
-		number of states in which this state is
-
+		(source state ID, destination state ID, probability).
+	emission : [ list of tuples (int, str, float)]
+		Each tuple represents an emission probability as follow: 
+		(source state ID, emitted label, probability).
+	initial_state : int or list of float
+		Determine which state is the initial one (then it's the id of the
+		state), or what are the probability to start in each state (then it's
+		a list of probabilities).
+	name : str, optional
+		Name of the model.
+		Default is "unknow_HMM"
+	
 	Returns
 	-------
-	ndarray
-		ndarray describing this state `s` in the HMM.matrix.
+	HMM
+		the HMM describes by `transitions`, `emission`, and `initial_state`.
+	
+	Examples
+	--------
+	>>> model = createHMM([(0,1,1.0),(1,0,0.6),(1,1,0.4)],[(0,'a',0.8),(0,'b',0.2),(1,'b',1.0)],0,"My_HMM")
+	>>> print(model)
+	Name: My_HMM
+	Initial state: s0
+	----STATE s0----
+	s0 -> s1 : 1.0
+	************
+	s0 => a : 0.8
+	s0 => b : 0.2	
+	----STATE s1----
+	s1 -> s0 : 0.6
+	s1 -> s1 : 0.4
+	************
+	s1 => b : 1.0
 	"""
-
-	res1 = zeros(nb_states)
-	res2 = zeros(len(alphabet))
+	
+	states = list(set([i[0] for i in transitions]+[i[1] for i in transitions]))
+	states.sort()
+	alphabet = list(set([i[1] for i in emission]))
+	nb_states = len(states)
+	matrix = zeros((nb_states,nb_states))
 	for t in transitions:
-		res1[t[0]] = t[1]
-	for t in output:
-		res2[alphabet.index(t[0])] = t[1]
-	return [res1,res2]
+		matrix[states.index(t[0])][states.index(t[1])] = t[2]
+	output = zeros((nb_states,len(alphabet)))
+	for t in emission:
+		output[states.index(t[0])][alphabet.index(t[1])] = t[2]
+	return HMM(matrix, output, alphabet, initial_state, name)

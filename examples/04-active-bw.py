@@ -23,7 +23,7 @@ def example_4():
 
 	# LEARNING
 	#---------
-	output_model_active  = ja.Active_BW_MDP().fit(training_set, lr=0, nb_iterations=10,
+	output_model_active  = ja.Active_BW_MDP().fit(training_set, lr=0, nb_iterations=10, sul=original_model,
 												nb_sequences=100,initial_model=initial_hypothesis)
 
 	formulas = ["Pmax=? [ F<=3 \"GOAL\"  ]","Pmax=? [ !(\"C\"|\"W\") U<=6\"GOAL\" ]", "Pmax=? [ F<=5 \"GOAL\"  ]"]

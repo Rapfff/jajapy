@@ -363,7 +363,7 @@ class Model:
 		"""
 		len_seq = len(sequence)
 		prev_arr = self.initial_state
-		for k in range(len_seq):
+		for k in range(len_seq-1):
 			new_arr = zeros(self.nb_states)
 			for s in range(self.nb_states):
 				p = array([self.tau(ss,s,sequence[k]) for ss in range(self.nb_states)])
@@ -371,6 +371,7 @@ class Model:
 			prev_arr = new_arr
 		if prev_arr.sum() == 0.0:
 			return 0.0
+		prev_arr *= (array([self.b(s,sequence[-1]) for s in range(self.nb_states)]))
 		return log(prev_arr.sum())*times
 	
 	def _checkStateIndex(self,s:int) -> None:

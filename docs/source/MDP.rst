@@ -83,6 +83,23 @@ Saving/Loading
 
 	>>> model.save("my_mdp.txt")
 	>>> the_same_model = ja.loadMDP("my_mdp.txt")
+
+Converting from/to Stormpy
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+	>>> stormpy_sparse_model = model.toStormpy() # the next line is equivalent
+	>>> stormpy_sparse_model = ja.jajapyModeltoStormpy(model)
+	>>> same_model == ja.stormpyModeltoJajapy(stormpy_sparse_model) 
+
+Converting from/to Prism
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code-block:: python
+
+	>>> model.savePrism("my_mc.sm")
+	>>> same_model = ja.loadPrism("my_mc.sm")
 	
 Model
 -----

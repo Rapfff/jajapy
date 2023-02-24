@@ -1,1 +1,1 @@
-from .HMM import HMM, loadHMM, HMM_random, HMM_state
+from .HMM import HMM, loadHMM, HMM_random, createHMM

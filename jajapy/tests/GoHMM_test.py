@@ -6,15 +6,13 @@ from ..base.BW import BW
 from math import exp, sqrt, pi
 
 def modelGoHMM():
-	nb_states = 5
-	s0 = GoHMM_state([(0,0.9),(1,0.1)],[[3.0,5.0],[2.0,4.0]],nb_states)
-	s1 = GoHMM_state([(0,0.05),(1,0.9),(2,0.04),(4,0.01)],[[0.5,1.5],[2.5,1.5]],nb_states)
-	s2 = GoHMM_state([(1,0.05),(2,0.8),(3,0.14),(4,0.01)],[[0.2,0.7],[1.0,1.0]],nb_states)
-	s3 = GoHMM_state([(2,0.05),(3,0.95)],[[0.0,0.3],[1.5,5.0]],nb_states)
-	s4 = GoHMM_state([(1,0.1),(4,0.9)],[[2.0,4.0],[0.5,0.5]],nb_states)
-	matrix = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
-	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
-	return GoHMM(matrix,output,[0.1,0.7,0.0,0.0,0.2],name="GoHMM")
+	initial_state = [0.1,0.7,0.0,0.0,0.2]
+	transitions = [(0,0,0.9),(0,1,0.1),(1,0,0.05),(1,1,0.9),(1,2,0.04),
+				   (1,4,0.01),(2,1,0.05),(2,2,0.8),(2,3,0.14),(2,4,0.01),
+				   (3,2,0.05),(3,3,0.95),(4,1,0.1),(4,4,0.9)]
+	output = [(0,3.0,5.0),(0,2.0,4.0),(1,0.5,1.5),(1,2.5,1.5),(2,0.2,0.7),
+			  (2,1.0,1.0),(3,0.0,0.3),(3,1.5,5.0),(4,2.0,4.0),(4,0.5,0.5)]
+	return createGoHMM(transitions,output,initial_state,name="My_GoHMM")
 
 m = modelGoHMM()
 

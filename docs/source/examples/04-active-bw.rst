@@ -92,31 +92,43 @@ method. The legnth of the additional traces can be set using the ``sequence_leng
 .. code-block:: python
 
 	>>> output_model_active  = ja.Active_BW_MDP().fit(training_set1, lr=0, nb_iterations=10,
-							nb_sequences=100,initial_model=initial_hypothesis)
-	Passive iteration: |████████████████████████████████████████| (!) 28 in 41.4s (0.68/s) 
+							sul=original_model,nb_sequences=100,initial_model=initial_hypothesis)
+	Learning an MDP...
+	|████████████████████████████████████████| (!) 50 in 1:22.4 (0.61/s) 
 
 	---------------------------------------------
 	Learning finished
-	Iterations:	   28
-	Running time:	   41.411273
+	Iterations:	   50
+	Running time:  82.44685
 	---------------------------------------------
 
-	Active iteration 1/10:  |████████████████████████████████████████| (!) 3 in 4.9s (0.61/s) 
-	Active iteration 2/10:  |████████████████████████████████████████| (!) 3 in 4.9s (0.61/s) 
-	Active iteration 3/10:  |████████████████████████████████████████| (!) 3 in 5.2s (0.58/s) 
-	Active iteration 4/10:  |████████████████████████████████████████| (!) 5 in 9.1s (0.55/s) 
-	Active iteration 5/10:  |████████████████████████████████████████| (!) 10 in 19.4s (0.52/s) 
-	Active iteration 6/10:  |████████████████████████████████████████| (!) 25 in 49.6s (0.50/s) 
-	Active iteration 7/10:  |████████████████████████████████████████| (!) 3 in 6.2s (0.48/s) 
-	Active iteration 8/10:  |████████████████████████████████████████| (!) 3 in 6.5s (0.46/s) 
-	Active iteration 9/10:  |████████████████████████████████████████| (!) 3 in 6.9s (0.44/s) 
-	Active iteration 10/10:  |████████████████████████████████████████| (!) 23 in 53.8s (0.43/s) 
+	Learning an MDP...
+	Active iteration 1/10:  |████████████████████████████████████████| (!) 10 in 17.6s (0.57/s) 
+	Learning an MDP...
+	Active iteration 2/10:  |████████████████████████████████████████| (!) 3 in 5.2s (0.57/s) 
+	Learning an MDP...
+	Active iteration 3/10:  |████████████████████████████████████████| (!) 3 in 5.8s (0.52/s) 
+	Learning an MDP...
+	Active iteration 4/10:  |████████████████████████████████████████| (!) 4 in 8.2s (0.49/s) 
+	Learning an MDP...
+	Active iteration 5/10:  |████████████████████████████████████████| (!) 23 in 49.6s (0.46/s) 
+	Learning an MDP...
+	Active iteration 6/10:  |████████████████████████████████████████| (!) 3 in 6.8s (0.44/s) 
+	Learning an MDP...
+	Active iteration 7/10:  |████████████████████████████████████████| (!) 4 in 9.3s (0.43/s) 
+	Learning an MDP...
+	Active iteration 8/10:  |████████████████████████████████████████| (!) 3 in 7.3s (0.41/s) 
+	Learning an MDP...
+	Active iteration 9/10:  |████████████████████████████████████████| (!) 5 in 12.8s (0.39/s) 
+	Learning an MDP...
+	Active iteration 10/10:  |████████████████████████████████████████| (!) 3 in 8.1s (0.37/s) 
 
 	---------------------------------------------
 	Learning finished
-	Iterations:	   109
-	Running time:	   213.37684
+	Iterations:	   111
+	Running time:  225.197524
 	---------------------------------------------
+
 
 Model checking and evaluation
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -137,11 +149,10 @@ We can now model check the output model and compare the results with the origina
 	>>> 	print(formula,'in the output model active:',str(result_output_active))
 	>>> 	print()
 	Pmax=? [ F<=3 "GOAL"  ] in the original model: 0.049999999999999996
-	Pmax=? [ F<=3 "GOAL"  ] in the output model active: 0.05134150997867366
+	Pmax=? [ F<=3 "GOAL"  ] in the output model active: 0.04523053893018776
 
 	Pmax=? [ !("C"|"W") U<=6"GOAL" ] in the original model: 0.6291224999999998
-	Pmax=? [ !("C"|"W") U<=6"GOAL" ] in the output model active: 0.6653982274619132
+	Pmax=? [ !("C"|"W") U<=6"GOAL" ] in the output model active: 0.6265688263898588
 
 	Pmax=? [ F<=5 "GOAL"  ] in the original model: 0.7247999999999999
-	Pmax=? [ F<=5 "GOAL"  ] in the output model active: 0.7172809998333902
-
+	Pmax=? [ F<=5 "GOAL"  ] in the output model active: 0.7378293787258042

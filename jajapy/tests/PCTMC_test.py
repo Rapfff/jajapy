@@ -2,6 +2,7 @@ import unittest
 from ..pctmc import *
 from os import remove
 from ..base.Set import *
+from ..base.BW import BW
 from ..with_stormpy.model_converter import loadPrism
 
 def modelPCTMC_ped():
@@ -118,6 +119,15 @@ class PCTMCTestclass(unittest.TestCase):
 					5.788386627774087, 'c_red_p_red']],[1,1])
 		l21 = m.logLikelihood(set2)
 		var.assertAlmostEqual(l21,-6.553342509457142)
+	
+	def test_PCTMC_parameters_learning(var):
+		initial_model = loadPrism('jajapy/tests/materials/pctmc/tandem_3.sm')
+		initial_model.instantiate(["mu1a","mu1b","mu2","kappa"],[0.5,0.5,0.5,0.5])
+		training_set    = loadSet("jajapy/tests/materials/pctmc/training_set_PCTMC.txt")
+		output_gotten   = BW().fit_parameters(training_set, initial_model,["mu1a","mu1b","mu2","kappa"])
+		output_expected = {'mu1a': 0.19154272606453604, 'mu1b': 1.7589871248425895, 'mu2': 2.287450015307295, 'kappa': 4.0504485338277245}
+		var.assertDictEqual(output_expected,output_gotten)
+
 
 if __name__ == "__main__":
 	unittest.main()

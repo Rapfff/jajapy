@@ -298,7 +298,7 @@ class Active_BW_MDP(BW):
 	def _computeProbas(self,seq:list,time:int) -> array:
 		sequence_actions = [seq[i+1] for i in range(0,len(seq)-1,2)]
 		sequence_obs = [seq[i] for i in range(0,len(seq)-1,2)] + [seq[-1]]
-		alpha_matrix = self.computeAlphas(sequence_obs,sequence_actions).T[:-1].T
+		alpha_matrix = self._computeAlphas(sequence_obs,sequence_actions).T[:-1].T
 		res = zeros(shape=(len(self.actions),self.nb_states))
 		fact = alpha_matrix.sum(axis=0) # fact[t] proba to generate sequence_obs[:t]
 

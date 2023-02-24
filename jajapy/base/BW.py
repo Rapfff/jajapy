@@ -177,9 +177,9 @@ class BW:
 			print("Learning an MC...")
 		
 		elif self.type_model == MDP_ID:
-			self.h_tau = self.h_tau_MDP
-			self.computeAlphas = self.computeAlphas_MDP
-			self.computeBetas = self.computeBetas_MDP
+			self._h_tau = self._h_tau_MDP
+			self._computeAlphas = self._computeAlphas_MDP
+			self._computeBetas = self._computeBetas_MDP
 			self._update = self._update_MDP
 			self._processWork  = self._processWork_MDP
 			print("Learning an MDP...")
@@ -190,8 +190,8 @@ class BW:
 			self._processWork = self._processWork_CTMC
 			print("Learning a CTMC...")
 			if self.training_set.type == 4:
-				self.computeAlphas = self.computeAlphas_timed
-				self.computeBetas  = self.computeBetas_timed
+				self._computeAlphas = self._computeAlphas_timed
+				self._computeBetas  = self._computeBetas_timed
 			if type(fixed_parameters) == bool:
 				self.fixed_parameters = full(initial_model.matrix.shape,False)
 			else:
@@ -199,6 +199,9 @@ class BW:
 		
 		elif self.type_model == PCTMC_ID:
 			print("Learning a PCTMC...")
+			self._update = self._update_PCTMC
+			self._processWork = self._processWork_PCTMC
+			self._computeTaus = self._computeTaus_PCTMC
 			if min_val != None:
 				if max_val != None:
 					self.h.randomInstantiation(min_val=min_val, max_val=max_val)
@@ -207,14 +210,14 @@ class BW:
 			elif max_val != None:
 				self.h.randomInstantiation(max_val=max_val)
 			if self.training_set.type == 4:
-				self.computeAlphas = self.computeAlphas_timed
-				self.computeBetas  = self.computeBetas_timed
+				self._computeAlphas = self._computeAlphas_timed
+				self._computeBetas  = self._computeBetas_timed
 			self.nb_parameters = self.h.nb_parameters
 			self.update_constant = update_constant
-			self.h_e = self.h_e_PCTMC
-			self.h_l = self.h_l_PCTMC
-			self.h_tau=self.h_tau_PCTMC
-			self.sortParameters(fixed_parameters)
+			self._h_e = self._h_e_PCTMC
+			self._h_l = self._h_l_PCTMC
+			self._h_tau=self._h_tau_PCTMC
+			self._sortParameters(fixed_parameters)
 
 		elif self.type_model == HMM_ID:
 			self._update = self._update_HMM
@@ -285,8 +288,8 @@ class BW:
 
 	# MC-----------------------------------------------------------------------
 	def _processWork_MC(self,sequence,times):
-		alpha_matrix = self.computeAlphas(sequence)
-		beta_matrix  = self.computeBetas( sequence)
+		alpha_matrix = self._computeAlphas(sequence)
+		beta_matrix  = self._computeBetas( sequence)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
 			return False
@@ -295,7 +298,7 @@ class BW:
 		num = zeros(shape=(self.nb_states,self.nb_states))
 		for s in range(self.nb_states):
 			for ss in range(self.nb_states):
-				p = array([self.h_tau(s,ss,o) for o in sequence])
+				p = array([self._h_tau(s,ss,o) for o in sequence])
 				num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 		####################
 		return [den,num, proba_seq,times]
@@ -319,7 +322,7 @@ class BW:
 
 
 	# MDP----------------------------------------------------------------------
-	def h_tau_MDP(self,s1: int,act: str,s2: int,obs: str) -> float:
+	def _h_tau_MDP(self,s1: int,act: str,s2: int,obs: str) -> float:
 		"""
 		Returns the probability of moving from state ``s1`` executing `action`
 		to ``s2`` generating observation ``obs``.
@@ -342,7 +345,7 @@ class BW:
 		"""
 		return self.h.tau(s1,act,s2,obs)
 
-	def computeAlphas_MDP(self,sequence: list, sequence_actions: list) -> array:
+	def _computeAlphas_MDP(self,sequence: list, sequence_actions: list) -> array:
 		"""
 		Compute the alpha values for ``sequence`` under the current BW
 		hypothesis.
@@ -365,13 +368,13 @@ class BW:
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq,self.nb_states)
 		for k in range(len_seq-1):
 			for s in range(self.nb_states):
-				p = array([self.h_tau(ss,sequence_actions[k],s,sequence[k]) for ss in range(self.nb_states)])
+				p = array([self._h_tau(ss,sequence_actions[k],s,sequence[k]) for ss in range(self.nb_states)])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		
 		alpha_matrix[-1] *= (array(self.h.labelling) == sequence[-1])
 		return alpha_matrix.T
 
-	def computeBetas_MDP(self,sequence: list,sequence_actions: list) -> array:
+	def _computeBetas_MDP(self,sequence: list,sequence_actions: list) -> array:
 		"""
 		Compute the beta values for ``sequence`` under the current BW
 		hypothesis.
@@ -394,15 +397,15 @@ class BW:
 		beta_matrix = append(zero_arr,init_arr).reshape(len_seq,self.nb_states)
 		for k in range(len(sequence)-2,-1,-1):
 			for s in range(self.nb_states):
-				p = array([self.h_tau(s,sequence_actions[k],ss,sequence[k]) for ss in range(self.nb_states)])
+				p = array([self._h_tau(s,sequence_actions[k],ss,sequence[k]) for ss in range(self.nb_states)])
 				beta_matrix[k,s] = dot(beta_matrix[k+1],p)
 		return beta_matrix.T
 
 	def _processWork_MDP(self,sequence,times):
 		sequence_actions = [sequence[i+1] for i in range(0,len(sequence)-1,2)]
 		sequence_obs = [sequence[i] for i in range(0,len(sequence)-1,2)]+[sequence[-1]]
-		alpha_matrix = self.computeAlphas(sequence_obs,sequence_actions)
-		beta_matrix = self.computeBetas(sequence_obs,sequence_actions)
+		alpha_matrix = self._computeAlphas(sequence_obs,sequence_actions)
+		beta_matrix = self._computeBetas(sequence_obs,sequence_actions)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
 			den = zeros(shape=(self.nb_states,len(self.actions)))
@@ -414,7 +417,7 @@ class BW:
 					den[s,i] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*arr_dirak,times/proba_seq).sum()
 			
 				for ss in range(self.nb_states):
-					p = array([self.h_tau(s,a,ss,o) for o,a in zip(sequence_obs[:-1],sequence_actions)])
+					p = array([self._h_tau(s,a,ss,o) for o,a in zip(sequence_obs[:-1],sequence_actions)])
 					for ia,act in enumerate(self.actions):
 						arr_dirak = [1.0 if a == act else 0.0 for a in sequence_actions]
 						num[s,ia,ss] = dot(alpha_matrix[s][:-1]*arr_dirak*beta_matrix[ss][1:]*p,times/proba_seq).sum()
@@ -446,7 +449,7 @@ class BW:
 
 
 	# CTMC---------------------------------------------------------------------
-	def h_e(self,s: int) -> float:
+	def _h_e(self,s: int) -> float:
 		"""
 		Returns the exit rate, in the current hypothesis, of state ``s``, i.e.
 		the sum of all the rates in this state.
@@ -463,7 +466,7 @@ class BW:
 		"""
 		return self.h.e(s)
 	
-	def h_l(self, s1: int, s2: int, obs: str) -> float:
+	def _h_l(self, s1: int, s2: int, obs: str) -> float:
 		"""
 		Returns the rate, in the current hypothesis, associated to the
 		transition from state `s1` to state `s2` generating observation `obs`.
@@ -484,7 +487,7 @@ class BW:
 		"""
 		return self.h.l(s1,s2,obs)	
 	
-	def computeAlphas_timed(self,obs_seq: list, times_seq: list) -> array:
+	def _computeAlphas_timed(self,obs_seq: list, times_seq: list) -> array:
 		"""
 		Compute the beta values for ``obs_seq`` and ``times_seq`` under the
 		current BW hypothesis.
@@ -507,12 +510,12 @@ class BW:
 		alpha_matrix = append(init_arr,zero_arr).reshape(len_seq+1,self.nb_states).astype(longdouble)
 		for k in range(len_seq):
 			for s in range(self.nb_states):
-				p = array([self.h_l(ss,s,obs_seq[k])*exp(-self.h_e(ss)*times_seq[k]) for ss in range(self.nb_states)])
+				p = array([self._h_l(ss,s,obs_seq[k])*exp(-self._h_e(ss)*times_seq[k]) for ss in range(self.nb_states)])
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		alpha_matrix[-1] *= (array(self.h.labelling) == obs_seq[-1])
 		return alpha_matrix.T
 
-	def computeBetas_timed(self,obs_seq: list, times_seq: list) -> array:
+	def _computeBetas_timed(self,obs_seq: list, times_seq: list) -> array:
 		"""
 		Compute the beta values for ``obs_seq`` and ``times_seq`` under the
 		current BW hypothesis.
@@ -535,12 +538,12 @@ class BW:
 		beta_matrix = append(zero_arr,init_arr).reshape(len_seq+1,self.nb_states).astype(longdouble)
 		for k in range(len_seq-1,-1,-1):
 			for s in range(self.nb_states):
-				p = array([self.h_l(s,ss,obs_seq[k]) for ss in range(self.nb_states)])
-				p = p * exp(-self.h_e(s)*times_seq[k])
+				p = array([self._h_l(s,ss,obs_seq[k]) for ss in range(self.nb_states)])
+				p = p * exp(-self._h_e(s)*times_seq[k])
 				beta_matrix[k,s] = dot(beta_matrix[k+1],p)
 		return beta_matrix.T
 
-	def splitTime(self,sequence: list) -> tuple:
+	def _splitTime(self,sequence: list) -> tuple:
 		"""
 		Given a trace it returns a sequence of observation and a sequence of
 		waiting times. If the given trace is non-timed the output waiting time
@@ -566,13 +569,13 @@ class BW:
 		return (times_seq,obs_seq)
 
 	def _processWork_CTMC(self,sequence: list, times: int):
-		times_seq, obs_seq = self.splitTime(sequence)
+		times_seq, obs_seq = self._splitTime(sequence)
 		if times_seq == None:
 			timed = False
 		else:
 			timed = True
-		alpha_matrix = self.computeAlphas(obs_seq, times_seq)
-		beta_matrix  = self.computeBetas( obs_seq, times_seq)
+		alpha_matrix = self._computeAlphas(obs_seq, times_seq)
+		beta_matrix  = self._computeBetas( obs_seq, times_seq)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
 			return False
@@ -587,9 +590,9 @@ class BW:
 			for ss in range(self.nb_states):
 				if not self.fixed_parameters[s,ss]:
 					if timed:
-						p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+						p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 					else:
-						p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq]) # not sure
+						p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq]) # not sure
 					num[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 				else:
 					num[s,ss] = 0.0
@@ -618,8 +621,8 @@ class BW:
 
 	# HMM----------------------------------------------------------------------
 	def _processWork_HMM(self,sequence,times):
-		alpha_matrix = self.computeAlphas(sequence)
-		beta_matrix = self.computeBetas(sequence)
+		alpha_matrix = self._computeAlphas(sequence)
+		beta_matrix = self._computeBetas(sequence)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
 			####################
@@ -629,7 +632,7 @@ class BW:
 			num_b = zeros(shape=(self.nb_states,len(self.alphabet)))
 			for s in range(self.nb_states):
 				for ss in range(self.nb_states):
-					p = array([self.h_tau(s,ss,o) for o in sequence])
+					p = array([self._h_tau(s,ss,o) for o in sequence])
 					num_a[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 					temp = alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times/proba_seq
 					for o, obs in enumerate(self.alphabet):
@@ -660,7 +663,7 @@ class BW:
 		matrix = num_a/den[:, newaxis]
 		output = num_b/den[:, newaxis]
 
-		initial_state = [lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)]
+		initial_state = array([lst_init[s].sum()/lst_init.sum() for s in range(self.nb_states)])
 
 
 		self.h.matrix = matrix
@@ -671,10 +674,10 @@ class BW:
 	# GoHMM--------------------------------------------------------------------
 	def _processWork_GoHMM(self,sequence,times):
 		sequence = array(sequence)
-		alpha_matrix = self.computeAlphas(sequence,longdouble)
+		alpha_matrix = self._computeAlphas(sequence,longdouble)
 		if isnan(alpha_matrix).any():
 			return False
-		beta_matrix = self.computeBetas(sequence,longdouble)
+		beta_matrix = self._computeBetas(sequence,longdouble)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq != 0.0:
 			den = (alpha_matrix.T[:-1]*beta_matrix.T[:-1]*times/proba_seq).sum(axis=0)
@@ -685,7 +688,7 @@ class BW:
 				num_mu[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*sequence.T,times/proba_seq).sum(axis=1)
 				num_va[s] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*(sequence-self.h.mu(s)).T**2,times/proba_seq).sum(axis=1)
 				for ss in range(self.nb_states):
-					p = array([self.h_tau(s,ss,o) for o in sequence])
+					p = array([self._h_tau(s,ss,o) for o in sequence])
 					num_a[s,ss] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 			num_init = alpha_matrix.T[0]*beta_matrix.T[0]*times/proba_seq
 			return [den,num_a,num_mu,num_va,proba_seq,times,num_init]
@@ -717,7 +720,7 @@ class BW:
 
 
 	# PCTMC--------------------------------------------------------------------
-	def sortParameters(self,fixed_parameters: list):
+	def _sortParameters(self,fixed_parameters: list):
 		"""
 		Sort the parameters into the three categories.
 		Depending on the category, the parameters are estimated differently:
@@ -732,13 +735,13 @@ class BW:
 		for iparam,param in enumerate(self.h.parameter_str):
 			if not param in fixed_parameters:
 				for s,ss in self.h.parameterIndexes(param):
-					self.a_pis[s,ss,iparam] = self.a_pi(s,ss,param)
+					self.a_pis[s,ss,iparam] = self._a_pi(s,ss,param)
 
 		self.parameters_cat = [[],[],[]]
 		for ip,p in enumerate(self.h.parameter_str):
 			if not p in fixed_parameters:
 				apis = [self.a_pis[x,y,ip] for x,y in self.h.parameterIndexes(p)]
-				cs = [self.C(x,y) for x,y in self.h.parameterIndexes(p)]
+				cs = [self._C(x,y) for x,y in self.h.parameterIndexes(p)]
 				if min(apis) == 1 and max(apis) == 1 and min(cs) == 1 and max(cs) == 1:
 					self.parameters_cat[0].append(p)
 				elif min(cs) == max(cs):
@@ -749,15 +752,15 @@ class BW:
 		self.c_pis = zeros((self.h.nb_states,self.h.nb_states))
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
-				self.c_pis[s,ss] = self.c_pi(s,ss,param)
+				self.c_pis[s,ss] = self._c_pi(s,ss,param)
 
-	def _computeTaus(self):
+	def _computeTaus_PCTMC(self):
 		self.hval = zeros((self.nb_states,self.nb_states))
 		for s in range(self.nb_states):
 			for ss in range(self.nb_states):
 				self.hval[s,ss] =  self.h.transitionValue(s,ss)
 
-	def a_pi(self,s1: int,s2: int, p: str) -> int:
+	def _a_pi(self,s1: int,s2: int, p: str) -> int:
 		"""
 		Return the power of parameter `p` in the transition from `s1` to `s2`.
 
@@ -791,7 +794,7 @@ class BW:
 		else:
 			return 1
 
-	def c_pi(self,s1: int,s2: int, p:str) -> float:
+	def _c_pi(self,s1: int,s2: int, p:str) -> float:
 		"""
 		Return the coefficient of parameter `p` in the transition from
 		`s1` to `s2`.
@@ -835,7 +838,7 @@ class BW:
 		else:
 			return 1
 
-	def C(self,s1:int ,s2:int) -> int:
+	def _C(self,s1:int ,s2:int) -> int:
 		"""
 		Returns the sum of the power of all parameter in the transition
 		from `s1` to `s2`.
@@ -857,7 +860,7 @@ class BW:
 			r += self.a_pis[s1,s2,self.h.parameter_str.index(p)]
 		return r
 
-	def h_e_PCTMC(self,s: int) -> float:
+	def _h_e_PCTMC(self,s: int) -> float:
 		"""
 		Returns the exit rate, in the current hypothesis, of state ``s``, i.e.
 		the sum of all the rates in this state.
@@ -874,7 +877,7 @@ class BW:
 		"""
 		return self.hval[s].sum()
 	
-	def h_l_PCTMC(self, s1: int, s2: int, obs: str) -> float:
+	def _h_l_PCTMC(self, s1: int, s2: int, obs: str) -> float:
 		"""
 		Returns the rate, in the current hypothesis, associated to the
 		transition from state `s1` to state `s2` generating observation `obs`.
@@ -897,7 +900,7 @@ class BW:
 			return 0.0
 		return self.hval[s1,s2]
 
-	def h_tau_PCTMC(self,s1: int,s2: int,obs: str) -> float:
+	def _h_tau_PCTMC(self,s1: int,s2: int,obs: str) -> float:
 		"""
 		Probability of moving from ``s1`` to ``s2`` generating ``obs`` under
 		the current hypothesis.
@@ -918,19 +921,19 @@ class BW:
 		"""
 		if self.h.labelling[s1] != obs:
 			return 0.0
-		e = self.h_e(s1)
+		e = self._h_e(s1)
 		if e == 0.0:
 			return inf
 		return self.hval[s1,s2]/e
 
 	def _processWork_PCTMC(self,sequence: list, times: int):
-		times_seq, obs_seq = self.splitTime(sequence)
+		times_seq, obs_seq = self._splitTime(sequence)
 		if times_seq == None:
 			timed = False
 		else:
 			timed = True
-		alpha_matrix = self.computeAlphas(obs_seq, times_seq)
-		beta_matrix  = self.computeBetas( obs_seq, times_seq)
+		alpha_matrix = self._computeAlphas(obs_seq, times_seq)
+		beta_matrix  = self._computeBetas( obs_seq, times_seq)
 		proba_seq = alpha_matrix.T[-1].sum()
 		if proba_seq == 0.0:
 			return False
@@ -943,10 +946,10 @@ class BW:
 					s,ss = where(self.h.matrix == itrans+1)
 					s,ss = s[0],ss[0]
 					if timed:
-						p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+						p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 						den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,times/proba_seq).sum()
 					else:
-						p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq])
+						p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq])
 						den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
 					num_cste[itrans+1] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 			
@@ -960,15 +963,15 @@ class BW:
 		for iparam,param in enumerate(self.parameters_cat[0]):
 			for s,ss in self.h.parameterIndexes(param):
 				if timed:
-					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+					p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				else:
-					p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq])
+					p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq])
 
 				if p.sum()>0.0:
 					if timed:
 						den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.c_pis[s,ss]*times/proba_seq).sum()
 					else:
-						den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.c_pis[s,ss]*times/(self.h_e(s)*proba_seq)).sum()
+						den_cat1[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.c_pis[s,ss]*times/(self._h_e(s)*proba_seq)).sum()
 					num_cat1[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
 
 		num_cat2 = zeros(len(self.parameters_cat[1]))
@@ -977,11 +980,11 @@ class BW:
 			p_index = self.h.parameter_str.index(param)
 			for s,ss in self.h.parameterIndexes(param):
 				if timed:
-					p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+					p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 					den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()
 				else:
-					p = array([self.h_l(s,ss,o)/self.h_e(s) for o in obs_seq])
-					den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/(proba_seq*self.h_e(s))).sum()
+					p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq])
+					den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/(proba_seq*self._h_e(s))).sum()
 				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
 		
 		terms_cat3 = []
@@ -989,15 +992,15 @@ class BW:
 			p_index = self.h.parameter_str.index(param)
 			temp = [0.0]
 			for s,ss in self.h.parameterIndexes(param):
-				p = array([self.h_l(s,ss,o)*exp(-self.h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
 				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
-				c = self.C(s,ss)
+				c = self._C(s,ss)
 				for _ in range(1+c-len(temp)):
 					temp.append(0.0)
 				if timed:
 					temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1]*times_seq,self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self.h.parameter_values[param]**c)
 				else:
-					temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self.h_e(s)*self.h.parameter_values[param]**c)
+					temp[c] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/proba_seq).sum()/(self._h_e(s)*self.h.parameter_values[param]**c)
 
 			terms_cat3.append(array(temp))
 
@@ -1038,7 +1041,7 @@ class BW:
 				num_cat2[ip] = self.h.parameter_values[p]
 			else:
 				s,ss = self.h.parameterIndexes(p)[0]
-				c = self.C(s,ss)
+				c = self._C(s,ss)
 				den_cat2[ip] = den_cat2[ip]**(1/c)
 				num_cat2[ip] = self.h.parameter_values[p]*num_cat2[ip]**(1/c)
 		values += (num_cat2/den_cat2).tolist()
@@ -1051,11 +1054,11 @@ class BW:
 		return currentloglikelihood
 
 	def fit_nonInstantiatedParameters(self, traces, initial_model,
-			output_file: str=None, output_file_prism: str=None,
 			epsilon: float=0.01, max_it: int= inf,
 			pp: str='', verbose: bool = True, return_data: bool = False,
-			stormpy_output: bool = True, min_val: float = None, max_val: float = None) -> dict:
+			min_val: float = None, max_val: float = None) -> dict:
 		"""
+		For PCTMC learning only.
 		Fits only the non-instantiated parameters in the initial model
 		according to ``traces``.
 
@@ -1065,12 +1068,6 @@ class BW:
 			training set.
 		initial_model : PCTMC
 			first hypothesis.
-		output_file : str, optional
-			if set path file of the output model. Otherwise the output model
-			will not be saved into a text file.
-		output_file_prism : str, optional
-			If set, the output model will be saved in a prism file at this
-			location. Otherwise the output model will not be saved.
 		epsilon : float, optional
 			the learning process stops when the difference between the
 			loglikelihood of the training set under the two last hypothesis is
@@ -1090,9 +1087,6 @@ class BW:
 			returned alongside the hypothesis once the learning is done.
 			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
 			Default is False.
-		stormpy_output: bool, optional
-			If set to True the output model will be a Stormpy sparse model.
-			Default is True.
 		min_val: float, optional
 			Minimal value for the randomly instantiated parameters.
 			If not set and if the model has at least two instantiated parameters,
@@ -1115,16 +1109,89 @@ class BW:
 			- the dictionary described above,
 			- the `returned_data` (see parameter description).
 		"""
-		update_constant = False
-		fixed_parameters = []
-		print("Fitting only the non-instantiated parameters, i.e: ",end='')
-		
+		if initial_model.model_type != PCTMC_ID:
+			raise RuntimeError("The initial model must be a PCTMC")
 		to_update = []
 		for p in initial_model.parameter_str:
-			if initial_model.isInstantiated(param=p):
+			to_update.append(p)
+		
+		return self.fit_parameters(traces,initial_model,to_update,epsilon,
+								max_it,pp,verbose,return_data,min_val,max_val)
+
+	def fit_parameters(self, traces, initial_model, to_update: list,
+			epsilon: float=0.01, max_it: int= inf,
+			pp: str='', verbose: bool = True, return_data: bool = False,
+			min_val: float = None, max_val: float = None) -> dict:
+		"""
+		For PCTMC learning only.
+		Fits only the non-instantiated parameters in the initial model
+		according to ``traces``.
+
+		Parameters
+		----------
+		traces : Set or list or numpy.ndarray
+			training set.
+		initial_model : PCTMC
+			first hypothesis.
+		to_update: list of str
+			list of parameter names to update
+		epsilon : float, optional
+			the learning process stops when the difference between the
+			loglikelihood of the training set under the two last hypothesis is
+			lower than ``epsilon``. The lower this value the better the output,
+			but the longer the running time. By default 0.01.
+		max_it: int
+			Maximal number of iterations. The algorithm will stop after `max_it`
+			iterations.
+			Default is infinity.
+		pp : str, optional
+			Will be printed at each iteration. By default ''.
+		verbose: bool, optional
+			Print or not a small recap at the end of the learning.
+			Default is True.
+		return_data: bool, optional
+			If set to True, a dictionary containing following values will be
+			returned alongside the hypothesis once the learning is done.
+			'learning_rounds', 'learning_time', 'training_set_loglikelihood'.
+			Default is False.
+		min_val: float, optional
+			Minimal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the smallest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 0.1.
+		max_val : float, optional
+			Maximal value for the randomly instantiated parameters.
+			If not set and if the model has at least two instantiated parameters,
+			this value is equal to the parameters with the highest instantiation.
+			If not set and if the model has less than two instantiated parameters,
+			this value is equal to 5.0.		
+
+		Returns
+		-------
+		dict or list
+			Dictionary containing the estimated values for the non-indtantiated
+			parameters.
+			If `return_data` is set to True, returns a list containing:
+			- the dictionary described above,
+			- the `returned_data` (see parameter description).
+		"""
+		self.type_model = PCTMC_ID
+		if initial_model.model_type != PCTMC_ID:
+			raise RuntimeError("The initial model must be a PCTMC")
+		self.h = initial_model
+
+		update_constant = False
+		fixed_parameters = []
+		
+		for p in initial_model.parameter_str:
+			if not p in to_update:
 				fixed_parameters.append(p)
-			else:
-				to_update.append(p)
+		for p in to_update:
+			if not p in initial_model.parameter_str:
+				raise RuntimeError('Parameter '+p+' is not in the initial model.')
+
+		print("Fitting only parameters: ",end='')
 		print(', '.join(to_update))
 
 		# remove all the states never used in the training set:
@@ -1168,7 +1235,30 @@ class BW:
 		#initial_model.alphabet = alphabet
 		print(initial_model.nb_states)
 
-		returned = self.bw(max_it,pp,epsilon,False,False,verbose,False,return_data)
+		self._getTrainingSet(traces)
+		
+		if min_val != None:
+			if max_val != None:
+				self.h.randomInstantiation(min_val=min_val, max_val=max_val)
+			else:
+				self.h.randomInstantiation(min_val=min_val)
+		elif max_val != None:
+			self.h.randomInstantiation(max_val=max_val)
+		
+		if self.training_set.type == 4:
+			self._computeAlphas = self._computeAlphas_timed
+			self._computeBetas  = self._computeBetas_timed
+		self.nb_parameters = self.h.nb_parameters
+		self.update_constant = update_constant
+		self._processWork = self._processWork_PCTMC
+		self._update = self._update_PCTMC
+		self._computeTaus = self._computeTaus_PCTMC
+		self._h_e = self._h_e_PCTMC
+		self._h_l = self._h_l_PCTMC
+		self._h_tau=self._h_tau_PCTMC
+		self._sortParameters(fixed_parameters)
+
+		returned = self._bw(max_it,pp,epsilon,False,False,verbose,False,return_data)
 		
 		res = {}
 		for p in to_update:
@@ -1256,7 +1346,7 @@ class BW:
 			self.type_model = CTMC_ID
 			self.h = CTMC_random(nb_states,self.alphabet,min_exit_rate_time,max_exit_rate_time,self_loop,random_initial_state)
 
-	def computeAlphas(self, sequence: list, dtype=False) -> array:
+	def _computeAlphas(self, sequence: list, dtype=False) -> array:
 		"""
 		Compute the alpha values for ``sequence`` under the current BW
 		hypothesis.
@@ -1284,11 +1374,11 @@ class BW:
 			dtype = float64
 		for k in range(len_seq):
 			for s in range(self.nb_states):
-				p = array([self.h_tau(ss,s,sequence[k]) for ss in range(self.nb_states)],dtype=dtype)
+				p = array([self._h_tau(ss,s,sequence[k]) for ss in range(self.nb_states)],dtype=dtype)
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		return alpha_matrix.T
 
-	def computeBetas(self, sequence: list, dtype=False) -> array:
+	def _computeBetas(self, sequence: list, dtype=False) -> array:
 		"""
 		Compute the beta values for ``sequence`` under the current BW
 		hypothesis.
@@ -1316,14 +1406,13 @@ class BW:
 			dtype = float64
 		for k in range(len(sequence)-1,-1,-1):
 			for s in range(self.nb_states):
-				p = array([self.h_tau(s,ss,sequence[k]) for ss in range(self.nb_states)],dtype=dtype)
+				p = array([self._h_tau(s,ss,sequence[k]) for ss in range(self.nb_states)],dtype=dtype)
 				beta_matrix[k,s] = dot(beta_matrix[k+1],p)
 		return beta_matrix.T
 
 	def _computeTaus(self):
-		#overrided PCTMC learning only
 		pass
-
+	
 	def _runProcesses(self,training_set):
 		if platform != "win32" and platform != "darwin" and NB_PROCESS > 1:
 			p = Pool(processes = NB_PROCESS)
@@ -1343,7 +1432,7 @@ class BW:
 		print("---------------------------------------------")
 		print()
 
-	def h_tau(self,s1: int,s2: int,obs: str) -> float:
+	def _h_tau(self,s1: int,s2: int,obs: str) -> float:
 		"""
 		Probability of moving from ``s1`` to ``s2`` generating ``obs`` under
 		the current hypothesis.

@@ -1,5 +1,5 @@
-Getting Started
-===============
+Library description
+===================
 
 1. Installation
 ---------------
@@ -70,17 +70,6 @@ One can wander what is the difference between MC and HMM: each MC state is label
 observation, which is seen each time we are in this state. On the other hand, each HMM state is
 associated with a probability distribution over the observations. Each time we are in this HMM state,
 an observation is generated according to the probability distribution associated to this state.
-
-
-.. toctree::
-   :maxdepth: 1
-
-   HMM
-   MC
-   MDP
-   CTMC
-   PCTMC
-   GoHMM
 
 .. _jajapy-and-stormpy :
 

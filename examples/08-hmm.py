@@ -1,28 +1,25 @@
+import os, sys
+currentdir = os.path.dirname(os.path.realpath(__file__))
+parentdir = os.path.dirname(currentdir)
+sys.path.append(parentdir)
 import jajapy as ja
 from numpy import array
 
 
 def example_8():
-	alphabet = ['a','b','x','y']
-	nb_states = 5
 
 	# MODEL CREATION
 	#----------------
 	# in the next state (s0) we generate 'x' with probability 0.4, and 'y' with probability 0.6
 	# once an observation is generated, we move to state 1 or 2 with probability 0.5
-	s0 = ja.HMM_state([("x",0.4),("y",0.6)],[(1,0.5),(2,0.5)],alphabet,nb_states)
-	s1 = ja.HMM_state([("a",0.8),("b",0.2)],[(3,1.0)],alphabet,nb_states)
-	s2 = ja.HMM_state([("a",0.1),("b",0.9)],[(4,1.0)],alphabet,nb_states)
-	s3 = ja.HMM_state([("x",0.5),("y",0.5)],[(0,0.8),(1,0.1),(2,0.1)],alphabet,nb_states)
-	s4 = ja.HMM_state([("y",1.0)],[(3,1.0)],alphabet,nb_states)
-	transitions = array([s0[0],s1[0],s2[0],s3[0],s4[0]])
-	output = array([s0[1],s1[1],s2[1],s3[1],s4[1]])
-	original_model = ja.HMM(transitions,output,alphabet,initial_state=0,name="My HMM")
-	print("SUL:")
-	print(original_model)
+	transitions = [(0,1,0.5),(0,2,0.5),(1,3,1.0),(2,4,1.0),
+				   (3,0,0.8),(3,1,0.1),(3,2,0.1),(4,3,1.0)]
+	emission = [(0,"x",0.4),(0,"y",0.6),(1,"a",0.8),(1,"b",0.2),
+				(2,"a",0.1),(2,"b",0.9),(3,"x",0.5),(3,"y",0.5),(4,"y",1.0)]
+	original_model = ja.createHMM(transitions,emission,initial_state=0,name="My HMM")
+	
 	#original_model.save("my_model.txt")
 	#original_model = ja.loadHMM("my_model.txt")
-	
 	# TRAINING SET GENERATION
 	#------------------------
 	# We generate 1000 sequences of 10 observations
@@ -32,9 +29,8 @@ def example_8():
 
 	# LEARNING
 	#---------
-	output_model = ja.BW_HMM().fit(training_set, nb_states=5, stormpy_output=False)
-	print("Output model:")
-	print(output_model)
+	initial_hypothesis = ja.HMM_random(5,alphabet=list("abxy"),random_initial_state=False)
+	output_model = ja.BW().fit(training_set, initial_hypothesis)
 
 	# OUTPUT EVALUATION
 	#------------------

@@ -1,6 +1,8 @@
 Formalism
 =========
 This page contains the formal presentation of most of the learning algorithms and models implemented in Jajapy.
+Most of the following describe the algorithms for transition-labelled models, while *Jajapy* uses state-labelled one.
+Nevertheless, the algorithms can simply be adapted from one formalism to another.
 
 * HMM
 	* Baum-Welch for HMMs :download:`pdf <pdfs/BW_for_HMM.pdf>`
@@ -15,9 +17,8 @@ This page contains the formal presentation of most of the learning algorithms an
 	* Active Learning of Markov Decision Processes using Baum-Welch algorithm (G. Bacci et al.) :download:`pdf <https://arxiv.org/pdf/2110.03014.pdf>`
 	* Learning Deterministic Probabilistic Automata from a Model Checking Perspective (H. Mao et al.) :download:`pdf <https://people.cs.aau.dk/~tdn/papers/ML_Hua.pdf>`
 
-* GoHMM
-	* Baum-Welch for GoHMMs :download:`pdf <pdfs/BW_for_GoHMM.pdf>`
-	* A New Improved Baum-Welch Algorithm for Unsupervised Learning for Continuous-Time HMM Using Spark :download:`pdf <http://www.inass.org/2020/2020022920.pdf>`
+* CTMC/PCTMC
+	* MM Algorithms to Estimate Parameters in Continuous-time Markov Chains (G. Bacci et al.) :download:`pdf <https://arxiv.org/pdf/2302.08588.pdf>`
 
-* MGoHMM
-	* Baum-Welch for MGoHMMs :download:`pdf <pdfs/BW_for_MGoHMM.pdf>`
+* GoHMM
+	* Baum-Welch for GoHMMs :download:`pdf <pdfs/BW_for_MGoHMM.pdf>`
