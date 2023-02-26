@@ -36,8 +36,8 @@ The last line matters: in fact, the actions name are lost in the process, and re
 by *a0, a1, a2, a3*. This problem will be (hopefully) solved in the next releases.
 
 You may notice, if you try this on your machine, that the command ``loadPrism`` clears the terminal.
-The reason is that, loading a Prism file, causes many warnings/errors prints, even if, at the end,
-everything went well (yes,I know it is hard to believe, but trust me). Hence, to avoid panic,
+The reason is that loading a Prism file causes many warnings/errors prints even if, at the end,
+everything went well (yes, I know it is hard to believe, but trust me). Hence, to avoid panic,
 the command clear the terminal and the user is serene.
 
 Generating the training set
@@ -73,7 +73,7 @@ One to overcome this problem is presented in :ref:`example-ctmc`.
 	
 	Before doing that, we must be sure that the *init* label is at the same index in both ``initial_hypothesis.labelling`` and
 	``original_model.labelling``, and that they both have the same length. Here, we now that our initial hypothesis has as many
-	state as the original model, thus the two list have the same length. And we know that the *init* label is the last one in
+	state as the original model, thus the two lists have the same length. And we know that the *init* label is the last one in
 	these two lists.
 
 Learning

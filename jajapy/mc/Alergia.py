@@ -7,8 +7,7 @@ from numpy import zeros
 
 class Alergia:
 	"""
-	class for general ALERGIA algorithm on MC.
-	This algorithm is described here:
+	Class for general ALERGIA algorithm described here:
 	https://grfia.dlsi.ua.es/repositori/grfia/pubs/57/icgi1994.pdf
 	"""
 
@@ -88,7 +87,8 @@ class Alergia:
 					self.states_transitions[-1][2].append(self.states_lbl[s2][-1])
 					s2 += 1
 
-	def fit(self,traces: Set,alpha: float=0.1,alphabet: list=None, stormpy_output: bool = True):
+	def fit(self,traces: Set,alpha: float=0.1,alphabet: list=None,
+	 		stormpy_output: bool = True, output_file_prism: str = None):
 		"""
 		Fits a MC according to ``traces``.
 
@@ -104,6 +104,11 @@ class Alergia:
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
+		output_file_prism : str, optional
+			If set, the output model will be saved in a prism file at this
+			location. Otherwise the output model will not be saved.
+			This parameter is ignored if the model under learning is a HMM
+			or a GoHMM.
 
 		Returns
 		-------
@@ -133,6 +138,9 @@ class Alergia:
 			print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
 			stormpy_output = False
 		
+		if output_file_prism:
+			self.h.savePrism(output_file_prism)
+
 		if stormpy_output:
 			return jajapyModeltoStormpy(m)
 		else:

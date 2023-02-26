@@ -59,7 +59,7 @@ This page contains many examples illustrating most of *Jajapy* features.
 
    :ref:`example-hmm`
 
-.. figure:: pictures/HMM.png
+.. figure:: pictures/weather0.png
    :figwidth: 45 %
    :alt: More advanced example
    :align: right

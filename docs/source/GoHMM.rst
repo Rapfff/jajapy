@@ -1,13 +1,14 @@
 Gaussian observations Hidden Markov Model (GoHMM)
 =================================================
-A GoHMM is similar to a HMM, but this time the observations are real values generated according
-to gaussian distribution. Instead of having a discrete probability ditribution over all the possible
-observations, each state has here the two parameters *mu* and *sigma* of a gaussian distribution.
+A GoHMM is similar to a HMM, but this time the observations are vectors of real number generated according
+to sevral Gaussian distributions. Instead of having a discrete probability ditribution over all the possible
+observations, each state has several pairs of parameters mu and sigma, one for each Gaussian distribution.
+THe number of Gaussian distribution is the same in each state.
 
 Example
 -------
-
-In the following picture, the dotted arrows represent the initial state probability distribution: we will start
+The following example is a GoHMM with only one Gaussian distribution in each state.
+The dotted arrows represent the initial state probability distribution: we will start
 in the yellow state with probability 0.1.
 
 .. image:: pictures/GOHMM.png
@@ -16,6 +17,9 @@ in the yellow state with probability 0.1.
 
 Creation
 ^^^^^^^^
+
+We can create a GoHMM with two Gaussian distributions as follow:
+
 .. code-block:: python
 
 	>>> import jajapy as ja
@@ -36,6 +40,7 @@ We can also generate a random GoHMM
 .. code-block:: python
 
 	>>> random_model = GoHMM_random(nb_states=5,
+					nb_distributions=2,
 					random_initial_state=True,
 					min_mu = 0.0,
 					max_mu = 5.0,
@@ -47,14 +52,26 @@ Exploration
 
 .. code-block:: python
 
-	>>> model.a(0,1) 		 
-	0.1
-	>>> model.mu(1)
+	>>> model.a(0,0)# moving from state 0 to state 0
+	0.9
+	>>> model.mu(1)# mu parameters in state 1
+	[0.5,2.5]
+	>>> model.mu_n(1,0)# first mu parameter in state 1
 	0.5
-	>>> model.b(0,4.0)
+	>>> model.mu_n(1,1)# second mu parameter in state 1
+	2.5
+	>>> # probability that the first distribution in state 0 generates 4.0.
+	>>> model.b_n(s=0,n=0,l=4.0)
 	0.07820853879509118
-	>>> model.tau(0,1,4.0)
-	0.00782085387950912
+	>>> # probability that the first distribution in state 0 generates 4.0,
+	>>> # and that the second one generates 2.0
+	>>> model.b(0,[4.0,2.0])
+	0.019676393869096122
+	>>> # probability that the first distribution in state 0 generates 4.0,
+	>>> # and that the second one generates 2.0, and that we move from state 0
+	>>> # to state 1.
+	>>> model.tau(0,1,[4.0,2.0])
+	0.001967639386909612
 
 	
 Running

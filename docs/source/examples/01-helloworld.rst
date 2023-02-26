@@ -89,7 +89,7 @@ be impossible.
 Evaluating the BW output model using model checking
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Eventually we compare the output model with the original one.
-We can do so by comparing the value of some properties under this two models as follows:
+We can do so by comparing the value of some properties under these two models as follows:
 
 .. code-block:: python
 
@@ -122,15 +122,15 @@ This is due to the fact that, in Stormpy, the intial state is labeled by *"init"
 .. code-block:: python
 
 	>>> formula_str = 'P=? [ F<=10 "D" ]'
-	>>> 
+	>>> #
 	>>> properties = stormpy.parse_properties(formula_str)
 	>>> result_original = stormpy.check_model_sparse(original_model,properties[0])
 	>>> result_output   = stormpy.check_model_sparse(output_model,properties[0])
-	>>> 
-	>>> # Model checking result for "+formula_str+' in the original model:
+	>>> #
+	>>> # Model checking result for P=? [ F<=10 "D" ] in the original model:
 	>>> print(result_original.at(original_model.initial_states[0]))
 	0.9107796067672609
-	>>> # Model checking result for "+formula_str+' in the output model:
+	>>> # Model checking result for P=? [ F<=10 "D" ] in the output model:
 	>>> print(result_output.at(output_model.initial_states[0]))
 	0.9004150713470688
 

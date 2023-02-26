@@ -4,17 +4,16 @@ References
 Models
 ------
 
-*Jajapy* supports different kind of Markov models that have different properties.
+*Jajapy* supports several families of Markov models.
 
 The following table summarizes the main properties of these models. The *second column* indicates
-if, at each timestep, a model generates a discrete observation, or a vector of continuous observations
-(this vector can possibly contains only one value).
+if, at each timestep, a model generates a discrete observation, or a vector of continuous observations.
 The *third column* indicates if the model is deterministic or not.
 The *fourth* one shows if the model is a continuous time model (or a discrete time model).
 A continuous time model will wait in each state for some period of time (called *dwell time*) before moving to another state.
 Finally the last solumn indicates if the model is parametric.
 In a parametric model, transition probabilities can be expressed are polynomial composition of parameters.
-A parameter can also be involved in several transitions.
+A parameter can be involved in several transitions.
 
 ======  ==================== ============= =============== ==========
 Model   Observations type    Deterministic Continuous time Parametric

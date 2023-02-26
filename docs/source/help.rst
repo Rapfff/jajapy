@@ -27,7 +27,7 @@ However, the model under analysis must be provided, while, in many cases, system
 Given a dataset, *Jajapy* automatically generates a Markov model in *Stormpy* format. Additionally, *Jajapy* model can be save to a *Prism* file.
 
 *Jajapy* output models are directly translated to a *Stormpy sparse model* by default (if *Stormpy* is installed on the machine).
-You can change this behaviour by changing the value of the parameter `stormpy_output` of the `fit` function.
+You can change this behaviour by changing the value of the parameter ``stormpy_output`` of the ``fit`` function.
 
 *Jajapy* basic usage can be described in few steps:
 
@@ -52,7 +52,7 @@ The *fourth* one shows if the model is a continuous time model (or a discrete ti
 A continuous time model will wait in each state for some period of time (called *dwell time*) before moving to another state.
 Finally the last solumn indicates if the model is parametric.
 In a parametric model, transition probabilities can be expressed are polynomial composition of parameters.
-A parameter can also be involved in several transitions.
+A parameter can be involved in several transitions.
 
 ======  ==================== ============= =============== ==========
 Model   Observations type    Deterministic Continuous time Parametric
@@ -79,7 +79,7 @@ an observation is generated according to the probability distribution associated
 .. note::
 	This section concerns MDPs, MCs, CTMCs and PCTMCs only. Other models are not compatible with *Stormpy*.
 
-Due to performance reasons, *Jajapy* uses its representation of the models during the learning process.
+*Jajapy* uses its representation of the models during the learning process.
 Once the learning process is over, *Jajapy* converts the output model to a sparse *Stormpy* model.
 
 The initial hypothesis of the Baum-Welch algorithm can be:
@@ -88,7 +88,7 @@ The initial hypothesis of the Baum-Welch algorithm can be:
 - a *Jajapy* model,
 - a *Stormpy sparse* model.
 
-These translation are straightforward and doesn't change the structures of the models.
+These translations are straightforward and doesn't change the structure of the models.
 
 .. note::
    *Stormpy* models can be translated to *Jajapy* ones only if all states in the *Stormpy* model

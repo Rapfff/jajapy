@@ -7,9 +7,9 @@
 :download:`prism model <https://github.com/Rapfff/jajapy/tree/main/examples/materials/tandem_3.sm>`
 
 
-Here, we have access to a Prism file describing a composition of two CTMCs, where
-the value of certain parameters is unknown, and a training set.
-We will show how, from this training set , we can use *Jajapy* to estimate the parameter values.
+Here, we have access to a training set and a Prism file describing a composition of two CTMCs, where
+the value of certain parameters is unknown.
+We will show how, from this training set, we can use *Jajapy* to estimate the parameter values.
 
 The Tandem queueing network
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -20,7 +20,7 @@ The Tandem queueing network
 
 The model above represents the `tandem queueing network <http://www.prismmodelchecker.org/casestudies/tandem.php>`_
 where *c=3*. The yellow model corresponds to the *serverC*, and the green one the *SeverM*.
-For each yellow state, the first value corresponds to the value of *sc* and the second one the value of *phi*.
+For each yellow state, the first value corresponds to the value of *sc* and the second one to the value of *phi*.
 The red transitions are the synchronous transitions (the *route* transitions in the Prism file), while the black
 transitions are the asynchronous one.
 
@@ -45,7 +45,7 @@ Parameter estimation
 ^^^^^^^^^^^^^^^^^^^^
 Now, let estimate the parameters value from the training set.
 First, we need our intial hypothesis: it is the same model with the parameters left non-instantiated.
-The learning method will start by instantiate the non-instantiated parameters by a random value
+The learning method will start by instantiate the non-instantiated parameters by random values
 between ``min_val`` and ``max_val``.
 
 .. code-block:: python

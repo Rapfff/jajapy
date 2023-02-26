@@ -13,7 +13,7 @@ We have added probabilities on the transitions in order to have an MC.
 	:width: 60%
 	:align: center
 
-The Baum-Welch algorithm is sensitive to the initial hypothesis choice: the ouptput model depends on the initial hypothesis.
+The Baum-Welch algorithm is sensitive to the initial hypothesis choice: the output model depends on the initial hypothesis.
 To improve the quality of our output model, we will run the algorithm several times and keep only the best model, i.e. the
 one maximizing the loglikelihood of a test set. This technique is called *random restart*.
 

@@ -37,8 +37,8 @@ The last line matters: in fact, the actions name are lost in the process, and re
 by *a0, a1, a2, a3*. This problem will be (hopefully) solved in the next releases.
 
 You may notice, if you try this on your machine, that the command ``loadPrism`` clears the terminal.
-The reason is that, loading a Prism file, causes many warnings/errors prints, even if, at the end,
-everything went well (yes,I know it is hard to believe, but trust me). Hence, to avoid panic,
+The reason is that loading a Prism file causes many warnings/errors prints even if, at the end,
+everything went well (yes, I know it is hard to believe, but trust me). Hence, to avoid panic,
 the command clear the terminal and the user is serene.
 
 Generating the training set
@@ -52,7 +52,7 @@ Here, we generate a training set with 1,000 traces of length 10.
 
 	>>> # We generate 1000 sequences of 10 observations
 	>>> # using an uniform scheduler to resolve the non-deterministic choices.
-	>>> training_set1= original_model.generateSet(1000,10,scheduler=ja.UniformScheduler(actions))
+	>>> training_set = original_model.generateSet(1000,10,scheduler=ja.UniformScheduler(actions))
 
 Generating the initial hypothesis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -87,11 +87,11 @@ and a training set containing ``training_set`` plus a number of sequences (here 
 by the original model with the *active learning scheduler* described in `the paper <https://arxiv.org/pdf/2110.03014.pdf>`_.
 In practice, for each new sequence, it uses the *active learning scheduler* with probability 0.9 and an uniform scheduler
 with probability 0.1. These probabilities can be changed by setting the parameter ``epsilon_greedy`` of the ``fit``
-method. The legnth of the additional traces can be set using the ``sequence_length`` parameter.
+method. The length of the additional traces can be set using the ``sequence_length`` parameter.
 
 .. code-block:: python
 
-	>>> output_model_active  = ja.Active_BW_MDP().fit(training_set1, lr=0, nb_iterations=10,
+	>>> output_model_active  = ja.Active_BW_MDP().fit(training_set, lr=0, nb_iterations=10,
 							sul=original_model,nb_sequences=100,initial_model=initial_hypothesis)
 	Learning an MDP...
 	|████████████████████████████████████████| (!) 50 in 1:22.4 (0.61/s) 

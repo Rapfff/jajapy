@@ -1,8 +1,8 @@
 Markov Chain (MC)
 =================
-A MC is a deterministic model where the transition functions and the generating functions are dependent.
-The model first generate an observation and move to the next state according to one unique probability
-distributions. More information `here <https://en.wikipedia.org/wiki/Markov_chain>`_. 
+A MC is a deterministic model where each state is labelled with exactly one observation (called *label*).
+It can be seen as a special case of HMM.
+More information `here <https://en.wikipedia.org/wiki/Markov_chain>`_. 
 
 Example
 -------

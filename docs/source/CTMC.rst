@@ -4,15 +4,16 @@ In a CTMC, each transition from :math:`s` to :math:`s'` is associated to a expon
 The probability of this transition to be triggered within :math:`\tau \in \mathbb{R}_{>0}` time-units is :math:`1 - e^{- R(s,s') \, \tau}`. 
 When, from a state :math:`s`, there are more than one outgoing transition, we are in presence of a race condition.
 In this case, the first transition to be triggered determines which observation is generated as well as the next state of the CTMC.
-According to these dynamics, the time spent in state :math:`s` before any transition occurs, called waiting time, is exponentially
-distributed with parameter :math:`E(s) = \sum_{s' \in S} R(s,s')`, called exit-rate of :math:`s`.
+According to these dynamics, the time spent in state :math:`s` before any transition occurs, called waiting time (sometimes *dwell time*),
+is exponentially distributed with parameter :math:`E(s) = \sum_{s' \in S} R(s,s')`, called exit-rate of :math:`s`.
 
 Example
 -------
 
 In the following picture, the values on the transitions are the parameters :math:`R(s,s')`.
 The observations, which are *red, yellow, blue* are represented by the color of the states.
-The values on each state correspond to the exit-rates.
+The values on each state correspond to the expected waiting time before leaving this state:
+it is the inverse of the exit-rate.
 
 .. image:: pictures/CTMC.png
    :width: 75 %

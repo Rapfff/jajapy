@@ -418,8 +418,7 @@ class IOFPTA:
 
 class IOAlergia:
 	"""
-	Class for an  IOAlergia algorithm.
-	This algorithm is described here:
+	Class for an  IOAlergia algorithm described here:
 	https://arxiv.org/pdf/1212.3873.pdf
 	"""
 	def __init__(self):
@@ -484,7 +483,8 @@ class IOAlergia:
 			res.addInitialState(i)
 		return res
 
-	def fit(self,sample:Set,epsilon:float, stormpy_output: bool = True):
+	def fit(self,sample:Set,epsilon:float,
+	 		stormpy_output: bool = True, output_file_prism : str = None):
 		"""
 		Fits the model according to ``traces``.
 
@@ -498,6 +498,11 @@ class IOAlergia:
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
+		output_file_prism : str, optional
+			If set, the output model will be saved in a prism file at this
+			location. Otherwise the output model will not be saved.
+			This parameter is ignored if the model under learning is a HMM
+			or a GoHMM.
 
 		Returns
 		-------
@@ -545,6 +550,10 @@ class IOAlergia:
 		if stormpy_output and not stormpy_installed:
 			print("WARNING: stormpy not found. The output model will not be a stormpy sparse model")
 			stormpy_output = False
+
+
+		if output_file_prism:
+			self.h.savePrism(output_file_prism)
 		
 		if stormpy_output:
 			return jajapyModeltoStormpy(m)

@@ -23,7 +23,7 @@ Creating a CTMC
 
 In the model above, the colour of each state indicates its label, the numbers on the states
 corresponds to the expected dwell times (i.e. the inverse of the sum of the leaving rates),
-ad the numbers on the transitions shows the rates.
+and the numbers on the transitions shows the rates.
 
 We can create the model depicted above like this:
 
@@ -39,7 +39,7 @@ We can create the model depicted above like this:
 
 Generating a training set
 ^^^^^^^^^^^^^^^^^^^^^^^^^
-Now we can generate a training set. This training set contains 1000 traces of length 10, with the
+Now we can generate a training set. This training set contains 1,000 traces of length 10, with the
 dwell times.
 
 .. code-block:: python
@@ -53,10 +53,10 @@ Generating the initial hypothesis
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The system under learning contains 5 states, and only 3 different labels. Hence, if we let *Jajapy* generate
 a random CTMC with 5 states for the training set, the first 3 states will be labeled with *blue, red*
-and *yellow*, and the 2 remaining will be labeled randomly. Hence, we could possibly have 3 states labeled
+and *yellow*, and the 2 remaining will be labeled randomly. Thus, we could possibly have 3 states labeled
 with *yellow* and only one with *blue*, which is far away from what we have in the system under learning.
 
-To overcome this problem, we will generate 10 different random CTMCs, and pick the one which maximizes the
+To overcome this problem we will generate 10 different random CTMCs and pick the one which maximizes the
 loglikelihood of the test set.
 
 In the following, we assume that we know the 3 possible labels (otherwise we can simply look into the training set),
@@ -82,10 +82,10 @@ hypothesis.
 	>>>		if quality_best < current_quality: #we keep the best model only
 	>>>				quality_best = current_quality
 	>>>				best_model = current_model
-	>>> print(best_model.labelling)
 	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
 	[...]
-	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly
+	WARNING: the size of the labelling is lower than the number of states. The labels for the last states will be chosen randomly.
+	>>> print(best_model.labelling)
 	['red', 'yellow', 'blue', 'blue', 'blue', 'init']
 
 The best model labelling is very close to the original model one. In fact, we can even argue that we 

@@ -13,7 +13,7 @@ NB_PROCESS = cpu_count()-1
 
 class BW:
 	"""
-	Abstract class for general Baum-Welch algorithm.
+	Class for the Baum-Welch algorithm.
 	"""
 	def __init__(self):
 		pass
@@ -28,7 +28,9 @@ class BW:
 			stormpy_output: bool = True,fixed_parameters: ndarray = False,
 			update_constant :bool = True, min_val: float = None, max_val: float = None):
 		"""
-		Fits the model according to ``traces``.
+		Fits any model according to ``traces``.
+		This method will figure which type of Markov model should be used, according to the
+		training set and the initial model (if given).
 
 		Parameters
 		----------

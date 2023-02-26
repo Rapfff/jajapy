@@ -75,7 +75,7 @@ class ActiveLearningScheduler:
 
 class Active_BW_MDP(BW):
 	"""
-	Class for general Active Baum-Welch algorithm on MDP.
+	Class for the Active Baum-Welch algorithm on MDP.
 	This algorithm is described here:
 	https://arxiv.org/pdf/2110.03014.pdf
 	"""
