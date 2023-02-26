@@ -16,7 +16,7 @@ using `Alergia <https://grfia.dlsi.ua.es/repositori/grfia/pubs/57/icgi1994.pdf>`
 
 Creating the original MC and generating the training set
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-This step is similar to the first steps in :ref:`example-random-restart`.
+This step is similar to the first steps in :ref:`example-random_restart`.
 
 .. code-block:: python
 	
