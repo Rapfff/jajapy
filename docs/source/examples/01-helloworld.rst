@@ -50,7 +50,7 @@ Now we can generate a training set. This training set contains 1000 traces, whic
 
 .. code-block:: python
 
-	# We generate 1000 sequences of 10 observations
+	>>> # We generate 1000 sequences of 10 observations
 	>>> training_set = original_model.generateSet(1000,10)
 
 *(optional)* This Set can be saved into a text file and then loaded as follow:

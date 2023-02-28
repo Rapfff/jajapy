@@ -16,7 +16,13 @@ class BW:
 	Class for the Baum-Welch algorithm.
 	"""
 	def __init__(self):
-		pass
+		try:
+			from ..with_stormpy import jajapyModeltoStormpy, stormpyModeltoJajapy
+			self.jajapyModeltoStormpy = jajapyModeltoStormpy
+			self.stormpyModeltoJajapy = stormpyModeltoJajapy
+			self.stormpy_installed = True
+		except ModuleNotFoundError:
+			self.stormpy_installed = False
 
 
 	def fit(self,training_set,initial_model=None, nb_states: int=None,
@@ -149,11 +155,6 @@ class BW:
 			nb_distributions: int=None,
 			stormpy_output: bool = True,fixed_parameters: ndarray = False,
 			update_constant :bool = True, min_val: float = None, max_val: float = None):	
-		try:
-			from ..with_stormpy import jajapyModeltoStormpy, stormpyModeltoJajapy
-			self.stormpy_installed = True
-		except ModuleNotFoundError:
-			self.stormpy_installed = False
 
 		self._getInitialModel(initial_model,nb_states)
 		self._getTrainingSet(training_set)
@@ -211,6 +212,9 @@ class BW:
 					self.h.randomInstantiation(min_val=min_val)
 			elif max_val != None:
 				self.h.randomInstantiation(max_val=max_val)
+			else:
+				self.h.randomInstantiation()
+				
 			if self.training_set.type == 4:
 				self._computeAlphas = self._computeAlphas_timed
 				self._computeBetas  = self._computeBetas_timed
@@ -279,7 +283,7 @@ class BW:
 			self._endPrint(counter,running_time)
 
 		if stormpy_output and (self.type_model != HMM_ID and self.type_model != GOHMM_ID):
-			self.h = jajapyModeltoStormpy(self.h)
+			self.h = self.jajapyModeltoStormpy(self.h)
 
 		if return_data:
 			info = {"learning_rounds":counter,"learning_time":running_time,"training_set_loglikelihood":currentloglikelihood}
@@ -1286,7 +1290,7 @@ class BW:
 		except AttributeError: # then initial_model is a stormpy sparse model
 			if not self.stormpy_installed:
 				raise RuntimeError("the initial model is a Storm model and Storm is not installed on the machine")
-			initial_model = stormpyModeltoJajapy(initial_model)
+			initial_model = self.stormpyModeltoJajapy(initial_model)
 		self.h = initial_model
 		self.type_model = initial_model.model_type
 			
