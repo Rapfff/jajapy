@@ -343,7 +343,11 @@ class Model:
 		for seq,times in zip(sequences.sequences,sequences.times):
 			tasks.append(p.apply_async(self._computeAlphas, [seq, times,]))
 		temp = [res.get() for res in tasks if res.get() != False]
-		return sum(temp)/sum(sequences.times)
+		s = sum(temp)
+		if s == 0.0:
+			print('WARNING: the model is not able to generate any sequence in the set')
+			return 0.0
+		return s/sum(sequences.times)
 
 	def _computeAlphas(self,sequence: list, times: int) -> float:
 		"""
@@ -369,10 +373,13 @@ class Model:
 				p = array([self.tau(ss,s,sequence[k]) for ss in range(self.nb_states)])
 				new_arr[s] = dot(prev_arr,p)
 			prev_arr = new_arr
-		if prev_arr.sum() == 0.0:
-			return 0.0
 		prev_arr *= (array([self.b(s,sequence[-1]) for s in range(self.nb_states)]))
-		return log(prev_arr.sum())*times
+		try:
+			res = log(prev_arr.sum())*times
+		except ValueError:
+			print("WARNING: this model is not able to generate this sequence")
+			res = False
+		return res
 	
 	def _checkStateIndex(self,s:int) -> None:
 		if type(s) != int:

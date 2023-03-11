@@ -58,6 +58,11 @@ class Base_MC(Model):
 		"""
 		self._checkStateIndex(state)
 		return self.labelling[state]
+
+	def b(self,state:int, label:str):
+		if self.getLabel(state) == label:
+			return 1.0
+		return 0.0
 	
 	def getAlphabet(self) -> list:
 		"""

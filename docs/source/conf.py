@@ -18,11 +18,11 @@ sys.path.insert(0, pathlib.Path(__file__).parents[2].resolve().as_posix())
 # -- Project information -----------------------------------------------------
 
 project = 'jajapy'
-copyright = '2022, Raphaël Reynouard'
+copyright = '2023, Raphaël Reynouard'
 author = 'Raphaël Reynouard'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.10.1'
+release = 'v0.10.2'
 
 
 # -- General configuration ---------------------------------------------------

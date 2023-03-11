@@ -91,11 +91,6 @@ class MC(Base_MC):
 		self._checkStateIndex(s2)
 		return self.matrix[s1][s2]
 
-	def b(self,state:int, label:str):
-		if self.getLabel(state) == label:
-			return 1.0
-		return 0.0
-
 	def next(self,state: int) -> tuple:
 		"""
 		Return a state-observation pair according to the distributions described by `matrix`

@@ -196,7 +196,7 @@ class BW:
 				self._computeAlphas = self._computeAlphas_timed
 				self._computeBetas  = self._computeBetas_timed
 			if type(fixed_parameters) == bool:
-				self.fixed_parameters = full(initial_model.matrix.shape,False)
+				self.fixed_parameters = full(self.h.matrix.shape,False)
 			else:
 				self.fixed_parameters = fixed_parameters
 		

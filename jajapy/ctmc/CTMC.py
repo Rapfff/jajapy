@@ -65,6 +65,7 @@ class CTMC(Base_MC):
 		"""
 		self._checkStateIndex(s)
 		return sum(self.matrix[s])
+
 	
 	def l(self, s1:int, s2:int, obs:str) -> float:
 		"""
