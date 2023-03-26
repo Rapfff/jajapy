@@ -1,9 +1,139 @@
 from .MC import MC
-from math import sqrt, log
 from ..base.Set import Set
-from ..base.tools import normalize
+from ..base.tools import hoeffdingBound
 from numpy import zeros
 
+class PTA_node:
+	def __init__(self, label,parent=None,count=0) -> None:
+		self.label = label
+		self.count = count
+		self.kids = []
+		self.parents = [parent]
+	
+	def findKid(self,label):
+		for (k,_) in self.kids:
+			if k.label == label:
+				return k
+		return None
+
+	def incKid(self,el,c=1):
+		if type(el) == str:
+			label = el
+			s = -1
+		else:
+			s = el
+			label = -1
+		for i,(k,_) in enumerate(self.kids):
+			if k.label == label or s==k:
+				self.kids[i] = (k,self.kids[i][1]+c)
+				return k
+		return None
+
+	def replaceKid(self,s1,s2):
+		for i,(k,_) in enumerate(self.kids):
+			if k == s1:
+				self.kids[i] = (s2,self.kids[i][1])
+				return True
+		return None
+
+	def addParent(self,s):
+		if s != self and s not in self.parents:
+			self.parents.append(s)
+	
+class PTA:
+	def __init__(self,traces) -> None:
+		self.root = PTA_node('')
+		self.root.parents = []
+		self.alphabet = []
+		
+		for trace,time in zip(traces.sequences,traces.times):
+			node = self.root
+			curr = 0
+			while curr < len(trace):
+				char = trace[curr]
+				if not char in self.alphabet:
+					self.alphabet.append(char)
+				nnext = node.incKid(char,time)
+				if nnext == None:
+					node = self.addKids(node,trace[curr:],time)
+					curr = len(trace)
+				else:
+					node = nnext
+					curr += 1
+			node.count = time
+
+	def addKids(self,start:PTA_node,string:str,count:int):
+		n = start
+		for l in string:
+			n.kids.append((PTA_node(l,n),count))
+			n = n.kids[-1][0]
+		return n
+
+	def compatible(self,s1,s2,alpha):
+		if s1 == None or s2 == None:
+			return True
+		if s1.label != s2.label:
+			return False
+		n1 = sum([i for (_,i) in s1.kids])+s1.count
+		n2 = sum([i for (_,i) in s2.kids])+s2.count
+		if not hoeffdingBound(s1.count,n1,s2.count,n2,alpha):
+			return False
+		for char in self.alphabet:
+			k1,k2 = s1.findKid(char),s2.findKid(char)
+			if not self.compatible(k1,k2,alpha):
+				return False
+		return True
+		
+	def merge(self,s1,s2):
+
+		s1.count += s2.count
+
+		for p in s2.parents:
+			p.replaceKid(s2,s1)
+			s1.addParent(p)
+
+		self.fold(s1,s2)
+
+	def fold(self,s1,s2):
+		for (k2,c) in s2.kids:
+			k1 = s1.findKid(k2.label)
+			if k1 == None:
+				s1.kids.append((k2,c))
+				k2.parents.remove(s2)
+				k2.addParent(s1)
+			else:
+				k1.count += k2.count
+				s1.incKid(k1,c)
+				self.fold(k1,k2)
+
+	def toMC(self):
+		if 'init' in self.alphabet:
+			if len(self.root.kids) == 1 and self.root.kids[0][0].label == 'init':
+				self.root = self.root.kids[0][0]
+			else:
+				msg =  "The label 'init' cannot be used: it is reserved for initial states."
+				raise SyntaxError(msg)
+		else:
+			self.root.label = 'init'
+		
+		states = [self.root]
+		temp = [self.root]
+		while len(temp) != 0:
+			n = temp[0]
+			temp = temp[1:]
+			for (k,c) in n.kids:
+				if not k in states:
+					states.append(k)
+					temp.append(k)
+		
+		matrix = zeros((len(states),len(states)))
+		for i,s in enumerate(states):
+			for (k,c) in s.kids:
+				matrix[i,states.index(k)] = c
+			matrix[i] /= matrix[i].sum()
+		labelling = [s.label for s in states]
+		return MC(matrix,labelling)
+		
 
 class Alergia:
 	"""
@@ -14,81 +144,8 @@ class Alergia:
 	def __init__(self):
 		None
 
-	def _initialize(self,traces:Set,alpha:float,alphabet:list=None) -> None:
-		"""
-		Create the PTA from the training set ``traces ``, initialize
-		the alpha value and the alphabet.
-
-		Parameters
-		----------
-		traces : Set
-			Training set.
-		alpha : float
-			alpha value used in the Hoeffding boung
-		alphabet : list, optional.
-			List of all possible observations, by default None.
-		"""
-		self.alpha = alpha
-		if alphabet == None:
-			self.alphabet = traces.getAlphabet()
-		else:
-			self.alphabet = alphabet
-		self.createPTA(traces)
-	
-	def createPTA(self,traces: Set):
-		"""
-		Create a PTA from ``traces``.
-
-		Parameters
-		----------
-		traces : Set
-			traces used to generate the PTA.
-		"""
-		N = sum(traces.times)
-		n = len(traces.sequences[0])
-
-		self.states_lbl = [""]
-		self.states_counter= [N]
-		
-		#states_transitions = [
-		#						[state1: [proba1,proba2,...],[state1,state2,...],[obs1,obs2,...]]
-		#						[state2: [proba1,proba2,...],[state1,state2,...],[obs1,obs2,...]]
-		#						...
-		#					  ]
-
-		self.states_transitions = []
-
-		#init self.states_lbl and self.states_counter
-		for i in range(n):
-			for seq in range(len(traces.sequences)):
-				if not traces.sequences[seq][:i+1] in self.states_lbl:
-					self.states_lbl.append(traces.sequences[seq][:1+i])
-					self.states_counter.append(traces.times[seq])
-				else:
-					self.states_counter[self.states_lbl.index(traces.sequences[seq][:i+1])] += traces.times[seq]
-
-		#init self.states_transitions
-		for s1 in range(len(self.states_lbl)):
-			self.states_transitions.append([[],[],[]])
-			
-			len_s1 = len(self.states_lbl[s1])
-			
-			s2 = s1 + 1
-			while s2 < len(self.states_lbl):
-				if len(self.states_lbl[s2]) == len_s1: # too short
-					s2 += 1
-				elif len(self.states_lbl[s2]) == len_s1 + 2: # too long
-					break
-				elif self.states_lbl[s2][:-1] != self.states_lbl[s1]: # not same prefix
-					s2 += 1
-				else: # OK
-					self.states_transitions[-1][0].append(self.states_counter[s2])
-					self.states_transitions[-1][1].append(s2)
-					self.states_transitions[-1][2].append(self.states_lbl[s2][-1])
-					s2 += 1
-
-	def fit(self,traces: Set,alpha: float=0.1,alphabet: list=None,
-	 		stormpy_output: bool = True, output_file_prism: str = None):
+	def fit(self,traces: Set,alpha: float=0.1,
+			stormpy_output: bool = True, output_file_prism: str = None):
 		"""
 		Fits a MC according to ``traces``.
 
@@ -98,17 +155,12 @@ class Alergia:
 			The training set.
 		alpha : float, optional
 			_description_, by default 0.1
-		alphabet : list, optional
-			The alphabet of the model we are learning.
-			Can be omitted.
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
 		output_file_prism : str, optional
 			If set, the output model will be saved in a prism file at this
 			location. Otherwise the output model will not be saved.
-			This parameter is ignored if the model under learning is a HMM
-			or a GoHMM.
 
 		Returns
 		-------
@@ -117,17 +169,26 @@ class Alergia:
 			If `stormpy_output` is set to `False` or if stormpy is not available on
 			the machine it returns a `jajapy.MC`, otherwise it returns a `stormpy.SparseDtmc`
 		"""
-		self._initialize(traces,alpha,alphabet)
+		self._initialize(traces,alpha)
 		
-		for j in range(1,len(self.states_lbl)):
-			if self.states_lbl[j] != None:
-				for i in range(j):
-					if self.states_lbl[i] != None:
-						if self._compatibleMerge(i,j):
-							j -= 1
-							break
-
-		m = self._toMC()
+		red = [self.T.root]
+		blue = [k for (k,_) in self.T.root.kids]
+		while len(blue)>0:
+			s1 = blue[0]
+			merged = False
+			for s2 in red:
+				if self.T.compatible(s1,s2,alpha):
+					self.T.merge(s2,s1)
+					merged = True
+					break
+			if not merged:
+				red.append(s1)
+			blue = []
+			for s in red:
+				blue += [k for (k,_) in s.kids]
+			blue = list(set(blue))
+			blue = [s for s in blue if s not in red]
+		m = self.T.toMC()
 
 		try:
 			from ..with_stormpy import jajapyModeltoStormpy
@@ -145,138 +206,29 @@ class Alergia:
 			return jajapyModeltoStormpy(m)
 		else:
 			return m
-		
 
-	def _transitionStateAction(self,state,action):
-		try:
-			return self.states_transitions[state][1][self.states_transitions[state][2].index(action)]
-		except ValueError:
-			return None
-	
-	def _areDifferent(self,i:int,j:int,a:str) -> bool:
+	def _initialize(self,traces:Set,alpha:float) -> None:
 		"""
-		return if nodes ``i`` and ``j`` are different for the observation
-		``a`` according to the Hoeffding bound computed  with ``self.alpha``.
+		Create the PTA from the training set ``traces ``, initialize
+		the alpha value and the alphabet.
 
 		Parameters
 		----------
-		i : int
-			index of the first node.
-		j : int
-			index of the second node.
-		a : str
-			observation.
-
-		Returns
-		-------
-		bool
-			``True`` if the are different, ``False`` otherwise.
+		traces : Set
+			Training set.
+		alpha : float
+			alpha value used in the Hoeffding bound
 		"""
-		ni = self.states_counter[i]
-		nj = self.states_counter[j]
-		try:
-			fi = self.states_transitions[i][0][self.states_transitions[i][2].index(a)]
-		except ValueError:
-			fi = 0
-		try:
-			fj = self.states_transitions[j][0][self.states_transitions[j][2].index(a)]
-		except ValueError:
-			fj = 0
-		return ( abs((fi/ni) - (fj/nj)) > sqrt(0.5*log(2/self.alpha))*((1/sqrt(ni)) + (1/sqrt(nj))) )
+		self.alpha = alpha
+		self.alphabet = traces.getAlphabet()
+		self.createPTA(traces)
 
-
-	def _compatibleMerge(self,i,j):
-		choices = [0]
-		pairs = [(i,j)]
-
-		while True:
-			a = self.alphabet[choices[-1]]
-			if self._areDifferent(i,j,a): #stop
-				return False
-
-			i = self._transitionStateAction(i,a)
-			j = self._transitionStateAction(j,a)
-
-
-			if i == None or j == None or i == j:
-				i = pairs[-1][0]
-				j = pairs[-1][1]
-				choices[-1] += 1 #next 
-				
-				while choices[-1] == len(self.alphabet):#roll back
-					choices = choices[:-1]
-					self._merge(i,j)
-					pairs = pairs[:-1]
-					if len(pairs) == 0:
-						return True
-					i = pairs[-1][0]
-					j = pairs[-1][1]
-					choices[-1] += 1
-
-			else: #deeper
-				choices.append(0)
-				pairs.append((i,j))
-
-	def _merge(self,i,j):
-		if i > j :
-			j,i = i,j
-		for state in range(len(self.states_lbl)):
-			if self.states_lbl[state] != None:
-				for transition in range(len(self.states_transitions[state][1])):
-					if self.states_transitions[state][1][transition] == j:
-						self.states_transitions[state][1][transition] = i
+	
+	def createPTA(self,traces):
+		temp1 = traces.sequences[:]
+		temp2 = traces.times[:]
+		traces.sequences.sort()
+		traces.times = [temp2[temp1.index(i)] for i in traces.sequences]
+		self.T = PTA(traces)
 		
-		for a in self.states_transitions[j][2]:
-			
-			ja = self.states_transitions[j][2].index(a)
-			
-			if a in self.states_transitions[i][2]:
-				self.states_transitions[i][0][self.states_transitions[i][2].index(a)] += self.states_transitions[j][0][ja]
-			
-			else:
-				self.states_transitions[i][0].append(self.states_transitions[j][0][ja])
-				self.states_transitions[i][1].append(self.states_transitions[j][1][ja])
-				self.states_transitions[i][2].append(a)
-
-
-		self.states_counter[i] += self.states_counter[j]
-		self.states_lbl[j] = None
-		self.states_transitions[j] = None
-		self.states_counter[j] = None
-
-	def _toMC(self):
-		states = [j for j in range(len(self.states_transitions)) if self.states_lbl[j] != None]
-		nb_init= len(states)
-		# states[x] = y : y->index alergia x->index jajapy
-		labelling = [None for s in states]
-		transitions = []
-
-		for s in range(nb_init):
-			ai = states[s]
-			p = [j/self.states_counter[ai] for j in self.states_transitions[ai][0]]
-			p = normalize(p)
-			o = self.states_transitions[ai][2]
-			d = [states.index(dest) for dest in self.states_transitions[ai][1]]
-			for obs, dest, i in zip(o,d,range(len(d))):
-				if labelling[dest] == None:
-					labelling[dest] = obs
-				elif labelling[dest] != obs:
-					d[i] = len(states)
-					labelling.append(obs)
-					states.append(states[dest])
-			transitions.append([(s,d[i],p[i]) for i in range(len(p))])
-				
-		for s in range(nb_init,len(states)):
-			transitions.append([(s,i[1],i[2]) for i in transitions[states.index(states[s])]])
-		
-		for i,j in enumerate(labelling):
-			if j == None:
-				labelling[i] = 'init'
-				
-		trans = zeros((len(states),len(states)))
-		for j in transitions:
-			for i in j:
-				trans[i[0],i[1]] = i[2]
-
-		return MC(trans,labelling)
 		

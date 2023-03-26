@@ -2,7 +2,7 @@ from random import random
 from scipy.stats import norm
 from numpy import nditer, array, ndarray, nonzero
 from numpy.random import randint
-
+from math import log,sqrt
 
 def normpdf(x: float, params: list, variation:float = 0.01) -> float:
 	"""
@@ -132,3 +132,8 @@ def checkProbabilities(l: ndarray) -> bool:
 		True if the sum of the list is 0.0 or 1.0.
 	"""
 	return round(l.sum(),3) == 1.0 or round(l.sum(),3) == 0.0
+
+def hoeffdingBound(f1,n1,f2,n2,alpha):
+	if n1*n2 == 0.0:
+		return True
+	return abs(f1/n1 - f2/n2) < (n1**(-1/2)+n2**(-1/2))*sqrt(0.5*log(2/alpha))
