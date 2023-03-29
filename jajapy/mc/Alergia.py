@@ -164,7 +164,6 @@ class Alergia:
 			the machine it returns a `jajapy.MC`, otherwise it returns a `stormpy.SparseDtmc`
 		"""
 		self._initialize(traces,alpha)
-		self.T.pprint()
 		red = [self.T.root]
 		blue = [k for (k,_) in self.T.root.kids]
 		while len(blue)>0:
@@ -173,7 +172,6 @@ class Alergia:
 			for s2 in red:
 				if self.T.compatible(s1,s2,alpha):
 					self.T.merge(s2,s1)
-					self.T.pprint()
 					merged = True
 					break
 			if not merged:
