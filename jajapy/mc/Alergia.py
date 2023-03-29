@@ -8,7 +8,7 @@ class PTA_node:
 		self.label = label
 		self.count = count
 		self.kids = []
-		self.parents = [parent]
+		self.parent = parent
 	
 	def findKid(self,label):
 		for (k,_) in self.kids:
@@ -35,15 +35,10 @@ class PTA_node:
 				self.kids[i] = (s2,self.kids[i][1])
 				return True
 		return None
-
-	def addParent(self,s):
-		if s != self and s not in self.parents:
-			self.parents.append(s)
 	
 class PTA:
 	def __init__(self,traces) -> None:
 		self.root = PTA_node('')
-		self.root.parents = []
 		self.alphabet = []
 		
 		for trace,time in zip(traces.sequences,traces.times):
@@ -85,13 +80,8 @@ class PTA:
 		return True
 		
 	def merge(self,s1,s2):
-
 		s1.count += s2.count
-
-		for p in s2.parents:
-			p.replaceKid(s2,s1)
-			s1.addParent(p)
-
+		s2.parent.replaceKid(s2,s1)
 		self.fold(s1,s2)
 
 	def fold(self,s1,s2):
@@ -99,25 +89,28 @@ class PTA:
 			k1 = s1.findKid(k2.label)
 			if k1 == None:
 				s1.kids.append((k2,c))
-				k2.parents.remove(s2)
-				k2.addParent(s1)
+				k2.parent = s1
 			else:
 				k1.count += k2.count
 				s1.incKid(k1,c)
 				self.fold(k1,k2)
 
+	def pprint(self):
+		print(self.toMC())
+
 	def toMC(self):
+		root = self.root
 		if 'init' in self.alphabet:
 			if len(self.root.kids) == 1 and self.root.kids[0][0].label == 'init':
-				self.root = self.root.kids[0][0]
+				root = self.root.kids[0][0]
 			else:
 				msg =  "The label 'init' cannot be used: it is reserved for initial states."
 				raise SyntaxError(msg)
 		else:
-			self.root.label = 'init'
+			root.label = 'init'
 		
-		states = [self.root]
-		temp = [self.root]
+		states = [root]
+		temp = [root]
 		while len(temp) != 0:
 			n = temp[0]
 			temp = temp[1:]
@@ -130,7 +123,8 @@ class PTA:
 		for i,s in enumerate(states):
 			for (k,c) in s.kids:
 				matrix[i,states.index(k)] = c
-			matrix[i] /= matrix[i].sum()
+			if (matrix[i]>0).any():
+				matrix[i] /= matrix[i].sum()
 		labelling = [s.label for s in states]
 		return MC(matrix,labelling)
 		
@@ -170,7 +164,7 @@ class Alergia:
 			the machine it returns a `jajapy.MC`, otherwise it returns a `stormpy.SparseDtmc`
 		"""
 		self._initialize(traces,alpha)
-		
+		self.T.pprint()
 		red = [self.T.root]
 		blue = [k for (k,_) in self.T.root.kids]
 		while len(blue)>0:
@@ -179,6 +173,7 @@ class Alergia:
 			for s2 in red:
 				if self.T.compatible(s1,s2,alpha):
 					self.T.merge(s2,s1)
+					self.T.pprint()
 					merged = True
 					break
 			if not merged:

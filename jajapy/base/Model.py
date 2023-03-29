@@ -377,7 +377,7 @@ class Model:
 		try:
 			res = log(prev_arr.sum())*times
 		except ValueError:
-			print("WARNING: this model is not able to generate this sequence")
+			print("WARNING: this model is not able to generate",sequence)
 			res = False
 		return res
 	

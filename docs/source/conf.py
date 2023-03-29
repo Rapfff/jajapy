@@ -22,7 +22,7 @@ copyright = '2023, Raphaël Reynouard'
 author = 'Raphaël Reynouard'
 
 # The full version, including alpha/beta/rc tags
-release = 'v0.10.2'
+release = 'v0.10.3'
 
 
 # -- General configuration ---------------------------------------------------

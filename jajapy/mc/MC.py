@@ -337,6 +337,8 @@ def createMC(transitions: list, labelling: list, initial_state, name: str ="unkn
 	else:
 		if type(initial_state) == ndarray:
 			initial_state = initial_state.tolist()
+		if len(initial_state) != nb_states:
+			raise ValueError('The size of the initial_state list must be equal to the number of states')
 		res[-1] = array(initial_state+[0.0])
 
 	return MC(res, labelling, name)
