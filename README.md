@@ -1,6 +1,6 @@
 <div align="center">
 <h1>
-<img src="logo.png" width="300">
+<img src="https://github.com/Rapfff/jajapy/blob/main/logo.png" width="300">
 </h1><br>
 
 [![Pypi](https://img.shields.io/pypi/v/jajapy)](https://pypi.org/project/jajapy/)
