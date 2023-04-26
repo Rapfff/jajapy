@@ -1,7 +1,7 @@
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from numpy.polynomial.polynomial import polyroots
-from numpy import array, dot, append, zeros, ones, float64, inf, ndarray, log, isnan, sqrt, stack, longdouble, float16, where, delete, newaxis, full
+from numpy import array, dot, append, zeros, ones, float64, inf, ndarray, log, isnan, sqrt, stack, longdouble, float16, where, delete, newaxis, full, infty
 from math import exp
 from datetime import datetime
 from .Set import Set
@@ -248,7 +248,7 @@ class BW:
 		self.nb_states = self.h.nb_states
 
 		counter = 0
-		prevloglikelihood = 10
+		prevloglikelihood = -infty
 
 		if max_it != inf:
 			alive_parameter = max_it
@@ -265,7 +265,7 @@ class BW:
 				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
 				bar.text = bar_text
 				bar()
-				if abs(prevloglikelihood - currentloglikelihood) < epsilon:
+				if currentloglikelihood - prevloglikelihood < epsilon:
 					break
 				else:
 					prevloglikelihood = currentloglikelihood
@@ -864,7 +864,7 @@ class BW:
 		r = 0
 		for p in self.h.involvedParameters(s1,s2):
 			r += self.a_pis[s1,s2,self.h.parameter_str.index(p)]
-		return r
+		return int(r)
 
 	def _h_e_PCTMC(self,s: int) -> float:
 		"""
@@ -882,7 +882,7 @@ class BW:
 			An exit rate.
 		"""
 		return self.hval[s].sum()
-	
+
 	def _h_l_PCTMC(self, s1: int, s2: int, obs: str) -> float:
 		"""
 		Returns the rate, in the current hypothesis, associated to the
@@ -958,11 +958,11 @@ class BW:
 						p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq])
 						den_cste[itrans+1] = dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],times/proba_seq).sum()
 					num_cste[itrans+1] = dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],times/proba_seq).sum()
-			
+
 		else:
 			num_cste = None
 			den_cste = None
-			
+
 		#print(sequence, proba_seq)
 		num_cat1 = zeros(len(self.parameters_cat[0]))
 		den_cat1 = zeros(len(self.parameters_cat[0]))
@@ -992,13 +992,16 @@ class BW:
 					p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq])
 					den_cat2[iparam] += dot(alpha_matrix[s][:-1]*beta_matrix[s][:-1],self.a_pis[s,ss,p_index]*self.hval[s,ss]*times/(proba_seq*self._h_e(s))).sum()
 				num_cat2[iparam] += dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
-		
+
 		terms_cat3 = []
 		for iparam,param in enumerate(self.parameters_cat[2]):
 			p_index = self.h.parameter_str.index(param)
 			temp = [0.0]
 			for s,ss in self.h.parameterIndexes(param):
-				p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				if timed:
+					p = array([self._h_l(s,ss,o)*exp(-self._h_e(s)*t) for o,t in zip(obs_seq,times_seq)])
+				else:
+					p = array([self._h_l(s,ss,o)/self._h_e(s) for o in obs_seq])
 				temp[0] -= dot(alpha_matrix[s][:-1]*p*beta_matrix[ss][1:],self.a_pis[s,ss,p_index]*times/proba_seq).sum()
 				c = self._C(s,ss)
 				for _ in range(1+c-len(temp)):
@@ -1011,7 +1014,7 @@ class BW:
 			terms_cat3.append(array(temp))
 
 		return [den_cste, num_cste, den_cat1, num_cat1, den_cat2, num_cat2, terms_cat3, proba_seq, times]
-			
+
 	def _update_PCTMC(self,temp):
 		den_cat1 = array([i[2] for i in temp]).sum(axis=0)
 		num_cat1 = array([i[3] for i in temp]).sum(axis=0)
