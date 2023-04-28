@@ -46,3 +46,6 @@
 
 ## Documentation
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
+
+## About the author
+[My website](https://rapfff.github.io/)
