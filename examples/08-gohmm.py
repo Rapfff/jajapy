@@ -1,9 +1,4 @@
 from numpy import loadtxt, float64, ones, array, argmax, max, min
-#import jajapy as ja
-import os, sys
-currentdir = os.path.dirname(os.path.realpath(__file__))
-parentdir = os.path.dirname(currentdir)
-sys.path.append(parentdir)
 import jajapy as ja
 import matplotlib.pyplot as plt
 

@@ -104,7 +104,7 @@ We set the parameters according to our experience and knowledge.
 .. code-block:: python
 
 	>>> import jajapy as ja
-	>>> initial_hypothesis = ja.MGOHMM_random(nb_states=15, # this is arbitrary
+	>>> initial_hypothesis = ja.GoHMM_random(nb_states=15, # this is arbitrary
 	>>> 					nb_distributions=8, # since we have eights parameters to estimate
 	>>> 					random_initial_state=True, # our model can start in any state
 	>>> 					min_mu=-5.0, # minimum value for the mu parameters of the distributions
@@ -141,7 +141,7 @@ Then, we use our model to generate a sequence of length 2 (for the last 2 days) 
 
 .. code-block:: python
 	
-	>>> def testing(m: ja.MGOHMM, seq: list, steps=5):
+	>>> def testing(m: ja.GoHMM, seq: list, steps=5):
 	>>>		"""
 	>>>		m is our model
 	>>>		seq is one trace, i.e. one sequences of observations
