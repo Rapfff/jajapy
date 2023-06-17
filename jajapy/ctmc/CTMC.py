@@ -1,4 +1,4 @@
-from numpy.random import exponential
+import numpy.random
 from ast import literal_eval
 from ..base.tools import resolveRandom, randomProbabilities
 from ..base.Set import Set
@@ -7,7 +7,7 @@ from ..pctmc.PCTMC import PCTMC
 from ..base.Base_MC import *
 from math import exp, log
 from random import randint
-from numpy import array, zeros, dot, ndarray, vstack, hstack, newaxis, append, delete, where, insert
+from numpy import array, zeros, dot, vstack, hstack, newaxis, delete, insert
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from sympy import sympify
@@ -175,7 +175,7 @@ class CTMC(Base_MC):
 			if exp_lambda <= 0.0:
 				exps.append(1024)
 			else:
-				exps.append(exponential(1/exp_lambda))
+				exps.append(numpy.random.exponential(1/exp_lambda))
 		next_state= exps.index(min(exps))
 		next_obs = self.labelling[state]
 		return (next_obs, next_state, min(exps))
@@ -346,7 +346,8 @@ def loadCTMC(file_path: str) -> CTMC:
 
 def CTMC_random(nb_states: int, labelling: list, min_exit_rate_time : int,
 				max_exit_rate_time: int, self_loop: bool = True,
-				random_initial_state: bool=True) -> CTMC:
+				random_initial_state: bool=True,
+				sseed:int=None) -> CTMC:
 	"""
 	Generates a random CTMC. All the rates will be between 0 and 1.
 	All the exit rates will be integers.
@@ -367,6 +368,8 @@ def CTMC_random(nb_states: int, labelling: list, min_exit_rate_time : int,
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
 		Default is True.
+	sseed : int, optional
+		the seed value.
 	
 	Returns
 	-------
@@ -392,6 +395,10 @@ def CTMC_random(nb_states: int, labelling: list, min_exit_rate_time : int,
 	s2 -> s0 : lambda = 0.2
 	s2 -> s1 : lambda = 0.8
 	"""
+	if sseed != None:
+		seed(sseed)
+		numpy.random.seed(sseed)
+
 	matrix = zeros((nb_states+1,nb_states))
 	for i in range(nb_states):
 		if self_loop:
@@ -411,6 +418,9 @@ def CTMC_random(nb_states: int, labelling: list, min_exit_rate_time : int,
 	matrix = hstack((matrix,zeros(len(matrix))[:,newaxis]))
 	
 	labelling = labelsForRandomModel(nb_states,labelling)
+	
+	seed()
+	numpy.random.seed()
 	return CTMC(matrix, labelling,"CTMC_random_"+str(nb_states)+"_states")
 
 def createCTMC(transitions: list, labelling: list, initial_state,

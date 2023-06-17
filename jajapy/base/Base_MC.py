@@ -1,6 +1,6 @@
 from .Model import Model, MC_ID, MDP_ID, CTMC_ID
 from numpy import ndarray, where
-from random import choices
+from random import choices, seed
 
 class Base_MC(Model):
 	"""
@@ -123,7 +123,7 @@ class Base_MC(Model):
 		except ModuleNotFoundError:
 			raise RuntimeError("Stormpy is not installed on this machine.")
 
-def labelsForRandomModel(nb_states: int, labelling: list) -> list:
+def labelsForRandomModel(nb_states: int, labelling: list, sseed:int=None) -> list:
 	if 'init' in labelling:
 		msg =  "The label 'init' cannot be used: it is reserved for initial states."
 		raise SyntaxError(msg)
@@ -133,12 +133,14 @@ def labelsForRandomModel(nb_states: int, labelling: list) -> list:
 		print("number of states. The last labels will not be assigned to",end=" ")
 		print("any states.")
 	
-
 	if nb_states > len(labelling):
 		print("WARNING: the size of the labelling is lower than the",end=" ")
 		print("number of states. The labels for the last states will",end=" ")
 		print("be chosen randomly.")
-
+	
+	if sseed != None:
+		seed(sseed)
 	labelling = labelling[:min(len(labelling),nb_states)] + choices(labelling,k=nb_states-len(labelling))
 	labelling.append("init")
+	seed()
 	return labelling

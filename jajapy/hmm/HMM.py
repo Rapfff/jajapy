@@ -2,6 +2,7 @@ from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Base_HMM import Base_HMM,HMM_ID
 from ast import literal_eval
 from numpy import array, where, zeros
+from numpy.random import seed
 
 class HMM(Base_HMM):
 
@@ -180,7 +181,9 @@ def loadHMM(file_path: str) -> HMM:
 	return HMM(matrix, output, alphabet, initial_state, name)
 
 
-def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = False) -> HMM:
+def HMM_random(nb_states: int, alphabet: list,
+	    	   random_initial_state: bool = False,
+			   sseed: int = None) -> HMM:
 	"""
 	Generates a random HMM.
 
@@ -193,6 +196,8 @@ def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = Fals
 	random_initial_state: bool, optional
 		If set to True we will start in each state with a random probability, otherwise we will always start in state 0.
 		Default is False.
+	sseed : int, optional
+		the seed value.
 	
 	Returns
 	-------
@@ -205,6 +210,8 @@ def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = Fals
 	"""
 	matrix = []
 	output = []
+	if sseed != None:
+		seed(sseed)
 	for s in range(nb_states):
 		p1 = array(randomProbabilities(nb_states))
 		matrix.append(p1)
@@ -217,6 +224,7 @@ def HMM_random(nb_states: int, alphabet: list, random_initial_state: bool = Fals
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
+	seed()
 	return HMM(matrix, output, alphabet, init,"HMM_random_"+str(nb_states)+"_states")
 
 

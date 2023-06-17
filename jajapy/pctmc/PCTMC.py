@@ -1,12 +1,10 @@
 from ..base.tools import resolveRandom
 from ..base.Parametric_Model import *
-from ..base.Set import Set
-from numpy import ndarray, array, zeros, dot, newaxis, hstack, inf, vstack, delete
-from numpy.random import exponential, rand
+from numpy import  zeros, dot, newaxis, hstack, inf, vstack, delete
+from numpy.random import exponential, rand, seed
 from math import exp, log
 from multiprocessing import cpu_count, Pool
 from sys import platform
-from sympy import sympify
 
 class PCTMC(Parametric_Model):
 	"""
@@ -207,7 +205,8 @@ class PCTMC(Parametric_Model):
 			return True
 		return False
 
-	def randomInstantiation(self, parameters: list = None,min_val:float = None,max_val:float = None) -> None:
+	def randomInstantiation(self, parameters: list = None,min_val:float = None,
+			 				max_val:float = None, sseed: int = None) -> None:
 		"""
 		Randomly instantiated the parameters given in `parameters`.
 		If `parameters` is not set it instantiates all the non-instantiated
@@ -229,6 +228,8 @@ class PCTMC(Parametric_Model):
 			this value is equal to the parameters with the highest instantiation.
 			If not set and if the model has less than two instantiated parameters,
 			this value is equal to 5.0.
+		sseed : int, optional
+			the seed value.
 		"""
 		if parameters == None:
 			parameters = []
@@ -247,10 +248,15 @@ class PCTMC(Parametric_Model):
 				max_val = max(self.parameter_values.values())
 			else:
 				max_val = 0.3
+	
+		if sseed != None:
+			seed(sseed)
 		val = rand(len(parameters))*(max_val-min_val)+min_val
 		while not self.instantiate(parameters,val):
 			val = rand(len(parameters))*(max_val-min_val)+min_val
-	
+
+		seed()
+
 	def _stateToString(self,state:int) -> str:
 		res = "----STATE "+str(state)+"--"+self.labelling[state]+"----\n"
 		if self.isInstantiated(state):

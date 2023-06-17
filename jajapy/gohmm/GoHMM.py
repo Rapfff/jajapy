@@ -1,10 +1,10 @@
-from numpy.random import normal
+import numpy.random
+import random
 from numpy import array, zeros, ndarray
 from ast import literal_eval
 from ..base.tools import randomProbabilities
 from ..base.Base_HMM import Base_HMM, GOHMM_ID
 from math import sqrt, exp, pi
-from random import uniform
 	
 class GoHMM(Base_HMM):
 	"""
@@ -141,7 +141,7 @@ class GoHMM(Base_HMM):
 		output : str
 			An observation.
 		"""
-		return [normal(parameter[0],parameter[1],1)[0] for parameter in self.output[s]]
+		return [numpy.random.normal(parameter[0],parameter[1],1)[0] for parameter in self.output[s]]
 	
 	def tau(self,s1:int,s2:int,obs: list) -> float:
 		"""
@@ -219,7 +219,7 @@ def loadGoHMM(file_path: str) -> GoHMM:
 def GoHMM_random(nb_states:int,nb_distributions:int,
 				  random_initial_state:bool=False,
 				  min_mu: float=0.0,max_mu: float=2.0,
-				  min_sigma: float=0.5,max_sigma: float=2.0) -> GoHMM:
+				  min_sigma: float=0.5,max_sigma: float=2.0, sseed: int = None) -> GoHMM:
 	"""
 	Generates a random GoHMM.
 
@@ -243,6 +243,8 @@ def GoHMM_random(nb_states:int,nb_distributions:int,
 		lower bound for sigma. By default 0.5
 	max_sigma : float, optional
 		upper bound for sigma. By default 2.0
+	sseed : int, optional
+		the seed value.
 
 	Returns
 	-------
@@ -251,10 +253,13 @@ def GoHMM_random(nb_states:int,nb_distributions:int,
 	"""
 	matrix = []
 	output = []
+	if sseed != None:
+		random.seed(sseed)
+		numpy.random.seed(sseed)
 	for s in range(nb_states):
 		p1 = array(randomProbabilities(nb_states))
 		matrix.append(p1)
-		p2 = [[round(uniform(min_mu,max_mu),3),round(uniform(min_sigma,max_sigma),3)] for i in range(nb_distributions)]
+		p2 = [[round(random.uniform(min_mu,max_mu),3),round(random.uniform(min_sigma,max_sigma),3)] for i in range(nb_distributions)]
 		p2 = array(p2)
 		output.append(p2)
 	matrix = array(matrix)
@@ -264,6 +269,8 @@ def GoHMM_random(nb_states:int,nb_distributions:int,
 		init = randomProbabilities(nb_states)
 	else:
 		init = 0
+	numpy.random.seed()
+	random.seed()
 	return GoHMM(matrix, output, init,"GoHMM_random_"+str(nb_states)+"_states")
 
 

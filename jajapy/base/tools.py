@@ -114,7 +114,8 @@ def randomProbabilities(size: int) -> ndarray:
 		raise ValueError("The size parameter should be higher than 0.")
 	if type(size) != int:
 		raise TypeError("The size parameter should be an int.")
-	return normalize(randint(1,11,size))
+	res = normalize(randint(1,11,size))
+	return res
 
 def checkProbabilities(l: ndarray) -> bool:
 	"""

@@ -2,6 +2,7 @@ from ..base.tools import resolveRandom, randomProbabilities, checkProbabilities
 from ..base.Base_MC import *
 from ast import literal_eval
 from numpy import ndarray, array, zeros, vstack, hstack, newaxis, append, where
+from numpy.random import seed
 
 class MC(Base_MC):
 	def __init__(self, matrix: ndarray, labelling: list, name: str ="unknown_MC") -> None:
@@ -225,7 +226,7 @@ def loadMC(file_path: str) -> MC:
 	f.close()
 	return MC(matrix, labelling, name)
 
-def MC_random(nb_states: int, labelling: list, random_initial_state: bool=True) -> MC:
+def MC_random(nb_states: int, labelling: list, random_initial_state: bool=True, sseed:int=None) -> MC:
 	"""
 	Generate a random MC.
 
@@ -239,6 +240,8 @@ def MC_random(nb_states: int, labelling: list, random_initial_state: bool=True) 
 		If set to True we will start in each state with a random probability,
 		otherwise we will always start in state 0.
 		Default is True.
+	sseed : int, optional
+		the seed value.
 	
 	Returns
 	-------
@@ -260,6 +263,8 @@ def MC_random(nb_states: int, labelling: list, random_initial_state: bool=True) 
 	----STATE 2--init----
 	s2 -> s0 : 1.0
 	"""
+	if sseed != None:
+		seed(sseed)
 	matrix = []
 	for _ in range(nb_states):
 		matrix.append(append(randomProbabilities(nb_states),0.0))
@@ -269,7 +274,8 @@ def MC_random(nb_states: int, labelling: list, random_initial_state: bool=True) 
 	else:
 		matrix.append(array([1.0]+[0.0 for i in range(nb_states)]))
 	matrix = array(matrix)
-	labelling = labelsForRandomModel(nb_states,labelling)
+	labelling = labelsForRandomModel(nb_states,labelling,sseed)
+	seed()
 	return MC(matrix, labelling,"MC_random_"+str(nb_states)+"_states")
 
 def createMC(transitions: list, labelling: list, initial_state, name: str ="unknown_MC") -> MC:

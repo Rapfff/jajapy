@@ -3,11 +3,10 @@ from math import log
 from ..base.Base_MC import *
 from ..base.Set import Set
 from .Scheduler import Scheduler
-from numpy.random import geometric
-from numpy import array, append, dot, zeros, vsplit, ndarray, where, reshape, vstack, append, concatenate
+import numpy.random
+from numpy import array, append, dot, zeros, vsplit, reshape, vstack, append, concatenate
 from ast import literal_eval
 from multiprocessing import cpu_count, Pool
-from random import choices
 
 class MDP(Base_MC):
 	"""
@@ -253,7 +252,7 @@ class MDP(Base_MC):
 		val = []
 		for i in range(set_size):
 			if distribution == 'geo':
-				curr_size = min_size + int(geometric(param))
+				curr_size = min_size + int(numpy.random.geometric(param))
 			else:
 				if type(param) == list:
 					curr_size = param[i]
@@ -473,7 +472,9 @@ def loadMDP(file_path: str) -> MDP:
 	return MDP(matrix, labelling, actions, name)
 
 
-def MDP_random(nb_states: int,labelling: list, actions: list,random_initial_state: bool = True, deterministic: bool = False) -> MDP:
+def MDP_random(nb_states: int,labelling: list, actions: list,
+	    	   random_initial_state: bool = True, deterministic: bool = False,
+			   sseed: int = None) -> MDP:
 	"""
 	Generate a random MDP.
 
@@ -492,12 +493,17 @@ def MDP_random(nb_states: int,labelling: list, actions: list,random_initial_stat
 		If True, the model will be determinstic: in state `s`, with action `a`, for all label `o`,
 		there is at most one transition to a state labelled with `o`.
 		Default is False.
+	sseed : int, optional
+		the seed value.
 	
 	Returns
 	-------
 	MDP
 		A pseudo-randomly generated MDP.
 	"""
+	if sseed != None:
+		seed(sseed)
+		numpy.random.seed(sseed)
 	alphabet = list(set(labelling))
 	matrix = []
 	for s in range(nb_states):
@@ -523,6 +529,10 @@ def MDP_random(nb_states: int,labelling: list, actions: list,random_initial_stat
 	matrix = array(matrix)
 	
 	labelling = labelsForRandomModel(nb_states,labelling)
+
+	seed()
+	numpy.random.seed()
+	
 	return MDP(matrix, labelling, actions, "MDP_random_"+str(nb_states)+"_states")
 
 
