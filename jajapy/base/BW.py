@@ -9,8 +9,6 @@ from alive_progress import alive_bar
 from .Model import MC_ID, MDP_ID, CTMC_ID, PCTMC_ID, HMM_ID, GOHMM_ID
 from sympy import sympify
 
-NB_PROCESS = cpu_count()-1
-
 class BW:
 	"""
 	Class for the Baum-Welch algorithm.
@@ -31,8 +29,9 @@ class BW:
 			nb_distributions: int=None, output_file: str=None,
 			output_file_prism: str=None, epsilon: float=0.01, max_it: int=inf,
 			pp: str='', verbose: bool=True, return_data: bool=False,
-			stormpy_output: bool = True,fixed_parameters: ndarray = False,
-			update_constant :bool = True, min_val: float = None, max_val: float = None):
+			stormpy_output: bool = True, fixed_parameters: ndarray = False,
+			update_constant: bool = True, min_val: float = None, max_val: float = None,
+			progress_bar: bool = True, processes: int = None):
 		"""
 		Fits any model according to ``traces``.
 		This method will figure which type of Markov model should be used, according to the
@@ -131,13 +130,29 @@ class BW:
 			If not set and if the model has at least two instantiated parameters,
 			this value is equal to the parameters with the highest instantiation.
 			If not set and if the model has less than two instantiated parameters,
-			this value is equal to 5.0.	
+			this value is equal to 5.0.
+		progress_bar : bool, optional
+			Display or not the progress bar.
+			Default is True.
+		processes : int, optional
+			Number of processes used during the learning.
+			Only for linux: for Windows and Mac OS it is 1.
+			Default is `cpu_count()-1`.
 
 		Returns
 		-------
 		Model
 			fitted model.
 		"""
+		if platform != "win32" or platform != "darwin":
+			self.processes = 1
+		else:
+			if type(processes) != int:
+				self.processes = cpu_count()-1
+			elif processes > cpu_count() or processes < 1:
+				self.processes = cpu_count()-1
+			else:
+				self.processes = processes
 
 		stormpy_output = self._preparation(training_set,initial_model, nb_states,
 						  random_initial_state, min_exit_rate_time,
@@ -146,7 +161,7 @@ class BW:
 						  fixed_parameters, update_constant,
 						  min_val, max_val)
 		return self._bw( max_it,pp,epsilon,output_file,output_file_prism,verbose,
-						stormpy_output,return_data)
+						stormpy_output,return_data, progress_bar)
 
 
 	def _preparation(self,training_set,initial_model=None, nb_states: int=None,
@@ -243,7 +258,9 @@ class BW:
 		
 		return stormpy_output
 
-	def _bw(self,max_it,pp,epsilon,output_file,output_file_prism,verbose,stormpy_output,return_data):
+	def _bw(self,max_it,pp,epsilon,output_file,output_file_prism,
+	 		verbose,stormpy_output,return_data,
+			progress_bar):
 		start_time = datetime.now()
 		self.nb_states = self.h.nb_states
 
@@ -261,10 +278,11 @@ class BW:
 				temp = self._runProcesses(self.training_set)
 				currentloglikelihood = self._update(temp)
 				counter += 1
-				bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
-				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
-				bar.text = bar_text
-				bar()
+				if progress_bar:
+					bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
+					bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
+					bar.text = bar_text
+					bar()
 				if currentloglikelihood - prevloglikelihood < epsilon:
 					break
 				else:
@@ -1423,8 +1441,8 @@ class BW:
 		pass
 	
 	def _runProcesses(self,training_set):
-		if platform != "win32" and platform != "darwin" and NB_PROCESS > 1:
-			p = Pool(processes = NB_PROCESS)
+		if self.processes > 1:
+			p = Pool(processes = self.processes)
 			tasks = []
 			for seq,times in zip(training_set.sequences,training_set.times):
 				tasks.append(p.apply_async(self._processWork, [seq, times,]))
