@@ -144,7 +144,7 @@ class BW:
 		Model
 			fitted model.
 		"""
-		if platform != "win32" or platform != "darwin":
+		if platform == "win32" or platform == "darwin":
 			self.processes = 1
 		else:
 			if type(processes) != int:
@@ -153,6 +153,8 @@ class BW:
 				self.processes = cpu_count()-1
 			else:
 				self.processes = processes
+		
+		progress_bar = not progress_bar
 
 		stormpy_output = self._preparation(training_set,initial_model, nb_states,
 						  random_initial_state, min_exit_rate_time,
@@ -272,17 +274,16 @@ class BW:
 		else:
 			alive_parameter = 0
 		
-		with alive_bar(alive_parameter, dual_line=True, title=str(pp)) as bar:
+		with alive_bar(alive_parameter, dual_line=True, title=str(pp), disable=progress_bar) as bar:
 			while counter < max_it:
 				self._computeTaus()
 				temp = self._runProcesses(self.training_set)
 				currentloglikelihood = self._update(temp)
 				counter += 1
-				if progress_bar:
-					bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
-					bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
-					bar.text = bar_text
-					bar()
+				bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
+				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
+				bar.text = bar_text
+				bar()
 				if currentloglikelihood - prevloglikelihood < epsilon:
 					break
 				else:

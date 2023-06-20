@@ -1,5 +1,5 @@
 from .Scheduler import UniformScheduler, MemorylessScheduler
-from ..base.BW import BW, NB_PROCESS
+from ..base.BW import BW
 from ..base.Set import Set
 from ..base.tools import resolveRandom
 from multiprocessing import Pool
@@ -87,7 +87,8 @@ class Active_BW_MDP(BW):
 			initial_model=None, nb_states: int=None,
 			random_initial_state: bool=True, output_file: str=None,
 			epsilon: float=0.01, max_it: int=inf,pp: str='',
-			verbose: bool = True, return_data: bool= False, stormpy_output: bool = True):
+			verbose: bool = True, return_data: bool= False,
+			stormpy_output: bool = True, processes: int = None):
 		"""
 		Fits the model according to ``traces``.
 
@@ -156,6 +157,10 @@ class Active_BW_MDP(BW):
 		stormpy_output: bool, optional
 			If set to True the output model will be a Stormpy sparse model.
 			Default is True.
+		processes : int, optional
+			Number of processes used during the learning.
+			Only for linux: for Windows and Mac OS it is 1.
+			Default is `cpu_count()-1`.
 
 		Returns
 		-------
@@ -175,7 +180,8 @@ class Active_BW_MDP(BW):
 		_, info = super().fit(traces, initial_model,nb_states,
 					random_initial_state, output_file,epsilon,
 					max_it,"Passive iteration:"+pp,
-					return_data=True, stormpy_output=False)
+					return_data=True, stormpy_output=False,
+					progress_bar=False,processes=processes)
 		counter += info['learning_rounds']
 	
 		total_traces = traces
@@ -283,8 +289,8 @@ class Active_BW_MDP(BW):
 		return traces
 
 	def _strategy(self,traces:Set) -> MemorylessScheduler:
-		if platform != "win32":
-			p = Pool(processes = NB_PROCESS)
+		if self.processes > 1:
+			p = Pool(processes = self.processes)
 			tasks = []
 			for seq,times in zip(traces.sequences,traces.times):
 				tasks.append(p.apply_async(self._computeProbas, [seq, times,]))
