@@ -742,9 +742,15 @@ class BW:
 
 		currentloglikelihood = dot(log(lst_proba),lst_times)
 
+		for s in range(len(den)):
+			if den[s] == 0.0:
+				den[s] = 1.0
+				mu[s], va[s] = self.h.output[s].T
+				a[s] = self.h.matrix[s]
+		
 		output_mu = (mu.T/den).T
 		output_va = sqrt((va.T/den).T)
-
+		
 		matrix = a/den[:, newaxis]
 		output = stack((output_mu,output_va),axis=2)
 
