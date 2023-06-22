@@ -310,7 +310,7 @@ class BW:
 		if output_file_prism and (self.type_model != HMM_ID and self.type_model != GOHMM_ID):
 			self.h.savePrism(output_file_prism)
 		
-		if verbose:
+		if verbose == 3:
 			self._endPrint(counter,running_time)
 
 		if stormpy_output and (self.type_model != HMM_ID and self.type_model != GOHMM_ID):
