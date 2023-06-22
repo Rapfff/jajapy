@@ -28,10 +28,10 @@ class BW:
 			max_exit_rate_time: int=None, self_loop: bool =None,
 			nb_distributions: int=None, output_file: str=None,
 			output_file_prism: str=None, epsilon: float=0.01, max_it: int=inf,
-			pp: str='', verbose: bool=True, return_data: bool=False,
+			pp: str='', verbose: int=2, return_data: bool=False,
 			stormpy_output: bool = True, fixed_parameters: ndarray = False,
 			update_constant: bool = True, min_val: float = None, max_val: float = None,
-			progress_bar: bool = True, processes: int = None):
+			processes: int = None):
 		"""
 		Fits any model according to ``traces``.
 		This method will figure which type of Markov model should be used, according to the
@@ -93,9 +93,13 @@ class BW:
 		pp:	str, optional
 			Will be printed at each iteration.
 			Default is an empty string.
-		verbose: bool, optional.
-			Print or not a small recap at the end of the learning.
-			Default is True.
+		verbose: int, optional.
+			Define the level of information that will print during the learning
+			0 - nothing (no warnings, no progress bar, no recap at the end)
+			1 - minimal (warnings only)
+			2 - default (warnings and progress bar, no recap at the end)
+			3 - maximal (warnings, progress bar and recap)
+			Default is 2.
 		return_data: bool, optional.
 			If set to True, a dictionary containing following values will be
 			returned alongside the output model once the learning is done.
@@ -131,9 +135,6 @@ class BW:
 			this value is equal to the parameters with the highest instantiation.
 			If not set and if the model has less than two instantiated parameters,
 			this value is equal to 5.0.
-		progress_bar : bool, optional
-			Display or not the progress bar.
-			Default is True.
 		processes : int, optional
 			Number of processes used during the learning.
 			Only for linux: for Windows and Mac OS it is 1.
@@ -154,7 +155,11 @@ class BW:
 			else:
 				self.processes = processes
 		
-		progress_bar = not progress_bar
+		if type(verbose) != int:
+			verbose = 2
+		elif verbose > 3 or verbose < 0:
+			verbose = 2
+		self.verbose = verbose
 
 		stormpy_output = self._preparation(training_set,initial_model, nb_states,
 						  random_initial_state, min_exit_rate_time,
@@ -163,7 +168,7 @@ class BW:
 						  fixed_parameters, update_constant,
 						  min_val, max_val)
 		return self._bw( max_it,pp,epsilon,output_file,output_file_prism,verbose,
-						stormpy_output,return_data, progress_bar)
+						stormpy_output,return_data)
 
 
 	def _preparation(self,training_set,initial_model=None, nb_states: int=None,
@@ -185,7 +190,7 @@ class BW:
 			   (self.training_set.type != 0 and self.type_model != 4) and
 			   (self.training_set.type != 0 and self.type_model != 5) and
 			   (self.training_set.type != 4 and self.type_model != 5)):
-				msg = "the training set and the initial hypothesis are notcompatible:\n"
+				msg = "the training set and the initial hypothesis are not compatible:\n"
 				msg+= "the training set is a set of sequences of "
 				msg+=['labels','action-label pairs','vector of continuous observations','dwell time-label pairs'][self.training_set.type]
 				msg+= "\nand the initial hypothesis is a "+['MC','MDP','HMM','GoHMM','CTMC','PCTMC'][self.type_model]
@@ -194,7 +199,8 @@ class BW:
 		if self.type_model == MC_ID:
 			self._update = self._update_MC
 			self._processWork  = self._processWork_MC
-			print("Learning an MC...")
+			if self.verbose > 0:
+				print("Learning an MC...")
 		
 		elif self.type_model == MDP_ID:
 			self._h_tau = self._h_tau_MDP
@@ -202,13 +208,15 @@ class BW:
 			self._computeBetas = self._computeBetas_MDP
 			self._update = self._update_MDP
 			self._processWork  = self._processWork_MDP
-			print("Learning an MDP...")
+			if self.verbose > 0:
+				print("Learning an MDP...")
 			self.actions = self.h.actions
 		
 		elif self.type_model == CTMC_ID:
 			self._update = self._update_CTMC
 			self._processWork = self._processWork_CTMC
-			print("Learning a CTMC...")
+			if self.verbose > 0:
+				print("Learning a CTMC...")
 			if self.training_set.type == 4:
 				self._computeAlphas = self._computeAlphas_timed
 				self._computeBetas  = self._computeBetas_timed
@@ -218,7 +226,8 @@ class BW:
 				self.fixed_parameters = fixed_parameters
 		
 		elif self.type_model == PCTMC_ID:
-			print("Learning a PCTMC...")
+			if self.verbose > 0:
+				print("Learning a PCTMC...")
 			self._update = self._update_PCTMC
 			self._processWork = self._processWork_PCTMC
 			self._computeTaus = self._computeTaus_PCTMC
@@ -246,23 +255,26 @@ class BW:
 			self._update = self._update_HMM
 			self._processWork = self._processWork_HMM
 			self.alphabet = self.h.getAlphabet()
-			print("Learning an HMM...")
+			if self.verbose > 0:
+				print("Learning an HMM...")
 		
 		elif self.type_model == GOHMM_ID:
 			self._update= self._update_GoHMM
 			self._processWork = self._processWork_GoHMM
 			self.nb_distr = self.h.nb_distributions
-			print("Learning a GoHMM...")
+			if self.verbose > 0:
+				print("Learning a GoHMM...")
 
 		if stormpy_output and not self.stormpy_installed:
-			print("WARNING: stormpy not found. The output model will be a Jajapy model")
+			if self.verbose > 0:
+				print("WARNING: stormpy not found. The output model will be a Jajapy model")
 			stormpy_output = False
 		
 		return stormpy_output
 
 	def _bw(self,max_it,pp,epsilon,output_file,output_file_prism,
-	 		verbose,stormpy_output,return_data,
-			progress_bar):
+	 		verbose,stormpy_output,return_data):
+		progress_bar = self.verbose < 2
 		start_time = datetime.now()
 		self.nb_states = self.h.nb_states
 
