@@ -124,6 +124,8 @@ class GoHMM(Base_HMM):
 			state, observation `l`.
 		"""
 		mu, sigma  = self.output[s][n]
+		if sigma <= 0.0:
+			return float(l == mu)
 		return exp(-0.5*((mu-l)/sigma)**2)/(sigma*sqrt(2*pi))
 
 	def next_obs(self, s:int) -> list:
