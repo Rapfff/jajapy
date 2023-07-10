@@ -4,9 +4,8 @@ from ..base.tools import hoeffdingBound
 from numpy import zeros
 
 class PTA_node:
-	def __init__(self, label,word,parent=None,count=0) -> None:
+	def __init__(self, label,parent=None,count=0) -> None:
 		self.label = label
-		self.word = word
 		self.count = count
 		self.kids = []
 		self.parent = parent
@@ -44,7 +43,7 @@ class PTA_node:
 	
 class PTA:
 	def __init__(self,traces) -> None:
-		self.root = PTA_node('',[''])
+		self.root = PTA_node('')
 		self.alphabet = []
 		traces.sort()
 		
@@ -68,7 +67,7 @@ class PTA:
 		n = start
 		for i in range(start_index,len(string)):
 			l = string[i]
-			n.addKid(PTA_node(l,string[:i+1],n),count)
+			n.addKid(PTA_node(l,n),count)
 			n = n.kids[-1][0]
 		return n
 
@@ -196,7 +195,6 @@ class Alergia:
 			merged = False
 			for s2 in red:
 				if self.T.compatible(s1,s2,alpha):
-					print("MERGING",s1.word[1:],"into",s2.word[1:])
 					self.T.merge(s2,s1)
 					merged = True
 					break
@@ -239,9 +237,6 @@ class Alergia:
 		self.alpha = alpha
 		self.alphabet = traces.getAlphabet()
 		self.createPTA(traces)
-
-	def _sortNodes(self,nodes: list) -> None:
-		nodes = [n for _,n in sorted(zip([nn.word for nn in nodes],nodes))]
 
 	def createPTA(self,traces):
 		temp1 = traces.sequences[:]
