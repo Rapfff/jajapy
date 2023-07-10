@@ -317,17 +317,16 @@ class Model:
 		output: float
 			loglikelihood of ``sequences`` under this model.
 		"""
-		sequences_sorted = sequences.sequences[:]
-		sequences_sorted.sort()
+		sequences.sort()
 		loglikelihood = 0.0
-		alpha_matrix = self._initAlphaMatrix(len(sequences_sorted[0]))
-		for seq in range(len(sequences_sorted)):
-			sequence = sequences_sorted[seq]
-			times = sequences.times[sequences.sequences.index(sequence)]
+		alpha_matrix = self._initAlphaMatrix(len(sequences.sequences[0]))
+		for seq in range(len(sequences.sequences)):
+			sequence = sequences.sequences[seq]
+			times = sequences.times[seq]
 			common = 0
 			if seq > 0:
-				while common < min(len(sequences_sorted[seq-1]),len(sequence)):
-					if sequences_sorted[seq-1][common] != sequence[common]:
+				while common < min(len(sequences.sequences[seq-1]),len(sequence)):
+					if sequences.sequences[seq-1][common] != sequence[common]:
 						break
 					common += 1
 					

@@ -4,12 +4,18 @@ from ..base.tools import hoeffdingBound
 from numpy import zeros
 
 class PTA_node:
-	def __init__(self, label,parent=None,count=0) -> None:
+	def __init__(self, label,word,parent=None,count=0) -> None:
 		self.label = label
+		self.word = word
 		self.count = count
 		self.kids = []
 		self.parent = parent
 	
+	def addKid(self,node,c):
+		lbls = [k.label for k,_ in self.kids]+[node.label]
+		lbls.sort()
+		self.kids.insert(lbls.index(node.label),(node,c))
+
 	def findKid(self,label):
 		for (k,_) in self.kids:
 			if k.label == label:
@@ -38,8 +44,9 @@ class PTA_node:
 	
 class PTA:
 	def __init__(self,traces) -> None:
-		self.root = PTA_node('')
+		self.root = PTA_node('',[''])
 		self.alphabet = []
+		traces.sort()
 		
 		for trace,time in zip(traces.sequences,traces.times):
 			node = self.root
@@ -50,32 +57,50 @@ class PTA:
 					self.alphabet.append(char)
 				nnext = node.incKid(char,time)
 				if nnext == None:
-					node = self.addKids(node,trace[curr:],time)
+					node = self.addKids(node,trace,curr,time)
 					curr = len(trace)
 				else:
 					node = nnext
 					curr += 1
 			node.count = time
 
-	def addKids(self,start:PTA_node,string:str,count:int):
+	def addKids(self,start:PTA_node,string:str,start_index:int,count:int):
 		n = start
-		for l in string:
-			n.kids.append((PTA_node(l,n),count))
+		for i in range(start_index,len(string)):
+			l = string[i]
+			n.addKid(PTA_node(l,string[:i+1],n),count)
 			n = n.kids[-1][0]
 		return n
 
 	def compatible(self,s1,s2,alpha):
 		if s1 == None or s2 == None:
 			return True
+		
 		if s1.label != s2.label:
 			return False
-		n1 = sum([i for (_,i) in s1.kids])+s1.count
-		n2 = sum([i for (_,i) in s2.kids])+s2.count
-		if not hoeffdingBound(s1.count,n1,s2.count,n2,alpha):
-			return False
+		
+		leaving1 = sum([i for (_,i) in s1.kids])
+		leaving2 = sum([i for (_,i) in s2.kids])
+		if leaving1*leaving2 == 0:
+			return True
+		n1 = leaving1# + s1.count
+		n2 = leaving2# + s2.count
+
+		#leaving1,leaving2 = [s1.count],[s2.count]
+		leaving1 = {}
+		leaving2 = {}
+		for k,f in s1.kids:
+			leaving1[k.label] = f
+		for k,f in s2.kids:
+			leaving2[k.label] = f
+
+		for o in set(leaving1.keys()).union(leaving2.keys()):
+			f1 = leaving1[o] if o in leaving1 else 0
+			f2 = leaving2[o] if o in leaving2 else 0
+			if not hoeffdingBound(f1,n1,f2,n2,alpha):
+				return False
 		for char in self.alphabet:
-			k1,k2 = s1.findKid(char),s2.findKid(char)
-			if not self.compatible(k1,k2,alpha):
+			if not self.compatible(s1.findKid(char),s2.findKid(char),alpha):
 				return False
 		return True
 		
@@ -88,7 +113,7 @@ class PTA:
 		for (k2,c) in s2.kids:
 			k1 = s1.findKid(k2.label)
 			if k1 == None:
-				s1.kids.append((k2,c))
+				s1.addKid(k2,c)
 				k2.parent = s1
 			else:
 				k1.count += k2.count
@@ -171,16 +196,15 @@ class Alergia:
 			merged = False
 			for s2 in red:
 				if self.T.compatible(s1,s2,alpha):
+					print("MERGING",s1.word[1:],"into",s2.word[1:])
 					self.T.merge(s2,s1)
 					merged = True
 					break
 			if not merged:
-				red.append(s1)
+				red.append(s1) #au bon endroit !!
 			blue = []
 			for s in red:
-				blue += [k for (k,_) in s.kids]
-			blue = list(set(blue))
-			blue = [s for s in blue if s not in red]
+				blue += [k for (k,_) in s.kids if not(k in red or k in blue)]
 		m = self.T.toMC()
 
 		try:
@@ -216,7 +240,9 @@ class Alergia:
 		self.alphabet = traces.getAlphabet()
 		self.createPTA(traces)
 
-	
+	def _sortNodes(self,nodes: list) -> None:
+		nodes = [n for _,n in sorted(zip([nn.word for nn in nodes],nodes))]
+
 	def createPTA(self,traces):
 		temp1 = traces.sequences[:]
 		temp2 = traces.times[:]

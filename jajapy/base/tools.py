@@ -137,4 +137,5 @@ def checkProbabilities(l: ndarray) -> bool:
 def hoeffdingBound(f1,n1,f2,n2,alpha):
 	if n1*n2 == 0.0:
 		return True
-	return abs(f1/n1 - f2/n2) < (n1**(-1/2)+n2**(-1/2))*sqrt(0.5*log(2/alpha))
+	#return abs(f1/n1 - f2/n2) < (n1**(-1/2)+n2**(-1/2))*sqrt(0.5*log(2/alpha))
+	return abs(f1/n1 - f2/n2) < ((sqrt(1 / n1) + sqrt(1 / n2)) * sqrt(0.5 * log(2 / alpha)))

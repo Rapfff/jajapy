@@ -184,6 +184,15 @@ class Set:
 				self.times = append(self.times, s2.times[i])
 			else:
 				self.times[self.sequences.index(s2.sequences[i])] += s2.times[i]
+	
+	def sort(self) -> None:
+		"""
+		Sort the sequences in lexicographic order.
+		"""
+		x = sorted(zip(self.sequences,self.times))
+		self.sequences = [s for s,_ in x]
+		self.times = [t for _,t in x]
+		
 
 def loadSet(file_path: str) -> Set:
 	"""
