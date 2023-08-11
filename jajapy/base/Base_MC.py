@@ -29,7 +29,7 @@ class Base_MC(Model):
 		
 		if not 'init' in self.labelling:
 			msg = "No initial state given: at least one"
-			msg += " state should be labelled by 'init'."
+			msg += " state must be labelled by 'init'."
 			raise ValueError(msg)
 		initial_state = [1.0/self.labelling.count("init") if i=='init' else 0.0 for i in self.labelling]
 
@@ -37,6 +37,25 @@ class Base_MC(Model):
 		if len(self.labelling) != self.nb_states:
 			raise ValueError("The length of labelling ("+str(len(labelling))+") is not equal to the number of states("+str(self.nb_states)+")")
 	
+	def updateLabelling(self,new_labels : list) -> None:
+		"""
+		Update the states labelling.
+
+		Parameters
+		----------
+		new_labels: list
+			a list of new labels. The length of the list
+			must be equal to the number of states.
+		""" 
+		if len(new_labels) == self.nb_states-1:
+			new_labels.append("init")
+		if 'init' in new_labels:
+			self.labelling = new_labels
+			self.alphabet = list(set(new_labels))
+		else:
+			print("No initial state given: at least one state must be labelled by 'init'.")
+			print("The labels have not been updated.")
+
 	def getLabel(self,state: int) -> str:
 		"""
 		Returns the label of `state`.
