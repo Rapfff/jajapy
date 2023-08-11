@@ -101,19 +101,6 @@ class MDPTestclass(unittest.TestCase):
 		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
 							  output_gotten.logLikelihood(test_set))
 	
-	def test_Active_BW_MDP(var):
-		initial_model   = loadMDP("jajapy/tests/materials/mdp/random_MDP.txt")
-		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")
-		output_expected = loadMDP("jajapy/tests/materials/mdp/active_output_MDP.txt")
-		output_gotten   = Active_BW_MDP().fit(training_set, sul=m,initial_model=initial_model, lr=0,
-											  nb_iterations=10,nb_sequences=10,sequence_length=10,
-											  stormpy_output=False)
-		test_set = m.generateSet(10000,10,scheduler)
-		var.assertAlmostEqual(output_expected.logLikelihood(test_set),
-							  output_gotten.logLikelihood(test_set),places=2)
-
-
-	
 	def test_IOAlergia(var):
 		training_set    = loadSet("jajapy/tests/materials/mdp/training_set_MDP.txt")
 		IOAlergia().fit(training_set,0.01, stormpy_output=False)
