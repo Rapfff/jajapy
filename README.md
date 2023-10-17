@@ -47,5 +47,9 @@
 ## Documentation
 Available on [readthedoc](https://jajapy.readthedocs.io/en/latest/?)
 
+## Reference and citation
+- The extended version of the tool paper presented at QEST'23 is available [here](https://rapfff.github.io/files/publications/Jajapy%20a%20learning%20library%20for%20stochastic%20models.pdf)
+- If you use this tool in your research, please [cite it](https://dblp.org/rec/conf/qest/ReynouardIB23.html?view=bibtex)
+
 ## About the author
 [My website](https://rapfff.github.io/)
