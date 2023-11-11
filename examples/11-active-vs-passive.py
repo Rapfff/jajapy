@@ -94,8 +94,8 @@ class ActiveLearningScheduler:
 				p = array([self.m.tau(ss,self.m.actions[self.last_act],s,obs) for ss in range(self.nb_states)])
 				alpha_matrix[s] = dot(self.alpha_matrix,p)
 			self.alpha_matrix = alpha_matrix
-
-
+	
+	
 class Active_BW_Experiment(ja.BW):
 	def __init__(self):
 		super().__init__()
@@ -267,6 +267,7 @@ def printResults(training_set_size,it_size,nb_it):
 			'y1': [y - e for y, e in zip(data['y'], data['yerr'])],
 			'y2': [y + e for y, e in zip(data['y'], data['yerr'])]}
 		plt.fill_between(**data, alpha=.25)
+	ax.set(xlabel='number of sequences',ylabel='loglikelihood distance')
 	ax.legend()
 	plt.savefig("active_vs_passive.png")
 		
@@ -274,4 +275,4 @@ if __name__ == '__main__':
 	sul = ja.loadPrism('materials/grid_4x4.sm')
 	sul.actions = list('nsew')
 	experiment(sul,TR_DIM,NB_IT,IT_DIM,TS_DIM)
-	#printResults(TR_DIM[0],IT_DIM[0],NB_IT)
+	printResults(TR_DIM[0],IT_DIM[0],NB_IT)

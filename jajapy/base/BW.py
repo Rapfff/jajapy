@@ -3,7 +3,7 @@ from multiprocessing import cpu_count, Pool
 from numpy.polynomial.polynomial import polyroots
 from numpy import array, dot, append, zeros, ones, float64, inf, ndarray, log, isnan, sqrt, stack, longdouble, float16, where, delete, newaxis, full, infty
 from math import exp
-from datetime import datetime
+from time import perf_counter
 from .Set import Set
 from alive_progress import alive_bar
 from .Model import MC_ID, MDP_ID, CTMC_ID, PCTMC_ID, HMM_ID, GOHMM_ID
@@ -275,7 +275,7 @@ class BW:
 	def _bw(self,max_it,pp,epsilon,output_file,output_file_prism,
 	 		verbose,stormpy_output,return_data):
 		progress_bar = self.verbose < 2
-		start_time = datetime.now()
+		start_time = perf_counter()
 		self.nb_states = self.h.nb_states
 
 		counter = 0
@@ -293,7 +293,7 @@ class BW:
 				currentloglikelihood = self._update(temp)
 				counter += 1
 				bar_text = '   Diff. loglikelihood: '+str(round(currentloglikelihood-prevloglikelihood,5))+' (>'+str(epsilon)+')'
-				bar_text+= '   Av. one iteration (s): '+str(round((datetime.now()-start_time).total_seconds()/counter,2))
+				bar_text+= '   Av. one iteration (s): '+str(round((perf_counter()-start_time)/counter,2))
 				bar.text = bar_text
 				bar()
 				if currentloglikelihood - prevloglikelihood < epsilon:
@@ -301,8 +301,7 @@ class BW:
 				else:
 					prevloglikelihood = currentloglikelihood
 
-		running_time = datetime.now()-start_time
-		running_time = running_time.total_seconds()
+		running_time = perf_counter()-start_time
 
 		if output_file:
 			self.h.save(output_file)

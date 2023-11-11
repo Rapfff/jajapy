@@ -82,6 +82,23 @@ class Set:
 		self.sequences = res[0]
 		self.times = array(res[1])
 	
+	def to_list(self) -> list:
+		"""
+		Return the set as a simple list.
+
+		Returns
+		------
+		list
+			A simple list of traces.
+			If a trace is duplicated n times in the Set it will appears n times
+			in the output.
+		"""
+		res = self.sequences[:]
+		for i,j in enumerate(self.times):
+			for _ in range(j-1):
+				res.append(self.sequences[i])
+		return res
+	
 	def isEqual(self, set2) -> bool:
 		"""
 		Checks wheter or not this set is equal to another set `set2`.

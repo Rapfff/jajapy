@@ -5,7 +5,7 @@ from ..base.tools import resolveRandom
 from multiprocessing import Pool
 from random import random
 from numpy import zeros, dot, array, inf
-from datetime import datetime
+from time import perf_counter
 
 class ActiveLearningScheduler:
 	"""
@@ -204,7 +204,7 @@ class Active_BW_MDP(BW):
 
 		counter = 0
 		self.sul = sul
-		start_time = datetime.now()
+		start_time = perf_counter()
 		
 		_, info = super().fit(traces, initial_model=initial_model, nb_states=nb_states,
 							  random_initial_state=random_initial_state, output_file=output_file,
@@ -245,8 +245,7 @@ class Active_BW_MDP(BW):
 
 			c += 1
 		
-		running_time = datetime.now()-start_time
-		running_time = running_time.total_seconds()
+		running_time = perf_counter()-start_time
 
 		if output_file:
 			self.h.save(output_file)
