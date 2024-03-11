@@ -45,13 +45,13 @@ To do it, we build a function that keep only the columns we are interested in, a
 	>>>		#drop = training_set[len(training_set)-len(training_set)%len_seq:]
 	>>>		training_set = training_set[:len(training_set)-len(training_set)%len_seq]
 	>>>		training_set = training_set.reshape((complete_seq,len_seq,nb_distributions))
-	>>>		training_set = ja.Set(training_set,ones(len(training_set)),t=4) #t=4 because this is a Set for a GOHMM, see Jajapy doc
+	>>>		training_set = ja.Set(training_set,ones(len(training_set)),t=3) #t=3 because this is a Set for a GOHMM, see Jajapy doc
 	>>>		#
 	>>>		complete_seq = len(test_set)//len_seq
 	>>>		#drop = test_set[len(test_set)-len(test_set)%len_seq:]
 	>>>		test_set = test_set[:len(test_set)-len(test_set)%len_seq]
 	>>>		test_set = test_set.reshape((complete_seq,len_seq,nb_distributions))
-	>>>		test_set = ja.Set(test_set,ones(len(test_set)),t=4)#t=4 because this is a Set for a GOHMM, see Jajapy doc
+	>>>		test_set = ja.Set(test_set,ones(len(test_set)),t=3)#t=3 because this is a Set for a GOHMM, see Jajapy doc
 	>>>		#
 	>>>		return training_set, test_set
 
