@@ -1,7 +1,7 @@
 from sys import platform
 from multiprocessing import cpu_count, Pool
 from numpy.polynomial.polynomial import polyroots
-from numpy import array, dot, append, zeros, ones, float64, inf, ndarray, log, isnan, sqrt, stack, longdouble, float16, where, delete, newaxis, full, infty
+from numpy import array, dot, append, zeros, ones, float64, inf, ndarray, log, isnan, sqrt, stack, longdouble, float16, where, delete, newaxis, full, infty, empty
 from math import exp
 from time import perf_counter
 from .Set import Set
@@ -240,10 +240,13 @@ class BW:
 				self.h.randomInstantiation(max_val=max_val)
 			else:
 				self.h.randomInstantiation()
-				
+
+			self._computeAlphas = self._computeAlphas_matrix
+			self._computeBetas = self._computeBetas_matrix
+
 			if self.training_set.type == 4:
-				self._computeAlphas = self._computeAlphas_timed
-				self._computeBetas  = self._computeBetas_timed
+				self._computeAlphas = self._computeAlphas_timed_matrix
+				self._computeBetas  = self._computeBetas_timed_matrix
 			self.nb_parameters = self.h.nb_parameters
 			self.update_constant = update_constant
 			self._h_e = self._h_e_PCTMC
@@ -522,7 +525,55 @@ class BW:
 			A rate.
 		"""
 		return self.h.l(s1,s2,obs)	
-	
+
+	def _computeAlphas_timed_matrix(self, obs_seq: list[str], times_seq: list[float]) -> array:
+		"""
+		Compute the alpha values for ``obs_seq`` and ``times_seq`` under the
+		current BW hypothesis using a matrix representation.
+
+		Parameters
+		----------
+		obs_seq : list of str
+			Sequence of observations.
+		times_seq : list of float
+			Sequence of waiting times.
+
+		Returns
+		-------
+		2-D narray
+			array containing the alpha values.
+		"""
+		tau = zeros(shape=(self.nb_states, self.nb_states))  # also called p
+		for s in range(self.nb_states):
+			for ss in range(self.nb_states):
+				e = self._h_e(s)
+				if e != 0:
+					tau[s][ss] = self.hval[s][ss] / e
+				elif e == 0 and s == ss:
+					tau[s][ss] = 1
+				else:
+					tau[s][ss] = 0
+
+		n_obs = len(obs_seq)
+		phi = zeros(shape=(n_obs, self.nb_states))  # also called omega
+		for i in range(n_obs - 1):
+			for j in range(self.nb_states):
+				phi[i, j] = \
+					(self.h.labelling[j] == obs_seq[i]) \
+					* self._h_e(j) \
+					* exp(-self._h_e(j) * times_seq[i])
+		for s in range(self.nb_states):
+			phi[-1, s] = (1 if self.h.labelling[s] == obs_seq[-1] else 0)
+
+		pi = self.h.initial_state
+
+		alpha = empty((n_obs + 1, self.nb_states))
+		alpha[0] = pi
+		for t in range(1, n_obs + 1):
+			alpha[t] = tau.T @ (phi[t - 1] * alpha[t - 1])
+
+		return alpha.T
+
 	def _computeAlphas_timed(self,obs_seq: list, times_seq: list) -> array:
 		"""
 		Compute the beta values for ``obs_seq`` and ``times_seq`` under the
@@ -550,6 +601,53 @@ class BW:
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		alpha_matrix[-1] *= (array(self.h.labelling) == obs_seq[-1])
 		return alpha_matrix.T
+
+	def _computeBetas_timed_matrix(self,obs_seq: list[str], times_seq: list[float]) -> array:
+		"""
+		Compute the beta values for ``obs_seq`` and ``times_seq`` under the
+		current BW hypothesis using a matrix representation.
+
+		Parameters
+		----------
+		obs_seq : list of str
+			Sequence of observations.
+		times_seq : list of float
+			Sequence of waiting times.
+
+		Returns
+		-------
+		2-D narray
+			array containing the beta values.
+		"""
+		tau = zeros(shape=(self.nb_states, self.nb_states))  # also called p
+		for s in range(self.nb_states):
+			for ss in range(self.nb_states):
+				e = self._h_e(s)
+				if e != 0:
+					tau[s][ss] = self.hval[s][ss] / e
+				elif e == 0 and s == ss:
+					tau[s][ss] = 1
+				else:
+					tau[s][ss] = 0
+
+		n_obs = len(obs_seq)
+		phi = zeros(shape=(n_obs, self.nb_states))  # also called omega
+		for i in range(n_obs - 1):
+			for j in range(self.nb_states):
+				phi[i, j] = \
+					(self.h.labelling[j] == obs_seq[i]) \
+					* self._h_e(j) \
+					* exp(-self._h_e(j) * times_seq[i])
+		for s in range(self.nb_states):
+			phi[-1, s] = (1 if self.h.labelling[s] == obs_seq[-1] else 0)
+
+		beta = empty((n_obs + 1, self.nb_states))
+		beta[-1] = 1
+		for t in range(n_obs - 1, -1, -1):
+			beta[t] = phi[t] * (tau @ beta[t + 1])
+		beta = beta[:-1]
+
+		return beta.T
 
 	def _computeBetas_timed(self,obs_seq: list, times_seq: list) -> array:
 		"""
@@ -1391,6 +1489,47 @@ class BW:
 			self.type_model = CTMC_ID
 			self.h = CTMC_random(nb_states,self.alphabet,min_exit_rate_time,max_exit_rate_time,self_loop,random_initial_state)
 
+	def _computeAlphas_matrix(self, sequence: list[str]) -> array:
+		"""
+		Compute the alpha values for ``sequence`` under the current BW
+		hypothesis using a matrix representation.
+
+		Parameters
+		----------
+		sequence : list of str
+			sequence of observations.
+
+		Returns
+		-------
+		2-D narray
+			array containing the alpha values.
+		"""
+		tau = zeros(shape=(self.nb_states, self.nb_states))  # also called p
+		for s in range(self.nb_states):
+			for ss in range(self.nb_states):
+				e = self._h_e(s)
+				if e != 0:
+					tau[s][ss] = self.hval[s][ss] / e
+				elif e == 0 and s == ss:
+					tau[s][ss] = 1
+				else:
+					tau[s][ss] = 0
+
+		n_obs = len(sequence)
+		phi = zeros(shape=(n_obs, self.nb_states))  # also called omega
+		for i in range(n_obs):
+			for j in range(self.nb_states):
+				phi[i, j] = (1 if self.h.labelling[j] == sequence[i] else 0)
+
+		pi = self.h.initial_state
+
+		alpha = empty((n_obs + 1, self.nb_states))
+		alpha[0] = pi
+		for t in range(1, n_obs + 1):
+			alpha[t] = tau.T @ (phi[t - 1] * alpha[t - 1])
+
+		return alpha.T
+
 	def _computeAlphas(self, sequence: list, dtype=False) -> array:
 		"""
 		Compute the alpha values for ``sequence`` under the current BW
@@ -1422,6 +1561,47 @@ class BW:
 				p = array([self._h_tau(ss,s,sequence[k]) for ss in range(self.nb_states)],dtype=dtype)
 				alpha_matrix[k+1,s] = dot(alpha_matrix[k],p)
 		return alpha_matrix.T
+
+	def _computeBetas_matrix(self, sequence: list[str]) -> array:
+		"""
+		Compute the beta values for ``sequence`` under the current BW
+		hypothesis using a matrix representation.
+
+		Parameters
+		----------
+		sequence : list of str
+			sequence of observations.
+		dtype : numpy.scalar
+			If it set, the output will be a numpy array of this type,
+			otherwise it is a numpy array of float64.
+
+		Returns
+		-------
+		2-D narray
+			array containing the beta values.
+		"""
+		tau = zeros(shape=(self.nb_states, self.nb_states))  # also called p
+		for s in range(self.nb_states):
+			for ss in range(self.nb_states):
+				e = self._h_e(s)
+				if e != 0:
+					tau[s][ss] = self.hval[s][ss] / e
+				elif e == 0 and s == ss:
+					tau[s][ss] = 1
+				else:
+					tau[s][ss] = 0
+
+		n_obs = len(sequence)
+		phi = zeros(shape=(n_obs, self.nb_states))  # also called omega
+		for i in range(n_obs):
+			for j in range(self.nb_states):
+				phi[i, j] = (1 if self.h.labelling[j] == sequence[i] else 0)
+
+		beta = empty((n_obs + 1, self.nb_states))
+		beta[-1] = 1
+		for t in range(n_obs - 1, -1, -1):
+			beta[t] = phi[t] * (tau @ beta[t + 1])
+		return beta.T
 
 	def _computeBetas(self, sequence: list, dtype=False) -> array:
 		"""
